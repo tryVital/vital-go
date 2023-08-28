@@ -1,16 +1,16 @@
-# {Company} Go Library
+# Vital Go Library
 
-The {Company} Go library provides convenient access to the {Company} API from Go.
+The Vital Go library provides convenient access to the Vital API from Go.
 
-[![go shield](https://img.shields.io/badge/go-docs-blue)](https://pkg.go.dev/github.com/fern-{company}/{company}-go)
+[![go shield](https://img.shields.io/badge/go-docs-blue)](https://pkg.go.dev/github.com/fern-vital/vital-go)
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
 ## Installation
 
-Run the following command to use the {Company} Go library in your Go module:
+Run the following command to use the Vital Go library in your Go module:
 
 ```sh
-go get github.com/fern-{company}/{company}-go
+go get github.com/fern-vital/vital-go
 ```
 
 This module requires Go version >= 1.19.
