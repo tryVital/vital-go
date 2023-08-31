@@ -36,7 +36,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // GET many orders with filters.
 func (c *Client) GetOrders(ctx context.Context, request *vitalgo.GetOrdersV3OrdersGetRequest) (*vitalgo.GetOrdersResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

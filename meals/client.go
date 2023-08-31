@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Get user's meals
 func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.MealsGetRequest) (*vitalgo.ClientFacingMealResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

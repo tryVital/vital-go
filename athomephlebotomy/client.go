@@ -37,7 +37,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 //
 // Your Order ID.
 func (c *Client) AppointmentAvailability(ctx context.Context, orderId string, request *vitalgo.UsAddress) (*vitalgo.AppointmentAvailabilitySlots, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -83,7 +83,7 @@ func (c *Client) AppointmentAvailability(ctx context.Context, orderId string, re
 //
 // Your Order ID.
 func (c *Client) BookAppointment(ctx context.Context, orderId string, request *vitalgo.AppointmentBookingRequest) (*vitalgo.ClientFacingAppointment, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -129,7 +129,7 @@ func (c *Client) BookAppointment(ctx context.Context, orderId string, request *v
 //
 // Your Order ID.
 func (c *Client) RescheduleAppointment(ctx context.Context, orderId string, request *vitalgo.AppointmentRescheduleRequest) (*vitalgo.ClientFacingAppointment, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -175,7 +175,7 @@ func (c *Client) RescheduleAppointment(ctx context.Context, orderId string, requ
 //
 // Your Order ID.
 func (c *Client) CancelAppointment(ctx context.Context, orderId string, request *vitalgo.AppointmentCancelRequest) (*vitalgo.ClientFacingAppointment, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -219,7 +219,7 @@ func (c *Client) CancelAppointment(ctx context.Context, orderId string, request 
 
 // Get the list of reasons for cancelling an at-home phlebotomy appointment.
 func (c *Client) CancellationReason(ctx context.Context) ([]*vitalgo.ClientFacingAppointmentCancellationReason, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -246,7 +246,7 @@ func (c *Client) CancellationReason(ctx context.Context) ([]*vitalgo.ClientFacin
 //
 // Your Order ID.
 func (c *Client) GetAppointment(ctx context.Context, orderId string) (*vitalgo.ClientFacingAppointment, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

@@ -29,7 +29,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Get Provider list
 func (c *Client) GetListOfProviders(ctx context.Context) ([]*vitalgo.ClientFacingSourceDetailed, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

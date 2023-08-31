@@ -33,7 +33,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 func (c *Client) PostUserBloodPressure(ctx context.Context, userId string, request *vitalgo.PostUserBloodPressureV2TimeseriesUserIdBloodPressurePostRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

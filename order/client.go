@@ -34,7 +34,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 func (c *Client) RegisterTestkit(ctx context.Context, request *vitalgo.RegisterTestkitRequest) (*vitalgo.PostOrderResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -78,7 +78,7 @@ func (c *Client) RegisterTestkit(ctx context.Context, request *vitalgo.RegisterT
 
 // POST Create shipment for order
 func (c *Client) ProcessTestkitOrder(ctx context.Context, orderId string, teamId string) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -126,7 +126,7 @@ func (c *Client) ProcessTestkitOrder(ctx context.Context, orderId string, teamId
 // changed. If changed then the order status is updated and a webhook
 // is sent to the respective team.
 func (c *Client) SyncTestkitOrderStatus(ctx context.Context) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -150,7 +150,7 @@ func (c *Client) SyncTestkitOrderStatus(ctx context.Context) (string, error) {
 }
 
 func (c *Client) DispatchOrderStatus(ctx context.Context) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -174,7 +174,7 @@ func (c *Client) DispatchOrderStatus(ctx context.Context) (string, error) {
 }
 
 func (c *Client) ProcessTestkitShipHeroOrderShipped(ctx context.Context, request *vitalgo.ShipmentWebhookUpdate) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -220,7 +220,7 @@ func (c *Client) ProcessTestkitShipHeroOrderShipped(ctx context.Context, request
 //
 // Your Order ID.
 func (c *Client) CancelOrder(ctx context.Context, orderId string) (*vitalgo.PostOrderResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -264,7 +264,7 @@ func (c *Client) CancelOrder(ctx context.Context, orderId string) (*vitalgo.Post
 
 // Get available test kits.
 func (c *Client) OrderProcessSimulate(ctx context.Context, orderId string, request *vitalgo.OrderProcessSimulateV3OrderOrderIdTestPostRequest) (any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

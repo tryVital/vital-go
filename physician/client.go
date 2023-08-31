@@ -32,7 +32,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 func (c *Client) ReviewOpenloop(ctx context.Context, request *vitalgo.OpenLoopEvent) (any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

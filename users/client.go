@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // GET All users for team.
 func (c *Client) GetAll(ctx context.Context, request *vitalgo.UsersGetAllRequest) (*vitalgo.PaginatedUsersResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -90,7 +90,7 @@ func (c *Client) GetAll(ctx context.Context, request *vitalgo.UsersGetAllRequest
 
 // GET metrics for team.
 func (c *Client) Metrics(ctx context.Context) (*vitalgo.MetricsResult, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -117,7 +117,7 @@ func (c *Client) Metrics(ctx context.Context) (*vitalgo.MetricsResult, error) {
 //
 // A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 func (c *Client) Create(ctx context.Context, clientUserId string) (*vitalgo.ClientFacingUser, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

@@ -34,7 +34,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // POST Create a Vital user given a client_user_id and returns the user_id.
 func (c *Client) CreateUser(ctx context.Context, request *vitalgo.UserCreateBody) (*vitalgo.ClientFacingUserKey, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -78,7 +78,7 @@ func (c *Client) CreateUser(ctx context.Context, request *vitalgo.UserCreateBody
 
 // GET Users connected providers
 func (c *Client) Providers(ctx context.Context, userId string) (map[string][]*vitalgo.ClientFacingSourceWithStatus, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -122,7 +122,7 @@ func (c *Client) Providers(ctx context.Context, userId string) (map[string][]*vi
 
 // GET User details given the user_id.
 func (c *Client) Get(ctx context.Context, userId string) (*vitalgo.ClientFacingUser, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -165,7 +165,7 @@ func (c *Client) Get(ctx context.Context, userId string) (*vitalgo.ClientFacingU
 }
 
 func (c *Client) PatchUser(ctx context.Context, userId string, request *vitalgo.UserPatchBody) error {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -207,7 +207,7 @@ func (c *Client) PatchUser(ctx context.Context, userId string, request *vitalgo.
 }
 
 func (c *Client) DeleteUser(ctx context.Context, userId string) (*vitalgo.UserSuccessResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -251,7 +251,7 @@ func (c *Client) DeleteUser(ctx context.Context, userId string) (*vitalgo.UserSu
 
 // Provider slug. e.g., `oura`, `fitbit`, `garmin`.
 func (c *Client) DeregisterProvider(ctx context.Context, userId string, provider vitalgo.Providers) (*vitalgo.UserSuccessResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -295,7 +295,7 @@ func (c *Client) DeregisterProvider(ctx context.Context, userId string, provider
 
 // Trigger a manual refresh for a specific user
 func (c *Client) Refresh(ctx context.Context, userId string) (*vitalgo.UserRefreshSuccessResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

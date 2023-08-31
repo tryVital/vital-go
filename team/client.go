@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Post teams.
 func (c *Client) GetTeamConfig(ctx context.Context) (map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -60,7 +60,7 @@ func (c *Client) GetTeamConfig(ctx context.Context) (map[string]any, error) {
 
 // Get team.
 func (c *Client) GetTeam(ctx context.Context, teamId string) (*vitalgo.ClientFacingTeam, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -104,7 +104,7 @@ func (c *Client) GetTeam(ctx context.Context, teamId string) (*vitalgo.ClientFac
 
 // Update team.
 func (c *Client) UpdateTeam(ctx context.Context, teamId string, request *vitalgo.TeamUpdate) (*vitalgo.TeamInDb, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -148,7 +148,7 @@ func (c *Client) UpdateTeam(ctx context.Context, teamId string, request *vitalgo
 
 // Get the current user count for a team.
 func (c *Client) GetTeamUserCount(ctx context.Context, teamId string) (map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -192,7 +192,7 @@ func (c *Client) GetTeamUserCount(ctx context.Context, teamId string) (map[strin
 
 // Search team users by user_id
 func (c *Client) SearchTeamUsersByUuidOrClientUserId(ctx context.Context, request *vitalgo.SearchTeamUsersByUuidOrClientUserIdV2TeamUsersSearchGetRequest) ([]*vitalgo.ClientFacingUser, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -244,7 +244,7 @@ func (c *Client) SearchTeamUsersByUuidOrClientUserId(ctx context.Context, reques
 
 // Create api key.
 func (c *Client) CreateApiKey(ctx context.Context, teamId string, request *vitalgo.CreateApiKeyBody) (*vitalgo.ApiKeyInDb, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -288,7 +288,7 @@ func (c *Client) CreateApiKey(ctx context.Context, teamId string, request *vital
 
 // Invalidate api key by key value.
 func (c *Client) GetApiKeysForTeam(ctx context.Context, teamId string) ([]*vitalgo.ApiKeyInDb, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -332,7 +332,7 @@ func (c *Client) GetApiKeysForTeam(ctx context.Context, teamId string) ([]*vital
 
 // Update API key label.
 func (c *Client) UpdateApiKeyLabel(ctx context.Context, teamId string, apiKeyId string, request *vitalgo.UpdateApiKeyBody) (*vitalgo.ApiKeyInDb, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -376,7 +376,7 @@ func (c *Client) UpdateApiKeyLabel(ctx context.Context, teamId string, apiKeyId 
 
 // Invalidate api key by key value.
 func (c *Client) DeleteApiKey(ctx context.Context, teamId string, apiKeyId string) (*vitalgo.ApiKeyInDb, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -420,7 +420,7 @@ func (c *Client) DeleteApiKey(ctx context.Context, teamId string, apiKeyId strin
 
 // Deprecated. Rotate api key.
 func (c *Client) RotateApiKey(ctx context.Context, teamId string, apiKeyId string) (*vitalgo.ApiKeyInDb, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -464,7 +464,7 @@ func (c *Client) RotateApiKey(ctx context.Context, teamId string, apiKeyId strin
 
 // Create Team.
 func (c *Client) CreateTeam(ctx context.Context, request *vitalgo.TeamCreate) (*vitalgo.TeamInDb, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -508,7 +508,7 @@ func (c *Client) CreateTeam(ctx context.Context, request *vitalgo.TeamCreate) (*
 
 // Add Team priority row for source
 func (c *Client) CreatePriority(ctx context.Context, teamId string, request *vitalgo.PriorityCreate) (*vitalgo.Priority, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -551,7 +551,7 @@ func (c *Client) CreatePriority(ctx context.Context, teamId string, request *vit
 }
 
 func (c *Client) GetSvixWebhookUrl(ctx context.Context) (map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -576,7 +576,7 @@ func (c *Client) GetSvixWebhookUrl(ctx context.Context) (map[string]any, error) 
 
 // GET source priorities.
 func (c *Client) GetSourcePriorities(ctx context.Context, request *vitalgo.GetSourcePrioritiesV2TeamSourcePrioritiesGetRequest) ([]map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -628,7 +628,7 @@ func (c *Client) GetSourcePriorities(ctx context.Context, request *vitalgo.GetSo
 
 // Patch source priorities.
 func (c *Client) UpdateSourcePriorities(ctx context.Context, request *vitalgo.UpdateSourcePrioritiesV2TeamSourcePrioritiesPatchRequest) ([]map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

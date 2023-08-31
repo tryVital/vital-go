@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Get timeseries data for user
 func (c *Client) MindfulnessMinutes(ctx context.Context, userId string, request *vitalgo.VitalsMindfulnessMinutesRequest) ([]*vitalgo.ClientFacingMindfulnessMinutesTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -92,7 +92,7 @@ func (c *Client) MindfulnessMinutes(ctx context.Context, userId string, request 
 
 // Get timeseries data for user
 func (c *Client) Caffeine(ctx context.Context, userId string, request *vitalgo.VitalsCaffeineRequest) ([]*vitalgo.ClientFacingCaffeineTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -149,7 +149,7 @@ func (c *Client) Caffeine(ctx context.Context, userId string, request *vitalgo.V
 
 // Get timeseries data for user
 func (c *Client) Water(ctx context.Context, userId string, request *vitalgo.VitalsWaterRequest) ([]*vitalgo.ClientFacingWaterTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -206,7 +206,7 @@ func (c *Client) Water(ctx context.Context, userId string, request *vitalgo.Vita
 
 // Get timeseries data for user
 func (c *Client) Steps(ctx context.Context, userId string, request *vitalgo.VitalsStepsRequest) error {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -243,7 +243,7 @@ func (c *Client) Steps(ctx context.Context, userId string, request *vitalgo.Vita
 
 // Get timeseries data for user
 func (c *Client) FloorsClimbed(ctx context.Context, userId string, request *vitalgo.VitalsFloorsClimbedRequest) ([]*vitalgo.ClientFacingFloorsClimbedTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -300,7 +300,7 @@ func (c *Client) FloorsClimbed(ctx context.Context, userId string, request *vita
 
 // Get timeseries data for user
 func (c *Client) Distance(ctx context.Context, userId string, request *vitalgo.VitalsDistanceRequest) ([]*vitalgo.ClientFacingDistanceTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -357,7 +357,7 @@ func (c *Client) Distance(ctx context.Context, userId string, request *vitalgo.V
 
 // Get timeseries data for user
 func (c *Client) CaloriesBasal(ctx context.Context, userId string, request *vitalgo.VitalsCaloriesBasalRequest) ([]*vitalgo.ClientFacingCaloriesBasalTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -414,7 +414,7 @@ func (c *Client) CaloriesBasal(ctx context.Context, userId string, request *vita
 
 // Get timeseries data for user
 func (c *Client) CaloriesActive(ctx context.Context, userId string, request *vitalgo.VitalsCaloriesActiveRequest) ([]*vitalgo.ClientFacingCaloriesActiveTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -471,7 +471,7 @@ func (c *Client) CaloriesActive(ctx context.Context, userId string, request *vit
 
 // Get timeseries data for user
 func (c *Client) RespiratoryRate(ctx context.Context, userId string, request *vitalgo.VitalsRespiratoryRateRequest) ([]*vitalgo.ClientFacingRespiratoryRateTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -528,7 +528,7 @@ func (c *Client) RespiratoryRate(ctx context.Context, userId string, request *vi
 
 // Get timeseries data for user
 func (c *Client) Ige(ctx context.Context, userId string, request *vitalgo.VitalsIgeRequest) ([]*vitalgo.ClientFacingIgeTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -585,7 +585,7 @@ func (c *Client) Ige(ctx context.Context, userId string, request *vitalgo.Vitals
 
 // Get timeseries data for user
 func (c *Client) Igg(ctx context.Context, userId string, request *vitalgo.VitalsIggRequest) ([]*vitalgo.ClientFacingIggTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -642,7 +642,7 @@ func (c *Client) Igg(ctx context.Context, userId string, request *vitalgo.Vitals
 
 // Get timeseries data for user
 func (c *Client) Hypnogram(ctx context.Context, userId string, request *vitalgo.VitalsHypnogramRequest) ([]*vitalgo.ClientFacingHypnogramTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -699,7 +699,7 @@ func (c *Client) Hypnogram(ctx context.Context, userId string, request *vitalgo.
 
 // Get timeseries data for user
 func (c *Client) Hrv(ctx context.Context, userId string, request *vitalgo.VitalsHrvRequest) ([]*vitalgo.ClientFacingHrvTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -756,7 +756,7 @@ func (c *Client) Hrv(ctx context.Context, userId string, request *vitalgo.Vitals
 
 // Get timeseries data for user
 func (c *Client) Heartrate(ctx context.Context, userId string, request *vitalgo.VitalsHeartrateRequest) ([]*vitalgo.ClientFacingHeartRateTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -813,7 +813,7 @@ func (c *Client) Heartrate(ctx context.Context, userId string, request *vitalgo.
 
 // Get timeseries data for user
 func (c *Client) Glucose(ctx context.Context, userId string, request *vitalgo.VitalsGlucoseRequest) ([]*vitalgo.ClientFacingGlucoseTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -870,7 +870,7 @@ func (c *Client) Glucose(ctx context.Context, userId string, request *vitalgo.Vi
 
 // Get timeseries data for user
 func (c *Client) Triglycerides(ctx context.Context, userId string, request *vitalgo.VitalsTriglyceridesRequest) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -927,7 +927,7 @@ func (c *Client) Triglycerides(ctx context.Context, userId string, request *vita
 
 // Get timeseries data for user
 func (c *Client) CholesterolTotal(ctx context.Context, userId string, request *vitalgo.VitalsCholesterolTotalRequest) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -984,7 +984,7 @@ func (c *Client) CholesterolTotal(ctx context.Context, userId string, request *v
 
 // Get timeseries data for user
 func (c *Client) CholesterolHdl(ctx context.Context, userId string, request *vitalgo.VitalsCholesterolHdlRequest) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -1041,7 +1041,7 @@ func (c *Client) CholesterolHdl(ctx context.Context, userId string, request *vit
 
 // Get timeseries data for user
 func (c *Client) CholesterolLdl(ctx context.Context, userId string, request *vitalgo.VitalsCholesterolLdlRequest) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -1098,7 +1098,7 @@ func (c *Client) CholesterolLdl(ctx context.Context, userId string, request *vit
 
 // Get timeseries data for user
 func (c *Client) Cholesterol(ctx context.Context, userId string, request *vitalgo.VitalsCholesterolRequest) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -1155,7 +1155,7 @@ func (c *Client) Cholesterol(ctx context.Context, userId string, request *vitalg
 
 // Get timeseries data for user
 func (c *Client) BloodOxygen(ctx context.Context, userId string, request *vitalgo.VitalsBloodOxygenRequest) ([]*vitalgo.ClientFacingBloodOxygenTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -1212,7 +1212,7 @@ func (c *Client) BloodOxygen(ctx context.Context, userId string, request *vitalg
 
 // Get timeseries data for user
 func (c *Client) BloodPressure(ctx context.Context, userId string, request *vitalgo.VitalsBloodPressureRequest) ([]*vitalgo.ClientFacingBloodPressureTimeseries, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -1268,7 +1268,7 @@ func (c *Client) BloodPressure(ctx context.Context, userId string, request *vita
 }
 
 func (c *Client) TimeseriesRequest(ctx context.Context, resource vitalgo.IngestibleTimeseriesResource, userId string, request *vitalgo.VitalsTimeseriesRequestRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

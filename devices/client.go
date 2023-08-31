@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Get Devices for user_id
 func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.DevicesGetRawRequest) (*vitalgo.RawDevices, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

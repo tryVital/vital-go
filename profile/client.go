@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Get Daily profile for user_id
 func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.ProfileGetRequest) (*vitalgo.ClientFacingProfile, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -87,7 +87,7 @@ func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.Profil
 
 // Get Daily profile for user_id
 func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.ProfileGetRawRequest) (*vitalgo.RawProfile, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

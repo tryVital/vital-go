@@ -34,7 +34,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 func (c *Client) Backfill(ctx context.Context, userId string, teamId string, request *vitalgo.WebhookBackfillRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

@@ -41,7 +41,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 // like to redirect to a custom url after successful or error connection,
 // pass in your own custom redirect_url parameter.
 func (c *Client) Generate(ctx context.Context, request *vitalgo.LinkTokenExchange) (*vitalgo.LinkTokenExchangeResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -84,7 +84,7 @@ func (c *Client) Generate(ctx context.Context, request *vitalgo.LinkTokenExchang
 }
 
 func (c *Client) CheckToken(ctx context.Context, request *vitalgo.LinkTokenBase) (map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -128,7 +128,7 @@ func (c *Client) CheckToken(ctx context.Context, request *vitalgo.LinkTokenBase)
 
 // Generate a token to invite a user of Vital mobile app to your team
 func (c *Client) Create(ctx context.Context, request *vitalgo.LinkCreateRequest) (*vitalgo.VitalTokenCreatedResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -181,7 +181,7 @@ func (c *Client) Create(ctx context.Context, request *vitalgo.LinkCreateRequest)
 
 // Redeem an invite token for an api key
 func (c *Client) ExchangeToken(ctx context.Context, request *vitalgo.LinkExchangeTokenRequest) (*vitalgo.VitalTokenExchangeResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -235,7 +235,7 @@ func (c *Client) ExchangeToken(ctx context.Context, request *vitalgo.LinkExchang
 //
 // Provider slug. e.g., `oura`, `fitbit`, `garmin`.
 func (c *Client) ConnectProvider(ctx context.Context, provider string, request *vitalgo.LinkConnectProviderRequest) (map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -285,7 +285,7 @@ func (c *Client) ConnectProvider(ctx context.Context, provider string, request *
 // REQUEST_SOURCE: VITAL-LINK
 // Start link token process
 func (c *Client) Start(ctx context.Context, request *vitalgo.BeginLinkTokenRequest) (map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -330,7 +330,7 @@ func (c *Client) Start(ctx context.Context, request *vitalgo.BeginLinkTokenReque
 // REQUEST_SOURCE: VITAL-LINK
 // Check link token state - can be hit continuously used as heartbeat
 func (c *Client) State(ctx context.Context) (map[string]any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -357,7 +357,7 @@ func (c *Client) State(ctx context.Context) (map[string]any, error) {
 // PROVIDER_TYPE: EMAIL-AUTH
 // This function is hit by vital-link to authenticate a email provider.
 func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) (*vitalgo.ConnectionStatus, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -403,7 +403,7 @@ func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) 
 // PROVIDER_TYPE: PASSWORD-AUTH
 // This function is hit by vital-link to authenticate a password provider.
 func (c *Client) Auth(ctx context.Context, request *vitalgo.PasswordAuthLink) (*vitalgo.ConnectionStatus, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -452,7 +452,7 @@ func (c *Client) Auth(ctx context.Context, request *vitalgo.PasswordAuthLink) (*
 
 // This endpoint generates an OAuth link for oauth provider
 func (c *Client) OauthProvider(ctx context.Context, oauthProvider vitalgo.OAuthProviders) (*vitalgo.Source, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -496,7 +496,7 @@ func (c *Client) OauthProvider(ctx context.Context, oauthProvider vitalgo.OAuthP
 
 // This connects auth providers that are password based.
 func (c *Client) PasswordProvider(ctx context.Context, provider vitalgo.PasswordProviders, request *vitalgo.IndividualProviderData) (*vitalgo.ProviderLinkResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -545,7 +545,7 @@ func (c *Client) PasswordProvider(ctx context.Context, provider vitalgo.Password
 
 // This connects auth providers that are email based.
 func (c *Client) EmailProvider(ctx context.Context, provider vitalgo.EmailProviders, request *vitalgo.EmailProviderAuthLink) (*vitalgo.ConnectionStatus, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -589,7 +589,7 @@ func (c *Client) EmailProvider(ctx context.Context, provider vitalgo.EmailProvid
 
 // GET List of all available providers given the generated link token.
 func (c *Client) GetProviders(ctx context.Context) ([]*vitalgo.SourceLink, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -616,7 +616,7 @@ func (c *Client) GetProviders(ctx context.Context) ([]*vitalgo.SourceLink, error
 // PROVIDER_TYPE: MANUAL-PROVIDER
 // This connects auth providers that are password based.
 func (c *Client) ConnectBleProvider(ctx context.Context, provider vitalgo.ManualProviders, request *vitalgo.ManualConnectionData) (map[string]bool, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -660,7 +660,7 @@ func (c *Client) ConnectBleProvider(ctx context.Context, provider vitalgo.Manual
 
 // POST Connect the given Vital user to a demo provider.
 func (c *Client) Demo(ctx context.Context, request *vitalgo.DemoConnectionCreationPayload) (*vitalgo.DemoConnectionStatus, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

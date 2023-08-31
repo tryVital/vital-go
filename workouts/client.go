@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Get Daily workout for user_id
 func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.WorkoutsGetRequest) (*vitalgo.ClientWorkoutResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -91,7 +91,7 @@ func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.Workou
 
 // Get Daily workout for user_id
 func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.WorkoutsGetRawRequest) (*vitalgo.RawWorkout, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -147,7 +147,7 @@ func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.Wor
 
 // The Vital ID for the workout
 func (c *Client) GetStream(ctx context.Context, workoutId string) (*vitalgo.ClientFacingStream, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // GET all the lab tests the team has access to.
 func (c *Client) GetTests(ctx context.Context) ([]*vitalgo.ClientFacingLabTest, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -59,7 +59,7 @@ func (c *Client) GetTests(ctx context.Context) ([]*vitalgo.ClientFacingLabTest, 
 }
 
 func (c *Client) CreateLabTestForTeam(ctx context.Context, request *vitalgo.CreateLabTestRequest) (*vitalgo.ClientFacingLabTest, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -103,7 +103,7 @@ func (c *Client) CreateLabTestForTeam(ctx context.Context, request *vitalgo.Crea
 
 // GET all the markers for the given lab.
 func (c *Client) GetMarkers(ctx context.Context, request *vitalgo.GetMarkersV3LabTestsMarkersGetRequest) (*vitalgo.GetMarkersResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -164,7 +164,7 @@ func (c *Client) GetMarkers(ctx context.Context, request *vitalgo.GetMarkersV3La
 
 // GET all the labs.
 func (c *Client) GetLabs(ctx context.Context) ([]*vitalgo.ClientFacingLab, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -189,7 +189,7 @@ func (c *Client) GetLabs(ctx context.Context) ([]*vitalgo.ClientFacingLab, error
 
 // Creates an order for an unregistered testkit
 func (c *Client) CreateUnregisteredTestkitOrder(ctx context.Context, request *vitalgo.CreateRegistrableTestkitOrderRequest) (*vitalgo.PostOrderResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -236,7 +236,7 @@ func (c *Client) CreateUnregisteredTestkitOrder(ctx context.Context, request *vi
 // Information returned:
 // * Whether a given zip code is served by our Phlebotomy network.
 func (c *Client) GetAreaInfo(ctx context.Context, request *vitalgo.LabTestsGetAreaInfoRequest) (*vitalgo.AreaInfo, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -286,7 +286,7 @@ func (c *Client) GetAreaInfo(ctx context.Context, request *vitalgo.LabTestsGetAr
 
 // This endpoint returns the lab results for the order.
 func (c *Client) GetResultsPdf(ctx context.Context, orderId string) (any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -331,7 +331,7 @@ func (c *Client) GetResultsPdf(ctx context.Context, orderId string) (any, error)
 // Return metadata related to order results, such as lab metadata,
 // provider and sample dates.
 func (c *Client) GetResultsMetadata(ctx context.Context, orderId string) (*vitalgo.LabResultsMetadata, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -375,7 +375,7 @@ func (c *Client) GetResultsMetadata(ctx context.Context, orderId string) (*vital
 
 // Return both metadata and raw json test data
 func (c *Client) GetResults(ctx context.Context, orderId string) (*vitalgo.LabResultsRaw, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -421,7 +421,7 @@ func (c *Client) GetResults(ctx context.Context, orderId string) (*vitalgo.LabRe
 //
 // Your Order ID.
 func (c *Client) Get(ctx context.Context, orderId string) (any, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -467,7 +467,7 @@ func (c *Client) Get(ctx context.Context, orderId string) (any, error) {
 //
 // Your Order ID.
 func (c *Client) GetOrder(ctx context.Context, orderId string) (*vitalgo.ClientFacingOrder, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -511,7 +511,7 @@ func (c *Client) GetOrder(ctx context.Context, orderId string) (*vitalgo.ClientF
 
 // POST create new order
 func (c *Client) CreateOrder(ctx context.Context, request *vitalgo.CreateOrderRequestCompatible) (*vitalgo.PostOrderResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -554,7 +554,7 @@ func (c *Client) CreateOrder(ctx context.Context, request *vitalgo.CreateOrderRe
 }
 
 func (c *Client) SearchPayor(ctx context.Context, request *vitalgo.PayorSearchRequest) ([]*vitalgo.ClientFacingPayorSearchResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -597,7 +597,7 @@ func (c *Client) SearchPayor(ctx context.Context, request *vitalgo.PayorSearchRe
 }
 
 func (c *Client) SearchDiagnosis(ctx context.Context, request *vitalgo.LabTestsSearchDiagnosisRequest) ([]*vitalgo.ClientFacingDiagnosisInformation, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

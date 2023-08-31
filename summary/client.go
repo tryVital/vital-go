@@ -34,7 +34,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 func (c *Client) PostUserProfile(ctx context.Context, userId string, request *vitalgo.PostUserProfileV2SummaryProfileUserIdPostRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -86,7 +86,7 @@ func (c *Client) PostUserProfile(ctx context.Context, userId string, request *vi
 
 // Get Daily Activity for user_id
 func (c *Client) GetUserActivity(ctx context.Context, userId string, request *vitalgo.GetUserActivityV2SummaryActivityUserIdGetRequest) (*vitalgo.ClientActivityResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -141,7 +141,7 @@ func (c *Client) GetUserActivity(ctx context.Context, userId string, request *vi
 }
 
 func (c *Client) PostUserActivity(ctx context.Context, userId string, request *vitalgo.PostUserActivityV2SummaryActivityUserIdPostRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -193,7 +193,7 @@ func (c *Client) PostUserActivity(ctx context.Context, userId string, request *v
 
 // Get Daily Activity for user_id
 func (c *Client) GetUserActivityRaw(ctx context.Context, userId string, request *vitalgo.GetUserActivityRawV2SummaryActivityUserIdRawGetRequest) (*vitalgo.RawActivity, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -248,7 +248,7 @@ func (c *Client) GetUserActivityRaw(ctx context.Context, userId string, request 
 }
 
 func (c *Client) PostUserWorkout(ctx context.Context, userId string, request *vitalgo.PostUserWorkoutV2SummaryWorkoutsUserIdPostRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -299,7 +299,7 @@ func (c *Client) PostUserWorkout(ctx context.Context, userId string, request *vi
 }
 
 func (c *Client) PostUserSleep(ctx context.Context, userId string, request *vitalgo.PostUserSleepV2SummarySleepUserIdPostRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -350,7 +350,7 @@ func (c *Client) PostUserSleep(ctx context.Context, userId string, request *vita
 }
 
 func (c *Client) PostUserBody(ctx context.Context, userId string, request *vitalgo.PostUserBodyV2SummaryBodyUserIdPostRequest) (string, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}

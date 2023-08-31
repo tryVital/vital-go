@@ -35,7 +35,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Get Daily sleep for user_id
 func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.SleepGetRequest) (*vitalgo.ClientSleepResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -91,7 +91,7 @@ func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.SleepG
 
 // Get Daily sleep stream for user_id
 func (c *Client) GetUserStream(ctx context.Context, userId string, request *vitalgo.SleepGetUserStreamRequest) (*vitalgo.ClientSleepResponse, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -147,7 +147,7 @@ func (c *Client) GetUserStream(ctx context.Context, userId string, request *vita
 
 // Get Daily sleep for user_id
 func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.SleepGetRawRequest) (*vitalgo.RawSleep, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
@@ -205,7 +205,7 @@ func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.Sle
 //
 // The Vital Sleep ID
 func (c *Client) GetStream(ctx context.Context, sleepId string) (*vitalgo.ClientFacingSleepStream, error) {
-	baseURL := ""
+	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
