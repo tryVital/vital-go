@@ -48,7 +48,6 @@ type Client struct {
 	Team             *team.Client
 	Providers        *providers.Client
 	Physician        *physician.Client
-	Labtests         *labtests.Client
 	LabTests         *labtests.Client
 	Order            *order.Client
 	AthomePhlebotomy *athomephlebotomy.Client
@@ -80,7 +79,6 @@ func NewClient(opts ...core.ClientOption) *Client {
 		Team:             team.NewClient(opts...),
 		Providers:        providers.NewClient(opts...),
 		Physician:        physician.NewClient(opts...),
-		Labtests:         labtests.NewClient(opts...),
 		LabTests:         labtests.NewClient(opts...),
 		Order:            order.NewClient(opts...),
 		AthomePhlebotomy: athomephlebotomy.NewClient(opts...),

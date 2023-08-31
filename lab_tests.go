@@ -16,6 +16,24 @@ type CreateLabTestRequest struct {
 	Fasting     *core.Optional[bool]    `json:"fasting,omitempty"`
 }
 
+type CreateOrderRequestCompatible struct {
+	UserId          string                                       `json:"user_id"`
+	LabTestId       string                                       `json:"lab_test_id"`
+	Physician       *core.Optional[PhysicianCreateRequest]       `json:"physician,omitempty"`
+	HealthInsurance *core.Optional[HealthInsuranceCreateRequest] `json:"health_insurance,omitempty"`
+	// Defines whether order is priority or not. Only available for Labcorp. For Labcorp, this corresponds to a STAT order.
+	Priority       *core.Optional[bool]      `json:"priority,omitempty"`
+	Consents       []*Consent                `json:"consents,omitempty"`
+	PatientDetails *PatientDetailsCompatible `json:"patient_details,omitempty"`
+	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`
+}
+
+type CreateRegistrableTestkitOrderRequest struct {
+	UserId          string           `json:"user_id"`
+	LabTestId       string           `json:"lab_test_id"`
+	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
+}
+
 type GetMarkersV3LabTestsMarkersGetRequest struct {
 	// The identifier Vital assigned to a lab partner.
 	LabId *int `json:"-"`
@@ -23,4 +41,18 @@ type GetMarkersV3LabTestsMarkersGetRequest struct {
 	Name *string `json:"-"`
 	Page *int    `json:"-"`
 	Size *int    `json:"-"`
+}
+
+type LabTestsGetAreaInfoRequest struct {
+	// Zip code of the area to check
+	ZipCode string `json:"-"`
+}
+
+type LabTestsSearchDiagnosisRequest struct {
+	DiagnosisQuery string `json:"-"`
+}
+
+type PayorSearchRequest struct {
+	InsuranceName  string                 `json:"insurance_name"`
+	InsuranceState *core.Optional[string] `json:"insurance_state,omitempty"`
 }
