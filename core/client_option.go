@@ -3,6 +3,7 @@
 package core
 
 import (
+	fmt "fmt"
 	http "net/http"
 )
 
@@ -16,6 +17,7 @@ type ClientOptions struct {
 	BaseURL    string
 	HTTPClient HTTPClient
 	HTTPHeader http.Header
+	ApiKey     string
 }
 
 // NewClientOptions returns a new *ClientOptions value.
@@ -30,12 +32,16 @@ func NewClientOptions() *ClientOptions {
 
 // ToHeader maps the configured client options into a http.Header issued
 // on every request.
-func (c *ClientOptions) ToHeader() http.Header { return c.cloneHeader() }
+func (c *ClientOptions) ToHeader() http.Header {
+	header := c.cloneHeader()
+	header.Set("x-vital-api-key", fmt.Sprintf("%v", c.ApiKey))
+	return header
+}
 
 func (c *ClientOptions) cloneHeader() http.Header {
 	headers := c.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/fern-vital/vital-go")
-	headers.Set("X-Fern-SDK-Version", "0.1.2")
+	headers.Set("X-Fern-SDK-Version", "0.1.3")
 	return headers
 }
