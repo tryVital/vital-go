@@ -7,7 +7,13 @@ package api
 // ClientOption to override the client's default environment,
 // if any.
 var Environments = struct {
-	Production string
+	Production   string
+	ProductionEu string
+	Sandbox      string
+	SandboxEu    string
 }{
-	Production: "https://api.tryvital.io",
+	Production:   "https://api.tryvital.io",
+	ProductionEu: "https://api.eu.tryvital.io",
+	Sandbox:      "https://api.sandbox.tryvital.io",
+	SandboxEu:    "https://api.sandbox.eu.tryvital.io",
 }
