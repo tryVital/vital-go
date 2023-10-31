@@ -1,4 +1,4 @@
-module github.com/fern-vital/vital-go
+module github.com/tryVital/vital-go
 
 go 1.13
 

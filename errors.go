@@ -4,7 +4,7 @@ package api
 
 import (
 	json "encoding/json"
-	core "github.com/fern-vital/vital-go/core"
+	core "github.com/tryVital/vital-go/core"
 )
 
 type BadRequestError struct {

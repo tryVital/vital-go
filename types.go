@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/fern-vital/vital-go/core"
+	core "github.com/tryVital/vital-go/core"
 	time "time"
 )
 

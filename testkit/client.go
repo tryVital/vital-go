@@ -7,8 +7,8 @@ import (
 	context "context"
 	json "encoding/json"
 	errors "errors"
-	vitalgo "github.com/fern-vital/vital-go"
-	core "github.com/fern-vital/vital-go/core"
+	vitalgo "github.com/tryVital/vital-go"
+	core "github.com/tryVital/vital-go/core"
 	io "io"
 	http "net/http"
 )

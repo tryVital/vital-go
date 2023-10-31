@@ -3,7 +3,7 @@
 package client
 
 import (
-	core "github.com/fern-vital/vital-go/core"
+	core "github.com/tryVital/vital-go/core"
 	http "net/http"
 )
 
