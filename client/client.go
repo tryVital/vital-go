@@ -3,27 +3,7 @@
 package client
 
 import (
-	athomephlebotomy "github.com/fern-vital/vital-go/athomephlebotomy"
-	body "github.com/fern-vital/vital-go/body"
 	core "github.com/fern-vital/vital-go/core"
-	devices "github.com/fern-vital/vital-go/devices"
-	labtests "github.com/fern-vital/vital-go/labtests"
-	link "github.com/fern-vital/vital-go/link"
-	meals "github.com/fern-vital/vital-go/meals"
-	order "github.com/fern-vital/vital-go/order"
-	orders "github.com/fern-vital/vital-go/orders"
-	physician "github.com/fern-vital/vital-go/physician"
-	profile "github.com/fern-vital/vital-go/profile"
-	providers "github.com/fern-vital/vital-go/providers"
-	sleep "github.com/fern-vital/vital-go/sleep"
-	summary "github.com/fern-vital/vital-go/summary"
-	team "github.com/fern-vital/vital-go/team"
-	timeseries "github.com/fern-vital/vital-go/timeseries"
-	user "github.com/fern-vital/vital-go/user"
-	users "github.com/fern-vital/vital-go/users"
-	vitals "github.com/fern-vital/vital-go/vitals"
-	webhook "github.com/fern-vital/vital-go/webhook"
-	workouts "github.com/fern-vital/vital-go/workouts"
 	http "net/http"
 )
 
@@ -31,27 +11,6 @@ type Client struct {
 	baseURL    string
 	httpClient core.HTTPClient
 	header     http.Header
-
-	Webhook          *webhook.Client
-	Link             *link.Client
-	Profile          *profile.Client
-	Summary          *summary.Client
-	Devices          *devices.Client
-	Workouts         *workouts.Client
-	Sleep            *sleep.Client
-	Body             *body.Client
-	Meals            *meals.Client
-	Vitals           *vitals.Client
-	Timeseries       *timeseries.Client
-	Users            *users.Client
-	User             *user.Client
-	Team             *team.Client
-	Providers        *providers.Client
-	Physician        *physician.Client
-	LabTests         *labtests.Client
-	Order            *order.Client
-	AthomePhlebotomy *athomephlebotomy.Client
-	Orders           *orders.Client
 }
 
 func NewClient(opts ...core.ClientOption) *Client {
@@ -60,28 +19,8 @@ func NewClient(opts ...core.ClientOption) *Client {
 		opt(options)
 	}
 	return &Client{
-		baseURL:          options.BaseURL,
-		httpClient:       options.HTTPClient,
-		header:           options.ToHeader(),
-		Webhook:          webhook.NewClient(opts...),
-		Link:             link.NewClient(opts...),
-		Profile:          profile.NewClient(opts...),
-		Summary:          summary.NewClient(opts...),
-		Devices:          devices.NewClient(opts...),
-		Workouts:         workouts.NewClient(opts...),
-		Sleep:            sleep.NewClient(opts...),
-		Body:             body.NewClient(opts...),
-		Meals:            meals.NewClient(opts...),
-		Vitals:           vitals.NewClient(opts...),
-		Timeseries:       timeseries.NewClient(opts...),
-		Users:            users.NewClient(opts...),
-		User:             user.NewClient(opts...),
-		Team:             team.NewClient(opts...),
-		Providers:        providers.NewClient(opts...),
-		Physician:        physician.NewClient(opts...),
-		LabTests:         labtests.NewClient(opts...),
-		Order:            order.NewClient(opts...),
-		AthomePhlebotomy: athomephlebotomy.NewClient(opts...),
-		Orders:           orders.NewClient(opts...),
+		baseURL:    options.BaseURL,
+		httpClient: options.HTTPClient,
+		header:     options.ToHeader(),
 	}
 }
