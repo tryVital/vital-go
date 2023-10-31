@@ -3,7 +3,23 @@
 package client
 
 import (
+	activity "github.com/fern-vital/vital-go/activity"
+	body "github.com/fern-vital/vital-go/body"
 	core "github.com/fern-vital/vital-go/core"
+	devices "github.com/fern-vital/vital-go/devices"
+	insurance "github.com/fern-vital/vital-go/insurance"
+	labtests "github.com/fern-vital/vital-go/labtests"
+	link "github.com/fern-vital/vital-go/link"
+	meal "github.com/fern-vital/vital-go/meal"
+	profile "github.com/fern-vital/vital-go/profile"
+	providers "github.com/fern-vital/vital-go/providers"
+	sleep "github.com/fern-vital/vital-go/sleep"
+	team "github.com/fern-vital/vital-go/team"
+	testkit "github.com/fern-vital/vital-go/testkit"
+	timeseries "github.com/fern-vital/vital-go/timeseries"
+	user "github.com/fern-vital/vital-go/user"
+	vitals "github.com/fern-vital/vital-go/vitals"
+	workouts "github.com/fern-vital/vital-go/workouts"
 	http "net/http"
 )
 
@@ -11,6 +27,23 @@ type Client struct {
 	baseURL    string
 	httpClient core.HTTPClient
 	header     http.Header
+
+	Link       *link.Client
+	Profile    *profile.Client
+	Devices    *devices.Client
+	Activity   *activity.Client
+	Workouts   *workouts.Client
+	Sleep      *sleep.Client
+	Body       *body.Client
+	Meal       *meal.Client
+	Timeseries *timeseries.Client
+	Vitals     *vitals.Client
+	User       *user.Client
+	Team       *team.Client
+	Providers  *providers.Client
+	LabTests   *labtests.Client
+	Testkit    *testkit.Client
+	Insurance  *insurance.Client
 }
 
 func NewClient(opts ...core.ClientOption) *Client {
@@ -22,5 +55,21 @@ func NewClient(opts ...core.ClientOption) *Client {
 		baseURL:    options.BaseURL,
 		httpClient: options.HTTPClient,
 		header:     options.ToHeader(),
+		Link:       link.NewClient(opts...),
+		Profile:    profile.NewClient(opts...),
+		Devices:    devices.NewClient(opts...),
+		Activity:   activity.NewClient(opts...),
+		Workouts:   workouts.NewClient(opts...),
+		Sleep:      sleep.NewClient(opts...),
+		Body:       body.NewClient(opts...),
+		Meal:       meal.NewClient(opts...),
+		Timeseries: timeseries.NewClient(opts...),
+		Vitals:     vitals.NewClient(opts...),
+		User:       user.NewClient(opts...),
+		Team:       team.NewClient(opts...),
+		Providers:  providers.NewClient(opts...),
+		LabTests:   labtests.NewClient(opts...),
+		Testkit:    testkit.NewClient(opts...),
+		Insurance:  insurance.NewClient(opts...),
 	}
 }
