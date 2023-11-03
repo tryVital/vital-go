@@ -14,7 +14,7 @@ API reference documentation is available [here](https://docs.tryvital.io/home/we
 Run the following command to use the Vital Go library in your Go module:
 
 ```sh
-go get github.com/fern-vital/vital-go
+go get github.com/tryVital/vital-go
 ```
 ## Requirements
 
@@ -27,8 +27,8 @@ import (
   "context"
   "fmt"
 
-  vital "github.com/fern-vital/vital-go"
-  vitalclient "github.com/fern-vital/vital-go/client"
+  vital "github.com/tryVital/vital-go"
+  vitalclient "github.com/tryVital/vital-go/client"
 )
 
 client := vitalclient.NewClient(
@@ -96,8 +96,8 @@ for an example on how ot change the environment.
 import (
   "context"
 
-  vital "github.com/fern-vital/vital-go"
-  vitalclient "github.com/fern-vital/vital-go/client"
+  vital "github.com/tryVital/vital-go"
+  vitalclient "github.com/tryVital/vital-go/client"
 )
 
 client := vitalclient.NewClient(
