@@ -163,8 +163,62 @@ func (c *Client) GetMarkers(ctx context.Context, request *vitalgo.LabTestsGetMar
 	return response, nil
 }
 
+func (c *Client) GetMarkersForLabTest(ctx context.Context, labTestId string, request *vitalgo.LabTestsGetMarkersForLabTestRequest) (*vitalgo.GetMarkersResponse, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/lab_tests/%v/markers", labTestId)
+
+	queryParams := make(url.Values)
+	if request.Page != nil {
+		queryParams.Add("page", fmt.Sprintf("%v", *request.Page))
+	}
+	if request.Size != nil {
+		queryParams.Add("size", fmt.Sprintf("%v", *request.Size))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.GetMarkersResponse
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 // GET a specific marker for the given lab and provider_id
-func (c *Client) GetMarkersByProviderId(ctx context.Context, providerId string, labId int) (*vitalgo.ClientFacingMarker, error) {
+func (c *Client) GetMarkersByLabAndProviderId(ctx context.Context, providerId string, labId int) (*vitalgo.ClientFacingMarker, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
@@ -226,6 +280,50 @@ func (c *Client) GetLabs(ctx context.Context) ([]*vitalgo.ClientFacingLab, error
 		false,
 		c.header,
 		nil,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// GET all the lab tests the team has access to.
+func (c *Client) GetById(ctx context.Context, labTestId string) (*vitalgo.ClientFacingLabTest, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/lab_tests/%v", labTestId)
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.ClientFacingLabTest
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
 	); err != nil {
 		return nil, err
 	}

@@ -34,7 +34,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 // Post teams.
-func (c *Client) GetTeamConfig(ctx context.Context) (map[string]interface{}, error) {
+func (c *Client) GetLinkConfig(ctx context.Context) (map[string]interface{}, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
@@ -59,7 +59,7 @@ func (c *Client) GetTeamConfig(ctx context.Context) (map[string]interface{}, err
 }
 
 // Get team.
-func (c *Client) GetTeam(ctx context.Context, teamId string) (*vitalgo.ClientFacingTeam, error) {
+func (c *Client) Get(ctx context.Context, teamId string) (*vitalgo.ClientFacingTeam, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
@@ -103,7 +103,7 @@ func (c *Client) GetTeam(ctx context.Context, teamId string) (*vitalgo.ClientFac
 }
 
 // Search team users by user_id
-func (c *Client) SearchTeamUsersByUuidOrClientUserId(ctx context.Context, request *vitalgo.SearchTeamUsersByUuidOrClientUserIdV2TeamUsersSearchGetRequest) ([]*vitalgo.ClientFacingUser, error) {
+func (c *Client) GetUserById(ctx context.Context, request *vitalgo.TeamGetUserByIdRequest) ([]*vitalgo.ClientFacingUser, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
@@ -154,7 +154,7 @@ func (c *Client) SearchTeamUsersByUuidOrClientUserId(ctx context.Context, reques
 	return response, nil
 }
 
-func (c *Client) GetSvixWebhookUrl(ctx context.Context) (map[string]interface{}, error) {
+func (c *Client) GetSvixUrl(ctx context.Context) (map[string]interface{}, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
@@ -179,7 +179,7 @@ func (c *Client) GetSvixWebhookUrl(ctx context.Context) (map[string]interface{},
 }
 
 // GET source priorities.
-func (c *Client) GetSourcePriorities(ctx context.Context, request *vitalgo.GetSourcePrioritiesV2TeamSourcePrioritiesGetRequest) ([]map[string]interface{}, error) {
+func (c *Client) GetSourcePriorities(ctx context.Context, request *vitalgo.TeamGetSourcePrioritiesRequest) ([]map[string]interface{}, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
@@ -231,7 +231,7 @@ func (c *Client) GetSourcePriorities(ctx context.Context, request *vitalgo.GetSo
 }
 
 // Patch source priorities.
-func (c *Client) UpdateSourcePriorities(ctx context.Context, request *vitalgo.UpdateSourcePrioritiesV2TeamSourcePrioritiesPatchRequest) ([]map[string]interface{}, error) {
+func (c *Client) UpdateSourcePriorities(ctx context.Context, request *vitalgo.TeamUpdateSourcePrioritiesRequest) ([]map[string]interface{}, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL

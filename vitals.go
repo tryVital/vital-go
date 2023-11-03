@@ -92,6 +92,15 @@ type VitalsDistanceRequest struct {
 	EndDate *string `json:"-"`
 }
 
+type VitalsElectrocardiogramVoltageRequest struct {
+	// Provider oura/strava etc
+	Provider *string `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-"`
+}
+
 type VitalsFloorsClimbedRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-"`

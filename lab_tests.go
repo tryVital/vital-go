@@ -51,6 +51,11 @@ type LabTestsGetMarkersRequest struct {
 	Size *int    `json:"-"`
 }
 
+type LabTestsGetMarkersForLabTestRequest struct {
+	Page *int `json:"-"`
+	Size *int `json:"-"`
+}
+
 type LabTestsGetOrdersRequest struct {
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
 	StartDate *time.Time `json:"-"`

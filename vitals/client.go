@@ -1210,6 +1210,62 @@ func (c *Client) BloodOxygen(ctx context.Context, userId string, request *vitalg
 }
 
 // Get timeseries data for user
+func (c *Client) ElectrocardiogramVoltage(ctx context.Context, userId string, request *vitalgo.VitalsElectrocardiogramVoltageRequest) ([]*vitalgo.ClientFacingElectrocardiogramVoltageTimeseries, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/timeseries/%v/electrocardiogram_voltage", userId)
+
+	queryParams := make(url.Values)
+	if request.Provider != nil {
+		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
+	}
+	queryParams.Add("start_date", fmt.Sprintf("%v", request.StartDate))
+	if request.EndDate != nil {
+		queryParams.Add("end_date", fmt.Sprintf("%v", *request.EndDate))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response []*vitalgo.ClientFacingElectrocardiogramVoltageTimeseries
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// Get timeseries data for user
 func (c *Client) BloodPressure(ctx context.Context, userId string, request *vitalgo.VitalsBloodPressureRequest) ([]*vitalgo.ClientFacingBloodPressureTimeseries, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {

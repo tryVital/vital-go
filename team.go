@@ -2,14 +2,14 @@
 
 package api
 
-type GetSourcePrioritiesV2TeamSourcePrioritiesGetRequest struct {
+type TeamGetSourcePrioritiesRequest struct {
 	DataType *string `json:"-"`
 }
 
-type SearchTeamUsersByUuidOrClientUserIdV2TeamUsersSearchGetRequest struct {
+type TeamGetUserByIdRequest struct {
 	QueryId *string `json:"-"`
 }
 
-type UpdateSourcePrioritiesV2TeamSourcePrioritiesPatchRequest struct {
+type TeamUpdateSourcePrioritiesRequest struct {
 	TeamId string `json:"-"`
 }

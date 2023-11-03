@@ -266,6 +266,8 @@ type BiomarkerResult struct {
 	IsAboveMaxRange *bool      `json:"is_above_max_range,omitempty"`
 	IsBelowMinRange *bool      `json:"is_below_min_range,omitempty"`
 	Interpretation  *string    `json:"interpretation,omitempty"`
+	Loinc           *string    `json:"loinc,omitempty"`
+	LoincSlug       *string    `json:"loinc_slug,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1067,6 +1069,46 @@ func (c *ClientFacingDistanceTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingElectrocardiogramVoltageTimeseries struct {
+	// Deprecated
+	Id *int `json:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
+	// The lead of the measurement.
+	Type string `json:"type"`
+	// Measured in mV.
+	Unit string `json:"unit"`
+	// The timestamp of the measurement.
+	Timestamp time.Time `json:"timestamp"`
+	// The value of the measurement.
+	Value float64 `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingElectrocardiogramVoltageTimeseries) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingElectrocardiogramVoltageTimeseries
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingElectrocardiogramVoltageTimeseries(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingElectrocardiogramVoltageTimeseries) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingFloorsClimbedTimeseries struct {
 	// Deprecated
 	Id *int `json:"id,omitempty"`
@@ -1511,6 +1553,39 @@ func (c *ClientFacingLabTest) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingLoinc struct {
+	Id   int     `json:"id"`
+	Name string  `json:"name"`
+	Slug string  `json:"slug"`
+	Code string  `json:"code"`
+	Unit *string `json:"unit,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingLoinc) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingLoinc
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingLoinc(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLoinc) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingMarker struct {
 	Id          int         `json:"id"`
 	Name        string      `json:"name"`
@@ -1537,6 +1612,44 @@ func (c *ClientFacingMarker) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingMarker) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingMarkerComplete struct {
+	Id              int                   `json:"id"`
+	Name            string                `json:"name"`
+	Slug            string                `json:"slug"`
+	Description     *string               `json:"description,omitempty"`
+	LabId           *int                  `json:"lab_id,omitempty"`
+	ProviderId      *string               `json:"provider_id,omitempty"`
+	Type            *MarkerType           `json:"type,omitempty"`
+	Unit            *string               `json:"unit,omitempty"`
+	Price           *string               `json:"price,omitempty"`
+	ExpectedResults []*ClientFacingResult `json:"expected_results,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingMarkerComplete) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingMarkerComplete
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingMarkerComplete(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingMarkerComplete) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -2190,6 +2303,40 @@ func (c *ClientFacingRespiratoryRateTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingResult struct {
+	Id         int                `json:"id"`
+	Name       string             `json:"name"`
+	Slug       string             `json:"slug"`
+	LabId      *int               `json:"lab_id,omitempty"`
+	ProviderId *string            `json:"provider_id,omitempty"`
+	Loinc      *ClientFacingLoinc `json:"loinc,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingResult(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingResult) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // Schema for a Shipment in the client facing API.
 //
 // To be used as part of a ClientFacingTestkitOrder.
@@ -2277,7 +2424,7 @@ type ClientFacingSleep struct {
 	TemperatureDelta *float64 `json:"temperature_delta,omitempty"`
 	// The skin temperature::celcius
 	SkinTemperature *float64 `json:"skin_temperature,omitempty"`
-	// Sleeping Heart Rate Dip is the percentage difference between your average waking heart rate and your average sleeping heart rate. In health studies, a greater "dip" is typically seen as a positive indicator of overall health::perc
+	// Sleeping Heart Rate Dip is the percentage difference between your average waking heart rate and your average sleeping heart rate. In health studies, a greater "dip" is typically seen as a positive indicator of overall health. Currently only available for Garmin::perc
 	HrDip *float64 `json:"hr_dip,omitempty"`
 	// The average heart rate variability registered during the sleep period::rmssd
 	AverageHrv *float64 `json:"average_hrv,omitempty"`
@@ -3349,10 +3496,10 @@ func (g Gender) Ptr() *Gender {
 }
 
 type GetMarkersResponse struct {
-	Markers []*ClientFacingMarker `json:"markers,omitempty"`
-	Total   int                   `json:"total"`
-	Page    int                   `json:"page"`
-	Size    int                   `json:"size"`
+	Markers []*ClientFacingMarkerComplete `json:"markers,omitempty"`
+	Total   int                           `json:"total"`
+	Page    int                           `json:"page"`
+	Size    int                           `json:"size"`
 
 	_rawJSON json.RawMessage
 }
@@ -5262,6 +5409,7 @@ const (
 	RegionBr Region = "br"
 	RegionNl Region = "nl"
 	RegionFr Region = "fr"
+	RegionCa Region = "ca"
 )
 
 func NewRegionFromString(s string) (Region, error) {
@@ -5282,6 +5430,8 @@ func NewRegionFromString(s string) (Region, error) {
 		return RegionNl, nil
 	case "fr":
 		return RegionFr, nil
+	case "ca":
+		return RegionCa, nil
 	}
 	var t Region
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

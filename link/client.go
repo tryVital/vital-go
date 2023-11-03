@@ -538,7 +538,7 @@ func (c *Client) ConnectEmailAuthProvider(ctx context.Context, provider vitalgo.
 }
 
 // GET List of all available providers given the generated link token.
-func (c *Client) GetProviders(ctx context.Context) ([]*vitalgo.SourceLink, error) {
+func (c *Client) GetAllProviders(ctx context.Context) ([]*vitalgo.SourceLink, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
