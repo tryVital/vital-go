@@ -47,8 +47,8 @@ A variety of client options are included to adapt the behavior of the library, w
 
 ```go
 client := vitalclient.NewClient(
-  vitalclient.ClientWithAuthApiKey("<YOUR_API_KEY>"),
-  vitalclient.ClientWithHTTPClient(
+  vitalclient.WithApiKey("<YOUR_API_KEY>"),
+  vitalclient.WithHttpClient(
     &http.Client{
       Timeout: 5 * time.Second,
     },
