@@ -32,7 +32,7 @@ import (
 )
 
 client := vitalclient.NewClient(
-  vitalclient.ClientWithAuthApiKey("<YOUR_API_KEY>"),
+  vitalclient.WithApiKey("<YOUR_API_KEY>"),
 )
 
 response, err := client.LabTests.Get(context.TODO(), "OrderId")
@@ -101,8 +101,8 @@ import (
 )
 
 client := vitalclient.NewClient(
-  vitalclient.ClientWithAuthApiKey("<YOUR_API_KEY>"),
-  vitalclient.ClientWithBaseURL(vital.Environments.Sandbox)
+  vitalclient.WithApiKey("<YOUR_API_KEY>"),
+  vitalclient.WithBaseURL(vital.Environments.Sandbox)
 )
 ```
 
