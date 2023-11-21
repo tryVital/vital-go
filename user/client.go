@@ -288,48 +288,6 @@ func (c *Client) Get(ctx context.Context, userId string) (*vitalgo.ClientFacingU
 	return response, nil
 }
 
-func (c *Client) Patch(ctx context.Context, userId string, request *vitalgo.UserPatchBody) error {
-	baseURL := "https://api.tryvital.io"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v", userId)
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 422:
-			value := new(vitalgo.UnprocessableEntityError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	if err := core.DoRequest(
-		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPatch,
-		request,
-		nil,
-		false,
-		c.header,
-		errorDecoder,
-	); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (c *Client) Delete(ctx context.Context, userId string) (*vitalgo.UserSuccessResponse, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
@@ -371,6 +329,48 @@ func (c *Client) Delete(ctx context.Context, userId string) (*vitalgo.UserSucces
 		return nil, err
 	}
 	return response, nil
+}
+
+func (c *Client) Patch(ctx context.Context, userId string, request *vitalgo.UserPatchBody) error {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v", userId)
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodPatch,
+		request,
+		nil,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return err
+	}
+	return nil
 }
 
 // GET user_id from client_user_id.

@@ -10,14 +10,14 @@ import (
 )
 
 type ActivityV2InDb struct {
-	Timestamp  time.Time             `json:"timestamp"`
-	Data       *string               `json:"data,omitempty"`
-	ProviderId string                `json:"provider_id"`
-	UserId     string                `json:"user_id"`
-	SourceId   int                   `json:"source_id"`
-	PriorityId int                   `json:"priority_id"`
-	Id         string                `json:"id"`
-	Source     *ClientFacingProvider `json:"source,omitempty"`
+	Timestamp  time.Time              `json:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty"`
+	ProviderId string                 `json:"provider_id"`
+	UserId     string                 `json:"user_id"`
+	SourceId   int                    `json:"source_id"`
+	PriorityId int                    `json:"priority_id"`
+	Id         string                 `json:"id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -226,6 +226,29 @@ func (a *AreaInfo) String() string {
 }
 
 // An enumeration.
+type AttemptStatus string
+
+const (
+	AttemptStatusSuccess AttemptStatus = "success"
+	AttemptStatusFailure AttemptStatus = "failure"
+)
+
+func NewAttemptStatusFromString(s string) (AttemptStatus, error) {
+	switch s {
+	case "success":
+		return AttemptStatusSuccess, nil
+	case "failure":
+		return AttemptStatusFailure, nil
+	}
+	var t AttemptStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AttemptStatus) Ptr() *AttemptStatus {
+	return &a
+}
+
+// An enumeration.
 type AuthType string
 
 const (
@@ -296,15 +319,15 @@ func (b *BiomarkerResult) String() string {
 }
 
 type BodyV2InDb struct {
-	Timestamp  time.Time             `json:"timestamp"`
-	Data       *string               `json:"data,omitempty"`
-	ProviderId string                `json:"provider_id"`
-	UserId     string                `json:"user_id"`
-	SourceId   int                   `json:"source_id"`
-	PriorityId *int                  `json:"priority_id,omitempty"`
-	Id         string                `json:"id"`
-	Source     *ClientFacingProvider `json:"source,omitempty"`
-	Priority   *int                  `json:"priority,omitempty"`
+	Timestamp  time.Time              `json:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty"`
+	ProviderId string                 `json:"provider_id"`
+	UserId     string                 `json:"user_id"`
+	SourceId   int                    `json:"source_id"`
+	PriorityId *int                   `json:"priority_id,omitempty"`
+	Id         string                 `json:"id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty"`
+	Priority   *int                   `json:"priority,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1519,7 +1542,9 @@ type ClientFacingLabTest struct {
 	SampleType LabTestSampleType       `json:"sample_type,omitempty"`
 	Method     LabTestCollectionMethod `json:"method,omitempty"`
 	Price      float64                 `json:"price"`
-	IsActive   bool                    `json:"is_active"`
+	// Deprecated. Use status instead.
+	IsActive bool          `json:"is_active"`
+	Status   LabTestStatus `json:"status,omitempty"`
 	// Defines whether a lab test requires fasting. Only available for Labcorp.
 	Fasting *bool                 `json:"fasting,omitempty"`
 	Lab     *ClientFacingLab      `json:"lab,omitempty"`
@@ -1758,7 +1783,7 @@ type ClientFacingOrder struct {
 	UpdatedAt time.Time                 `json:"updated_at"`
 	Events    []*ClientFacingOrderEvent `json:"events,omitempty"`
 	Status    *OrderTopLevelStatus      `json:"status,omitempty"`
-	Physician *PhysicianClientFacing    `json:"physician,omitempty"`
+	Physician *ClientFacingPhysician    `json:"physician,omitempty"`
 	// Vital ID of the health insurance.
 	HealthInsuranceId *string `json:"health_insurance_id,omitempty"`
 	// DEPRECATED. Requistion form url.
@@ -1985,6 +2010,37 @@ func (c *ClientFacingPayorSearchResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingPayorSearchResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingPhysician struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Npi       string `json:"npi"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingPhysician) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingPhysician
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingPhysician(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingPhysician) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -2683,6 +2739,7 @@ type ClientFacingTeam struct {
 	LabTestsPatientSmsCommunicationEnabled   bool                  `json:"lab_tests_patient_sms_communication_enabled"`
 	LabTestsPatientEmailCommunicationEnabled bool                  `json:"lab_tests_patient_email_communication_enabled"`
 	LogoUrl                                  *string               `json:"logo_url,omitempty"`
+	DelegatedFlow                            DelegatedFlowType     `json:"delegated_flow,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3250,6 +3307,32 @@ func (d *DaySlots) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// An enumeration.
+type DelegatedFlowType string
+
+const (
+	DelegatedFlowTypeOrderAndResultsWithCustomerPhysicianNetwork DelegatedFlowType = "order_and_results_with_customer_physician_network"
+	DelegatedFlowTypeOrderWithVitalPhysicianNetwork              DelegatedFlowType = "order_with_vital_physician_network"
+	DelegatedFlowTypeOrderAndResultsWithVitalPhysicianNetwork    DelegatedFlowType = "order_and_results_with_vital_physician_network"
+)
+
+func NewDelegatedFlowTypeFromString(s string) (DelegatedFlowType, error) {
+	switch s {
+	case "order_and_results_with_customer_physician_network":
+		return DelegatedFlowTypeOrderAndResultsWithCustomerPhysicianNetwork, nil
+	case "order_with_vital_physician_network":
+		return DelegatedFlowTypeOrderWithVitalPhysicianNetwork, nil
+	case "order_and_results_with_vital_physician_network":
+		return DelegatedFlowTypeOrderAndResultsWithVitalPhysicianNetwork, nil
+	}
+	var t DelegatedFlowType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DelegatedFlowType) Ptr() *DelegatedFlowType {
+	return &d
+}
+
 type DemoConnectionStatus struct {
 	Success bool   `json:"success"`
 	Detail  string `json:"detail"`
@@ -3497,9 +3580,10 @@ func (g Gender) Ptr() *Gender {
 
 type GetMarkersResponse struct {
 	Markers []*ClientFacingMarkerComplete `json:"markers,omitempty"`
-	Total   int                           `json:"total"`
-	Page    int                           `json:"page"`
-	Size    int                           `json:"size"`
+	Total   *int                          `json:"total,omitempty"`
+	Page    *int                          `json:"page,omitempty"`
+	Size    *int                          `json:"size,omitempty"`
+	Pages   *int                          `json:"pages,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3529,9 +3613,9 @@ func (g *GetMarkersResponse) String() string {
 
 type GetOrdersResponse struct {
 	Orders []*ClientFacingOrder `json:"orders,omitempty"`
-	Total  int                  `json:"total"`
-	Page   int                  `json:"page"`
-	Size   int                  `json:"size"`
+	Total  *int                 `json:"total,omitempty"`
+	Page   *int                 `json:"page,omitempty"`
+	Size   *int                 `json:"size,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4088,6 +4172,62 @@ func NewLabTestSampleTypeFromString(s string) (LabTestSampleType, error) {
 
 func (l LabTestSampleType) Ptr() *LabTestSampleType {
 	return &l
+}
+
+// An enumeration.
+type LabTestStatus string
+
+const (
+	LabTestStatusActive          LabTestStatus = "active"
+	LabTestStatusPendingApproval LabTestStatus = "pending_approval"
+	LabTestStatusInactive        LabTestStatus = "inactive"
+)
+
+func NewLabTestStatusFromString(s string) (LabTestStatus, error) {
+	switch s {
+	case "active":
+		return LabTestStatusActive, nil
+	case "pending_approval":
+		return LabTestStatusPendingApproval, nil
+	case "inactive":
+		return LabTestStatusInactive, nil
+	}
+	var t LabTestStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestStatus) Ptr() *LabTestStatus {
+	return &l
+}
+
+type LastAttempt struct {
+	Timestamp time.Time     `json:"timestamp"`
+	Status    AttemptStatus `json:"status,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *LastAttempt) UnmarshalJSON(data []byte) error {
+	type unmarshaler LastAttempt
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LastAttempt(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LastAttempt) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
 }
 
 type LibreConfig struct {
@@ -4804,37 +4944,6 @@ func (p *PhlebotomyAreaInfo) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-type PhysicianClientFacing struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Npi       string `json:"npi"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PhysicianClientFacing) UnmarshalJSON(data []byte) error {
-	type unmarshaler PhysicianClientFacing
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PhysicianClientFacing(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PhysicianClientFacing) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
 type PhysicianCreateRequest struct {
 	FirstName      string   `json:"first_name"`
 	LastName       string   `json:"last_name"`
@@ -5529,16 +5638,77 @@ func (s *ShippingAddress) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type SingleResourceStatistics struct {
+	LastAttempt *LastAttempt `json:"last_attempt,omitempty"`
+	OldestData  *time.Time   `json:"oldest_data,omitempty"`
+	NewestData  *time.Time   `json:"newest_data,omitempty"`
+	SentCount   *int         `json:"sent_count,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SingleResourceStatistics) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleResourceStatistics
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleResourceStatistics(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleResourceStatistics) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SingleUserResourceResponse struct {
+	UserId string `json:"user_id"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SingleUserResourceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleUserResourceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleUserResourceResponse(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleUserResourceResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SleepV2InDb struct {
-	Timestamp  time.Time             `json:"timestamp"`
-	Data       *string               `json:"data,omitempty"`
-	ProviderId string                `json:"provider_id"`
-	UserId     string                `json:"user_id"`
-	SourceId   int                   `json:"source_id"`
-	PriorityId *int                  `json:"priority_id,omitempty"`
-	Id         string                `json:"id"`
-	Source     *ClientFacingProvider `json:"source,omitempty"`
-	Priority   *int                  `json:"priority,omitempty"`
+	Timestamp  time.Time              `json:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty"`
+	ProviderId string                 `json:"provider_id"`
+	UserId     string                 `json:"user_id"`
+	SourceId   int                    `json:"source_id"`
+	PriorityId *int                   `json:"priority_id,omitempty"`
+	Id         string                 `json:"id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty"`
+	Priority   *int                   `json:"priority,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6012,6 +6182,36 @@ func (u *UserRefreshSuccessResponse) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+type UserResourcesResponse struct {
+	Data []*SingleUserResourceResponse `json:"data,omitempty"`
+	Next *string                       `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (u *UserResourcesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserResourcesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserResourcesResponse(value)
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserResourcesResponse) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
 type UserSignInToken struct {
 	PublicKey string `json:"public_key"`
 	UserToken string `json:"user_token"`
@@ -6278,16 +6478,16 @@ func (v *VitalTokenCreatedResponse) String() string {
 }
 
 type WorkoutV2InDb struct {
-	Timestamp  time.Time             `json:"timestamp"`
-	Data       *string               `json:"data,omitempty"`
-	ProviderId string                `json:"provider_id"`
-	UserId     string                `json:"user_id"`
-	SourceId   int                   `json:"source_id"`
-	PriorityId *int                  `json:"priority_id,omitempty"`
-	Id         string                `json:"id"`
-	SportId    int                   `json:"sport_id"`
-	Source     *ClientFacingProvider `json:"source,omitempty"`
-	Sport      *ClientFacingSport    `json:"sport,omitempty"`
+	Timestamp  time.Time              `json:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty"`
+	ProviderId string                 `json:"provider_id"`
+	UserId     string                 `json:"user_id"`
+	SourceId   int                    `json:"source_id"`
+	PriorityId *int                   `json:"priority_id,omitempty"`
+	Id         string                 `json:"id"`
+	SportId    int                    `json:"sport_id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty"`
+	Sport      *ClientFacingSport     `json:"sport,omitempty"`
 
 	_rawJSON json.RawMessage
 }

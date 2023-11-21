@@ -8,6 +8,7 @@ import (
 	core "github.com/tryVital/vital-go/core"
 	devices "github.com/tryVital/vital-go/devices"
 	insurance "github.com/tryVital/vital-go/insurance"
+	introspect "github.com/tryVital/vital-go/introspect"
 	labtests "github.com/tryVital/vital-go/labtests"
 	link "github.com/tryVital/vital-go/link"
 	meal "github.com/tryVital/vital-go/meal"
@@ -27,21 +28,22 @@ type Client struct {
 	httpClient core.HTTPClient
 	header     http.Header
 
-	Link      *link.Client
-	Profile   *profile.Client
-	Devices   *devices.Client
-	Activity  *activity.Client
-	Workouts  *workouts.Client
-	Sleep     *sleep.Client
-	Body      *body.Client
-	Meal      *meal.Client
-	Vitals    *vitals.Client
-	User      *user.Client
-	Team      *team.Client
-	Providers *providers.Client
-	LabTests  *labtests.Client
-	Testkit   *testkit.Client
-	Insurance *insurance.Client
+	Link       *link.Client
+	Profile    *profile.Client
+	Devices    *devices.Client
+	Activity   *activity.Client
+	Workouts   *workouts.Client
+	Sleep      *sleep.Client
+	Body       *body.Client
+	Meal       *meal.Client
+	Vitals     *vitals.Client
+	User       *user.Client
+	Team       *team.Client
+	Providers  *providers.Client
+	Introspect *introspect.Client
+	LabTests   *labtests.Client
+	Testkit    *testkit.Client
+	Insurance  *insurance.Client
 }
 
 func NewClient(opts ...core.ClientOption) *Client {
@@ -65,6 +67,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 		User:       user.NewClient(opts...),
 		Team:       team.NewClient(opts...),
 		Providers:  providers.NewClient(opts...),
+		Introspect: introspect.NewClient(opts...),
 		LabTests:   labtests.NewClient(opts...),
 		Testkit:    testkit.NewClient(opts...),
 		Insurance:  insurance.NewClient(opts...),

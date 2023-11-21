@@ -74,3 +74,8 @@ type LabTestsGetOrdersRequest struct {
 type AppointmentRescheduleRequest struct {
 	BookingKey string `json:"booking_key"`
 }
+
+type LabTestsSimulateOrderProcessRequest struct {
+	FinalStatus *OrderStatus `json:"-"`
+	Delay       *int         `json:"-"`
+}

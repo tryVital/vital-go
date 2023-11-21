@@ -470,7 +470,7 @@ func (c *Client) ReschedulePhlebotomyAppointment(ctx context.Context, orderId st
 // Cancel a previously booked at-home phlebotomy appointment.
 //
 // Your Order ID.
-func (c *Client) CancelPhlabotomyAppointment(ctx context.Context, orderId string, request *vitalgo.AppointmentCancelRequest) (*vitalgo.ClientFacingAppointment, error) {
+func (c *Client) CancelPhlebotomyAppointment(ctx context.Context, orderId string, request *vitalgo.AppointmentCancelRequest) (*vitalgo.ClientFacingAppointment, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
@@ -936,6 +936,61 @@ func (c *Client) CancelOrder(ctx context.Context, orderId string) (*vitalgo.Post
 	}
 
 	var response *vitalgo.PostOrderResponse
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodPost,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// Get available test kits.
+func (c *Client) SimulateOrderProcess(ctx context.Context, orderId string, request *vitalgo.LabTestsSimulateOrderProcessRequest) (interface{}, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/order/%v/test", orderId)
+
+	queryParams := make(url.Values)
+	if request.FinalStatus != nil {
+		queryParams.Add("final_status", fmt.Sprintf("%v", *request.FinalStatus))
+	}
+	if request.Delay != nil {
+		queryParams.Add("delay", fmt.Sprintf("%v", *request.Delay))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response interface{}
 	if err := core.DoRequest(
 		ctx,
 		c.httpClient,
