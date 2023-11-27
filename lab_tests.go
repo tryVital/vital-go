@@ -44,7 +44,7 @@ type LabTestsGetAreaInfoRequest struct {
 
 type LabTestsGetMarkersRequest struct {
 	// The identifier Vital assigned to a lab partner.
-	LabId *int `json:"-"`
+	LabId []*int `json:"-"`
 	// The name of an individual biomarker or a panel. Used as a fuzzy filter when searching markers.
 	Name *string `json:"-"`
 	Page *int    `json:"-"`

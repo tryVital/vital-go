@@ -3475,6 +3475,86 @@ func (e *Energy) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+type EventDestinationPreferences struct {
+	Preferred EventDestinationPreferencesPreferred     `json:"preferred,omitempty"`
+	Enabled   []EventDestinationPreferencesEnabledItem `json:"enabled,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (e *EventDestinationPreferences) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventDestinationPreferences
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EventDestinationPreferences(value)
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventDestinationPreferences) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type EventDestinationPreferencesEnabledItem string
+
+const (
+	EventDestinationPreferencesEnabledItemCloudPubsub EventDestinationPreferencesEnabledItem = "cloud_pubsub"
+	EventDestinationPreferencesEnabledItemRabbitmq    EventDestinationPreferencesEnabledItem = "rabbitmq"
+	EventDestinationPreferencesEnabledItemSvix        EventDestinationPreferencesEnabledItem = "svix"
+)
+
+func NewEventDestinationPreferencesEnabledItemFromString(s string) (EventDestinationPreferencesEnabledItem, error) {
+	switch s {
+	case "cloud_pubsub":
+		return EventDestinationPreferencesEnabledItemCloudPubsub, nil
+	case "rabbitmq":
+		return EventDestinationPreferencesEnabledItemRabbitmq, nil
+	case "svix":
+		return EventDestinationPreferencesEnabledItemSvix, nil
+	}
+	var t EventDestinationPreferencesEnabledItem
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e EventDestinationPreferencesEnabledItem) Ptr() *EventDestinationPreferencesEnabledItem {
+	return &e
+}
+
+type EventDestinationPreferencesPreferred string
+
+const (
+	EventDestinationPreferencesPreferredCloudPubsub EventDestinationPreferencesPreferred = "cloud_pubsub"
+	EventDestinationPreferencesPreferredRabbitmq    EventDestinationPreferencesPreferred = "rabbitmq"
+	EventDestinationPreferencesPreferredSvix        EventDestinationPreferencesPreferred = "svix"
+)
+
+func NewEventDestinationPreferencesPreferredFromString(s string) (EventDestinationPreferencesPreferred, error) {
+	switch s {
+	case "cloud_pubsub":
+		return EventDestinationPreferencesPreferredCloudPubsub, nil
+	case "rabbitmq":
+		return EventDestinationPreferencesPreferredRabbitmq, nil
+	case "svix":
+		return EventDestinationPreferencesPreferredSvix, nil
+	}
+	var t EventDestinationPreferencesPreferred
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e EventDestinationPreferencesPreferred) Ptr() *EventDestinationPreferencesPreferred {
+	return &e
+}
+
 type FallbackTimeZone struct {
 	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
@@ -4814,8 +4894,8 @@ func (p PasswordProviders) Ptr() *PasswordProviders {
 
 type PatientAddressCompatible struct {
 	ReceiverName *string `json:"receiver_name,omitempty"`
-	Street       string  `json:"street"`
-	StreetNumber *string `json:"street_number,omitempty"`
+	FirstLine    string  `json:"first_line"`
+	SecondLine   *string `json:"second_line,omitempty"`
 	City         string  `json:"city"`
 	State        string  `json:"state"`
 	Zip          string  `json:"zip"`
@@ -5882,8 +5962,11 @@ func (s SourceType) Ptr() *SourceType {
 }
 
 type TeamConfig struct {
-	Libreview    *LibreConfig `json:"libreview,omitempty"`
-	TextsEnabled *bool        `json:"texts_enabled,omitempty"`
+	Libreview          *LibreConfig                 `json:"libreview,omitempty"`
+	TextsEnabled       *bool                        `json:"texts_enabled,omitempty"`
+	PushHistoricalData *bool                        `json:"push_historical_data,omitempty"`
+	EdsPreferences     *EventDestinationPreferences `json:"eds_preferences,omitempty"`
+	EventTypePrefixes  []string                     `json:"event_type_prefixes,omitempty"`
 
 	_rawJSON json.RawMessage
 }

@@ -111,8 +111,8 @@ func (c *Client) GetMarkers(ctx context.Context, request *vitalgo.LabTestsGetMar
 	endpointURL := baseURL + "/" + "v3/lab_tests/markers"
 
 	queryParams := make(url.Values)
-	if request.LabId != nil {
-		queryParams.Add("lab_id", fmt.Sprintf("%v", *request.LabId))
+	for _, value := range request.LabId {
+		queryParams.Add("lab_id", fmt.Sprintf("%v", *value))
 	}
 	if request.Name != nil {
 		queryParams.Add("name", fmt.Sprintf("%v", *request.Name))

@@ -42,6 +42,6 @@ func (c *ClientOptions) cloneHeader() http.Header {
 	headers := c.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/tryVital/vital-go")
-	headers.Set("X-Fern-SDK-Version", "1.0.2")
+	headers.Set("X-Fern-SDK-Version", "1.0.3")
 	return headers
 }
