@@ -2,6 +2,10 @@
 
 package api
 
+type TeamGetLinkConfigRequest struct {
+	VitalLinkToken interface{} `json:"-"`
+}
+
 type TeamGetSourcePrioritiesRequest struct {
 	DataType *string `json:"-"`
 }

@@ -19,9 +19,10 @@ type DemoConnectionCreationPayload struct {
 }
 
 type EmailProviderAuthLink struct {
-	Email                         string     `json:"email"`
-	EmailProviderAuthLinkProvider *Providers `json:"provider,omitempty"`
-	Region                        *Region    `json:"region,omitempty"`
+	VitalLinkToken                interface{} `json:"-"`
+	Email                         string      `json:"email"`
+	EmailProviderAuthLinkProvider *Providers  `json:"provider,omitempty"`
+	Region                        *Region     `json:"region,omitempty"`
 }
 
 type ManualConnectionData struct {
@@ -29,12 +30,9 @@ type ManualConnectionData struct {
 	ProviderId *string `json:"provider_id,omitempty"`
 }
 
-type LinkConnectOauthProviderRequest struct {
-	VitalSdkNoRedirect *string `json:"-"`
-}
-
 type IndividualProviderData struct {
-	VitalLinkClientRegion *string `json:"-"`
+	VitalLinkClientRegion *string     `json:"-"`
+	VitalLinkToken        interface{} `json:"-"`
 	// Username for provider
 	Username string `json:"username"`
 	// Password for provider
@@ -42,10 +40,19 @@ type IndividualProviderData struct {
 }
 
 type EmailAuthLink struct {
-	Email    string    `json:"email"`
-	Provider Providers `json:"provider,omitempty"`
-	AuthType AuthType  `json:"auth_type,omitempty"`
-	Region   *Region   `json:"region,omitempty"`
+	VitalLinkToken interface{} `json:"-"`
+	Email          string      `json:"email"`
+	Provider       Providers   `json:"provider,omitempty"`
+	AuthType       AuthType    `json:"auth_type,omitempty"`
+	Region         *Region     `json:"region,omitempty"`
+}
+
+type LinkGenerateOauthLinkRequest struct {
+	VitalLinkToken interface{} `json:"-"`
+}
+
+type LinkGetAllProvidersRequest struct {
+	VitalLinkToken interface{} `json:"-"`
 }
 
 type LinkTokenBase struct {
@@ -55,11 +62,12 @@ type LinkTokenBase struct {
 }
 
 type PasswordAuthLink struct {
-	VitalLinkClientRegion *string   `json:"-"`
-	Username              string    `json:"username"`
-	Password              string    `json:"password"`
-	Provider              Providers `json:"provider,omitempty"`
-	AuthType              AuthType  `json:"auth_type,omitempty"`
+	VitalLinkClientRegion *string     `json:"-"`
+	VitalLinkToken        interface{} `json:"-"`
+	Username              string      `json:"username"`
+	Password              string      `json:"password"`
+	Provider              Providers   `json:"provider,omitempty"`
+	AuthType              AuthType    `json:"auth_type,omitempty"`
 }
 
 type BeginLinkTokenRequest struct {
@@ -73,4 +81,8 @@ type LinkTokenExchange struct {
 	Provider          *Providers  `json:"provider,omitempty"`
 	RedirectUrl       *string     `json:"redirect_url,omitempty"`
 	FilterOnProviders []Providers `json:"filter_on_providers,omitempty"`
+}
+
+type LinkTokenStateRequest struct {
+	VitalLinkToken interface{} `json:"-"`
 }

@@ -34,12 +34,34 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 // Post teams.
-func (c *Client) GetLinkConfig(ctx context.Context) (map[string]interface{}, error) {
+func (c *Client) GetLinkConfig(ctx context.Context, request *vitalgo.TeamGetLinkConfigRequest) (map[string]interface{}, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
 	endpointURL := baseURL + "/" + "v2/team/link/config"
+
+	headers := c.header.Clone()
+	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
 
 	var response map[string]interface{}
 	if err := core.DoRequest(
@@ -50,8 +72,8 @@ func (c *Client) GetLinkConfig(ctx context.Context) (map[string]interface{}, err
 		nil,
 		&response,
 		false,
-		c.header,
-		nil,
+		headers,
+		errorDecoder,
 	); err != nil {
 		return nil, err
 	}
