@@ -4014,6 +4014,32 @@ func (h *HealthInsuranceCreateRequestPatientSignatureImage) Accept(visitor Healt
 	}
 }
 
+// An enumeration.
+type HistoricalPullStatus string
+
+const (
+	HistoricalPullStatusSuccess    HistoricalPullStatus = "success"
+	HistoricalPullStatusFailure    HistoricalPullStatus = "failure"
+	HistoricalPullStatusInProgress HistoricalPullStatus = "in_progress"
+)
+
+func NewHistoricalPullStatusFromString(s string) (HistoricalPullStatus, error) {
+	switch s {
+	case "success":
+		return HistoricalPullStatusSuccess, nil
+	case "failure":
+		return HistoricalPullStatusFailure, nil
+	case "in_progress":
+		return HistoricalPullStatusInProgress, nil
+	}
+	var t HistoricalPullStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HistoricalPullStatus) Ptr() *HistoricalPullStatus {
+	return &h
+}
+
 type HttpValidationError struct {
 	Detail []*ValidationError `json:"detail,omitempty"`
 
@@ -5718,6 +5744,70 @@ func (s *ShippingAddress) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type SingleHistoricalPullStatistics struct {
+	Status       HistoricalPullStatus `json:"status,omitempty"`
+	RangeStart   *time.Time           `json:"range_start,omitempty"`
+	RangeEnd     *time.Time           `json:"range_end,omitempty"`
+	DaysWithData *int                 `json:"days_with_data,omitempty"`
+	Release      string               `json:"release"`
+	TraceId      *string              `json:"trace_id,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SingleHistoricalPullStatistics) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleHistoricalPullStatistics
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleHistoricalPullStatistics(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleHistoricalPullStatistics) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SingleProviderHistoricalPullResponse struct {
+	Pulled    map[string]*SingleHistoricalPullStatistics `json:"pulled,omitempty"`
+	NotPulled []ClientFacingResource                     `json:"not_pulled,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SingleProviderHistoricalPullResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleProviderHistoricalPullResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleProviderHistoricalPullResponse(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleProviderHistoricalPullResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SingleResourceStatistics struct {
 	LastAttempt *LastAttempt `json:"last_attempt,omitempty"`
 	OldestData  *time.Time   `json:"oldest_data,omitempty"`
@@ -5750,8 +5840,39 @@ func (s *SingleResourceStatistics) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type SingleUserHistoricalPullResponse struct {
+	UserId   string                                           `json:"user_id"`
+	Provider map[string]*SingleProviderHistoricalPullResponse `json:"provider,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SingleUserHistoricalPullResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleUserHistoricalPullResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleUserHistoricalPullResponse(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleUserHistoricalPullResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SingleUserResourceResponse struct {
-	UserId string `json:"user_id"`
+	UserId   string                                          `json:"user_id"`
+	Provider map[string]map[string]*SingleResourceStatistics `json:"provider,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6186,6 +6307,36 @@ func (u *UsAddress) UnmarshalJSON(data []byte) error {
 }
 
 func (u *UsAddress) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UserHistoricalPullsResponse struct {
+	Data []*SingleUserHistoricalPullResponse `json:"data,omitempty"`
+	Next *string                             `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (u *UserHistoricalPullsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserHistoricalPullsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserHistoricalPullsResponse(value)
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserHistoricalPullsResponse) String() string {
 	if len(u._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
 			return value

@@ -234,7 +234,9 @@ func (c *Client) TokenState(ctx context.Context, request *vitalgo.LinkTokenState
 	endpointURL := baseURL + "/" + "v2/link/state"
 
 	headers := c.header.Clone()
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -283,7 +285,9 @@ func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) 
 	endpointURL := baseURL + "/" + "v2/link/auth/email"
 
 	headers := c.header.Clone()
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -335,7 +339,9 @@ func (c *Client) PasswordAuth(ctx context.Context, request *vitalgo.PasswordAuth
 	if request.VitalLinkClientRegion != nil {
 		headers.Add("x-vital-link-client-region", fmt.Sprintf("%v", *request.VitalLinkClientRegion))
 	}
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -382,7 +388,9 @@ func (c *Client) GenerateOauthLink(ctx context.Context, oauthProvider vitalgo.OA
 	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/oauth/%v", oauthProvider)
 
 	headers := c.header.Clone()
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -432,7 +440,9 @@ func (c *Client) ConnectPasswordProvider(ctx context.Context, provider vitalgo.P
 	if request.VitalLinkClientRegion != nil {
 		headers.Add("x-vital-link-client-region", fmt.Sprintf("%v", *request.VitalLinkClientRegion))
 	}
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -479,7 +489,9 @@ func (c *Client) ConnectEmailAuthProvider(ctx context.Context, provider vitalgo.
 	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/email/%v", provider)
 
 	headers := c.header.Clone()
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -526,7 +538,9 @@ func (c *Client) GetAllProviders(ctx context.Context, request *vitalgo.LinkGetAl
 	endpointURL := baseURL + "/" + "v2/link/providers"
 
 	headers := c.header.Clone()
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

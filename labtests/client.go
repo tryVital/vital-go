@@ -638,43 +638,24 @@ func (c *Client) GetAreaInfo(ctx context.Context, request *vitalgo.LabTestsGetAr
 }
 
 // This endpoint returns the lab results for the order.
-func (c *Client) GetResultPdf(ctx context.Context, orderId string) (interface{}, error) {
+func (c *Client) GetResultPdf(ctx context.Context, orderId string) (io.Reader, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/order/%v/result/pdf", orderId)
 
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 422:
-			value := new(vitalgo.UnprocessableEntityError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response interface{}
+	response := bytes.NewBuffer(nil)
 	if err := core.DoRequest(
 		ctx,
 		c.httpClient,
 		endpointURL,
 		http.MethodGet,
 		nil,
-		&response,
+		response,
 		false,
 		c.header,
-		errorDecoder,
+		nil,
 	); err != nil {
 		return nil, err
 	}

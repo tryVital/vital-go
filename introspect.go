@@ -2,6 +2,13 @@
 
 package api
 
+type IntrospectGetUserHistoricalPullsRequest struct {
+	UserId    *string    `json:"-"`
+	Provider  *Providers `json:"-"`
+	UserLimit *int       `json:"-"`
+	Cursor    *string    `json:"-"`
+}
+
 type IntrospectGetUserResourcesRequest struct {
 	UserId    *string    `json:"-"`
 	Provider  *Providers `json:"-"`

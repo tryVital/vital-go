@@ -42,7 +42,9 @@ func (c *Client) GetLinkConfig(ctx context.Context, request *vitalgo.TeamGetLink
 	endpointURL := baseURL + "/" + "v2/team/link/config"
 
 	headers := c.header.Clone()
-	headers.Add("x-vital-link-token", fmt.Sprintf("%v", request.VitalLinkToken))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

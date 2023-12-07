@@ -92,3 +92,63 @@ func (c *Client) GetUserResources(ctx context.Context, request *vitalgo.Introspe
 	}
 	return response, nil
 }
+
+func (c *Client) GetUserHistoricalPulls(ctx context.Context, request *vitalgo.IntrospectGetUserHistoricalPullsRequest) (*vitalgo.UserHistoricalPullsResponse, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := baseURL + "/" + "v2/introspect/historical_pull"
+
+	queryParams := make(url.Values)
+	if request.UserId != nil {
+		queryParams.Add("user_id", fmt.Sprintf("%v", *request.UserId))
+	}
+	if request.Provider != nil {
+		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
+	}
+	if request.UserLimit != nil {
+		queryParams.Add("user_limit", fmt.Sprintf("%v", *request.UserLimit))
+	}
+	if request.Cursor != nil {
+		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.UserHistoricalPullsResponse
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
