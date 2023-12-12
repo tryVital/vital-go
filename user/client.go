@@ -464,12 +464,20 @@ func (c *Client) DeregisterProvider(ctx context.Context, userId string, provider
 }
 
 // Trigger a manual refresh for a specific user
-func (c *Client) Refresh(ctx context.Context, userId string) (*vitalgo.UserRefreshSuccessResponse, error) {
+func (c *Client) Refresh(ctx context.Context, userId string, request *vitalgo.UserRefreshRequest) (*vitalgo.UserRefreshSuccessResponse, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/refresh/%v", userId)
+
+	queryParams := make(url.Values)
+	if request.Timeout != nil {
+		queryParams.Add("timeout", fmt.Sprintf("%v", *request.Timeout))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

@@ -20,3 +20,7 @@ type UserPatchBody struct {
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty"`
 }
+
+type UserRefreshRequest struct {
+	Timeout *float64 `json:"-"`
+}

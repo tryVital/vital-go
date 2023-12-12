@@ -71,6 +71,12 @@ type LabTestsGetOrdersRequest struct {
 	Size     *int      `json:"-"`
 }
 
+type RequestAppointmentRequest struct {
+	// At-home phlebotomy appointment address.
+	Address  *UsAddress          `json:"address,omitempty"`
+	Provider AppointmentProvider `json:"provider,omitempty"`
+}
+
 type AppointmentRescheduleRequest struct {
 	BookingKey string `json:"booking_key"`
 }

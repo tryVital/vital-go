@@ -113,6 +113,7 @@ func (a *AppointmentAvailabilitySlots) String() string {
 type AppointmentEventStatus string
 
 const (
+	AppointmentEventStatusPending    AppointmentEventStatus = "pending"
 	AppointmentEventStatusScheduled  AppointmentEventStatus = "scheduled"
 	AppointmentEventStatusCompleted  AppointmentEventStatus = "completed"
 	AppointmentEventStatusCancelled  AppointmentEventStatus = "cancelled"
@@ -121,6 +122,8 @@ const (
 
 func NewAppointmentEventStatusFromString(s string) (AppointmentEventStatus, error) {
 	switch s {
+	case "pending":
+		return AppointmentEventStatusPending, nil
 	case "scheduled":
 		return AppointmentEventStatusScheduled, nil
 	case "completed":
@@ -142,8 +145,9 @@ func (a AppointmentEventStatus) Ptr() *AppointmentEventStatus {
 type AppointmentProvider string
 
 const (
-	AppointmentProviderGetlabs    AppointmentProvider = "getlabs"
-	AppointmentProviderAxlehealth AppointmentProvider = "axlehealth"
+	AppointmentProviderGetlabs      AppointmentProvider = "getlabs"
+	AppointmentProviderAxlehealth   AppointmentProvider = "axlehealth"
+	AppointmentProviderPhlebfinders AppointmentProvider = "phlebfinders"
 )
 
 func NewAppointmentProviderFromString(s string) (AppointmentProvider, error) {
@@ -152,12 +156,37 @@ func NewAppointmentProviderFromString(s string) (AppointmentProvider, error) {
 		return AppointmentProviderGetlabs, nil
 	case "axlehealth":
 		return AppointmentProviderAxlehealth, nil
+	case "phlebfinders":
+		return AppointmentProviderPhlebfinders, nil
 	}
 	var t AppointmentProvider
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
 func (a AppointmentProvider) Ptr() *AppointmentProvider {
+	return &a
+}
+
+// An enumeration.
+type AppointmentServiceType string
+
+const (
+	AppointmentServiceTypeAppointmentReady   AppointmentServiceType = "appointment-ready"
+	AppointmentServiceTypeAppointmentRequest AppointmentServiceType = "appointment-request"
+)
+
+func NewAppointmentServiceTypeFromString(s string) (AppointmentServiceType, error) {
+	switch s {
+	case "appointment-ready":
+		return AppointmentServiceTypeAppointmentReady, nil
+	case "appointment-request":
+		return AppointmentServiceTypeAppointmentRequest, nil
+	}
+	var t AppointmentServiceType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AppointmentServiceType) Ptr() *AppointmentServiceType {
 	return &a
 }
 
@@ -515,10 +544,10 @@ type ClientFacingAppointment struct {
 	Address  *UsAddress `json:"address,omitempty"`
 	Location *LngLat    `json:"location,omitempty"`
 	// Time is in UTC
-	StartAt time.Time `json:"start_at"`
+	StartAt *time.Time `json:"start_at,omitempty"`
 	// Time is in UTC
-	EndAt         time.Time                       `json:"end_at"`
-	IanaTimezone  string                          `json:"iana_timezone"`
+	EndAt         *time.Time                      `json:"end_at,omitempty"`
+	IanaTimezone  *string                         `json:"iana_timezone,omitempty"`
 	Type          AppointmentType                 `json:"type,omitempty"`
 	Provider      AppointmentProvider             `json:"provider,omitempty"`
 	Status        AppointmentStatus               `json:"status,omitempty"`
@@ -4709,6 +4738,7 @@ const (
 	OrderStatusCancelledWalkInTestCancelled                         OrderStatus = "cancelled.walk_in_test.cancelled"
 	OrderStatusReceivedAtHomePhlebotomyOrdered                      OrderStatus = "received.at_home_phlebotomy.ordered"
 	OrderStatusReceivedAtHomePhlebotomyRequisitionCreated           OrderStatus = "received.at_home_phlebotomy.requisition_created"
+	OrderStatusCollectingSampleAtHomePhlebotomyAppointmentPending   OrderStatus = "collecting_sample.at_home_phlebotomy.appointment_pending"
 	OrderStatusCollectingSampleAtHomePhlebotomyAppointmentScheduled OrderStatus = "collecting_sample.at_home_phlebotomy.appointment_scheduled"
 	OrderStatusCollectingSampleAtHomePhlebotomyDrawCompleted        OrderStatus = "collecting_sample.at_home_phlebotomy.draw_completed"
 	OrderStatusCollectingSampleAtHomePhlebotomyAppointmentCancelled OrderStatus = "collecting_sample.at_home_phlebotomy.appointment_cancelled"
@@ -4751,6 +4781,8 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusReceivedAtHomePhlebotomyOrdered, nil
 	case "received.at_home_phlebotomy.requisition_created":
 		return OrderStatusReceivedAtHomePhlebotomyRequisitionCreated, nil
+	case "collecting_sample.at_home_phlebotomy.appointment_pending":
+		return OrderStatusCollectingSampleAtHomePhlebotomyAppointmentPending, nil
 	case "collecting_sample.at_home_phlebotomy.appointment_scheduled":
 		return OrderStatusCollectingSampleAtHomePhlebotomyAppointmentScheduled, nil
 	case "collecting_sample.at_home_phlebotomy.draw_completed":
@@ -5022,7 +5054,8 @@ func (p *PersonDetails) String() string {
 }
 
 type PhlebotomyAreaInfo struct {
-	IsServed bool `json:"is_served"`
+	IsServed  bool                      `json:"is_served"`
+	Providers []*PhlebotomyProviderInfo `json:"providers,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5039,6 +5072,36 @@ func (p *PhlebotomyAreaInfo) UnmarshalJSON(data []byte) error {
 }
 
 func (p *PhlebotomyAreaInfo) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PhlebotomyProviderInfo struct {
+	Name         AppointmentProvider      `json:"name,omitempty"`
+	ServiceTypes []AppointmentServiceType `json:"service_types,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PhlebotomyProviderInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler PhlebotomyProviderInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PhlebotomyProviderInfo(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PhlebotomyProviderInfo) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -6386,9 +6449,10 @@ type UserRefreshSuccessResponse struct {
 	// Whether operation was successful or not
 	Success string `json:"success"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
-	UserId           string   `json:"user_id"`
-	RefreshedSources []string `json:"refreshed_sources,omitempty"`
-	FailedSources    []string `json:"failed_sources,omitempty"`
+	UserId            string   `json:"user_id"`
+	RefreshedSources  []string `json:"refreshed_sources,omitempty"`
+	InProgressSources []string `json:"in_progress_sources,omitempty"`
+	FailedSources     []string `json:"failed_sources,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6446,39 +6510,9 @@ func (u *UserResourcesResponse) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
-type UserSignInToken struct {
-	PublicKey string `json:"public_key"`
-	UserToken string `json:"user_token"`
-
-	_rawJSON json.RawMessage
-}
-
-func (u *UserSignInToken) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserSignInToken
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*u = UserSignInToken(value)
-	u._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (u *UserSignInToken) String() string {
-	if len(u._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(u); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", u)
-}
-
 type UserSignInTokenResponse struct {
-	UserId      string                              `json:"user_id"`
-	SignInToken *UserSignInTokenResponseSignInToken `json:"sign_in_token,omitempty"`
+	UserId      string `json:"user_id"`
+	SignInToken string `json:"sign_in_token"`
 
 	_rawJSON json.RawMessage
 }
@@ -6504,63 +6538,6 @@ func (u *UserSignInTokenResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
-}
-
-type UserSignInTokenResponseSignInToken struct {
-	typeName        string
-	UserSignInToken *UserSignInToken
-	String          string
-}
-
-func NewUserSignInTokenResponseSignInTokenFromUserSignInToken(value *UserSignInToken) *UserSignInTokenResponseSignInToken {
-	return &UserSignInTokenResponseSignInToken{typeName: "userSignInToken", UserSignInToken: value}
-}
-
-func NewUserSignInTokenResponseSignInTokenFromString(value string) *UserSignInTokenResponseSignInToken {
-	return &UserSignInTokenResponseSignInToken{typeName: "string", String: value}
-}
-
-func (u *UserSignInTokenResponseSignInToken) UnmarshalJSON(data []byte) error {
-	valueUserSignInToken := new(UserSignInToken)
-	if err := json.Unmarshal(data, &valueUserSignInToken); err == nil {
-		u.typeName = "userSignInToken"
-		u.UserSignInToken = valueUserSignInToken
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		u.typeName = "string"
-		u.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
-}
-
-func (u UserSignInTokenResponseSignInToken) MarshalJSON() ([]byte, error) {
-	switch u.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", u.typeName, u)
-	case "userSignInToken":
-		return json.Marshal(u.UserSignInToken)
-	case "string":
-		return json.Marshal(u.String)
-	}
-}
-
-type UserSignInTokenResponseSignInTokenVisitor interface {
-	VisitUserSignInToken(*UserSignInToken) error
-	VisitString(string) error
-}
-
-func (u *UserSignInTokenResponseSignInToken) Accept(visitor UserSignInTokenResponseSignInTokenVisitor) error {
-	switch u.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", u.typeName, u)
-	case "userSignInToken":
-		return visitor.VisitUserSignInToken(u.UserSignInToken)
-	case "string":
-		return visitor.VisitString(u.String)
-	}
 }
 
 type UserSuccessResponse struct {
