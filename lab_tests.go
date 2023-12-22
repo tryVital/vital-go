@@ -30,7 +30,7 @@ type CreateOrderRequestCompatible struct {
 	LabTestId       string                        `json:"lab_test_id"`
 	Physician       *PhysicianCreateRequest       `json:"physician,omitempty"`
 	HealthInsurance *HealthInsuranceCreateRequest `json:"health_insurance,omitempty"`
-	// Defines whether order is priority or not. Only available for Labcorp. For Labcorp, this corresponds to a STAT order.
+	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
 	Priority       *bool                     `json:"priority,omitempty"`
 	Consents       []*Consent                `json:"consents,omitempty"`
 	PatientDetails *PatientDetails           `json:"patient_details,omitempty"`

@@ -1030,9 +1030,9 @@ func (c *ClientFacingCholesterolTimeseries) String() string {
 }
 
 type ClientFacingDiagnosisInformation struct {
-	// Diagnosis code for insurance information required by Labcorp.
+	// Diagnosis code for insurance information.
 	DiagnosisCode string `json:"diagnosis_code"`
-	// Diagnosis description insurance information required by Labcorp.
+	// Diagnosis description insurance information.
 	Description string `json:"description"`
 
 	_rawJSON json.RawMessage
@@ -1574,7 +1574,7 @@ type ClientFacingLabTest struct {
 	// Deprecated. Use status instead.
 	IsActive bool          `json:"is_active"`
 	Status   LabTestStatus `json:"status,omitempty"`
-	// Defines whether a lab test requires fasting. Only available for Labcorp.
+	// Defines whether a lab test requires fasting.
 	Fasting *bool                 `json:"fasting,omitempty"`
 	Lab     *ClientFacingLab      `json:"lab,omitempty"`
 	Markers []*ClientFacingMarker `json:"markers,omitempty"`
@@ -1817,7 +1817,7 @@ type ClientFacingOrder struct {
 	HealthInsuranceId *string `json:"health_insurance_id,omitempty"`
 	// DEPRECATED. Requistion form url.
 	RequisitionFormUrl *string `json:"requisition_form_url,omitempty"`
-	// Defines whether order is priority or not. Only available for Labcorp. For Labcorp, this corresponds to a STAT order.
+	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
 	Priority *bool `json:"priority,omitempty"`
 	// Shipping Details. For unregistered testkit orders.
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
@@ -2017,11 +2017,11 @@ func (c *ClientFacingPatientDetailsCompatible) String() string {
 }
 
 type ClientFacingPayorSearchResponse struct {
-	// Payor code returned for the insurance information required by Labcorp.
+	// Payor code returned for the insurance information.
 	Code string `json:"code"`
-	// Insurance name returned for the insurance information required by Labcorp.
+	// Insurance name returned for the insurance information.
 	Name string `json:"name"`
-	// Insurance business address returned for the insurance information required by Labcorp.
+	// Insurance business address returned for the insurance information.
 	OrgAddress *Address `json:"org_address,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2501,7 +2501,7 @@ type ClientFacingSleep struct {
 	HrLowest *int `json:"hr_lowest,omitempty"`
 	// The average heart rate registered during the sleep period::beats per minute
 	HrAverage *int `json:"hr_average,omitempty"`
-	// Sleep efficiency is the percentage of the sleep period spent asleep (100% * sleep.total / sleep.duration)::perc
+	// Sleep efficiency is the percentage of the sleep period spent asleep (100% \* sleep.total / sleep.duration)::perc
 	Efficiency *float64 `json:"efficiency,omitempty"`
 	// Detected latency from bedtime_start to the beginning of the first five minutes of persistent sleep::seconds
 	Latency *int `json:"latency,omitempty"`
