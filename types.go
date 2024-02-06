@@ -2753,6 +2753,7 @@ func (c *ClientFacingStream) String() string {
 
 type ClientFacingTeam struct {
 	Id                                       string                `json:"id"`
+	OrgId                                    *string               `json:"org_id,omitempty"`
 	Name                                     string                `json:"name"`
 	SvixAppId                                *string               `json:"svix_app_id,omitempty"`
 	ClientId                                 *string               `json:"client_id,omitempty"`
@@ -3422,12 +3423,12 @@ func (d DemoProviders) Ptr() *DemoProviders {
 }
 
 type DeviceV2InDb struct {
-	Data       *string               `json:"data,omitempty"`
-	ProviderId string                `json:"provider_id"`
-	UserId     string                `json:"user_id"`
-	SourceId   int                   `json:"source_id"`
-	Id         string                `json:"id"`
-	Source     *ClientFacingProvider `json:"source,omitempty"`
+	Data       map[string]interface{} `json:"data,omitempty"`
+	ProviderId string                 `json:"provider_id"`
+	UserId     string                 `json:"user_id"`
+	SourceId   int                    `json:"source_id"`
+	Id         string                 `json:"id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4689,6 +4690,7 @@ const (
 	OAuthProvidersPolar      OAuthProviders = "polar"
 	OAuthProvidersCronometer OAuthProviders = "cronometer"
 	OAuthProvidersOmron      OAuthProviders = "omron"
+	OAuthProvidersWhoopV2    OAuthProviders = "whoop_v2"
 )
 
 func NewOAuthProvidersFromString(s string) (OAuthProviders, error) {
@@ -4717,6 +4719,8 @@ func NewOAuthProvidersFromString(s string) (OAuthProviders, error) {
 		return OAuthProvidersCronometer, nil
 	case "omron":
 		return OAuthProvidersOmron, nil
+	case "whoop_v2":
+		return OAuthProvidersWhoopV2, nil
 	}
 	var t OAuthProviders
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -5424,6 +5428,7 @@ const (
 	ProvidersPolar             Providers = "polar"
 	ProvidersCronometer        Providers = "cronometer"
 	ProvidersKardia            Providers = "kardia"
+	ProvidersWhoopV2           Providers = "whoop_v2"
 )
 
 func NewProvidersFromString(s string) (Providers, error) {
@@ -5492,6 +5497,8 @@ func NewProvidersFromString(s string) (Providers, error) {
 		return ProvidersCronometer, nil
 	case "kardia":
 		return ProvidersKardia, nil
+	case "whoop_v2":
+		return ProvidersWhoopV2, nil
 	}
 	var t Providers
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -6149,6 +6156,7 @@ type TeamConfig struct {
 	Libreview          *LibreConfig                 `json:"libreview,omitempty"`
 	TextsEnabled       *bool                        `json:"texts_enabled,omitempty"`
 	PushHistoricalData *bool                        `json:"push_historical_data,omitempty"`
+	ProviderRawData    *bool                        `json:"provider_raw_data,omitempty"`
 	EdsPreferences     *EventDestinationPreferences `json:"eds_preferences,omitempty"`
 	EventTypePrefixes  []string                     `json:"event_type_prefixes,omitempty"`
 
