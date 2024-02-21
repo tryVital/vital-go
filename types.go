@@ -829,6 +829,86 @@ func (c *ClientFacingBody) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingBodyFatTimeseries struct {
+	// Deprecated
+	Id *int `json:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
+	Type *string `json:"type,omitempty"`
+	// Measured in percentage (0-100).
+	Unit string `json:"unit"`
+	// The timestamp of the measurement.
+	Timestamp time.Time `json:"timestamp"`
+	// The value of the measurement.
+	Value float64 `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingBodyFatTimeseries) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingBodyFatTimeseries
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingBodyFatTimeseries(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBodyFatTimeseries) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBodyWeightTimeseries struct {
+	// Deprecated
+	Id *int `json:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
+	Type *string `json:"type,omitempty"`
+	// Measured in kilograms (kg).
+	Unit string `json:"unit"`
+	// The timestamp of the measurement.
+	Timestamp time.Time `json:"timestamp"`
+	// The value of the measurement.
+	Value float64 `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingBodyWeightTimeseries) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingBodyWeightTimeseries
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingBodyWeightTimeseries(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBodyWeightTimeseries) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingCaffeineTimeseries struct {
 	// Deprecated
 	Id *int `json:"id,omitempty"`
@@ -1821,6 +1901,8 @@ type ClientFacingOrder struct {
 	Priority *bool `json:"priority,omitempty"`
 	// Shipping Details. For unregistered testkit orders.
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
+	// Defines when an Order should be activated, making it a Delayed Order.
+	ActivateBy *string `json:"activate_by,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2751,6 +2833,45 @@ func (c *ClientFacingStream) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingStressLevelTimeseries struct {
+	// Deprecated
+	Id *int `json:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
+	Type *string `json:"type,omitempty"`
+	// Measured in percentage (0-100).
+	Unit string `json:"unit"`
+	// The timestamp of the measurement.
+	Timestamp time.Time `json:"timestamp"`
+	Value     float64   `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingStressLevelTimeseries) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingStressLevelTimeseries
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingStressLevelTimeseries(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStressLevelTimeseries) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingTeam struct {
 	Id                                       string                `json:"id"`
 	OrgId                                    *string               `json:"org_id,omitempty"`
@@ -2877,6 +2998,8 @@ type ClientFacingUser struct {
 	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
 	FallbackTimeZone *FallbackTimeZone `json:"fallback_time_zone,omitempty"`
+	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+	FallbackBirthDate *FallbackBirthDate `json:"fallback_birth_date,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2925,6 +3048,50 @@ func (c *ClientFacingUserKey) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingUserKey) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingVo2MaxTimeseries struct {
+	// Deprecated
+	Id *int `json:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
+	Type *string `json:"type,omitempty"`
+	// Measured in mL/kg/min.
+	Unit string `json:"unit"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingVo2MaxTimeseries) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingVo2MaxTimeseries
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingVo2MaxTimeseries(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingVo2MaxTimeseries) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -3585,6 +3752,39 @@ func (e EventDestinationPreferencesPreferred) Ptr() *EventDestinationPreferences
 	return &e
 }
 
+type FallbackBirthDate struct {
+	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+	Value string `json:"value"`
+	// Slug for designated source
+	SourceSlug string    `json:"source_slug"`
+	UpdatedAt  time.Time `json:"updated_at"`
+
+	_rawJSON json.RawMessage
+}
+
+func (f *FallbackBirthDate) UnmarshalJSON(data []byte) error {
+	type unmarshaler FallbackBirthDate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = FallbackBirthDate(value)
+	f._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *FallbackBirthDate) String() string {
+	if len(f._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
 type FallbackTimeZone struct {
 	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
@@ -3742,6 +3942,1432 @@ func (g *GetOrdersResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GetOrdersResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBloodOxygen struct {
+	Source *ClientFacingSource                  `json:"source,omitempty"`
+	Data   []*ClientFacingBloodOxygenTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBloodOxygen) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBloodOxygen
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBloodOxygen(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBloodOxygen) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBloodOxygenResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedBloodOxygen `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBloodOxygenResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBloodOxygenResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBloodOxygenResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBloodOxygenResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBloodPressure struct {
+	Source *ClientFacingSource                    `json:"source,omitempty"`
+	Data   []*ClientFacingBloodPressureTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBloodPressure) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBloodPressure
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBloodPressure(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBloodPressure) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBloodPressureResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedBloodPressure `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBloodPressureResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBloodPressureResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBloodPressureResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBloodPressureResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBodyFat struct {
+	Source *ClientFacingSource              `json:"source,omitempty"`
+	Data   []*ClientFacingBodyFatTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBodyFat) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyFat
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyFat(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyFat) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBodyFatResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedBodyFat `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBodyFatResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyFatResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyFatResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyFatResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBodyWeight struct {
+	Source *ClientFacingSource                 `json:"source,omitempty"`
+	Data   []*ClientFacingBodyWeightTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBodyWeight) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyWeight
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyWeight(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyWeight) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBodyWeightResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedBodyWeight `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedBodyWeightResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyWeightResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyWeightResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyWeightResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCaffeine struct {
+	Source *ClientFacingSource               `json:"source,omitempty"`
+	Data   []*ClientFacingCaffeineTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCaffeine) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaffeine
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaffeine(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaffeine) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCaffeineResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedCaffeine `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCaffeineResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaffeineResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaffeineResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaffeineResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCaloriesActive struct {
+	Source *ClientFacingSource                     `json:"source,omitempty"`
+	Data   []*ClientFacingCaloriesActiveTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCaloriesActive) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaloriesActive
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaloriesActive(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaloriesActive) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCaloriesActiveResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedCaloriesActive `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCaloriesActiveResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaloriesActiveResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaloriesActiveResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaloriesActiveResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCaloriesBasal struct {
+	Source *ClientFacingSource                    `json:"source,omitempty"`
+	Data   []*ClientFacingCaloriesBasalTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCaloriesBasal) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaloriesBasal
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaloriesBasal(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaloriesBasal) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCaloriesBasalResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedCaloriesBasal `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCaloriesBasalResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaloriesBasalResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaloriesBasalResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaloriesBasalResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCholesterol struct {
+	Source *ClientFacingSource                  `json:"source,omitempty"`
+	Data   []*ClientFacingCholesterolTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCholesterol) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCholesterol
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCholesterol(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCholesterol) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedCholesterolResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedCholesterol `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedCholesterolResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCholesterolResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCholesterolResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCholesterolResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedDistance struct {
+	Source *ClientFacingSource               `json:"source,omitempty"`
+	Data   []*ClientFacingDistanceTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedDistance) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedDistance
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedDistance(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedDistance) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedDistanceResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedDistance `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedDistanceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedDistanceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedDistanceResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedDistanceResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedElectrocardiogramVoltage struct {
+	Source *ClientFacingSource                               `json:"source,omitempty"`
+	Data   []*ClientFacingElectrocardiogramVoltageTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedElectrocardiogramVoltage) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedElectrocardiogramVoltage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedElectrocardiogramVoltage(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedElectrocardiogramVoltage) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedElectrocardiogramVoltageResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedElectrocardiogramVoltage `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedElectrocardiogramVoltageResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedElectrocardiogramVoltageResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedElectrocardiogramVoltageResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedElectrocardiogramVoltageResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedFloorsClimbed struct {
+	Source *ClientFacingSource                    `json:"source,omitempty"`
+	Data   []*ClientFacingFloorsClimbedTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedFloorsClimbed) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedFloorsClimbed
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedFloorsClimbed(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedFloorsClimbed) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedFloorsClimbedResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedFloorsClimbed `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedFloorsClimbedResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedFloorsClimbedResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedFloorsClimbedResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedFloorsClimbedResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedGlucose struct {
+	Source *ClientFacingSource              `json:"source,omitempty"`
+	Data   []*ClientFacingGlucoseTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedGlucose) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedGlucose
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedGlucose(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedGlucose) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedGlucoseResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedGlucose `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedGlucoseResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedGlucoseResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedGlucoseResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedGlucoseResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHeartRate struct {
+	Source *ClientFacingSource                `json:"source,omitempty"`
+	Data   []*ClientFacingHeartRateTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedHeartRate) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHeartRate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHeartRate(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHeartRate) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHeartRateResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedHeartRate `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedHeartRateResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHeartRateResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHeartRateResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHeartRateResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHrv struct {
+	Source *ClientFacingSource          `json:"source,omitempty"`
+	Data   []*ClientFacingHrvTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedHrv) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHrv
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHrv(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHrv) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHrvResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedHrv `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedHrvResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHrvResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHrvResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHrvResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHypnogram struct {
+	Source *ClientFacingSource                `json:"source,omitempty"`
+	Data   []*ClientFacingHypnogramTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedHypnogram) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHypnogram
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHypnogram(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHypnogram) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHypnogramResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedHypnogram `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedHypnogramResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHypnogramResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHypnogramResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHypnogramResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedIge struct {
+	Source *ClientFacingSource          `json:"source,omitempty"`
+	Data   []*ClientFacingIgeTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedIge) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedIge
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedIge(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedIge) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedIgeResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedIge `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedIgeResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedIgeResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedIgeResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedIgeResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedIgg struct {
+	Source *ClientFacingSource          `json:"source,omitempty"`
+	Data   []*ClientFacingIggTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedIgg) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedIgg
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedIgg(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedIgg) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedIggResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedIgg `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedIggResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedIggResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedIggResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedIggResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedMindfulnessMinutes struct {
+	Source *ClientFacingSource                         `json:"source,omitempty"`
+	Data   []*ClientFacingMindfulnessMinutesTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedMindfulnessMinutes) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedMindfulnessMinutes
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedMindfulnessMinutes(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedMindfulnessMinutes) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedMindfulnessMinutesResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedMindfulnessMinutes `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedMindfulnessMinutesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedMindfulnessMinutesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedMindfulnessMinutesResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedMindfulnessMinutesResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedRespiratoryRate struct {
+	Source *ClientFacingSource                      `json:"source,omitempty"`
+	Data   []*ClientFacingRespiratoryRateTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedRespiratoryRate) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedRespiratoryRate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedRespiratoryRate(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedRespiratoryRate) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedRespiratoryRateResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedRespiratoryRate `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedRespiratoryRateResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedRespiratoryRateResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedRespiratoryRateResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedRespiratoryRateResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedSteps struct {
+	Source *ClientFacingSource            `json:"source,omitempty"`
+	Data   []*ClientFacingStepsTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedSteps) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSteps
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSteps(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSteps) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedStepsResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedSteps `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedStepsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStepsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStepsResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStepsResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedStressLevel struct {
+	Source *ClientFacingSource                  `json:"source,omitempty"`
+	Data   []*ClientFacingStressLevelTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedStressLevel) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStressLevel
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStressLevel(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStressLevel) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedStressLevelResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedStressLevel `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedStressLevelResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStressLevelResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStressLevelResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStressLevelResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedVo2Max struct {
+	Source *ClientFacingSource             `json:"source,omitempty"`
+	Data   []*ClientFacingVo2MaxTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedVo2Max) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedVo2Max
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedVo2Max(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedVo2Max) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedVo2MaxResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedVo2Max `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedVo2MaxResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedVo2MaxResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedVo2MaxResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedVo2MaxResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWater struct {
+	Source *ClientFacingSource            `json:"source,omitempty"`
+	Data   []*ClientFacingWaterTimeseries `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedWater) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWater
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWater(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWater) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWaterResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedWater `json:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (g *GroupedWaterResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWaterResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWaterResponse(value)
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWaterResponse) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
@@ -6262,8 +7888,8 @@ const (
 	TimeseriesResourceDistance                 TimeseriesResource = "distance"
 	TimeseriesResourceBloodOxygen              TimeseriesResource = "blood_oxygen"
 	TimeseriesResourceBloodPressure            TimeseriesResource = "blood_pressure"
-	TimeseriesResourceBodyFat                  TimeseriesResource = "body/fat"
-	TimeseriesResourceBodyWeight               TimeseriesResource = "body/weight"
+	TimeseriesResourceBodyFat                  TimeseriesResource = "body_fat"
+	TimeseriesResourceBodyWeight               TimeseriesResource = "body_weight"
 	TimeseriesResourceCholesterol              TimeseriesResource = "cholesterol"
 	TimeseriesResourceCholesterolLdl           TimeseriesResource = "cholesterol/ldl"
 	TimeseriesResourceCholesterolHdl           TimeseriesResource = "cholesterol/hdl"
@@ -6274,7 +7900,6 @@ const (
 	TimeseriesResourceGlucose                  TimeseriesResource = "glucose"
 	TimeseriesResourceHeartrate                TimeseriesResource = "heartrate"
 	TimeseriesResourceHrv                      TimeseriesResource = "hrv"
-	TimeseriesResourceHeartrateVariability     TimeseriesResource = "heartrate_variability"
 	TimeseriesResourceHypnogram                TimeseriesResource = "hypnogram"
 	TimeseriesResourceIge                      TimeseriesResource = "ige"
 	TimeseriesResourceIgg                      TimeseriesResource = "igg"
@@ -6299,9 +7924,9 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceBloodOxygen, nil
 	case "blood_pressure":
 		return TimeseriesResourceBloodPressure, nil
-	case "body/fat":
+	case "body_fat":
 		return TimeseriesResourceBodyFat, nil
-	case "body/weight":
+	case "body_weight":
 		return TimeseriesResourceBodyWeight, nil
 	case "cholesterol":
 		return TimeseriesResourceCholesterol, nil
@@ -6323,8 +7948,6 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceHeartrate, nil
 	case "hrv":
 		return TimeseriesResourceHrv, nil
-	case "heartrate_variability":
-		return TimeseriesResourceHeartrateVariability, nil
 	case "hypnogram":
 		return TimeseriesResourceHypnogram, nil
 	case "ige":

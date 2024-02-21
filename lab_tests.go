@@ -31,8 +31,10 @@ type CreateOrderRequestCompatible struct {
 	Physician       *PhysicianCreateRequest       `json:"physician,omitempty"`
 	HealthInsurance *HealthInsuranceCreateRequest `json:"health_insurance,omitempty"`
 	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
-	Priority       *bool                     `json:"priority,omitempty"`
-	Consents       []*Consent                `json:"consents,omitempty"`
+	Priority *bool      `json:"priority,omitempty"`
+	Consents []*Consent `json:"consents,omitempty"`
+	// Defines when an Order should be activated, making it a Delayed Order.
+	ActivateBy     *string                   `json:"activate_by,omitempty"`
 	PatientDetails *PatientDetails           `json:"patient_details,omitempty"`
 	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`
 }
@@ -45,7 +47,7 @@ type LabTestsGetAreaInfoRequest struct {
 type LabTestsGetMarkersRequest struct {
 	// The identifier Vital assigned to a lab partner.
 	LabId []*int `json:"-"`
-	// The name of an individual biomarker or a panel. Used as a fuzzy filter when searching markers.
+	// The name or test code of an individual biomarker or a panel.
 	Name *string `json:"-"`
 	Page *int    `json:"-"`
 	Size *int    `json:"-"`

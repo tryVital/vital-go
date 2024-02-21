@@ -8,6 +8,8 @@ type UserCreateBody struct {
 	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty"`
+	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
 }
 
 type UserGetAllRequest struct {
@@ -19,6 +21,8 @@ type UserPatchBody struct {
 	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty"`
+	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
 }
 
 type UserRefreshRequest struct {
