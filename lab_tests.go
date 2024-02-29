@@ -33,7 +33,7 @@ type CreateOrderRequestCompatible struct {
 	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
 	Priority *bool      `json:"priority,omitempty"`
 	Consents []*Consent `json:"consents,omitempty"`
-	// Defines when an Order should be activated, making it a Delayed Order.
+	// Schedule an Order to be processed in a future date.
 	ActivateBy     *string                   `json:"activate_by,omitempty"`
 	PatientDetails *PatientDetails           `json:"patient_details,omitempty"`
 	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`

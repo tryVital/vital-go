@@ -463,6 +463,60 @@ func (c *Client) DeregisterProvider(ctx context.Context, userId string, provider
 	return response, nil
 }
 
+func (c *Client) UndoDelete(ctx context.Context, request *vitalgo.UserUndoDeleteRequest) (*vitalgo.UserSuccessResponse, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := baseURL + "/" + "v2/user/undo_delete"
+
+	queryParams := make(url.Values)
+	if request.UserId != nil {
+		queryParams.Add("user_id", fmt.Sprintf("%v", *request.UserId))
+	}
+	if request.ClientUserId != nil {
+		queryParams.Add("client_user_id", fmt.Sprintf("%v", *request.ClientUserId))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.UserSuccessResponse
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodPost,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 // Trigger a manual refresh for a specific user
 func (c *Client) Refresh(ctx context.Context, userId string, request *vitalgo.UserRefreshRequest) (*vitalgo.UserRefreshSuccessResponse, error) {
 	baseURL := "https://api.tryvital.io"

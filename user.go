@@ -28,3 +28,10 @@ type UserPatchBody struct {
 type UserRefreshRequest struct {
 	Timeout *float64 `json:"-"`
 }
+
+type UserUndoDeleteRequest struct {
+	// User ID to undo deletion. Mutually exclusive with `client_user_id`.
+	UserId *string `json:"-"`
+	// Client User ID to undo deletion. Mutually exclusive with `user_id`.
+	ClientUserId *string `json:"-"`
+}

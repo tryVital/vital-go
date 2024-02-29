@@ -1901,7 +1901,7 @@ type ClientFacingOrder struct {
 	Priority *bool `json:"priority,omitempty"`
 	// Shipping Details. For unregistered testkit orders.
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
-	// Defines when an Order should be activated, making it a Delayed Order.
+	// Schedule an Order to be processed in a future date.
 	ActivateBy *string `json:"activate_by,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2476,6 +2476,7 @@ type ClientFacingResult struct {
 	Slug       string             `json:"slug"`
 	LabId      *int               `json:"lab_id,omitempty"`
 	ProviderId *string            `json:"provider_id,omitempty"`
+	Required   bool               `json:"required"`
 	Loinc      *ClientFacingLoinc `json:"loinc,omitempty"`
 
 	_rawJSON json.RawMessage
