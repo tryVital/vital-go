@@ -10,6 +10,10 @@ type UserCreateBody struct {
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
+	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	IngestionStart *string `json:"ingestion_start,omitempty"`
+	// Ending bound for user data ingestion. Data newer than this date will not be ingested and the connection deregistered.
+	IngestionEnd *string `json:"ingestion_end,omitempty"`
 }
 
 type UserGetAllRequest struct {
@@ -23,6 +27,10 @@ type UserPatchBody struct {
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
+	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	IngestionStart *string `json:"ingestion_start,omitempty"`
+	// Ending bound for user data ingestion. Data newer than this date will not be ingested and the connection deregistered.
+	IngestionEnd *string `json:"ingestion_end,omitempty"`
 }
 
 type UserRefreshRequest struct {

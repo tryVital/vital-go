@@ -104,6 +104,13 @@ func (c *Client) Create(ctx context.Context, request *vitalgo.UserCreateBody) (*
 		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
+		case 400:
+			value := new(vitalgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
 		case 422:
 			value := new(vitalgo.UnprocessableEntityError)
 			value.APIError = apiError

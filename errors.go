@@ -9,11 +9,11 @@ import (
 
 type BadRequestError struct {
 	*core.APIError
-	Body *UserRefreshErrorResponse
+	Body interface{}
 }
 
 func (b *BadRequestError) UnmarshalJSON(data []byte) error {
-	var body *UserRefreshErrorResponse
+	var body interface{}
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

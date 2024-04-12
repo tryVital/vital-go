@@ -274,9 +274,7 @@ func (c *Client) TokenState(ctx context.Context, request *vitalgo.LinkTokenState
 	return response, nil
 }
 
-// REQUEST_SOURCE: VITAL-LINK
-// PROVIDER_TYPE: EMAIL-AUTH
-// This function is hit by vital-link to authenticate a email provider.
+// Deprecated. Use `POST /v2/link/provider/email/{provider}` instead.
 func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) (*vitalgo.ConnectionStatus, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
@@ -325,9 +323,7 @@ func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) 
 	return response, nil
 }
 
-// REQUEST_SOURCE: VITAL-LINK
-// PROVIDER_TYPE: PASSWORD-AUTH
-// This function is hit by vital-link to authenticate a password provider.
+// Deprecated. Use `POST /v2/link/provider/password/{provider}` instead.
 func (c *Client) PasswordAuth(ctx context.Context, request *vitalgo.PasswordAuthLink) (*vitalgo.ConnectionStatus, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {

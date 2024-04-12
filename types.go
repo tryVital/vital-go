@@ -3001,6 +3001,10 @@ type ClientFacingUser struct {
 	FallbackTimeZone *FallbackTimeZone `json:"fallback_time_zone,omitempty"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	FallbackBirthDate *FallbackBirthDate `json:"fallback_birth_date,omitempty"`
+	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	IngestionStart *string `json:"ingestion_start,omitempty"`
+	// Ending bound for user data ingestion. Data newer than this date will not be ingested and the connection deregistered.
+	IngestionEnd *string `json:"ingestion_end,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3305,6 +3309,38 @@ func (c *ClientSleepResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientSleepResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientUserIdConflict struct {
+	ErrorType    string    `json:"error_type"`
+	ErrorMessage string    `json:"error_message"`
+	UserId       string    `json:"user_id"`
+	CreatedOn    time.Time `json:"created_on"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientUserIdConflict) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientUserIdConflict
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientUserIdConflict(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientUserIdConflict) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -5995,6 +6031,7 @@ func (l *LastAttempt) String() string {
 
 type LibreConfig struct {
 	PracticeId map[string]interface{} `json:"practice_id,omitempty"`
+	StripTz    *bool                  `json:"strip_tz,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6376,6 +6413,7 @@ const (
 	OrderStatusCompletedAtHomePhlebotomyCompleted                   OrderStatus = "completed.at_home_phlebotomy.completed"
 	OrderStatusSampleWithLabAtHomePhlebotomyPartialResults          OrderStatus = "sample_with_lab.at_home_phlebotomy.partial_results"
 	OrderStatusCancelledAtHomePhlebotomyCancelled                   OrderStatus = "cancelled.at_home_phlebotomy.cancelled"
+	OrderStatusFailedAtHomePhlebotomySampleError                    OrderStatus = "failed.at_home_phlebotomy.sample_error"
 	OrderStatusReceivedTestkitOrdered                               OrderStatus = "received.testkit.ordered"
 	OrderStatusReceivedTestkitAwaitingRegistration                  OrderStatus = "received.testkit.awaiting_registration"
 	OrderStatusReceivedTestkitRequisitionCreated                    OrderStatus = "received.testkit.requisition_created"
@@ -6426,6 +6464,8 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusSampleWithLabAtHomePhlebotomyPartialResults, nil
 	case "cancelled.at_home_phlebotomy.cancelled":
 		return OrderStatusCancelledAtHomePhlebotomyCancelled, nil
+	case "failed.at_home_phlebotomy.sample_error":
+		return OrderStatusFailedAtHomePhlebotomySampleError, nil
 	case "received.testkit.ordered":
 		return OrderStatusReceivedTestkitOrdered, nil
 	case "received.testkit.awaiting_registration":
@@ -7322,6 +7362,7 @@ const (
 	RegionNl Region = "nl"
 	RegionFr Region = "fr"
 	RegionCa Region = "ca"
+	RegionIn Region = "in"
 )
 
 func NewRegionFromString(s string) (Region, error) {
@@ -7344,6 +7385,8 @@ func NewRegionFromString(s string) (Region, error) {
 		return RegionFr, nil
 	case "ca":
 		return RegionCa, nil
+	case "in":
+		return RegionIn, nil
 	}
 	var t Region
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
