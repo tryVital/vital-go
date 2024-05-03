@@ -37,3 +37,10 @@ func WithApiKey(apiKey string) core.ClientOption {
 		opts.ApiKey = apiKey
 	}
 }
+
+// WithVitalLinkToken sets the vitalLinkToken header on every request.
+func WithVitalLinkToken(vitalLinkToken string) core.ClientOption {
+	return func(opts *core.ClientOptions) {
+		opts.VitalLinkToken = vitalLinkToken
+	}
+}

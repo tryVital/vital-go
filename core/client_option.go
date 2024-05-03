@@ -14,10 +14,11 @@ type ClientOption func(*ClientOptions)
 // This type is primarily used by the generated code and is
 // not meant to be used directly; use ClientOption instead.
 type ClientOptions struct {
-	BaseURL    string
-	HTTPClient HTTPClient
-	HTTPHeader http.Header
-	ApiKey     string
+	BaseURL        string
+	HTTPClient     HTTPClient
+	HTTPHeader     http.Header
+	ApiKey         string
+	VitalLinkToken string
 }
 
 // NewClientOptions returns a new *ClientOptions value.
@@ -35,6 +36,7 @@ func NewClientOptions() *ClientOptions {
 func (c *ClientOptions) ToHeader() http.Header {
 	header := c.cloneHeader()
 	header.Set("x-vital-api-key", fmt.Sprintf("%v", c.ApiKey))
+	header.Set("x-vital-link-token", fmt.Sprintf("%v", c.VitalLinkToken))
 	return header
 }
 
@@ -42,6 +44,6 @@ func (c *ClientOptions) cloneHeader() http.Header {
 	headers := c.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/tryVital/vital-go")
-	headers.Set("X-Fern-SDK-Version", "v1.1.3")
+	headers.Set("X-Fern-SDK-Version", "v1.1.4")
 	return headers
 }

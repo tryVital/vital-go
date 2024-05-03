@@ -303,6 +303,29 @@ func (a AuthType) Ptr() *AuthType {
 	return &a
 }
 
+// An enumeration.
+type Availability string
+
+const (
+	AvailabilityAvailable   Availability = "available"
+	AvailabilityUnavailable Availability = "unavailable"
+)
+
+func NewAvailabilityFromString(s string) (Availability, error) {
+	switch s {
+	case "available":
+		return AvailabilityAvailable, nil
+	case "unavailable":
+		return AvailabilityUnavailable, nil
+	}
+	var t Availability
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a Availability) Ptr() *Availability {
+	return &a
+}
+
 // Represent the schema for an individual biomarker result.
 type BiomarkerResult struct {
 	Name            string     `json:"name"`
@@ -2277,7 +2300,8 @@ type ClientFacingProviderWithStatus struct {
 	// URL for source logo
 	Logo string `json:"logo"`
 	// Status of source, either error or connected
-	Status string `json:"status"`
+	Status               string                           `json:"status"`
+	ResourceAvailability map[string]*ResourceAvailability `json:"resource_availability,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2873,9 +2897,13 @@ func (c *ClientFacingStressLevelTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// [Deprecated] GET /v2/team is in the process of being removed.
+// Neither customers nor Dashboard should retrieve team settings and metadata directly.
+//
+// All must migrate to the Team endpoints of the Org Management API.
 type ClientFacingTeam struct {
 	Id                                       string                `json:"id"`
-	OrgId                                    *string               `json:"org_id,omitempty"`
+	OrgId                                    string                `json:"org_id"`
 	Name                                     string                `json:"name"`
 	SvixAppId                                *string               `json:"svix_app_id,omitempty"`
 	ClientId                                 *string               `json:"client_id,omitempty"`
@@ -3416,8 +3444,11 @@ func (c *ConnectedSourceClientFacing) String() string {
 }
 
 type ConnectionStatus struct {
-	Success     bool    `json:"success"`
-	RedirectUrl *string `json:"redirect_url,omitempty"`
+	Success     bool                  `json:"success"`
+	RedirectUrl *string               `json:"redirect_url,omitempty"`
+	State       ConnectionStatusState `json:"state,omitempty"`
+	ErrorType   *string               `json:"error_type,omitempty"`
+	Error       *string               `json:"error,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3443,6 +3474,28 @@ func (c *ConnectionStatus) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionStatusState string
+
+const (
+	ConnectionStatusStateSuccess ConnectionStatusState = "success"
+	ConnectionStatusStateError   ConnectionStatusState = "error"
+)
+
+func NewConnectionStatusStateFromString(s string) (ConnectionStatusState, error) {
+	switch s {
+	case "success":
+		return ConnectionStatusStateSuccess, nil
+	case "error":
+		return ConnectionStatusStateError, nil
+	}
+	var t ConnectionStatusState
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ConnectionStatusState) Ptr() *ConnectionStatusState {
+	return &c
 }
 
 type Consent struct {
@@ -7029,9 +7082,12 @@ func (p *ProfileInDb) String() string {
 }
 
 type ProviderLinkResponse struct {
-	Provider   PasswordProviders `json:"provider,omitempty"`
-	Connected  bool              `json:"connected"`
-	ProviderId *string           `json:"provider_id,omitempty"`
+	Provider   PasswordProviders         `json:"provider,omitempty"`
+	Connected  bool                      `json:"connected"`
+	ProviderId *string                   `json:"provider_id,omitempty"`
+	State      ProviderLinkResponseState `json:"state,omitempty"`
+	ErrorType  *string                   `json:"error_type,omitempty"`
+	Error      *string                   `json:"error,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -7057,6 +7113,28 @@ func (p *ProviderLinkResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
+}
+
+type ProviderLinkResponseState string
+
+const (
+	ProviderLinkResponseStateSuccess ProviderLinkResponseState = "success"
+	ProviderLinkResponseStateError   ProviderLinkResponseState = "error"
+)
+
+func NewProviderLinkResponseStateFromString(s string) (ProviderLinkResponseState, error) {
+	switch s {
+	case "success":
+		return ProviderLinkResponseStateSuccess, nil
+	case "error":
+		return ProviderLinkResponseStateError, nil
+	}
+	var t ProviderLinkResponseState
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ProviderLinkResponseState) Ptr() *ProviderLinkResponseState {
+	return &p
 }
 
 // An enumeration.
@@ -7396,6 +7474,36 @@ func (r Region) Ptr() *Region {
 	return &r
 }
 
+type ResourceAvailability struct {
+	Status            Availability             `json:"status,omitempty"`
+	ScopeRequirements *ScopeRequirementsGrants `json:"scope_requirements,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *ResourceAvailability) UnmarshalJSON(data []byte) error {
+	type unmarshaler ResourceAvailability
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ResourceAvailability(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ResourceAvailability) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
 // An enumeration.
 type ResponsibleRelationship string
 
@@ -7446,6 +7554,66 @@ func NewResultTypeFromString(s string) (ResultType, error) {
 
 func (r ResultType) Ptr() *ResultType {
 	return &r
+}
+
+type ScopeRequirementsGrants struct {
+	UserGranted *ScopeRequirementsStr `json:"user_granted,omitempty"`
+	UserDenied  *ScopeRequirementsStr `json:"user_denied,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *ScopeRequirementsGrants) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScopeRequirementsGrants
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScopeRequirementsGrants(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScopeRequirementsGrants) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type ScopeRequirementsStr struct {
+	Required []string `json:"required,omitempty"`
+	Optional []string `json:"optional,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *ScopeRequirementsStr) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScopeRequirementsStr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScopeRequirementsStr(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScopeRequirementsStr) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 type ShippingAddress struct {
@@ -7823,12 +7991,13 @@ func (s SourceType) Ptr() *SourceType {
 }
 
 type TeamConfig struct {
-	Libreview          *LibreConfig                 `json:"libreview,omitempty"`
-	TextsEnabled       *bool                        `json:"texts_enabled,omitempty"`
-	PushHistoricalData *bool                        `json:"push_historical_data,omitempty"`
-	ProviderRawData    *bool                        `json:"provider_raw_data,omitempty"`
-	EdsPreferences     *EventDestinationPreferences `json:"eds_preferences,omitempty"`
-	EventTypePrefixes  []string                     `json:"event_type_prefixes,omitempty"`
+	Libreview                 *LibreConfig                 `json:"libreview,omitempty"`
+	TextsEnabled              *bool                        `json:"texts_enabled,omitempty"`
+	PushHistoricalData        *bool                        `json:"push_historical_data,omitempty"`
+	ProviderRawData           *bool                        `json:"provider_raw_data,omitempty"`
+	RejectDuplicateConnection *bool                        `json:"reject_duplicate_connection,omitempty"`
+	EdsPreferences            *EventDestinationPreferences `json:"eds_preferences,omitempty"`
+	EventTypePrefixes         []string                     `json:"event_type_prefixes,omitempty"`
 
 	_rawJSON json.RawMessage
 }
