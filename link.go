@@ -19,6 +19,7 @@ type DemoConnectionCreationPayload struct {
 }
 
 type EmailProviderAuthLink struct {
+	VitalLinkToken                *string    `json:"-"`
 	Email                         string     `json:"email"`
 	EmailProviderAuthLinkProvider *Providers `json:"provider,omitempty"`
 	Region                        *Region    `json:"region,omitempty"`
@@ -31,6 +32,7 @@ type ManualConnectionData struct {
 
 type IndividualProviderData struct {
 	VitalLinkClientRegion *string `json:"-"`
+	VitalLinkToken        *string `json:"-"`
 	// Username for provider
 	Username string `json:"username"`
 	// Password for provider
@@ -38,10 +40,19 @@ type IndividualProviderData struct {
 }
 
 type EmailAuthLink struct {
-	Email    string    `json:"email"`
-	Provider Providers `json:"provider,omitempty"`
-	AuthType AuthType  `json:"auth_type,omitempty"`
-	Region   *Region   `json:"region,omitempty"`
+	VitalLinkToken *string   `json:"-"`
+	Email          string    `json:"email"`
+	Provider       Providers `json:"provider,omitempty"`
+	AuthType       AuthType  `json:"auth_type,omitempty"`
+	Region         *Region   `json:"region,omitempty"`
+}
+
+type LinkGenerateOauthLinkRequest struct {
+	VitalLinkToken *string `json:"-"`
+}
+
+type LinkGetAllProvidersRequest struct {
+	VitalLinkToken *string `json:"-"`
 }
 
 type LinkTokenBase struct {
@@ -51,10 +62,11 @@ type LinkTokenBase struct {
 }
 
 type PasswordAuthLink struct {
-	Username string    `json:"username"`
-	Password string    `json:"password"`
-	Provider Providers `json:"provider,omitempty"`
-	AuthType AuthType  `json:"auth_type,omitempty"`
+	VitalLinkToken *string   `json:"-"`
+	Username       string    `json:"username"`
+	Password       string    `json:"password"`
+	Provider       Providers `json:"provider,omitempty"`
+	AuthType       AuthType  `json:"auth_type,omitempty"`
 }
 
 type BeginLinkTokenRequest struct {
@@ -68,4 +80,8 @@ type LinkTokenExchange struct {
 	Provider          *Providers  `json:"provider,omitempty"`
 	RedirectUrl       *string     `json:"redirect_url,omitempty"`
 	FilterOnProviders []Providers `json:"filter_on_providers,omitempty"`
+}
+
+type LinkTokenStateRequest struct {
+	VitalLinkToken *string `json:"-"`
 }
