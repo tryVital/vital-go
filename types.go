@@ -222,6 +222,7 @@ func (a AppointmentStatus) Ptr() *AppointmentStatus {
 	return &a
 }
 
+// An enumeration.
 type AppointmentType = string
 
 type AreaInfo struct {
@@ -983,6 +984,7 @@ type ClientFacingCaloriesActiveTimeseries struct {
 	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
 	Type *string `json:"type,omitempty"`
+	// Measured in kilocalories (kcal)
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -1043,6 +1045,7 @@ type ClientFacingCaloriesBasalTimeseries struct {
 	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
 	Type *string `json:"type,omitempty"`
+	// Measured in kilocalories (kcal)
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp"`
 	// Basal Metabolic Rate at the time or interval::kilocalories
@@ -1171,6 +1174,7 @@ type ClientFacingDistanceTimeseries struct {
 	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
 	Type *string `json:"type,omitempty"`
+	// Measured in meters (m)
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -1271,6 +1275,7 @@ type ClientFacingFloorsClimbedTimeseries struct {
 	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
 	Type *string `json:"type,omitempty"`
+	// Measured in counts
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp"`
 	// Number of floors climbed at the time or interval::count
@@ -2766,6 +2771,7 @@ type ClientFacingStepsTimeseries struct {
 	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
 	Type *string `json:"type,omitempty"`
+	// Measured in counts
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -3444,11 +3450,12 @@ func (c *ConnectedSourceClientFacing) String() string {
 }
 
 type ConnectionStatus struct {
-	Success     bool                  `json:"success"`
-	RedirectUrl *string               `json:"redirect_url,omitempty"`
 	State       ConnectionStatusState `json:"state,omitempty"`
 	ErrorType   *string               `json:"error_type,omitempty"`
 	Error       *string               `json:"error,omitempty"`
+	ProviderMfa *ProviderMfaRequest   `json:"provider_mfa,omitempty"`
+	Success     bool                  `json:"success"`
+	RedirectUrl *string               `json:"redirect_url,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3479,8 +3486,9 @@ func (c *ConnectionStatus) String() string {
 type ConnectionStatusState string
 
 const (
-	ConnectionStatusStateSuccess ConnectionStatusState = "success"
-	ConnectionStatusStateError   ConnectionStatusState = "error"
+	ConnectionStatusStateSuccess            ConnectionStatusState = "success"
+	ConnectionStatusStateError              ConnectionStatusState = "error"
+	ConnectionStatusStatePendingProviderMfa ConnectionStatusState = "pending_provider_mfa"
 )
 
 func NewConnectionStatusStateFromString(s string) (ConnectionStatusState, error) {
@@ -3489,6 +3497,8 @@ func NewConnectionStatusStateFromString(s string) (ConnectionStatusState, error)
 		return ConnectionStatusStateSuccess, nil
 	case "error":
 		return ConnectionStatusStateError, nil
+	case "pending_provider_mfa":
+		return ConnectionStatusStatePendingProviderMfa, nil
 	}
 	var t ConnectionStatusState
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -3713,6 +3723,7 @@ func (d *DeviceV2InDb) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// An enumeration.
 type EmailProviders = string
 
 type Energy struct {
@@ -7047,7 +7058,7 @@ func (p *PostOrderResponse) String() string {
 }
 
 type ProfileInDb struct {
-	Data       *string               `json:"data,omitempty"`
+	Data       interface{}           `json:"data,omitempty"`
 	UserId     string                `json:"user_id"`
 	SourceId   int                   `json:"source_id"`
 	PriorityId *int                  `json:"priority_id,omitempty"`
@@ -7082,12 +7093,13 @@ func (p *ProfileInDb) String() string {
 }
 
 type ProviderLinkResponse struct {
-	Provider   PasswordProviders         `json:"provider,omitempty"`
-	Connected  bool                      `json:"connected"`
-	ProviderId *string                   `json:"provider_id,omitempty"`
-	State      ProviderLinkResponseState `json:"state,omitempty"`
-	ErrorType  *string                   `json:"error_type,omitempty"`
-	Error      *string                   `json:"error,omitempty"`
+	State       ProviderLinkResponseState `json:"state,omitempty"`
+	ErrorType   *string                   `json:"error_type,omitempty"`
+	Error       *string                   `json:"error,omitempty"`
+	ProviderMfa *ProviderMfaRequest       `json:"provider_mfa,omitempty"`
+	Provider    PasswordProviders         `json:"provider,omitempty"`
+	Connected   bool                      `json:"connected"`
+	ProviderId  *string                   `json:"provider_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -7118,8 +7130,9 @@ func (p *ProviderLinkResponse) String() string {
 type ProviderLinkResponseState string
 
 const (
-	ProviderLinkResponseStateSuccess ProviderLinkResponseState = "success"
-	ProviderLinkResponseStateError   ProviderLinkResponseState = "error"
+	ProviderLinkResponseStateSuccess            ProviderLinkResponseState = "success"
+	ProviderLinkResponseStateError              ProviderLinkResponseState = "error"
+	ProviderLinkResponseStatePendingProviderMfa ProviderLinkResponseState = "pending_provider_mfa"
 )
 
 func NewProviderLinkResponseStateFromString(s string) (ProviderLinkResponseState, error) {
@@ -7128,12 +7141,66 @@ func NewProviderLinkResponseStateFromString(s string) (ProviderLinkResponseState
 		return ProviderLinkResponseStateSuccess, nil
 	case "error":
 		return ProviderLinkResponseStateError, nil
+	case "pending_provider_mfa":
+		return ProviderLinkResponseStatePendingProviderMfa, nil
 	}
 	var t ProviderLinkResponseState
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
 func (p ProviderLinkResponseState) Ptr() *ProviderLinkResponseState {
+	return &p
+}
+
+type ProviderMfaRequest struct {
+	Method ProviderMfaRequestMethod `json:"method,omitempty"`
+	Hint   string                   `json:"hint"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *ProviderMfaRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler ProviderMfaRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ProviderMfaRequest(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProviderMfaRequest) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type ProviderMfaRequestMethod string
+
+const (
+	ProviderMfaRequestMethodSms   ProviderMfaRequestMethod = "sms"
+	ProviderMfaRequestMethodEmail ProviderMfaRequestMethod = "email"
+)
+
+func NewProviderMfaRequestMethodFromString(s string) (ProviderMfaRequestMethod, error) {
+	switch s {
+	case "sms":
+		return ProviderMfaRequestMethodSms, nil
+	case "email":
+		return ProviderMfaRequestMethodEmail, nil
+	}
+	var t ProviderMfaRequestMethod
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ProviderMfaRequestMethod) Ptr() *ProviderMfaRequestMethod {
 	return &p
 }
 
@@ -7151,6 +7218,7 @@ const (
 	ProvidersWahoo             Providers = "wahoo"
 	ProvidersZwift             Providers = "zwift"
 	ProvidersFreestyleLibre    Providers = "freestyle_libre"
+	ProvidersAbbottLibreview   Providers = "abbott_libreview"
 	ProvidersFreestyleLibreBle Providers = "freestyle_libre_ble"
 	ProvidersEightSleep        Providers = "eight_sleep"
 	ProvidersWithings          Providers = "withings"
@@ -7198,6 +7266,8 @@ func NewProvidersFromString(s string) (Providers, error) {
 		return ProvidersZwift, nil
 	case "freestyle_libre":
 		return ProvidersFreestyleLibre, nil
+	case "abbott_libreview":
+		return ProvidersAbbottLibreview, nil
 	case "freestyle_libre_ble":
 		return ProvidersFreestyleLibreBle, nil
 	case "eight_sleep":
@@ -8257,7 +8327,7 @@ func (u *UserHistoricalPullsResponse) String() string {
 
 type UserRefreshErrorResponse struct {
 	// Whether operation was successful or not
-	Success string `json:"success"`
+	Success bool `json:"success"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	UserId        string   `json:"user_id"`
 	Error         string   `json:"error"`
@@ -8291,7 +8361,7 @@ func (u *UserRefreshErrorResponse) String() string {
 
 type UserRefreshSuccessResponse struct {
 	// Whether operation was successful or not
-	Success string `json:"success"`
+	Success bool `json:"success"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	UserId            string   `json:"user_id"`
 	RefreshedSources  []string `json:"refreshed_sources,omitempty"`

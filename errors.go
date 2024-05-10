@@ -30,6 +30,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
+// Validation Error
 type UnprocessableEntityError struct {
 	*core.APIError
 	Body *HttpValidationError
