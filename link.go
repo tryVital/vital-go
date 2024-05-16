@@ -11,6 +11,11 @@ type LinkCodeCreateRequest struct {
 	ExpiresAt *time.Time `json:"-"`
 }
 
+type CompletePasswordProviderMfaBody struct {
+	VitalLinkToken *string `json:"-"`
+	MfaCode        string  `json:"mfa_code"`
+}
+
 type DemoConnectionCreationPayload struct {
 	// Vital user ID
 	UserId string `json:"user_id"`
@@ -31,12 +36,12 @@ type ManualConnectionData struct {
 }
 
 type IndividualProviderData struct {
-	VitalLinkClientRegion *string `json:"-"`
-	VitalLinkToken        *string `json:"-"`
+	VitalLinkToken *string `json:"-"`
 	// Username for provider
 	Username string `json:"username"`
 	// Password for provider
-	Password string `json:"password"`
+	Password string  `json:"password"`
+	Region   *Region `json:"region,omitempty"`
 }
 
 type EmailAuthLink struct {

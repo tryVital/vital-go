@@ -12,7 +12,7 @@ type UserCreateBody struct {
 	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
 	// Starting bound for user data ingestion. Data older than this date will not be ingested.
 	IngestionStart *string `json:"ingestion_start,omitempty"`
-	// Ending bound for user data ingestion. Data newer than this date will not be ingested and the connection deregistered.
+	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
 	IngestionEnd *string `json:"ingestion_end,omitempty"`
 }
 
@@ -29,7 +29,7 @@ type UserPatchBody struct {
 	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
 	// Starting bound for user data ingestion. Data older than this date will not be ingested.
 	IngestionStart *string `json:"ingestion_start,omitempty"`
-	// Ending bound for user data ingestion. Data newer than this date will not be ingested and the connection deregistered.
+	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
 	IngestionEnd *string `json:"ingestion_end,omitempty"`
 }
 

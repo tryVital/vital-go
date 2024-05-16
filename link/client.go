@@ -430,9 +430,55 @@ func (c *Client) ConnectPasswordProvider(ctx context.Context, provider vitalgo.P
 	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/password/%v", provider)
 
 	headers := c.header.Clone()
-	if request.VitalLinkClientRegion != nil {
-		headers.Add("x-vital-link-client-region", fmt.Sprintf("%v", *request.VitalLinkClientRegion))
+	if request.VitalLinkToken != nil {
+		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.ProviderLinkResponse
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodPost,
+		request,
+		&response,
+		false,
+		headers,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// This connects auth providers that are password based.
+func (c *Client) CompletePasswordProviderMfa(ctx context.Context, provider vitalgo.PasswordProviders, request *vitalgo.CompletePasswordProviderMfaBody) (*vitalgo.ProviderLinkResponse, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/password/%v/complete_mfa", provider)
+
+	headers := c.header.Clone()
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}

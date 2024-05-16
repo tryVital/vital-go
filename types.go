@@ -3037,7 +3037,7 @@ type ClientFacingUser struct {
 	FallbackBirthDate *FallbackBirthDate `json:"fallback_birth_date,omitempty"`
 	// Starting bound for user data ingestion. Data older than this date will not be ingested.
 	IngestionStart *string `json:"ingestion_start,omitempty"`
-	// Ending bound for user data ingestion. Data newer than this date will not be ingested and the connection deregistered.
+	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
 	IngestionEnd *string `json:"ingestion_end,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -3451,11 +3451,11 @@ func (c *ConnectedSourceClientFacing) String() string {
 
 type ConnectionStatus struct {
 	State       ConnectionStatusState `json:"state,omitempty"`
+	RedirectUrl *string               `json:"redirect_url,omitempty"`
 	ErrorType   *string               `json:"error_type,omitempty"`
 	Error       *string               `json:"error,omitempty"`
 	ProviderMfa *ProviderMfaRequest   `json:"provider_mfa,omitempty"`
 	Success     bool                  `json:"success"`
-	RedirectUrl *string               `json:"redirect_url,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6642,16 +6642,17 @@ func (p *PaginatedUsersResponse) String() string {
 type PasswordProviders string
 
 const (
-	PasswordProvidersWhoop        PasswordProviders = "whoop"
-	PasswordProvidersRenpho       PasswordProviders = "renpho"
-	PasswordProvidersPeloton      PasswordProviders = "peloton"
-	PasswordProvidersZwift        PasswordProviders = "zwift"
-	PasswordProvidersEightSleep   PasswordProviders = "eight_sleep"
-	PasswordProvidersBeurerApi    PasswordProviders = "beurer_api"
-	PasswordProvidersDexcom       PasswordProviders = "dexcom"
-	PasswordProvidersHammerhead   PasswordProviders = "hammerhead"
-	PasswordProvidersMyFitnessPal PasswordProviders = "my_fitness_pal"
-	PasswordProvidersKardia       PasswordProviders = "kardia"
+	PasswordProvidersWhoop           PasswordProviders = "whoop"
+	PasswordProvidersRenpho          PasswordProviders = "renpho"
+	PasswordProvidersPeloton         PasswordProviders = "peloton"
+	PasswordProvidersZwift           PasswordProviders = "zwift"
+	PasswordProvidersEightSleep      PasswordProviders = "eight_sleep"
+	PasswordProvidersBeurerApi       PasswordProviders = "beurer_api"
+	PasswordProvidersDexcom          PasswordProviders = "dexcom"
+	PasswordProvidersHammerhead      PasswordProviders = "hammerhead"
+	PasswordProvidersMyFitnessPal    PasswordProviders = "my_fitness_pal"
+	PasswordProvidersKardia          PasswordProviders = "kardia"
+	PasswordProvidersAbbottLibreview PasswordProviders = "abbott_libreview"
 )
 
 func NewPasswordProvidersFromString(s string) (PasswordProviders, error) {
@@ -6676,6 +6677,8 @@ func NewPasswordProvidersFromString(s string) (PasswordProviders, error) {
 		return PasswordProvidersMyFitnessPal, nil
 	case "kardia":
 		return PasswordProvidersKardia, nil
+	case "abbott_libreview":
+		return PasswordProvidersAbbottLibreview, nil
 	}
 	var t PasswordProviders
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -7094,12 +7097,13 @@ func (p *ProfileInDb) String() string {
 
 type ProviderLinkResponse struct {
 	State       ProviderLinkResponseState `json:"state,omitempty"`
+	RedirectUrl *string                   `json:"redirect_url,omitempty"`
 	ErrorType   *string                   `json:"error_type,omitempty"`
 	Error       *string                   `json:"error,omitempty"`
 	ProviderMfa *ProviderMfaRequest       `json:"provider_mfa,omitempty"`
 	Provider    PasswordProviders         `json:"provider,omitempty"`
 	Connected   bool                      `json:"connected"`
-	ProviderId  *string                   `json:"provider_id,omitempty"`
+	ProviderId  string                    `json:"provider_id"`
 
 	_rawJSON json.RawMessage
 }
