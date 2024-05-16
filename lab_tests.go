@@ -35,6 +35,7 @@ type CreateOrderRequestCompatible struct {
 	Consents []*Consent `json:"consents,omitempty"`
 	// Schedule an Order to be processed in a future date.
 	ActivateBy     *string                   `json:"activate_by,omitempty"`
+	AoeAnswers     []*AoEAnswer              `json:"aoe_answers,omitempty"`
 	PatientDetails *PatientDetails           `json:"patient_details,omitempty"`
 	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`
 }

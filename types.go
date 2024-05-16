@@ -79,6 +79,97 @@ func (a *Address) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type Answer struct {
+	Id    int    `json:"id"`
+	Code  string `json:"code"`
+	Value string `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *Answer) UnmarshalJSON(data []byte) error {
+	type unmarshaler Answer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = Answer(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *Answer) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AoE struct {
+	Questions []*Question `json:"questions,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *AoE) UnmarshalJSON(data []byte) error {
+	type unmarshaler AoE
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AoE(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AoE) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AoEAnswer struct {
+	MarkerId   int    `json:"marker_id"`
+	QuestionId int    `json:"question_id"`
+	Answer     string `json:"answer"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *AoEAnswer) UnmarshalJSON(data []byte) error {
+	type unmarshaler AoEAnswer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AoEAnswer(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AoEAnswer) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type AppointmentAvailabilitySlots struct {
 	Slots    []*DaySlots `json:"slots,omitempty"`
 	Timezone *string     `json:"timezone,omitempty"`
@@ -1758,6 +1849,7 @@ type ClientFacingMarker struct {
 	Type        *MarkerType `json:"type,omitempty"`
 	Unit        *string     `json:"unit,omitempty"`
 	Price       *string     `json:"price,omitempty"`
+	Aoe         *AoE        `json:"aoe,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1795,6 +1887,7 @@ type ClientFacingMarkerComplete struct {
 	Type            *MarkerType           `json:"type,omitempty"`
 	Unit            *string               `json:"unit,omitempty"`
 	Price           *string               `json:"price,omitempty"`
+	Aoe             *AoE                  `json:"aoe,omitempty"`
 	ExpectedResults []*ClientFacingResult `json:"expected_results,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -7325,6 +7418,70 @@ func NewProvidersFromString(s string) (Providers, error) {
 
 func (p Providers) Ptr() *Providers {
 	return &p
+}
+
+type Question struct {
+	Id       int          `json:"id"`
+	Required bool         `json:"required"`
+	Code     string       `json:"code"`
+	Value    string       `json:"value"`
+	Type     QuestionType `json:"type,omitempty"`
+	Sequence int          `json:"sequence"`
+	Answers  []*Answer    `json:"answers,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (q *Question) UnmarshalJSON(data []byte) error {
+	type unmarshaler Question
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = Question(value)
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *Question) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+// An enumeration.
+type QuestionType string
+
+const (
+	QuestionTypeChoice      QuestionType = "choice"
+	QuestionTypeText        QuestionType = "text"
+	QuestionTypeNumeric     QuestionType = "numeric"
+	QuestionTypeMultiChoice QuestionType = "multi_choice"
+)
+
+func NewQuestionTypeFromString(s string) (QuestionType, error) {
+	switch s {
+	case "choice":
+		return QuestionTypeChoice, nil
+	case "text":
+		return QuestionTypeText, nil
+	case "numeric":
+		return QuestionTypeNumeric, nil
+	case "multi_choice":
+		return QuestionTypeMultiChoice, nil
+	}
+	var t QuestionType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (q QuestionType) Ptr() *QuestionType {
+	return &q
 }
 
 type RawActivity struct {
