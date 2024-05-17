@@ -817,6 +817,61 @@ func (c *Client) GetResultRaw(ctx context.Context, orderId string) (*vitalgo.Lab
 	return response, nil
 }
 
+// This endpoint returns the lab results for the order.
+func (c *Client) GetLabelsPdf(ctx context.Context, orderId string, request *vitalgo.LabTestsGetLabelsPdfRequest) (io.Reader, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/order/%v/labels/pdf", orderId)
+
+	queryParams := make(url.Values)
+	if request.NumberOfLabels != nil {
+		queryParams.Add("number_of_labels", fmt.Sprintf("%v", *request.NumberOfLabels))
+	}
+	if request.CollectionDate != nil {
+		queryParams.Add("collection_date", fmt.Sprintf("%v", request.CollectionDate.Format(time.RFC3339)))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	response := bytes.NewBuffer(nil)
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 // GET requisition pdf for an order
 //
 // Your Order ID.

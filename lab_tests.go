@@ -45,6 +45,13 @@ type LabTestsGetAreaInfoRequest struct {
 	ZipCode string `json:"-"`
 }
 
+type LabTestsGetLabelsPdfRequest struct {
+	// Number of labels to generate
+	NumberOfLabels *int `json:"-"`
+	// Collection date
+	CollectionDate *time.Time `json:"-"`
+}
+
 type LabTestsGetMarkersRequest struct {
 	// The identifier Vital assigned to a lab partner.
 	LabId []*int `json:"-"`

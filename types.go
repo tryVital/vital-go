@@ -5871,6 +5871,7 @@ const (
 	HistoricalPullStatusSuccess    HistoricalPullStatus = "success"
 	HistoricalPullStatusFailure    HistoricalPullStatus = "failure"
 	HistoricalPullStatusInProgress HistoricalPullStatus = "in_progress"
+	HistoricalPullStatusScheduled  HistoricalPullStatus = "scheduled"
 )
 
 func NewHistoricalPullStatusFromString(s string) (HistoricalPullStatus, error) {
@@ -5881,6 +5882,8 @@ func NewHistoricalPullStatusFromString(s string) (HistoricalPullStatus, error) {
 		return HistoricalPullStatusFailure, nil
 	case "in_progress":
 		return HistoricalPullStatusInProgress, nil
+	case "scheduled":
+		return HistoricalPullStatusScheduled, nil
 	}
 	var t HistoricalPullStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -5888,6 +5891,37 @@ func NewHistoricalPullStatusFromString(s string) (HistoricalPullStatus, error) {
 
 func (h HistoricalPullStatus) Ptr() *HistoricalPullStatus {
 	return &h
+}
+
+type HistoricalPullTimeline struct {
+	ScheduledAt time.Time  `json:"scheduled_at"`
+	StartedAt   *time.Time `json:"started_at,omitempty"`
+	EndedAt     *time.Time `json:"ended_at,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (h *HistoricalPullTimeline) UnmarshalJSON(data []byte) error {
+	type unmarshaler HistoricalPullTimeline
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HistoricalPullTimeline(value)
+	h._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HistoricalPullTimeline) String() string {
+	if len(h._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(h._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
 }
 
 type HttpValidationError struct {
@@ -7884,12 +7918,13 @@ func (s *ShippingAddress) String() string {
 }
 
 type SingleHistoricalPullStatistics struct {
-	Status       HistoricalPullStatus `json:"status,omitempty"`
-	RangeStart   *time.Time           `json:"range_start,omitempty"`
-	RangeEnd     *time.Time           `json:"range_end,omitempty"`
-	DaysWithData *int                 `json:"days_with_data,omitempty"`
-	Release      string               `json:"release"`
-	TraceId      *string              `json:"trace_id,omitempty"`
+	Status       HistoricalPullStatus    `json:"status,omitempty"`
+	RangeStart   *time.Time              `json:"range_start,omitempty"`
+	RangeEnd     *time.Time              `json:"range_end,omitempty"`
+	Timeline     *HistoricalPullTimeline `json:"timeline,omitempty"`
+	DaysWithData *int                    `json:"days_with_data,omitempty"`
+	Release      string                  `json:"release"`
+	TraceId      *string                 `json:"trace_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
