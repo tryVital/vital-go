@@ -45,6 +45,41 @@ func (a *ActivityV2InDb) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type Addres struct {
+	Use        string   `json:"use"`
+	Type       string   `json:"type"`
+	Line       []string `json:"line,omitempty"`
+	City       string   `json:"city"`
+	State      string   `json:"state"`
+	PostalCode string   `json:"postalCode"`
+	Country    string   `json:"country"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *Addres) UnmarshalJSON(data []byte) error {
+	type unmarshaler Addres
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = Addres(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *Addres) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type Address struct {
 	FirstLine  string  `json:"first_line"`
 	SecondLine *string `json:"second_line,omitempty"`
@@ -99,6 +134,35 @@ func (a *Answer) UnmarshalJSON(data []byte) error {
 }
 
 func (a *Answer) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AnswerItem struct {
+	ValueString string `json:"valueString"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *AnswerItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler AnswerItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AnswerItem(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AnswerItem) String() string {
 	if len(a._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
 			return value
@@ -416,6 +480,35 @@ func NewAvailabilityFromString(s string) (Availability, error) {
 
 func (a Availability) Ptr() *Availability {
 	return &a
+}
+
+type Beneficiary struct {
+	Reference string `json:"reference"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *Beneficiary) UnmarshalJSON(data []byte) error {
+	type unmarshaler Beneficiary
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = Beneficiary(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *Beneficiary) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
 }
 
 // Represent the schema for an individual biomarker result.
@@ -3508,6 +3601,36 @@ func (c *ClientWorkoutResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type CodingItem1 struct {
+	System string `json:"system"`
+	Code   string `json:"code"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CodingItem1) UnmarshalJSON(data []byte) error {
+	type unmarshaler CodingItem1
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CodingItem1(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CodingItem1) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ConnectedSourceClientFacing struct {
 	// The provider of this connected source.
 	Provider *ClientFacingProvider `json:"provider,omitempty"`
@@ -5864,6 +5987,35 @@ func (h *HealthInsuranceCreateRequestPatientSignatureImage) Accept(visitor Healt
 	}
 }
 
+type High struct {
+	Value int `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (h *High) UnmarshalJSON(data []byte) error {
+	type unmarshaler High
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = High(value)
+	h._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *High) String() string {
+	if len(h._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(h._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
 // An enumeration.
 type HistoricalPullStatus string
 
@@ -5953,6 +6105,65 @@ func (h *HttpValidationError) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+type IdentifierItem1 struct {
+	System string `json:"system"`
+	Value  string `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (i *IdentifierItem1) UnmarshalJSON(data []byte) error {
+	type unmarshaler IdentifierItem1
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IdentifierItem1(value)
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IdentifierItem1) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type InterpretationItem struct {
+	Coding []*CodingItem1 `json:"coding,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (i *InterpretationItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler InterpretationItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = InterpretationItem(value)
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *InterpretationItem) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
 type Jpeg struct {
 	Content string `json:"content"`
 
@@ -5980,6 +6191,37 @@ func (j *Jpeg) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", j)
+}
+
+type LabResultsFhir struct {
+	ResourceType string                                                      `json:"resourceType"`
+	Type         string                                                      `json:"type"`
+	Entry        []*VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem `json:"entry,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *LabResultsFhir) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabResultsFhir
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabResultsFhir(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabResultsFhir) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
 }
 
 type LabResultsMetadata struct {
@@ -6310,6 +6552,35 @@ func (l *LngLat) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+type Low struct {
+	Value int `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *Low) UnmarshalJSON(data []byte) error {
+	type unmarshaler Low
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = Low(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *Low) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
 type Macros struct {
 	// Amount of carbohydrates in grams (g)
 	Carbs *float64 `json:"carbs,omitempty"`
@@ -6585,6 +6856,158 @@ func (o OAuthProviders) Ptr() *OAuthProviders {
 	return &o
 }
 
+type Observation struct {
+	ResourceType      string                                               `json:"resourceType"`
+	Status            string                                               `json:"status"`
+	Code              *VitalCoreProvidersLabTestLabsSchemasResultsFhirCode `json:"code,omitempty"`
+	EffectiveDateTime *ObservationEffectiveDateTime                        `json:"effectiveDateTime,omitempty"`
+	Issued            *ObservationIssued                                   `json:"issued,omitempty"`
+	ValueQuantity     *ValueQuantity                                       `json:"valueQuantity,omitempty"`
+	ValueRange        *ValueRange                                          `json:"valueRange,omitempty"`
+	ValueString       *string                                              `json:"valueString,omitempty"`
+	Interpretation    []*InterpretationItem                                `json:"interpretation,omitempty"`
+	ReferenceRange    []*ReferenceRangeItem                                `json:"referenceRange,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (o *Observation) UnmarshalJSON(data []byte) error {
+	type unmarshaler Observation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = Observation(value)
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *Observation) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+type ObservationEffectiveDateTime struct {
+	typeName string
+	DateTime time.Time
+	String   string
+}
+
+func NewObservationEffectiveDateTimeFromDateTime(value time.Time) *ObservationEffectiveDateTime {
+	return &ObservationEffectiveDateTime{typeName: "dateTime", DateTime: value}
+}
+
+func NewObservationEffectiveDateTimeFromString(value string) *ObservationEffectiveDateTime {
+	return &ObservationEffectiveDateTime{typeName: "string", String: value}
+}
+
+func (o *ObservationEffectiveDateTime) UnmarshalJSON(data []byte) error {
+	var valueDateTime time.Time
+	if err := json.Unmarshal(data, &valueDateTime); err == nil {
+		o.typeName = "dateTime"
+		o.DateTime = valueDateTime
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		o.typeName = "string"
+		o.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, o)
+}
+
+func (o ObservationEffectiveDateTime) MarshalJSON() ([]byte, error) {
+	switch o.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", o.typeName, o)
+	case "dateTime":
+		return json.Marshal(o.DateTime)
+	case "string":
+		return json.Marshal(o.String)
+	}
+}
+
+type ObservationEffectiveDateTimeVisitor interface {
+	VisitDateTime(time.Time) error
+	VisitString(string) error
+}
+
+func (o *ObservationEffectiveDateTime) Accept(visitor ObservationEffectiveDateTimeVisitor) error {
+	switch o.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", o.typeName, o)
+	case "dateTime":
+		return visitor.VisitDateTime(o.DateTime)
+	case "string":
+		return visitor.VisitString(o.String)
+	}
+}
+
+type ObservationIssued struct {
+	typeName string
+	DateTime time.Time
+	String   string
+}
+
+func NewObservationIssuedFromDateTime(value time.Time) *ObservationIssued {
+	return &ObservationIssued{typeName: "dateTime", DateTime: value}
+}
+
+func NewObservationIssuedFromString(value string) *ObservationIssued {
+	return &ObservationIssued{typeName: "string", String: value}
+}
+
+func (o *ObservationIssued) UnmarshalJSON(data []byte) error {
+	var valueDateTime time.Time
+	if err := json.Unmarshal(data, &valueDateTime); err == nil {
+		o.typeName = "dateTime"
+		o.DateTime = valueDateTime
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		o.typeName = "string"
+		o.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, o)
+}
+
+func (o ObservationIssued) MarshalJSON() ([]byte, error) {
+	switch o.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", o.typeName, o)
+	case "dateTime":
+		return json.Marshal(o.DateTime)
+	case "string":
+		return json.Marshal(o.String)
+	}
+}
+
+type ObservationIssuedVisitor interface {
+	VisitDateTime(time.Time) error
+	VisitString(string) error
+}
+
+func (o *ObservationIssued) Accept(visitor ObservationIssuedVisitor) error {
+	switch o.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", o.typeName, o)
+	case "dateTime":
+		return visitor.VisitDateTime(o.DateTime)
+	case "string":
+		return visitor.VisitString(o.String)
+	}
+}
+
 // An enumeration.
 type OrderStatus string
 
@@ -6815,6 +7238,38 @@ func (p PasswordProviders) Ptr() *PasswordProviders {
 	return &p
 }
 
+type Patient struct {
+	BirthDate  *PatientBirthDate                                                `json:"birthDate,omitempty"`
+	Name       []*VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem       `json:"name,omitempty"`
+	Gender     string                                                           `json:"gender"`
+	Identifier []*VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem `json:"identifier,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *Patient) UnmarshalJSON(data []byte) error {
+	type unmarshaler Patient
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Patient(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Patient) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type PatientAddressCompatible struct {
 	ReceiverName *string `json:"receiver_name,omitempty"`
 	FirstLine    string  `json:"first_line"`
@@ -6851,6 +7306,63 @@ func (p *PatientAddressCompatible) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type PatientBirthDate struct {
+	typeName string
+	DateTime time.Time
+	String   string
+}
+
+func NewPatientBirthDateFromDateTime(value time.Time) *PatientBirthDate {
+	return &PatientBirthDate{typeName: "dateTime", DateTime: value}
+}
+
+func NewPatientBirthDateFromString(value string) *PatientBirthDate {
+	return &PatientBirthDate{typeName: "string", String: value}
+}
+
+func (p *PatientBirthDate) UnmarshalJSON(data []byte) error {
+	var valueDateTime time.Time
+	if err := json.Unmarshal(data, &valueDateTime); err == nil {
+		p.typeName = "dateTime"
+		p.DateTime = valueDateTime
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		p.typeName = "string"
+		p.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
+}
+
+func (p PatientBirthDate) MarshalJSON() ([]byte, error) {
+	switch p.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", p.typeName, p)
+	case "dateTime":
+		return json.Marshal(p.DateTime)
+	case "string":
+		return json.Marshal(p.String)
+	}
+}
+
+type PatientBirthDateVisitor interface {
+	VisitDateTime(time.Time) error
+	VisitString(string) error
+}
+
+func (p *PatientBirthDate) Accept(visitor PatientBirthDateVisitor) error {
+	switch p.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", p.typeName, p)
+	case "dateTime":
+		return visitor.VisitDateTime(p.DateTime)
+	case "string":
+		return visitor.VisitString(p.String)
+	}
+}
+
 type PatientDetails struct {
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -6874,6 +7386,64 @@ func (p *PatientDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (p *PatientDetails) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PayorItem struct {
+	Reference string `json:"reference"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PayorItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayorItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayorItem(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayorItem) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type Period struct {
+	Start string `json:"start"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *Period) UnmarshalJSON(data []byte) error {
+	type unmarshaler Period
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Period(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Period) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -7156,6 +7726,198 @@ func (p *Png) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type PostOrderCoverage struct {
+	ResourceType string                                                `json:"resourceType"`
+	Network      string                                                `json:"network"`
+	SubscriberId string                                                `json:"subscriberId"`
+	Status       string                                                `json:"status"`
+	Beneficiary  *Beneficiary                                          `json:"beneficiary,omitempty"`
+	Identifier   []*VitalCoreSchemasRequestSchemasOrdersIdentifierItem `json:"identifier,omitempty"`
+	Payor        []*PayorItem                                          `json:"payor,omitempty"`
+	Relationship *Relationship                                         `json:"relationship,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PostOrderCoverage) UnmarshalJSON(data []byte) error {
+	type unmarshaler PostOrderCoverage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PostOrderCoverage(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PostOrderCoverage) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PostOrderPatient struct {
+	ResourceType string                                          `json:"resourceType"`
+	Name         []*VitalCoreSchemasRequestSchemasOrdersNameItem `json:"name,omitempty"`
+	Telecom      []*TelecomItem                                  `json:"telecom,omitempty"`
+	Gender       string                                          `json:"gender"`
+	BirthDate    *PostOrderPatientBirthDate                      `json:"birthDate,omitempty"`
+	Address      []*Addres                                       `json:"address,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PostOrderPatient) UnmarshalJSON(data []byte) error {
+	type unmarshaler PostOrderPatient
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PostOrderPatient(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PostOrderPatient) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PostOrderPatientBirthDate struct {
+	typeName string
+	String   string
+	DateTime time.Time
+}
+
+func NewPostOrderPatientBirthDateFromString(value string) *PostOrderPatientBirthDate {
+	return &PostOrderPatientBirthDate{typeName: "string", String: value}
+}
+
+func NewPostOrderPatientBirthDateFromDateTime(value time.Time) *PostOrderPatientBirthDate {
+	return &PostOrderPatientBirthDate{typeName: "dateTime", DateTime: value}
+}
+
+func (p *PostOrderPatientBirthDate) UnmarshalJSON(data []byte) error {
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		p.typeName = "string"
+		p.String = valueString
+		return nil
+	}
+	var valueDateTime time.Time
+	if err := json.Unmarshal(data, &valueDateTime); err == nil {
+		p.typeName = "dateTime"
+		p.DateTime = valueDateTime
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
+}
+
+func (p PostOrderPatientBirthDate) MarshalJSON() ([]byte, error) {
+	switch p.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", p.typeName, p)
+	case "string":
+		return json.Marshal(p.String)
+	case "dateTime":
+		return json.Marshal(p.DateTime)
+	}
+}
+
+type PostOrderPatientBirthDateVisitor interface {
+	VisitString(string) error
+	VisitDateTime(time.Time) error
+}
+
+func (p *PostOrderPatientBirthDate) Accept(visitor PostOrderPatientBirthDateVisitor) error {
+	switch p.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", p.typeName, p)
+	case "string":
+		return visitor.VisitString(p.String)
+	case "dateTime":
+		return visitor.VisitDateTime(p.DateTime)
+	}
+}
+
+type PostOrderPhysician struct {
+	ResourceType  string                                                `json:"resourceType"`
+	Name          []*VitalCoreSchemasRequestSchemasOrdersNameItem       `json:"name,omitempty"`
+	Telecom       []*TelecomItem                                        `json:"telecom,omitempty"`
+	Identifier    []*VitalCoreSchemasRequestSchemasOrdersIdentifierItem `json:"identifier,omitempty"`
+	Qualification []*QualificationItem                                  `json:"qualification,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PostOrderPhysician) UnmarshalJSON(data []byte) error {
+	type unmarshaler PostOrderPhysician
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PostOrderPhysician(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PostOrderPhysician) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PostOrderQuestionnaireResponse struct {
+	ResourceType  string             `json:"resourceType"`
+	Questionnaire string             `json:"questionnaire"`
+	Status        string             `json:"status"`
+	Item          []*QuestionaryItem `json:"item,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PostOrderQuestionnaireResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PostOrderQuestionnaireResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PostOrderQuestionnaireResponse(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PostOrderQuestionnaireResponse) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type PostOrderResponse struct {
 	Order   *ClientFacingOrder `json:"order,omitempty"`
 	Status  string             `json:"status"`
@@ -7185,6 +7947,70 @@ func (p *PostOrderResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
+}
+
+type PostOrderServiceRequest struct {
+	ResourceType string                                                `json:"resourceType"`
+	Identifier   []*VitalCoreSchemasRequestSchemasOrdersIdentifierItem `json:"identifier,omitempty"`
+	Status       string                                                `json:"status"`
+	Intent       string                                                `json:"intent"`
+	Priority     Priority                                              `json:"priority,omitempty"`
+	Subject      *Subject                                              `json:"subject,omitempty"`
+	Requester    *Requester                                            `json:"requester,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PostOrderServiceRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PostOrderServiceRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PostOrderServiceRequest(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PostOrderServiceRequest) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// An enumeration.
+type Priority string
+
+const (
+	PriorityRoutine Priority = "routine"
+	PriorityUrgent  Priority = "urgent"
+	PriorityAsap    Priority = "asap"
+	PriorityStat    Priority = "stat"
+)
+
+func NewPriorityFromString(s string) (Priority, error) {
+	switch s {
+	case "routine":
+		return PriorityRoutine, nil
+	case "urgent":
+		return PriorityUrgent, nil
+	case "asap":
+		return PriorityAsap, nil
+	case "stat":
+		return PriorityStat, nil
+	}
+	var t Priority
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p Priority) Ptr() *Priority {
+	return &p
 }
 
 type ProfileInDb struct {
@@ -7454,6 +8280,37 @@ func (p Providers) Ptr() *Providers {
 	return &p
 }
 
+type QualificationItem struct {
+	Code       *VitalCoreSchemasRequestSchemasOrdersCode `json:"code,omitempty"`
+	Period     *Period                                   `json:"period,omitempty"`
+	Identifier []*IdentifierItem1                        `json:"identifier,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (q *QualificationItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler QualificationItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QualificationItem(value)
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QualificationItem) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
 type Question struct {
 	Id       int          `json:"id"`
 	Required bool         `json:"required"`
@@ -7516,6 +8373,37 @@ func NewQuestionTypeFromString(s string) (QuestionType, error) {
 
 func (q QuestionType) Ptr() *QuestionType {
 	return &q
+}
+
+type QuestionaryItem struct {
+	LinkId string        `json:"linkId"`
+	Text   string        `json:"text"`
+	Answer []*AnswerItem `json:"answer,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (q *QuestionaryItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler QuestionaryItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QuestionaryItem(value)
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QuestionaryItem) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
 }
 
 type RawActivity struct {
@@ -7692,6 +8580,36 @@ func (r *RawWorkout) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+type ReferenceRangeItem struct {
+	Low  *Low  `json:"low,omitempty"`
+	High *High `json:"high,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *ReferenceRangeItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReferenceRangeItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReferenceRangeItem(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReferenceRangeItem) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
 // An enumeration.
 type Region string
 
@@ -7737,6 +8655,65 @@ func NewRegionFromString(s string) (Region, error) {
 
 func (r Region) Ptr() *Region {
 	return &r
+}
+
+type Relationship struct {
+	Coding []*VitalCoreSchemasRequestSchemasOrdersCodingItem `json:"coding,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *Relationship) UnmarshalJSON(data []byte) error {
+	type unmarshaler Relationship
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = Relationship(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *Relationship) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type Requester struct {
+	Reference string  `json:"reference"`
+	Display   *string `json:"display,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *Requester) UnmarshalJSON(data []byte) error {
+	type unmarshaler Requester
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = Requester(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *Requester) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }
 
 type ResourceAvailability struct {
@@ -8256,6 +9233,36 @@ func (s SourceType) Ptr() *SourceType {
 	return &s
 }
 
+type Subject struct {
+	Reference string  `json:"reference"`
+	Display   *string `json:"display,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *Subject) UnmarshalJSON(data []byte) error {
+	type unmarshaler Subject
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = Subject(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Subject) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type TeamConfig struct {
 	Libreview                 *LibreConfig                 `json:"libreview,omitempty"`
 	TextsEnabled              *bool                        `json:"texts_enabled,omitempty"`
@@ -8280,6 +9287,37 @@ func (t *TeamConfig) UnmarshalJSON(data []byte) error {
 }
 
 func (t *TeamConfig) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TelecomItem struct {
+	System string `json:"system"`
+	Use    string `json:"use"`
+	Value  string `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (t *TelecomItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler TelecomItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TelecomItem(value)
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TelecomItem) String() string {
 	if len(t._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
 			return value
@@ -8766,6 +9804,526 @@ func (v *ValidationErrorLocItem) Accept(visitor ValidationErrorLocItemVisitor) e
 	case "integer":
 		return visitor.VisitInteger(v.Integer)
 	}
+}
+
+type ValueQuantity struct {
+	Value      int    `json:"value"`
+	Comparator string `json:"comparator"`
+	Unit       string `json:"unit"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *ValueQuantity) UnmarshalJSON(data []byte) error {
+	type unmarshaler ValueQuantity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = ValueQuantity(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *ValueQuantity) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type ValueRange struct {
+	Low  *ValueQuantity `json:"low,omitempty"`
+	High *ValueQuantity `json:"high,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *ValueRange) UnmarshalJSON(data []byte) error {
+	type unmarshaler ValueRange
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = ValueRange(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *ValueRange) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreProvidersLabTestLabsSchemasResultsFhirCode struct {
+	Coding []*VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem `json:"coding,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCode) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirCode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirCode(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCode) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem struct {
+	System  *string `json:"system,omitempty"`
+	Code    string  `json:"code"`
+	Display string  `json:"display"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem struct {
+	Resource *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource `json:"resource,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource struct {
+	typeName    string
+	Patient     *Patient
+	Observation *Observation
+}
+
+func NewVitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceFromPatient(value *Patient) *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource {
+	return &VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource{typeName: "patient", Patient: value}
+}
+
+func NewVitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceFromObservation(value *Observation) *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource {
+	return &VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource{typeName: "observation", Observation: value}
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource) UnmarshalJSON(data []byte) error {
+	valuePatient := new(Patient)
+	if err := json.Unmarshal(data, &valuePatient); err == nil {
+		v.typeName = "patient"
+		v.Patient = valuePatient
+		return nil
+	}
+	valueObservation := new(Observation)
+	if err := json.Unmarshal(data, &valueObservation); err == nil {
+		v.typeName = "observation"
+		v.Observation = valueObservation
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
+}
+
+func (v VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource) MarshalJSON() ([]byte, error) {
+	switch v.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", v.typeName, v)
+	case "patient":
+		return json.Marshal(v.Patient)
+	case "observation":
+		return json.Marshal(v.Observation)
+	}
+}
+
+type VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceVisitor interface {
+	VisitPatient(*Patient) error
+	VisitObservation(*Observation) error
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource) Accept(visitor VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceVisitor) error {
+	switch v.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", v.typeName, v)
+	case "patient":
+		return visitor.VisitPatient(v.Patient)
+	case "observation":
+		return visitor.VisitObservation(v.Observation)
+	}
+}
+
+type VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem struct {
+	Value string `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem struct {
+	Text string `json:"text"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreSchemasRequestSchemasOrdersCode struct {
+	Coding []*VitalCoreSchemasRequestSchemasOrdersCodingItem `json:"coding,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersCode) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasRequestSchemasOrdersCode
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasRequestSchemasOrdersCode(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersCode) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreSchemasRequestSchemasOrdersCodingItem struct {
+	System  string  `json:"system"`
+	Code    string  `json:"code"`
+	Display *string `json:"display,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersCodingItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasRequestSchemasOrdersCodingItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasRequestSchemasOrdersCodingItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersCodingItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreSchemasRequestSchemasOrdersEntryItem struct {
+	Resource *VitalCoreSchemasRequestSchemasOrdersEntryItemResource `json:"resource,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersEntryItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasRequestSchemasOrdersEntryItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasRequestSchemasOrdersEntryItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersEntryItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreSchemasRequestSchemasOrdersEntryItemResource struct {
+	typeName                       string
+	PostOrderPatient               *PostOrderPatient
+	PostOrderPhysician             *PostOrderPhysician
+	PostOrderServiceRequest        *PostOrderServiceRequest
+	PostOrderQuestionnaireResponse *PostOrderQuestionnaireResponse
+	PostOrderCoverage              *PostOrderCoverage
+}
+
+func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderPatient(value *PostOrderPatient) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
+	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderPatient", PostOrderPatient: value}
+}
+
+func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderPhysician(value *PostOrderPhysician) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
+	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderPhysician", PostOrderPhysician: value}
+}
+
+func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderServiceRequest(value *PostOrderServiceRequest) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
+	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderServiceRequest", PostOrderServiceRequest: value}
+}
+
+func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderQuestionnaireResponse(value *PostOrderQuestionnaireResponse) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
+	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderQuestionnaireResponse", PostOrderQuestionnaireResponse: value}
+}
+
+func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderCoverage(value *PostOrderCoverage) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
+	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderCoverage", PostOrderCoverage: value}
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersEntryItemResource) UnmarshalJSON(data []byte) error {
+	valuePostOrderPatient := new(PostOrderPatient)
+	if err := json.Unmarshal(data, &valuePostOrderPatient); err == nil {
+		v.typeName = "postOrderPatient"
+		v.PostOrderPatient = valuePostOrderPatient
+		return nil
+	}
+	valuePostOrderPhysician := new(PostOrderPhysician)
+	if err := json.Unmarshal(data, &valuePostOrderPhysician); err == nil {
+		v.typeName = "postOrderPhysician"
+		v.PostOrderPhysician = valuePostOrderPhysician
+		return nil
+	}
+	valuePostOrderServiceRequest := new(PostOrderServiceRequest)
+	if err := json.Unmarshal(data, &valuePostOrderServiceRequest); err == nil {
+		v.typeName = "postOrderServiceRequest"
+		v.PostOrderServiceRequest = valuePostOrderServiceRequest
+		return nil
+	}
+	valuePostOrderQuestionnaireResponse := new(PostOrderQuestionnaireResponse)
+	if err := json.Unmarshal(data, &valuePostOrderQuestionnaireResponse); err == nil {
+		v.typeName = "postOrderQuestionnaireResponse"
+		v.PostOrderQuestionnaireResponse = valuePostOrderQuestionnaireResponse
+		return nil
+	}
+	valuePostOrderCoverage := new(PostOrderCoverage)
+	if err := json.Unmarshal(data, &valuePostOrderCoverage); err == nil {
+		v.typeName = "postOrderCoverage"
+		v.PostOrderCoverage = valuePostOrderCoverage
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
+}
+
+func (v VitalCoreSchemasRequestSchemasOrdersEntryItemResource) MarshalJSON() ([]byte, error) {
+	switch v.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", v.typeName, v)
+	case "postOrderPatient":
+		return json.Marshal(v.PostOrderPatient)
+	case "postOrderPhysician":
+		return json.Marshal(v.PostOrderPhysician)
+	case "postOrderServiceRequest":
+		return json.Marshal(v.PostOrderServiceRequest)
+	case "postOrderQuestionnaireResponse":
+		return json.Marshal(v.PostOrderQuestionnaireResponse)
+	case "postOrderCoverage":
+		return json.Marshal(v.PostOrderCoverage)
+	}
+}
+
+type VitalCoreSchemasRequestSchemasOrdersEntryItemResourceVisitor interface {
+	VisitPostOrderPatient(*PostOrderPatient) error
+	VisitPostOrderPhysician(*PostOrderPhysician) error
+	VisitPostOrderServiceRequest(*PostOrderServiceRequest) error
+	VisitPostOrderQuestionnaireResponse(*PostOrderQuestionnaireResponse) error
+	VisitPostOrderCoverage(*PostOrderCoverage) error
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersEntryItemResource) Accept(visitor VitalCoreSchemasRequestSchemasOrdersEntryItemResourceVisitor) error {
+	switch v.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", v.typeName, v)
+	case "postOrderPatient":
+		return visitor.VisitPostOrderPatient(v.PostOrderPatient)
+	case "postOrderPhysician":
+		return visitor.VisitPostOrderPhysician(v.PostOrderPhysician)
+	case "postOrderServiceRequest":
+		return visitor.VisitPostOrderServiceRequest(v.PostOrderServiceRequest)
+	case "postOrderQuestionnaireResponse":
+		return visitor.VisitPostOrderQuestionnaireResponse(v.PostOrderQuestionnaireResponse)
+	case "postOrderCoverage":
+		return visitor.VisitPostOrderCoverage(v.PostOrderCoverage)
+	}
+}
+
+type VitalCoreSchemasRequestSchemasOrdersIdentifierItem struct {
+	Value  string `json:"value"`
+	System string `json:"system"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersIdentifierItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasRequestSchemasOrdersIdentifierItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasRequestSchemasOrdersIdentifierItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersIdentifierItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreSchemasRequestSchemasOrdersNameItem struct {
+	Use    string   `json:"use"`
+	Given  []string `json:"given,omitempty"`
+	Family string   `json:"family"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersNameItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasRequestSchemasOrdersNameItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasRequestSchemasOrdersNameItem(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasRequestSchemasOrdersNameItem) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 type VitalTokenCreatedResponse struct {

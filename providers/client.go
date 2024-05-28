@@ -3,10 +3,16 @@
 package providers
 
 import (
+	bytes "bytes"
 	context "context"
+	json "encoding/json"
+	errors "errors"
+	fmt "fmt"
 	vitalgo "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
+	io "io"
 	http "net/http"
+	url "net/url"
 )
 
 type Client struct {
@@ -28,12 +34,39 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 // Get Provider list
-func (c *Client) GetAll(ctx context.Context) ([]*vitalgo.ClientFacingProviderDetailed, error) {
+func (c *Client) GetAll(ctx context.Context, request *vitalgo.ProvidersGetAllRequest) ([]*vitalgo.ClientFacingProviderDetailed, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
 	endpointURL := baseURL + "/" + "v2/providers"
+
+	queryParams := make(url.Values)
+	if request.SourceType != nil {
+		queryParams.Add("source_type", fmt.Sprintf("%v", *request.SourceType))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
 
 	var response []*vitalgo.ClientFacingProviderDetailed
 	if err := core.DoRequest(
@@ -45,7 +78,7 @@ func (c *Client) GetAll(ctx context.Context) ([]*vitalgo.ClientFacingProviderDet
 		&response,
 		false,
 		c.header,
-		nil,
+		errorDecoder,
 	); err != nil {
 		return nil, err
 	}

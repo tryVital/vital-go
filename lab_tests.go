@@ -40,6 +40,12 @@ type CreateOrderRequestCompatible struct {
 	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`
 }
 
+type PostOrderFhir struct {
+	ResourceType string                                           `json:"resourceType"`
+	Type         string                                           `json:"type"`
+	Entry        []*VitalCoreSchemasRequestSchemasOrdersEntryItem `json:"entry,omitempty"`
+}
+
 type LabTestsGetAreaInfoRequest struct {
 	// Zip code of the area to check
 	ZipCode string `json:"-"`
@@ -49,7 +55,7 @@ type LabTestsGetLabelsPdfRequest struct {
 	// Number of labels to generate
 	NumberOfLabels *int `json:"-"`
 	// Collection date
-	CollectionDate *time.Time `json:"-"`
+	CollectionDate time.Time `json:"-"`
 }
 
 type LabTestsGetMarkersRequest struct {
