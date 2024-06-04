@@ -13,7 +13,3 @@ type TeamGetSourcePrioritiesRequest struct {
 type TeamGetUserByIdRequest struct {
 	QueryId *string `json:"-"`
 }
-
-type TeamUpdateSourcePrioritiesRequest struct {
-	TeamId string `json:"-"`
-}

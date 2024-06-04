@@ -45,41 +45,6 @@ func (a *ActivityV2InDb) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-type Addres struct {
-	Use        string   `json:"use"`
-	Type       string   `json:"type"`
-	Line       []string `json:"line,omitempty"`
-	City       string   `json:"city"`
-	State      string   `json:"state"`
-	PostalCode string   `json:"postalCode"`
-	Country    string   `json:"country"`
-
-	_rawJSON json.RawMessage
-}
-
-func (a *Addres) UnmarshalJSON(data []byte) error {
-	type unmarshaler Addres
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = Addres(value)
-	a._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *Addres) String() string {
-	if len(a._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
 type Address struct {
 	FirstLine  string  `json:"first_line"`
 	SecondLine *string `json:"second_line,omitempty"`
@@ -134,35 +99,6 @@ func (a *Answer) UnmarshalJSON(data []byte) error {
 }
 
 func (a *Answer) String() string {
-	if len(a._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-type AnswerItem struct {
-	ValueString string `json:"valueString"`
-
-	_rawJSON json.RawMessage
-}
-
-func (a *AnswerItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler AnswerItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AnswerItem(value)
-	a._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AnswerItem) String() string {
 	if len(a._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
 			return value
@@ -264,7 +200,6 @@ func (a *AppointmentAvailabilitySlots) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-// An enumeration.
 type AppointmentEventStatus string
 
 const (
@@ -296,7 +231,6 @@ func (a AppointmentEventStatus) Ptr() *AppointmentEventStatus {
 	return &a
 }
 
-// An enumeration.
 type AppointmentProvider string
 
 const (
@@ -322,7 +256,6 @@ func (a AppointmentProvider) Ptr() *AppointmentProvider {
 	return &a
 }
 
-// An enumeration.
 type AppointmentServiceType string
 
 const (
@@ -345,7 +278,6 @@ func (a AppointmentServiceType) Ptr() *AppointmentServiceType {
 	return &a
 }
 
-// An enumeration.
 type AppointmentStatus string
 
 const (
@@ -377,7 +309,6 @@ func (a AppointmentStatus) Ptr() *AppointmentStatus {
 	return &a
 }
 
-// An enumeration.
 type AppointmentType = string
 
 type AreaInfo struct {
@@ -410,7 +341,6 @@ func (a *AreaInfo) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-// An enumeration.
 type AttemptStatus string
 
 const (
@@ -433,7 +363,6 @@ func (a AttemptStatus) Ptr() *AttemptStatus {
 	return &a
 }
 
-// An enumeration.
 type AuthType string
 
 const (
@@ -459,7 +388,6 @@ func (a AuthType) Ptr() *AuthType {
 	return &a
 }
 
-// An enumeration.
 type Availability string
 
 const (
@@ -480,35 +408,6 @@ func NewAvailabilityFromString(s string) (Availability, error) {
 
 func (a Availability) Ptr() *Availability {
 	return &a
-}
-
-type Beneficiary struct {
-	Reference string `json:"reference"`
-
-	_rawJSON json.RawMessage
-}
-
-func (b *Beneficiary) UnmarshalJSON(data []byte) error {
-	type unmarshaler Beneficiary
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = Beneficiary(value)
-	b._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *Beneficiary) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
 }
 
 // Represent the schema for an individual biomarker result.
@@ -657,33 +556,21 @@ type ClientFacingActivity struct {
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
 	Date time.Time `json:"date"`
 	// Date of the summary in the YYYY-mm-dd format.
-	CalendarDate string `json:"calendar_date"`
-	// Total energy consumption during the day including Basal Metabolic Rate in kilocalories::kilocalories
-	CaloriesTotal *float64 `json:"calories_total,omitempty"`
-	// Energy consumption caused by the physical activity of the day in kilocalories::kilocalories
+	CalendarDate   string   `json:"calendar_date"`
+	CaloriesTotal  *float64 `json:"calories_total,omitempty"`
 	CaloriesActive *float64 `json:"calories_active,omitempty"`
-	// Total number of steps registered during the day::steps
-	Steps *int `json:"steps,omitempty"`
-	// Deprecated. Daily physical activity as equal meters i.e. amount of walking needed to get the same amount of activity::meters
-	DailyMovement *float64 `json:"daily_movement,omitempty"`
-	// Distance traveled during activities throughout the day::meters
-	Distance *float64 `json:"distance,omitempty"`
-	// Number of minutes during the day with low intensity activity (e.g. household work)::minutes
-	Low *float64 `json:"low,omitempty"`
-	// Number of minutes during the day with medium intensity activity (e.g. walking)::minutes
-	Medium *float64 `json:"medium,omitempty"`
-	// Number of minutes during the day with high intensity activity (e.g. running)::minutes
-	High *float64 `json:"high,omitempty"`
+	Steps          *int     `json:"steps,omitempty"`
+	DailyMovement  *float64 `json:"daily_movement,omitempty"`
+	Distance       *float64 `json:"distance,omitempty"`
+	Low            *float64 `json:"low,omitempty"`
+	Medium         *float64 `json:"medium,omitempty"`
+	High           *float64 `json:"high,omitempty"`
 	// Source the data has come from.
-	Source *ClientFacingSource `json:"source,omitempty"`
-	// Number of floors climbed by the user::count
-	FloorsClimbed *int `json:"floors_climbed,omitempty"`
-	// [DEPRECATED] The time zone full identifier for the data. Example: 'Europe/London'.
-	TimeZone *string `json:"time_zone,omitempty"`
-	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// Heart rate daily summary.
-	HeartRate *ClientFacingHeartRate `json:"heart_rate,omitempty"`
+	Source         *ClientFacingSource    `json:"source,omitempty"`
+	FloorsClimbed  *int                   `json:"floors_climbed,omitempty"`
+	TimeZone       *string                `json:"time_zone,omitempty"`
+	TimezoneOffset *int                   `json:"timezone_offset,omitempty"`
+	HeartRate      *ClientFacingHeartRate `json:"heart_rate,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -746,14 +633,12 @@ func (c *ClientFacingApiKey) String() string {
 }
 
 type ClientFacingAppointment struct {
-	Id       string     `json:"id"`
-	UserId   string     `json:"user_id"`
-	OrderId  string     `json:"order_id"`
-	Address  *UsAddress `json:"address,omitempty"`
-	Location *LngLat    `json:"location,omitempty"`
-	// Time is in UTC
-	StartAt *time.Time `json:"start_at,omitempty"`
-	// Time is in UTC
+	Id            string                          `json:"id"`
+	UserId        string                          `json:"user_id"`
+	OrderId       string                          `json:"order_id"`
+	Address       *UsAddress                      `json:"address,omitempty"`
+	Location      *LngLat                         `json:"location,omitempty"`
+	StartAt       *time.Time                      `json:"start_at,omitempty"`
 	EndAt         *time.Time                      `json:"end_at,omitempty"`
 	IanaTimezone  *string                         `json:"iana_timezone,omitempty"`
 	Type          AppointmentType                 `json:"type,omitempty"`
@@ -919,12 +804,9 @@ func (c *ClientFacingAtHomePhlebotomyOrderDetails) String() string {
 }
 
 type ClientFacingBloodOxygenTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in percentage (spo2).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -959,12 +841,9 @@ func (c *ClientFacingBloodOxygenTimeseries) String() string {
 }
 
 type ClientFacingBloodPressureTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// The unit of the value. We use SI units where possible, e.g. mmol/L for glucose/cholesterol, bpm for heart rate, etc.
 	Unit      string    `json:"unit"`
 	Timestamp time.Time `json:"timestamp"`
@@ -1004,12 +883,10 @@ type ClientFacingBody struct {
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
 	Date time.Time `json:"date"`
 	// Date of the summary in the YYYY-mm-dd format.
-	CalendarDate string `json:"calendar_date"`
-	// Weight in kg::kg
-	Weight *float64 `json:"weight,omitempty"`
-	// Body fat percentage::perc
-	Fat    *float64            `json:"fat,omitempty"`
-	Source *ClientFacingSource `json:"source,omitempty"`
+	CalendarDate string              `json:"calendar_date"`
+	Weight       *float64            `json:"weight,omitempty"`
+	Fat          *float64            `json:"fat,omitempty"`
+	Source       *ClientFacingSource `json:"source,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1038,12 +915,9 @@ func (c *ClientFacingBody) String() string {
 }
 
 type ClientFacingBodyFatTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in percentage (0-100).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -1078,12 +952,9 @@ func (c *ClientFacingBodyFatTimeseries) String() string {
 }
 
 type ClientFacingBodyWeightTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in kilograms (kg).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -1118,12 +989,9 @@ func (c *ClientFacingBodyWeightTimeseries) String() string {
 }
 
 type ClientFacingCaffeineTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in grams.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
@@ -1162,12 +1030,9 @@ func (c *ClientFacingCaffeineTimeseries) String() string {
 }
 
 type ClientFacingCaloriesActiveTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in kilocalories (kcal)
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp"`
@@ -1223,12 +1088,9 @@ func (c *ClientFacingCaloriesActiveTimeseries) String() string {
 }
 
 type ClientFacingCaloriesBasalTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in kilocalories (kcal)
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp"`
@@ -1280,12 +1142,9 @@ func (c *ClientFacingCaloriesBasalTimeseries) String() string {
 }
 
 type ClientFacingCholesterolTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in mmol/L.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -1352,12 +1211,9 @@ func (c *ClientFacingDiagnosisInformation) String() string {
 }
 
 type ClientFacingDistanceTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in meters (m)
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp"`
@@ -1413,16 +1269,14 @@ func (c *ClientFacingDistanceTimeseries) String() string {
 }
 
 type ClientFacingElectrocardiogramVoltageTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	Id             *int `json:"id,omitempty"`
 	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 	// The lead of the measurement.
-	Type string `json:"type"`
+	Type *string `json:"type,omitempty"`
 	// Measured in mV.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -1453,12 +1307,9 @@ func (c *ClientFacingElectrocardiogramVoltageTimeseries) String() string {
 }
 
 type ClientFacingFloorsClimbedTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in counts
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp"`
@@ -1541,12 +1392,9 @@ func (c *ClientFacingFood) String() string {
 }
 
 type ClientFacingGlucoseTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in mmol/L.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -1581,13 +1429,9 @@ func (c *ClientFacingGlucoseTimeseries) String() string {
 }
 
 type ClientFacingHeartRate struct {
-	// Average heart rate::bpm
-	AvgBpm *float64 `json:"avg_bpm,omitempty"`
-	// Minimum heart rate::bpm
-	MinBpm *float64 `json:"min_bpm,omitempty"`
-	// Maximum heart rate::bpm
-	MaxBpm *float64 `json:"max_bpm,omitempty"`
-	// Resting heart rate::bpm
+	AvgBpm     *float64 `json:"avg_bpm,omitempty"`
+	MinBpm     *float64 `json:"min_bpm,omitempty"`
+	MaxBpm     *float64 `json:"max_bpm,omitempty"`
 	RestingBpm *float64 `json:"resting_bpm,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -1617,12 +1461,9 @@ func (c *ClientFacingHeartRate) String() string {
 }
 
 type ClientFacingHeartRateTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in bpm.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -1657,12 +1498,9 @@ func (c *ClientFacingHeartRateTimeseries) String() string {
 }
 
 type ClientFacingHrvTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in rmssd.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -1697,12 +1535,9 @@ func (c *ClientFacingHrvTimeseries) String() string {
 }
 
 type ClientFacingHypnogramTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// enum: 1: deep, 2: light, 3: rem, 4: awake, -1: missing_data.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
@@ -1741,12 +1576,9 @@ func (c *ClientFacingHypnogramTimeseries) String() string {
 }
 
 type ClientFacingIgeTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in FSU.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -1781,12 +1613,9 @@ func (c *ClientFacingIgeTimeseries) String() string {
 }
 
 type ClientFacingIggTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in FSU.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -2039,12 +1868,9 @@ func (c *ClientFacingMealResponse) String() string {
 }
 
 type ClientFacingMindfulnessMinutesTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in minutes.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
@@ -2088,35 +1914,27 @@ type ClientFacingOrder struct {
 	// The Vital Order ID
 	Id string `json:"id"`
 	// Your team id.
-	TeamId string `json:"team_id"`
-	// Patient Details
+	TeamId         string                                `json:"team_id"`
 	PatientDetails *ClientFacingPatientDetailsCompatible `json:"patient_details,omitempty"`
-	// Patient Address
-	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`
+	PatientAddress *PatientAddressCompatibleOutput       `json:"patient_address,omitempty"`
 	// The Vital Test associated with the order
-	LabTest *ClientFacingLabTest      `json:"lab_test,omitempty"`
-	Details *ClientFacingOrderDetails `json:"details,omitempty"`
-	// Sample ID
-	SampleId *string `json:"sample_id,omitempty"`
-	// Notes associated with the order
-	Notes *string `json:"notes,omitempty"`
+	LabTest  *ClientFacingLabTest      `json:"lab_test,omitempty"`
+	Details  *ClientFacingOrderDetails `json:"details,omitempty"`
+	SampleId *string                   `json:"sample_id,omitempty"`
+	Notes    *string                   `json:"notes,omitempty"`
 	// When your order was created
 	CreatedAt time.Time `json:"created_at"`
 	// When your order was last updated.
-	UpdatedAt time.Time                 `json:"updated_at"`
-	Events    []*ClientFacingOrderEvent `json:"events,omitempty"`
-	Status    *OrderTopLevelStatus      `json:"status,omitempty"`
-	Physician *ClientFacingPhysician    `json:"physician,omitempty"`
-	// Vital ID of the health insurance.
-	HealthInsuranceId *string `json:"health_insurance_id,omitempty"`
-	// DEPRECATED. Requistion form url.
-	RequisitionFormUrl *string `json:"requisition_form_url,omitempty"`
+	UpdatedAt          time.Time                 `json:"updated_at"`
+	Events             []*ClientFacingOrderEvent `json:"events,omitempty"`
+	Status             *OrderTopLevelStatus      `json:"status,omitempty"`
+	Physician          *ClientFacingPhysician    `json:"physician,omitempty"`
+	HealthInsuranceId  *string                   `json:"health_insurance_id,omitempty"`
+	RequisitionFormUrl *string                   `json:"requisition_form_url,omitempty"`
 	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
-	Priority *bool `json:"priority,omitempty"`
-	// Shipping Details. For unregistered testkit orders.
+	Priority        *bool            `json:"priority,omitempty"`
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
-	// Schedule an Order to be processed in a future date.
-	ActivateBy *string `json:"activate_by,omitempty"`
+	ActivateBy      *string          `json:"activate_by,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2451,8 +2269,7 @@ type ClientFacingProviderDetailed struct {
 	// Slug for designated source
 	Slug string `json:"slug"`
 	// Description of source of information
-	Description string `json:"description"`
-	// URL for source logo
+	Description        string                 `json:"description"`
 	Logo               *string                `json:"logo,omitempty"`
 	AuthType           *SourceAuthType        `json:"auth_type,omitempty"`
 	SupportedResources []ClientFacingResource `json:"supported_resources,omitempty"`
@@ -2520,7 +2337,6 @@ func (c *ClientFacingProviderWithStatus) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// An enumeration.
 type ClientFacingResource string
 
 const (
@@ -2646,12 +2462,9 @@ func (c ClientFacingResource) Ptr() *ClientFacingResource {
 }
 
 type ClientFacingRespiratoryRateTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in bpm.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -2720,26 +2533,21 @@ func (c *ClientFacingResult) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingSampleGroupingKeys = []interface{}
+
 // Schema for a Shipment in the client facing API.
 //
 // To be used as part of a ClientFacingTestkitOrder.
 type ClientFacingShipment struct {
 	// The Vital Shipment ID
-	Id string `json:"id"`
-	// Tracking number for delivery to customer
+	Id                     string  `json:"id"`
 	OutboundTrackingNumber *string `json:"outbound_tracking_number,omitempty"`
-	// Tracking url for delivery to customer
-	OutboundTrackingUrl *string `json:"outbound_tracking_url,omitempty"`
-	// Tracking number for delivery to lab
-	InboundTrackingNumber *string `json:"inbound_tracking_number,omitempty"`
-	// Tracking url for delivery to lab
-	InboundTrackingUrl *string `json:"inbound_tracking_url,omitempty"`
-	// Courier used for delivery to customer
-	OutboundCourier *string `json:"outbound_courier,omitempty"`
-	// Courier used for delivery to lab
-	InboundCourier *string `json:"inbound_courier,omitempty"`
-	// Notes associated to the Vital shipment
-	Notes *string `json:"notes,omitempty"`
+	OutboundTrackingUrl    *string `json:"outbound_tracking_url,omitempty"`
+	InboundTrackingNumber  *string `json:"inbound_tracking_number,omitempty"`
+	InboundTrackingUrl     *string `json:"inbound_tracking_url,omitempty"`
+	OutboundCourier        *string `json:"outbound_courier,omitempty"`
+	InboundCourier         *string `json:"inbound_courier,omitempty"`
+	Notes                  *string `json:"notes,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2778,9 +2586,8 @@ type ClientFacingSleep struct {
 	// UTC Time when the sleep period started
 	BedtimeStart time.Time `json:"bedtime_start"`
 	// UTC Time when the sleep period ended
-	BedtimeStop time.Time `json:"bedtime_stop"`
-	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
+	BedtimeStop    time.Time `json:"bedtime_stop"`
+	TimezoneOffset *int      `json:"timezone_offset,omitempty"`
 	// Total duration of the sleep period (sleep.duration = sleep.bedtime_end - sleep.bedtime_start)::seconds
 	Duration int `json:"duration"`
 	// Total amount of sleep registered during the sleep period (sleep.total = sleep.rem + sleep.light + sleep.deep)::seconds
@@ -2792,27 +2599,17 @@ type ClientFacingSleep struct {
 	// Total amount of REM sleep registered during the sleep period, minutes::seconds
 	Rem int `json:"rem"`
 	// Total amount of deep (N3) sleep registered during the sleep period::seconds
-	Deep int `json:"deep"`
-	// A value between 1 and 100 representing how well the user slept. Currently only available for Withings, Oura, Whoop and Garmin::scalar
-	Score *int `json:"score,omitempty"`
-	// The lowest heart rate (5 minutes sliding average) registered during the sleep period::beats per minute
-	HrLowest *int `json:"hr_lowest,omitempty"`
-	// The average heart rate registered during the sleep period::beats per minute
-	HrAverage *int `json:"hr_average,omitempty"`
-	// Sleep efficiency is the percentage of the sleep period spent asleep (100% \* sleep.total / sleep.duration)::perc
-	Efficiency *float64 `json:"efficiency,omitempty"`
-	// Detected latency from bedtime_start to the beginning of the first five minutes of persistent sleep::seconds
-	Latency *int `json:"latency,omitempty"`
-	// Skin temperature deviation from the long-term temperature average::celcius
+	Deep             int      `json:"deep"`
+	Score            *int     `json:"score,omitempty"`
+	HrLowest         *int     `json:"hr_lowest,omitempty"`
+	HrAverage        *int     `json:"hr_average,omitempty"`
+	Efficiency       *float64 `json:"efficiency,omitempty"`
+	Latency          *int     `json:"latency,omitempty"`
 	TemperatureDelta *float64 `json:"temperature_delta,omitempty"`
-	// The skin temperature::celcius
-	SkinTemperature *float64 `json:"skin_temperature,omitempty"`
-	// Sleeping Heart Rate Dip is the percentage difference between your average waking heart rate and your average sleeping heart rate. In health studies, a greater "dip" is typically seen as a positive indicator of overall health. Currently only available for Garmin::perc
-	HrDip *float64 `json:"hr_dip,omitempty"`
-	// The average heart rate variability registered during the sleep period::rmssd
-	AverageHrv *float64 `json:"average_hrv,omitempty"`
-	// Average respiratory rate::breaths per minute
-	RespiratoryRate *float64 `json:"respiratory_rate,omitempty"`
+	SkinTemperature  *float64 `json:"skin_temperature,omitempty"`
+	HrDip            *float64 `json:"hr_dip,omitempty"`
+	AverageHrv       *float64 `json:"average_hrv,omitempty"`
+	RespiratoryRate  *float64 `json:"respiratory_rate,omitempty"`
 	// Source the data has come from.
 	Source      *ClientFacingSource      `json:"source,omitempty"`
 	SleepStream *ClientFacingSleepStream `json:"sleep_stream,omitempty"`
@@ -2881,8 +2678,7 @@ type ClientFacingSource struct {
 	// Provider slug. e.g., `oura`, `fitbit`, `garmin`.
 	Provider string `json:"provider"`
 	// The type of the data source (app or device) by which the summary or the timeseries data were recorded. This defaults to `unknown` when Vital cannot extract or infer that information
-	Type *string `json:"type,omitempty"`
-	// The identifier of the app which recorded this summary. This is only applicable to multi-source providers like Apple Health and Android Health Connect.
+	Type  *string `json:"type,omitempty"`
 	AppId *string `json:"app_id,omitempty"`
 	// Deprecated. Subject to removal after 1 Jan 2024.
 	Name string `json:"name"`
@@ -2951,12 +2747,9 @@ func (c *ClientFacingSport) String() string {
 }
 
 type ClientFacingStepsTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in counts
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp"`
@@ -3012,17 +2805,25 @@ func (c *ClientFacingStepsTimeseries) String() string {
 }
 
 type ClientFacingStream struct {
-	Cadence []float64 `json:"cadence,omitempty"`
-	// Corresponding time stamp in unix time for datapoint
-	Time           []int     `json:"time,omitempty"`
-	Altitude       []float64 `json:"altitude,omitempty"`
-	VelocitySmooth []float64 `json:"velocity_smooth,omitempty"`
-	Heartrate      []int     `json:"heartrate,omitempty"`
-	Lat            []float64 `json:"lat,omitempty"`
-	Lng            []float64 `json:"lng,omitempty"`
-	Distance       []float64 `json:"distance,omitempty"`
-	Power          []float64 `json:"power,omitempty"`
-	Resistance     []float64 `json:"resistance,omitempty"`
+	// RPM for cycling, Steps per minute for running
+	Cadence *ClientFacingStreamCadence `json:"cadence,omitempty"`
+	Time    []int                      `json:"time,omitempty"`
+	// Data points for altitude
+	Altitude *ClientFacingStreamAltitude `json:"altitude,omitempty"`
+	// Velocity in m/s
+	VelocitySmooth *ClientFacingStreamVelocitySmooth `json:"velocity_smooth,omitempty"`
+	// Heart rate in bpm
+	Heartrate *ClientFacingStreamHeartrate `json:"heartrate,omitempty"`
+	// Latitude for data point
+	Lat *ClientFacingStreamLat `json:"lat,omitempty"`
+	// Longitude for data point
+	Lng *ClientFacingStreamLng `json:"lng,omitempty"`
+	// Cumulated distance for exercise
+	Distance *ClientFacingStreamDistance `json:"distance,omitempty"`
+	// Power in watts
+	Power *ClientFacingStreamPower `json:"power,omitempty"`
+	// Resistance on bike
+	Resistance *ClientFacingStreamResistance `json:"resistance,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3050,13 +2851,532 @@ func (c *ClientFacingStream) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// Data points for altitude
+type ClientFacingStreamAltitude struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamAltitudeFromDoubleOptionalList(value []*float64) *ClientFacingStreamAltitude {
+	return &ClientFacingStreamAltitude{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamAltitudeFromDoubleList(value []float64) *ClientFacingStreamAltitude {
+	return &ClientFacingStreamAltitude{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamAltitude) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamAltitude) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamAltitudeVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamAltitude) Accept(visitor ClientFacingStreamAltitudeVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// RPM for cycling, Steps per minute for running
+type ClientFacingStreamCadence struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamCadenceFromDoubleOptionalList(value []*float64) *ClientFacingStreamCadence {
+	return &ClientFacingStreamCadence{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamCadenceFromDoubleList(value []float64) *ClientFacingStreamCadence {
+	return &ClientFacingStreamCadence{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamCadence) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamCadence) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamCadenceVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamCadence) Accept(visitor ClientFacingStreamCadenceVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// Cumulated distance for exercise
+type ClientFacingStreamDistance struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamDistanceFromDoubleOptionalList(value []*float64) *ClientFacingStreamDistance {
+	return &ClientFacingStreamDistance{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamDistanceFromDoubleList(value []float64) *ClientFacingStreamDistance {
+	return &ClientFacingStreamDistance{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamDistance) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamDistance) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamDistanceVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamDistance) Accept(visitor ClientFacingStreamDistanceVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// Heart rate in bpm
+type ClientFacingStreamHeartrate struct {
+	typeName            string
+	IntegerOptionalList []*int
+	IntegerList         []int
+}
+
+func NewClientFacingStreamHeartrateFromIntegerOptionalList(value []*int) *ClientFacingStreamHeartrate {
+	return &ClientFacingStreamHeartrate{typeName: "integerOptionalList", IntegerOptionalList: value}
+}
+
+func NewClientFacingStreamHeartrateFromIntegerList(value []int) *ClientFacingStreamHeartrate {
+	return &ClientFacingStreamHeartrate{typeName: "integerList", IntegerList: value}
+}
+
+func (c *ClientFacingStreamHeartrate) UnmarshalJSON(data []byte) error {
+	var valueIntegerOptionalList []*int
+	if err := json.Unmarshal(data, &valueIntegerOptionalList); err == nil {
+		c.typeName = "integerOptionalList"
+		c.IntegerOptionalList = valueIntegerOptionalList
+		return nil
+	}
+	var valueIntegerList []int
+	if err := json.Unmarshal(data, &valueIntegerList); err == nil {
+		c.typeName = "integerList"
+		c.IntegerList = valueIntegerList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamHeartrate) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "integerOptionalList":
+		return json.Marshal(c.IntegerOptionalList)
+	case "integerList":
+		return json.Marshal(c.IntegerList)
+	}
+}
+
+type ClientFacingStreamHeartrateVisitor interface {
+	VisitIntegerOptionalList([]*int) error
+	VisitIntegerList([]int) error
+}
+
+func (c *ClientFacingStreamHeartrate) Accept(visitor ClientFacingStreamHeartrateVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "integerOptionalList":
+		return visitor.VisitIntegerOptionalList(c.IntegerOptionalList)
+	case "integerList":
+		return visitor.VisitIntegerList(c.IntegerList)
+	}
+}
+
+// Latitude for data point
+type ClientFacingStreamLat struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamLatFromDoubleOptionalList(value []*float64) *ClientFacingStreamLat {
+	return &ClientFacingStreamLat{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamLatFromDoubleList(value []float64) *ClientFacingStreamLat {
+	return &ClientFacingStreamLat{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamLat) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamLat) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamLatVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamLat) Accept(visitor ClientFacingStreamLatVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// Longitude for data point
+type ClientFacingStreamLng struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamLngFromDoubleOptionalList(value []*float64) *ClientFacingStreamLng {
+	return &ClientFacingStreamLng{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamLngFromDoubleList(value []float64) *ClientFacingStreamLng {
+	return &ClientFacingStreamLng{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamLng) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamLng) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamLngVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamLng) Accept(visitor ClientFacingStreamLngVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// Power in watts
+type ClientFacingStreamPower struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamPowerFromDoubleOptionalList(value []*float64) *ClientFacingStreamPower {
+	return &ClientFacingStreamPower{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamPowerFromDoubleList(value []float64) *ClientFacingStreamPower {
+	return &ClientFacingStreamPower{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamPower) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamPower) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamPowerVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamPower) Accept(visitor ClientFacingStreamPowerVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// Resistance on bike
+type ClientFacingStreamResistance struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamResistanceFromDoubleOptionalList(value []*float64) *ClientFacingStreamResistance {
+	return &ClientFacingStreamResistance{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamResistanceFromDoubleList(value []float64) *ClientFacingStreamResistance {
+	return &ClientFacingStreamResistance{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamResistance) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamResistance) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamResistanceVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamResistance) Accept(visitor ClientFacingStreamResistanceVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// Velocity in m/s
+type ClientFacingStreamVelocitySmooth struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamVelocitySmoothFromDoubleOptionalList(value []*float64) *ClientFacingStreamVelocitySmooth {
+	return &ClientFacingStreamVelocitySmooth{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamVelocitySmoothFromDoubleList(value []float64) *ClientFacingStreamVelocitySmooth {
+	return &ClientFacingStreamVelocitySmooth{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamVelocitySmooth) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamVelocitySmooth) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamVelocitySmoothVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamVelocitySmooth) Accept(visitor ClientFacingStreamVelocitySmoothVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
 type ClientFacingStressLevelTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in percentage (0-100).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -3173,8 +3493,7 @@ func (c *ClientFacingTestKitOrderDetails) String() string {
 // To be used as part of a ClientFacingOrder.
 type ClientFacingTestkitOrder struct {
 	// The Vital TestKit Order ID
-	Id string `json:"id"`
-	// Shipment object
+	Id        string                `json:"id"`
 	Shipment  *ClientFacingShipment `json:"shipment,omitempty"`
 	CreatedAt time.Time             `json:"created_at"`
 	UpdatedAt time.Time             `json:"updated_at"`
@@ -3215,16 +3534,11 @@ type ClientFacingUser struct {
 	// When your item is created
 	CreatedOn time.Time `json:"created_on"`
 	// A list of the users connected sources.
-	ConnectedSources []*ConnectedSourceClientFacing `json:"connected_sources,omitempty"`
-	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
-	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
-	FallbackTimeZone *FallbackTimeZone `json:"fallback_time_zone,omitempty"`
-	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
-	FallbackBirthDate *FallbackBirthDate `json:"fallback_birth_date,omitempty"`
-	// Starting bound for user data ingestion. Data older than this date will not be ingested.
-	IngestionStart *string `json:"ingestion_start,omitempty"`
-	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
-	IngestionEnd *string `json:"ingestion_end,omitempty"`
+	ConnectedSources  []*ConnectedSourceClientFacing `json:"connected_sources,omitempty"`
+	FallbackTimeZone  *FallbackTimeZone              `json:"fallback_time_zone,omitempty"`
+	FallbackBirthDate *FallbackBirthDate             `json:"fallback_birth_date,omitempty"`
+	IngestionStart    *string                        `json:"ingestion_start,omitempty"`
+	IngestionEnd      *string                        `json:"ingestion_end,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3285,12 +3599,9 @@ func (c *ClientFacingUserKey) String() string {
 }
 
 type ClientFacingVo2MaxTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in mL/kg/min.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
@@ -3393,12 +3704,9 @@ func (c *ClientFacingWalkInTestOrder) String() string {
 }
 
 type ClientFacingWaterTimeseries struct {
-	// Deprecated
-	Id *int `json:"id,omitempty"`
-	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG and IGE.
-	Type *string `json:"type,omitempty"`
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
 	// Measured in milliters.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
@@ -3434,52 +3742,35 @@ func (c *ClientFacingWaterTimeseries) String() string {
 
 type ClientFacingWorkout struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
-	UserId string `json:"user_id"`
-	Id     string `json:"id"`
-	// Title given for the workout
-	Title *string `json:"title,omitempty"`
-	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
-	TimezoneOffset *int `json:"timezone_offset,omitempty"`
-	// Average heart rate during workout::bpm
-	AverageHr *int `json:"average_hr,omitempty"`
-	// Max heart rate during workout::bpm
-	MaxHr *int `json:"max_hr,omitempty"`
-	// Distance travelled during workout::meters
-	Distance *float64 `json:"distance,omitempty"`
+	UserId         string   `json:"user_id"`
+	Id             string   `json:"id"`
+	Title          *string  `json:"title,omitempty"`
+	TimezoneOffset *int     `json:"timezone_offset,omitempty"`
+	AverageHr      *int     `json:"average_hr,omitempty"`
+	MaxHr          *int     `json:"max_hr,omitempty"`
+	Distance       *float64 `json:"distance,omitempty"`
 	// Date of the workout summary in the YYYY-mm-dd format. This generally matches the workout start date.
 	CalendarDate string `json:"calendar_date"`
 	// Start time of the workout::time
 	TimeStart time.Time `json:"time_start"`
 	// End time of the workout::time
-	TimeEnd time.Time `json:"time_end"`
-	// Calories burned during the workout::kCal
-	Calories *float64 `json:"calories,omitempty"`
+	TimeEnd  time.Time `json:"time_end"`
+	Calories *float64  `json:"calories,omitempty"`
 	// Sport's name
-	Sport *ClientFacingSport `json:"sport,omitempty"`
-	// Time in seconds spent in different heart rate zones <50%, 50-60%, 60-70%, 70-80%, 80-90%, 90%+. Due to rounding errors, it's possible that summing all values is different than the total time of the workout. Not available for all providers::seconds
-	HrZones []int `json:"hr_zones,omitempty"`
-	// Time spent active during the workout::seconds
-	MovingTime *int `json:"moving_time,omitempty"`
-	// Elevation gain during the workout::meters
-	TotalElevationGain *float64 `json:"total_elevation_gain,omitempty"`
-	// Highest point of elevation::meters
-	ElevHigh *float64 `json:"elev_high,omitempty"`
-	// Lowest point of elevation::meters
-	ElevLow *float64 `json:"elev_low,omitempty"`
-	// Average speed during workout in m/s::meters/sec
-	AverageSpeed *float64 `json:"average_speed,omitempty"`
-	// Max speed during workout in m/s::meters/sec
-	MaxSpeed *float64 `json:"max_speed,omitempty"`
-	// Average watts burned during exercise::watts
-	AverageWatts *float64 `json:"average_watts,omitempty"`
-	// Watts burned during exercise::watts
-	DeviceWatts *float64 `json:"device_watts,omitempty"`
-	// Max watts burned during exercise::watts
-	MaxWatts *float64 `json:"max_watts,omitempty"`
-	// Weighted average watts burned during exercise::watts
-	WeightedAverageWatts *float64 `json:"weighted_average_watts,omitempty"`
-	// Map of workouts encoded as polyline
-	Map map[string]interface{} `json:"map,omitempty"`
+	Sport                *ClientFacingSport     `json:"sport,omitempty"`
+	HrZones              []int                  `json:"hr_zones,omitempty"`
+	MovingTime           *int                   `json:"moving_time,omitempty"`
+	TotalElevationGain   *float64               `json:"total_elevation_gain,omitempty"`
+	ElevHigh             *float64               `json:"elev_high,omitempty"`
+	ElevLow              *float64               `json:"elev_low,omitempty"`
+	AverageSpeed         *float64               `json:"average_speed,omitempty"`
+	MaxSpeed             *float64               `json:"max_speed,omitempty"`
+	AverageWatts         *float64               `json:"average_watts,omitempty"`
+	DeviceWatts          *float64               `json:"device_watts,omitempty"`
+	MaxWatts             *float64               `json:"max_watts,omitempty"`
+	WeightedAverageWatts *float64               `json:"weighted_average_watts,omitempty"`
+	Steps                *int                   `json:"steps,omitempty"`
+	Map                  map[string]interface{} `json:"map,omitempty"`
 	// Provider ID given for that specific workout
 	ProviderId string `json:"provider_id"`
 	// Source the data has come from.
@@ -3590,36 +3881,6 @@ func (c *ClientWorkoutResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientWorkoutResponse) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type CodingItem1 struct {
-	System string `json:"system"`
-	Code   string `json:"code"`
-
-	_rawJSON json.RawMessage
-}
-
-func (c *CodingItem1) UnmarshalJSON(data []byte) error {
-	type unmarshaler CodingItem1
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CodingItem1(value)
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CodingItem1) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -3755,7 +4016,6 @@ func (c *Consent) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// An enumeration.
 type ConsentType string
 
 const (
@@ -3820,7 +4080,6 @@ func (d *DaySlots) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
-// An enumeration.
 type DelegatedFlowType string
 
 const (
@@ -3876,7 +4135,6 @@ func (d *DemoConnectionStatus) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
-// An enumeration.
 type DemoProviders string
 
 const (
@@ -3939,7 +4197,6 @@ func (d *DeviceV2InDb) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
-// An enumeration.
 type EmailProviders = string
 
 type Energy struct {
@@ -4137,18 +4394,12 @@ func (f *FallbackTimeZone) String() string {
 }
 
 type Fats struct {
-	// Amount of saturated fats in grams (g)
-	Saturated *float64 `json:"saturated,omitempty"`
-	// Amount of monounsaturated fats in grams (g)
+	Saturated       *float64 `json:"saturated,omitempty"`
 	Monounsaturated *float64 `json:"monounsaturated,omitempty"`
-	// Amount of polyunsaturated fats in grams (g)
 	Polyunsaturated *float64 `json:"polyunsaturated,omitempty"`
-	// Amount of Omega-3 fatty acids in grams (g)
-	Omega3 *float64 `json:"omega3,omitempty"`
-	// Amount of Omega-6 fatty acids in grams (g)
-	Omega6 *float64 `json:"omega6,omitempty"`
-	// Total amount of fats in grams (g)
-	Total *float64 `json:"total,omitempty"`
+	Omega3          *float64 `json:"omega3,omitempty"`
+	Omega6          *float64 `json:"omega6,omitempty"`
+	Total           *float64 `json:"total,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4176,7 +4427,6 @@ func (f *Fats) String() string {
 	return fmt.Sprintf("%#v", f)
 }
 
-// An enumeration.
 type Gender string
 
 const (
@@ -4303,8 +4553,7 @@ func (g *GroupedBloodOxygen) String() string {
 type GroupedBloodOxygenResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedBloodOxygen `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                          `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4365,8 +4614,7 @@ func (g *GroupedBloodPressure) String() string {
 type GroupedBloodPressureResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedBloodPressure `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                            `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4427,8 +4675,7 @@ func (g *GroupedBodyFat) String() string {
 type GroupedBodyFatResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedBodyFat `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                      `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4489,8 +4736,7 @@ func (g *GroupedBodyWeight) String() string {
 type GroupedBodyWeightResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedBodyWeight `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                         `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4551,8 +4797,7 @@ func (g *GroupedCaffeine) String() string {
 type GroupedCaffeineResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedCaffeine `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                       `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4613,8 +4858,7 @@ func (g *GroupedCaloriesActive) String() string {
 type GroupedCaloriesActiveResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedCaloriesActive `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                             `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4675,8 +4919,7 @@ func (g *GroupedCaloriesBasal) String() string {
 type GroupedCaloriesBasalResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedCaloriesBasal `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                            `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4737,8 +4980,7 @@ func (g *GroupedCholesterol) String() string {
 type GroupedCholesterolResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedCholesterol `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                          `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4799,8 +5041,7 @@ func (g *GroupedDistance) String() string {
 type GroupedDistanceResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedDistance `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                       `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4861,8 +5102,7 @@ func (g *GroupedElectrocardiogramVoltage) String() string {
 type GroupedElectrocardiogramVoltageResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedElectrocardiogramVoltage `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                                       `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4923,8 +5163,7 @@ func (g *GroupedFloorsClimbed) String() string {
 type GroupedFloorsClimbedResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedFloorsClimbed `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                            `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4985,8 +5224,7 @@ func (g *GroupedGlucose) String() string {
 type GroupedGlucoseResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedGlucose `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                      `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5047,8 +5285,7 @@ func (g *GroupedHeartRate) String() string {
 type GroupedHeartRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedHeartRate `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                        `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5109,8 +5346,7 @@ func (g *GroupedHrv) String() string {
 type GroupedHrvResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedHrv `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                  `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5171,8 +5407,7 @@ func (g *GroupedHypnogram) String() string {
 type GroupedHypnogramResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedHypnogram `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                        `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5233,8 +5468,7 @@ func (g *GroupedIge) String() string {
 type GroupedIgeResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedIge `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                  `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5295,8 +5529,7 @@ func (g *GroupedIgg) String() string {
 type GroupedIggResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedIgg `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                  `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5357,8 +5590,7 @@ func (g *GroupedMindfulnessMinutes) String() string {
 type GroupedMindfulnessMinutesResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedMindfulnessMinutes `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                                 `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5419,8 +5651,7 @@ func (g *GroupedRespiratoryRate) String() string {
 type GroupedRespiratoryRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedRespiratoryRate `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                              `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5481,8 +5712,7 @@ func (g *GroupedSteps) String() string {
 type GroupedStepsResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedSteps `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                    `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5543,8 +5773,7 @@ func (g *GroupedStressLevel) String() string {
 type GroupedStressLevelResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedStressLevel `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                          `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5605,8 +5834,7 @@ func (g *GroupedVo2Max) String() string {
 type GroupedVo2MaxResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedVo2Max `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                     `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5667,8 +5895,7 @@ func (g *GroupedWater) String() string {
 type GroupedWaterResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedWater `json:"groups,omitempty"`
-	// The cursor for fetching the next page, or `null` if there is no more data.
-	Next *string `json:"next,omitempty"`
+	Next   *string                    `json:"next,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5702,21 +5929,14 @@ type HealthInsuranceCreateRequest struct {
 	// An image of the back of the patient insurance card.
 	BackImage *HealthInsuranceCreateRequestBackImage `json:"back_image,omitempty"`
 	// An image of the patient signature for health insurance billing.
-	PatientSignatureImage *HealthInsuranceCreateRequestPatientSignatureImage `json:"patient_signature_image,omitempty"`
-	// Textual description of what are the patient symptoms and attempted treatments.
-	Subjective *string `json:"subjective,omitempty"`
-	// Textual description of what are the physician assessments and testing plans.
-	AssessmentPlan *string `json:"assessment_plan,omitempty"`
-	// Unique identifier representing a specific Health Insurance.
-	PayorCode *string `json:"payor_code,omitempty"`
-	// Insurance unique number assigned to a patient, usually present on the insurance card.
-	InsuranceId *string `json:"insurance_id,omitempty"`
-	// Relationship between the patient and the insurance contractor. Values can be (Self, Spouse, Other Relationship).
-	ResponsibleRelationship *ResponsibleRelationship `json:"responsible_relationship,omitempty"`
-	// Responsible details when the value of responsible_relationship is not 'Self'.
-	ResponsibleDetails *PersonDetails `json:"responsible_details,omitempty"`
-	// Diagnosis codes for insurance billing.
-	DiagnosisCodes []string `json:"diagnosis_codes,omitempty"`
+	PatientSignatureImage   *HealthInsuranceCreateRequestPatientSignatureImage `json:"patient_signature_image,omitempty"`
+	Subjective              *string                                            `json:"subjective,omitempty"`
+	AssessmentPlan          *string                                            `json:"assessment_plan,omitempty"`
+	PayorCode               *string                                            `json:"payor_code,omitempty"`
+	InsuranceId             *string                                            `json:"insurance_id,omitempty"`
+	ResponsibleRelationship *ResponsibleRelationship                           `json:"responsible_relationship,omitempty"`
+	ResponsibleDetails      *PersonDetails                                     `json:"responsible_details,omitempty"`
+	DiagnosisCodes          []string                                           `json:"diagnosis_codes,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5746,277 +5966,178 @@ func (h *HealthInsuranceCreateRequest) String() string {
 
 // An image of the back of the patient insurance card.
 type HealthInsuranceCreateRequestBackImage struct {
-	ContentType string
-	ImageJpeg   *Jpeg
-	ImagePng    *Png
+	typeName string
+	Jpeg     *Jpeg
+	Png      *Png
 }
 
-func NewHealthInsuranceCreateRequestBackImageFromImageJpeg(value *Jpeg) *HealthInsuranceCreateRequestBackImage {
-	return &HealthInsuranceCreateRequestBackImage{ContentType: "image/jpeg", ImageJpeg: value}
+func NewHealthInsuranceCreateRequestBackImageFromJpeg(value *Jpeg) *HealthInsuranceCreateRequestBackImage {
+	return &HealthInsuranceCreateRequestBackImage{typeName: "jpeg", Jpeg: value}
 }
 
-func NewHealthInsuranceCreateRequestBackImageFromImagePng(value *Png) *HealthInsuranceCreateRequestBackImage {
-	return &HealthInsuranceCreateRequestBackImage{ContentType: "image/png", ImagePng: value}
+func NewHealthInsuranceCreateRequestBackImageFromPng(value *Png) *HealthInsuranceCreateRequestBackImage {
+	return &HealthInsuranceCreateRequestBackImage{typeName: "png", Png: value}
 }
 
 func (h *HealthInsuranceCreateRequestBackImage) UnmarshalJSON(data []byte) error {
-	var unmarshaler struct {
-		ContentType string `json:"content_type"`
+	valueJpeg := new(Jpeg)
+	if err := json.Unmarshal(data, &valueJpeg); err == nil {
+		h.typeName = "jpeg"
+		h.Jpeg = valueJpeg
+		return nil
 	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
+	valuePng := new(Png)
+	if err := json.Unmarshal(data, &valuePng); err == nil {
+		h.typeName = "png"
+		h.Png = valuePng
+		return nil
 	}
-	h.ContentType = unmarshaler.ContentType
-	switch unmarshaler.ContentType {
-	case "image/jpeg":
-		value := new(Jpeg)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		h.ImageJpeg = value
-	case "image/png":
-		value := new(Png)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		h.ImagePng = value
-	}
-	return nil
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, h)
 }
 
 func (h HealthInsuranceCreateRequestBackImage) MarshalJSON() ([]byte, error) {
-	switch h.ContentType {
+	switch h.typeName {
 	default:
-		return nil, fmt.Errorf("invalid type %s in %T", h.ContentType, h)
-	case "image/jpeg":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Jpeg
-		}{
-			ContentType: h.ContentType,
-			Jpeg:        h.ImageJpeg,
-		}
-		return json.Marshal(marshaler)
-	case "image/png":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Png
-		}{
-			ContentType: h.ContentType,
-			Png:         h.ImagePng,
-		}
-		return json.Marshal(marshaler)
+		return nil, fmt.Errorf("invalid type %s in %T", h.typeName, h)
+	case "jpeg":
+		return json.Marshal(h.Jpeg)
+	case "png":
+		return json.Marshal(h.Png)
 	}
 }
 
 type HealthInsuranceCreateRequestBackImageVisitor interface {
-	VisitImageJpeg(*Jpeg) error
-	VisitImagePng(*Png) error
+	VisitJpeg(*Jpeg) error
+	VisitPng(*Png) error
 }
 
 func (h *HealthInsuranceCreateRequestBackImage) Accept(visitor HealthInsuranceCreateRequestBackImageVisitor) error {
-	switch h.ContentType {
+	switch h.typeName {
 	default:
-		return fmt.Errorf("invalid type %s in %T", h.ContentType, h)
-	case "image/jpeg":
-		return visitor.VisitImageJpeg(h.ImageJpeg)
-	case "image/png":
-		return visitor.VisitImagePng(h.ImagePng)
+		return fmt.Errorf("invalid type %s in %T", h.typeName, h)
+	case "jpeg":
+		return visitor.VisitJpeg(h.Jpeg)
+	case "png":
+		return visitor.VisitPng(h.Png)
 	}
 }
 
 // An image of the front of the patient insurance card.
 type HealthInsuranceCreateRequestFrontImage struct {
-	ContentType string
-	ImageJpeg   *Jpeg
-	ImagePng    *Png
+	typeName string
+	Jpeg     *Jpeg
+	Png      *Png
 }
 
-func NewHealthInsuranceCreateRequestFrontImageFromImageJpeg(value *Jpeg) *HealthInsuranceCreateRequestFrontImage {
-	return &HealthInsuranceCreateRequestFrontImage{ContentType: "image/jpeg", ImageJpeg: value}
+func NewHealthInsuranceCreateRequestFrontImageFromJpeg(value *Jpeg) *HealthInsuranceCreateRequestFrontImage {
+	return &HealthInsuranceCreateRequestFrontImage{typeName: "jpeg", Jpeg: value}
 }
 
-func NewHealthInsuranceCreateRequestFrontImageFromImagePng(value *Png) *HealthInsuranceCreateRequestFrontImage {
-	return &HealthInsuranceCreateRequestFrontImage{ContentType: "image/png", ImagePng: value}
+func NewHealthInsuranceCreateRequestFrontImageFromPng(value *Png) *HealthInsuranceCreateRequestFrontImage {
+	return &HealthInsuranceCreateRequestFrontImage{typeName: "png", Png: value}
 }
 
 func (h *HealthInsuranceCreateRequestFrontImage) UnmarshalJSON(data []byte) error {
-	var unmarshaler struct {
-		ContentType string `json:"content_type"`
+	valueJpeg := new(Jpeg)
+	if err := json.Unmarshal(data, &valueJpeg); err == nil {
+		h.typeName = "jpeg"
+		h.Jpeg = valueJpeg
+		return nil
 	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
+	valuePng := new(Png)
+	if err := json.Unmarshal(data, &valuePng); err == nil {
+		h.typeName = "png"
+		h.Png = valuePng
+		return nil
 	}
-	h.ContentType = unmarshaler.ContentType
-	switch unmarshaler.ContentType {
-	case "image/jpeg":
-		value := new(Jpeg)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		h.ImageJpeg = value
-	case "image/png":
-		value := new(Png)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		h.ImagePng = value
-	}
-	return nil
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, h)
 }
 
 func (h HealthInsuranceCreateRequestFrontImage) MarshalJSON() ([]byte, error) {
-	switch h.ContentType {
+	switch h.typeName {
 	default:
-		return nil, fmt.Errorf("invalid type %s in %T", h.ContentType, h)
-	case "image/jpeg":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Jpeg
-		}{
-			ContentType: h.ContentType,
-			Jpeg:        h.ImageJpeg,
-		}
-		return json.Marshal(marshaler)
-	case "image/png":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Png
-		}{
-			ContentType: h.ContentType,
-			Png:         h.ImagePng,
-		}
-		return json.Marshal(marshaler)
+		return nil, fmt.Errorf("invalid type %s in %T", h.typeName, h)
+	case "jpeg":
+		return json.Marshal(h.Jpeg)
+	case "png":
+		return json.Marshal(h.Png)
 	}
 }
 
 type HealthInsuranceCreateRequestFrontImageVisitor interface {
-	VisitImageJpeg(*Jpeg) error
-	VisitImagePng(*Png) error
+	VisitJpeg(*Jpeg) error
+	VisitPng(*Png) error
 }
 
 func (h *HealthInsuranceCreateRequestFrontImage) Accept(visitor HealthInsuranceCreateRequestFrontImageVisitor) error {
-	switch h.ContentType {
+	switch h.typeName {
 	default:
-		return fmt.Errorf("invalid type %s in %T", h.ContentType, h)
-	case "image/jpeg":
-		return visitor.VisitImageJpeg(h.ImageJpeg)
-	case "image/png":
-		return visitor.VisitImagePng(h.ImagePng)
+		return fmt.Errorf("invalid type %s in %T", h.typeName, h)
+	case "jpeg":
+		return visitor.VisitJpeg(h.Jpeg)
+	case "png":
+		return visitor.VisitPng(h.Png)
 	}
 }
 
 // An image of the patient signature for health insurance billing.
 type HealthInsuranceCreateRequestPatientSignatureImage struct {
-	ContentType string
-	ImageJpeg   *Jpeg
-	ImagePng    *Png
+	typeName string
+	Jpeg     *Jpeg
+	Png      *Png
 }
 
-func NewHealthInsuranceCreateRequestPatientSignatureImageFromImageJpeg(value *Jpeg) *HealthInsuranceCreateRequestPatientSignatureImage {
-	return &HealthInsuranceCreateRequestPatientSignatureImage{ContentType: "image/jpeg", ImageJpeg: value}
+func NewHealthInsuranceCreateRequestPatientSignatureImageFromJpeg(value *Jpeg) *HealthInsuranceCreateRequestPatientSignatureImage {
+	return &HealthInsuranceCreateRequestPatientSignatureImage{typeName: "jpeg", Jpeg: value}
 }
 
-func NewHealthInsuranceCreateRequestPatientSignatureImageFromImagePng(value *Png) *HealthInsuranceCreateRequestPatientSignatureImage {
-	return &HealthInsuranceCreateRequestPatientSignatureImage{ContentType: "image/png", ImagePng: value}
+func NewHealthInsuranceCreateRequestPatientSignatureImageFromPng(value *Png) *HealthInsuranceCreateRequestPatientSignatureImage {
+	return &HealthInsuranceCreateRequestPatientSignatureImage{typeName: "png", Png: value}
 }
 
 func (h *HealthInsuranceCreateRequestPatientSignatureImage) UnmarshalJSON(data []byte) error {
-	var unmarshaler struct {
-		ContentType string `json:"content_type"`
+	valueJpeg := new(Jpeg)
+	if err := json.Unmarshal(data, &valueJpeg); err == nil {
+		h.typeName = "jpeg"
+		h.Jpeg = valueJpeg
+		return nil
 	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
+	valuePng := new(Png)
+	if err := json.Unmarshal(data, &valuePng); err == nil {
+		h.typeName = "png"
+		h.Png = valuePng
+		return nil
 	}
-	h.ContentType = unmarshaler.ContentType
-	switch unmarshaler.ContentType {
-	case "image/jpeg":
-		value := new(Jpeg)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		h.ImageJpeg = value
-	case "image/png":
-		value := new(Png)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		h.ImagePng = value
-	}
-	return nil
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, h)
 }
 
 func (h HealthInsuranceCreateRequestPatientSignatureImage) MarshalJSON() ([]byte, error) {
-	switch h.ContentType {
+	switch h.typeName {
 	default:
-		return nil, fmt.Errorf("invalid type %s in %T", h.ContentType, h)
-	case "image/jpeg":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Jpeg
-		}{
-			ContentType: h.ContentType,
-			Jpeg:        h.ImageJpeg,
-		}
-		return json.Marshal(marshaler)
-	case "image/png":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Png
-		}{
-			ContentType: h.ContentType,
-			Png:         h.ImagePng,
-		}
-		return json.Marshal(marshaler)
+		return nil, fmt.Errorf("invalid type %s in %T", h.typeName, h)
+	case "jpeg":
+		return json.Marshal(h.Jpeg)
+	case "png":
+		return json.Marshal(h.Png)
 	}
 }
 
 type HealthInsuranceCreateRequestPatientSignatureImageVisitor interface {
-	VisitImageJpeg(*Jpeg) error
-	VisitImagePng(*Png) error
+	VisitJpeg(*Jpeg) error
+	VisitPng(*Png) error
 }
 
 func (h *HealthInsuranceCreateRequestPatientSignatureImage) Accept(visitor HealthInsuranceCreateRequestPatientSignatureImageVisitor) error {
-	switch h.ContentType {
+	switch h.typeName {
 	default:
-		return fmt.Errorf("invalid type %s in %T", h.ContentType, h)
-	case "image/jpeg":
-		return visitor.VisitImageJpeg(h.ImageJpeg)
-	case "image/png":
-		return visitor.VisitImagePng(h.ImagePng)
+		return fmt.Errorf("invalid type %s in %T", h.typeName, h)
+	case "jpeg":
+		return visitor.VisitJpeg(h.Jpeg)
+	case "png":
+		return visitor.VisitPng(h.Png)
 	}
 }
 
-type High struct {
-	Value int `json:"value"`
-
-	_rawJSON json.RawMessage
-}
-
-func (h *High) UnmarshalJSON(data []byte) error {
-	type unmarshaler High
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*h = High(value)
-	h._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (h *High) String() string {
-	if len(h._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(h._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(h); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", h)
-}
-
-// An enumeration.
 type HistoricalPullStatus string
 
 const (
@@ -6105,69 +6226,15 @@ func (h *HttpValidationError) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
-type IdentifierItem1 struct {
-	System string `json:"system"`
-	Value  string `json:"value"`
-
-	_rawJSON json.RawMessage
-}
-
-func (i *IdentifierItem1) UnmarshalJSON(data []byte) error {
-	type unmarshaler IdentifierItem1
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*i = IdentifierItem1(value)
-	i._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (i *IdentifierItem1) String() string {
-	if len(i._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(i); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", i)
-}
-
-type InterpretationItem struct {
-	Coding []*CodingItem1 `json:"coding,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (i *InterpretationItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler InterpretationItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*i = InterpretationItem(value)
-	i._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (i *InterpretationItem) String() string {
-	if len(i._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(i); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", i)
-}
-
 type Jpeg struct {
-	Content string `json:"content"`
+	Content     string `json:"content"`
+	contentType string
 
 	_rawJSON json.RawMessage
+}
+
+func (j *Jpeg) ContentType() string {
+	return j.contentType
 }
 
 func (j *Jpeg) UnmarshalJSON(data []byte) error {
@@ -6177,8 +6244,21 @@ func (j *Jpeg) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*j = Jpeg(value)
+	j.contentType = "image/jpeg"
 	j._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (j *Jpeg) MarshalJSON() ([]byte, error) {
+	type embed Jpeg
+	var marshaler = struct {
+		embed
+		ContentType string `json:"content_type"`
+	}{
+		embed:       embed(*j),
+		ContentType: "image/jpeg",
+	}
+	return json.Marshal(marshaler)
 }
 
 func (j *Jpeg) String() string {
@@ -6191,37 +6271,6 @@ func (j *Jpeg) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", j)
-}
-
-type LabResultsFhir struct {
-	ResourceType string                                                      `json:"resourceType"`
-	Type         string                                                      `json:"type"`
-	Entry        []*VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem `json:"entry,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (l *LabResultsFhir) UnmarshalJSON(data []byte) error {
-	type unmarshaler LabResultsFhir
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = LabResultsFhir(value)
-	l._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *LabResultsFhir) String() string {
-	if len(l._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
 }
 
 type LabResultsMetadata struct {
@@ -6406,7 +6455,6 @@ func (l LabTestSampleType) Ptr() *LabTestSampleType {
 	return &l
 }
 
-// An enumeration.
 type LabTestStatus string
 
 const (
@@ -6429,6 +6477,43 @@ func NewLabTestStatusFromString(s string) (LabTestStatus, error) {
 }
 
 func (l LabTestStatus) Ptr() *LabTestStatus {
+	return &l
+}
+
+type Labs string
+
+const (
+	LabsAyumetrix    Labs = "ayumetrix"
+	LabsSpiriplex    Labs = "spiriplex"
+	LabsUssl         Labs = "ussl"
+	LabsQuest        Labs = "quest"
+	LabsLabcorp      Labs = "labcorp"
+	LabsBioreference Labs = "bioreference"
+	LabsManual       Labs = "manual"
+)
+
+func NewLabsFromString(s string) (Labs, error) {
+	switch s {
+	case "ayumetrix":
+		return LabsAyumetrix, nil
+	case "spiriplex":
+		return LabsSpiriplex, nil
+	case "ussl":
+		return LabsUssl, nil
+	case "quest":
+		return LabsQuest, nil
+	case "labcorp":
+		return LabsLabcorp, nil
+	case "bioreference":
+		return LabsBioreference, nil
+	case "manual":
+		return LabsManual, nil
+	}
+	var t Labs
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l Labs) Ptr() *Labs {
 	return &l
 }
 
@@ -6552,50 +6637,15 @@ func (l *LngLat) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
-type Low struct {
-	Value int `json:"value"`
-
-	_rawJSON json.RawMessage
-}
-
-func (l *Low) UnmarshalJSON(data []byte) error {
-	type unmarshaler Low
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = Low(value)
-	l._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *Low) String() string {
-	if len(l._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
-}
-
 type Macros struct {
-	// Amount of carbohydrates in grams (g)
-	Carbs *float64 `json:"carbs,omitempty"`
-	// Amount of protein in grams (g)
+	Carbs   *float64 `json:"carbs,omitempty"`
 	Protein *float64 `json:"protein,omitempty"`
 	// Details of fat content
-	Fats *Fats `json:"fats,omitempty"`
-	// Amount of alcohol in grams (g)
+	Fats    *Fats    `json:"fats,omitempty"`
 	Alcohol *float64 `json:"alcohol,omitempty"`
-	// Amount of water in grams (g)
-	Water *float64 `json:"water,omitempty"`
-	// Amount of dietary fiber in grams (g)
-	Fibre *float64 `json:"fibre,omitempty"`
-	// Amount of sugar in grams (g)
-	Sugar *float64 `json:"sugar,omitempty"`
+	Water   *float64 `json:"water,omitempty"`
+	Fibre   *float64 `json:"fibre,omitempty"`
+	Sugar   *float64 `json:"sugar,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6623,7 +6673,6 @@ func (m *Macros) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
-// An enumeration.
 type ManualProviders string
 
 const (
@@ -6667,7 +6716,6 @@ func (m ManualProviders) Ptr() *ManualProviders {
 	return &m
 }
 
-// An enumeration.
 type MarkerType string
 
 const (
@@ -6767,12 +6815,9 @@ func (m *MetricsResult) String() string {
 }
 
 type Micros struct {
-	// Amount of each mineral in grams (g)
-	Minerals map[string]float64 `json:"minerals,omitempty"`
-	// Amount of each trace element in grams (g)
-	TraceElements map[string]float64 `json:"trace_elements,omitempty"`
-	// Amount of each vitamin in grams (g)
-	Vitamins map[string]float64 `json:"vitamins,omitempty"`
+	Minerals      map[string]*float64 `json:"minerals,omitempty"`
+	TraceElements map[string]*float64 `json:"trace_elements,omitempty"`
+	Vitamins      map[string]*float64 `json:"vitamins,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6800,7 +6845,6 @@ func (m *Micros) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
-// An enumeration.
 type OAuthProviders string
 
 const (
@@ -6856,159 +6900,6 @@ func (o OAuthProviders) Ptr() *OAuthProviders {
 	return &o
 }
 
-type Observation struct {
-	ResourceType      string                                               `json:"resourceType"`
-	Status            string                                               `json:"status"`
-	Code              *VitalCoreProvidersLabTestLabsSchemasResultsFhirCode `json:"code,omitempty"`
-	EffectiveDateTime *ObservationEffectiveDateTime                        `json:"effectiveDateTime,omitempty"`
-	Issued            *ObservationIssued                                   `json:"issued,omitempty"`
-	ValueQuantity     *ValueQuantity                                       `json:"valueQuantity,omitempty"`
-	ValueRange        *ValueRange                                          `json:"valueRange,omitempty"`
-	ValueString       *string                                              `json:"valueString,omitempty"`
-	Interpretation    []*InterpretationItem                                `json:"interpretation,omitempty"`
-	ReferenceRange    []*ReferenceRangeItem                                `json:"referenceRange,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (o *Observation) UnmarshalJSON(data []byte) error {
-	type unmarshaler Observation
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*o = Observation(value)
-	o._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (o *Observation) String() string {
-	if len(o._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(o); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", o)
-}
-
-type ObservationEffectiveDateTime struct {
-	typeName string
-	DateTime time.Time
-	String   string
-}
-
-func NewObservationEffectiveDateTimeFromDateTime(value time.Time) *ObservationEffectiveDateTime {
-	return &ObservationEffectiveDateTime{typeName: "dateTime", DateTime: value}
-}
-
-func NewObservationEffectiveDateTimeFromString(value string) *ObservationEffectiveDateTime {
-	return &ObservationEffectiveDateTime{typeName: "string", String: value}
-}
-
-func (o *ObservationEffectiveDateTime) UnmarshalJSON(data []byte) error {
-	var valueDateTime time.Time
-	if err := json.Unmarshal(data, &valueDateTime); err == nil {
-		o.typeName = "dateTime"
-		o.DateTime = valueDateTime
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		o.typeName = "string"
-		o.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, o)
-}
-
-func (o ObservationEffectiveDateTime) MarshalJSON() ([]byte, error) {
-	switch o.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", o.typeName, o)
-	case "dateTime":
-		return json.Marshal(o.DateTime)
-	case "string":
-		return json.Marshal(o.String)
-	}
-}
-
-type ObservationEffectiveDateTimeVisitor interface {
-	VisitDateTime(time.Time) error
-	VisitString(string) error
-}
-
-func (o *ObservationEffectiveDateTime) Accept(visitor ObservationEffectiveDateTimeVisitor) error {
-	switch o.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", o.typeName, o)
-	case "dateTime":
-		return visitor.VisitDateTime(o.DateTime)
-	case "string":
-		return visitor.VisitString(o.String)
-	}
-}
-
-type ObservationIssued struct {
-	typeName string
-	DateTime time.Time
-	String   string
-}
-
-func NewObservationIssuedFromDateTime(value time.Time) *ObservationIssued {
-	return &ObservationIssued{typeName: "dateTime", DateTime: value}
-}
-
-func NewObservationIssuedFromString(value string) *ObservationIssued {
-	return &ObservationIssued{typeName: "string", String: value}
-}
-
-func (o *ObservationIssued) UnmarshalJSON(data []byte) error {
-	var valueDateTime time.Time
-	if err := json.Unmarshal(data, &valueDateTime); err == nil {
-		o.typeName = "dateTime"
-		o.DateTime = valueDateTime
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		o.typeName = "string"
-		o.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, o)
-}
-
-func (o ObservationIssued) MarshalJSON() ([]byte, error) {
-	switch o.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", o.typeName, o)
-	case "dateTime":
-		return json.Marshal(o.DateTime)
-	case "string":
-		return json.Marshal(o.String)
-	}
-}
-
-type ObservationIssuedVisitor interface {
-	VisitDateTime(time.Time) error
-	VisitString(string) error
-}
-
-func (o *ObservationIssued) Accept(visitor ObservationIssuedVisitor) error {
-	switch o.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", o.typeName, o)
-	case "dateTime":
-		return visitor.VisitDateTime(o.DateTime)
-	case "string":
-		return visitor.VisitString(o.String)
-	}
-}
-
-// An enumeration.
 type OrderStatus string
 
 const (
@@ -7121,7 +7012,6 @@ func (o OrderStatus) Ptr() *OrderStatus {
 	return &o
 }
 
-// An enumeration.
 type OrderTopLevelStatus string
 
 const (
@@ -7188,7 +7078,6 @@ func (p *PaginatedUsersResponse) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// An enumeration.
 type PasswordProviders string
 
 const (
@@ -7238,27 +7127,31 @@ func (p PasswordProviders) Ptr() *PasswordProviders {
 	return &p
 }
 
-type Patient struct {
-	BirthDate  *PatientBirthDate                                                `json:"birthDate,omitempty"`
-	Name       []*VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem       `json:"name,omitempty"`
-	Gender     string                                                           `json:"gender"`
-	Identifier []*VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem `json:"identifier,omitempty"`
+type PatientAddressCompatibleInput struct {
+	ReceiverName *string `json:"receiver_name,omitempty"`
+	Street       string  `json:"street"`
+	StreetNumber *string `json:"street_number,omitempty"`
+	City         string  `json:"city"`
+	State        string  `json:"state"`
+	Zip          string  `json:"zip"`
+	Country      string  `json:"country"`
+	PhoneNumber  *string `json:"phone_number,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (p *Patient) UnmarshalJSON(data []byte) error {
-	type unmarshaler Patient
+func (p *PatientAddressCompatibleInput) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatientAddressCompatibleInput
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = Patient(value)
+	*p = PatientAddressCompatibleInput(value)
 	p._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *Patient) String() string {
+func (p *PatientAddressCompatibleInput) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -7270,7 +7163,7 @@ func (p *Patient) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-type PatientAddressCompatible struct {
+type PatientAddressCompatibleOutput struct {
 	ReceiverName *string `json:"receiver_name,omitempty"`
 	FirstLine    string  `json:"first_line"`
 	SecondLine   *string `json:"second_line,omitempty"`
@@ -7283,18 +7176,18 @@ type PatientAddressCompatible struct {
 	_rawJSON json.RawMessage
 }
 
-func (p *PatientAddressCompatible) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatientAddressCompatible
+func (p *PatientAddressCompatibleOutput) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatientAddressCompatibleOutput
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PatientAddressCompatible(value)
+	*p = PatientAddressCompatibleOutput(value)
 	p._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PatientAddressCompatible) String() string {
+func (p *PatientAddressCompatibleOutput) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -7304,63 +7197,6 @@ func (p *PatientAddressCompatible) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
-}
-
-type PatientBirthDate struct {
-	typeName string
-	DateTime time.Time
-	String   string
-}
-
-func NewPatientBirthDateFromDateTime(value time.Time) *PatientBirthDate {
-	return &PatientBirthDate{typeName: "dateTime", DateTime: value}
-}
-
-func NewPatientBirthDateFromString(value string) *PatientBirthDate {
-	return &PatientBirthDate{typeName: "string", String: value}
-}
-
-func (p *PatientBirthDate) UnmarshalJSON(data []byte) error {
-	var valueDateTime time.Time
-	if err := json.Unmarshal(data, &valueDateTime); err == nil {
-		p.typeName = "dateTime"
-		p.DateTime = valueDateTime
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		p.typeName = "string"
-		p.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
-}
-
-func (p PatientBirthDate) MarshalJSON() ([]byte, error) {
-	switch p.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", p.typeName, p)
-	case "dateTime":
-		return json.Marshal(p.DateTime)
-	case "string":
-		return json.Marshal(p.String)
-	}
-}
-
-type PatientBirthDateVisitor interface {
-	VisitDateTime(time.Time) error
-	VisitString(string) error
-}
-
-func (p *PatientBirthDate) Accept(visitor PatientBirthDateVisitor) error {
-	switch p.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", p.typeName, p)
-	case "dateTime":
-		return visitor.VisitDateTime(p.DateTime)
-	case "string":
-		return visitor.VisitString(p.String)
-	}
 }
 
 type PatientDetails struct {
@@ -7386,64 +7222,6 @@ func (p *PatientDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (p *PatientDetails) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PayorItem struct {
-	Reference string `json:"reference"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PayorItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayorItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayorItem(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayorItem) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type Period struct {
-	Start string `json:"start"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *Period) UnmarshalJSON(data []byte) error {
-	type unmarshaler Period
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = Period(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *Period) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -7618,89 +7396,71 @@ func (p *PhysicianCreateRequestBase) String() string {
 
 // An image of the physician signature for health insurance billing
 type PhysicianCreateRequestSignatureImage struct {
-	ContentType string
-	ImageJpeg   *Jpeg
-	ImagePng    *Png
+	typeName string
+	Jpeg     *Jpeg
+	Png      *Png
 }
 
-func NewPhysicianCreateRequestSignatureImageFromImageJpeg(value *Jpeg) *PhysicianCreateRequestSignatureImage {
-	return &PhysicianCreateRequestSignatureImage{ContentType: "image/jpeg", ImageJpeg: value}
+func NewPhysicianCreateRequestSignatureImageFromJpeg(value *Jpeg) *PhysicianCreateRequestSignatureImage {
+	return &PhysicianCreateRequestSignatureImage{typeName: "jpeg", Jpeg: value}
 }
 
-func NewPhysicianCreateRequestSignatureImageFromImagePng(value *Png) *PhysicianCreateRequestSignatureImage {
-	return &PhysicianCreateRequestSignatureImage{ContentType: "image/png", ImagePng: value}
+func NewPhysicianCreateRequestSignatureImageFromPng(value *Png) *PhysicianCreateRequestSignatureImage {
+	return &PhysicianCreateRequestSignatureImage{typeName: "png", Png: value}
 }
 
 func (p *PhysicianCreateRequestSignatureImage) UnmarshalJSON(data []byte) error {
-	var unmarshaler struct {
-		ContentType string `json:"content_type"`
+	valueJpeg := new(Jpeg)
+	if err := json.Unmarshal(data, &valueJpeg); err == nil {
+		p.typeName = "jpeg"
+		p.Jpeg = valueJpeg
+		return nil
 	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
+	valuePng := new(Png)
+	if err := json.Unmarshal(data, &valuePng); err == nil {
+		p.typeName = "png"
+		p.Png = valuePng
+		return nil
 	}
-	p.ContentType = unmarshaler.ContentType
-	switch unmarshaler.ContentType {
-	case "image/jpeg":
-		value := new(Jpeg)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		p.ImageJpeg = value
-	case "image/png":
-		value := new(Png)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		p.ImagePng = value
-	}
-	return nil
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
 }
 
 func (p PhysicianCreateRequestSignatureImage) MarshalJSON() ([]byte, error) {
-	switch p.ContentType {
+	switch p.typeName {
 	default:
-		return nil, fmt.Errorf("invalid type %s in %T", p.ContentType, p)
-	case "image/jpeg":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Jpeg
-		}{
-			ContentType: p.ContentType,
-			Jpeg:        p.ImageJpeg,
-		}
-		return json.Marshal(marshaler)
-	case "image/png":
-		var marshaler = struct {
-			ContentType string `json:"content_type"`
-			*Png
-		}{
-			ContentType: p.ContentType,
-			Png:         p.ImagePng,
-		}
-		return json.Marshal(marshaler)
+		return nil, fmt.Errorf("invalid type %s in %T", p.typeName, p)
+	case "jpeg":
+		return json.Marshal(p.Jpeg)
+	case "png":
+		return json.Marshal(p.Png)
 	}
 }
 
 type PhysicianCreateRequestSignatureImageVisitor interface {
-	VisitImageJpeg(*Jpeg) error
-	VisitImagePng(*Png) error
+	VisitJpeg(*Jpeg) error
+	VisitPng(*Png) error
 }
 
 func (p *PhysicianCreateRequestSignatureImage) Accept(visitor PhysicianCreateRequestSignatureImageVisitor) error {
-	switch p.ContentType {
+	switch p.typeName {
 	default:
-		return fmt.Errorf("invalid type %s in %T", p.ContentType, p)
-	case "image/jpeg":
-		return visitor.VisitImageJpeg(p.ImageJpeg)
-	case "image/png":
-		return visitor.VisitImagePng(p.ImagePng)
+		return fmt.Errorf("invalid type %s in %T", p.typeName, p)
+	case "jpeg":
+		return visitor.VisitJpeg(p.Jpeg)
+	case "png":
+		return visitor.VisitPng(p.Png)
 	}
 }
 
 type Png struct {
-	Content string `json:"content"`
+	Content     string `json:"content"`
+	contentType string
 
 	_rawJSON json.RawMessage
+}
+
+func (p *Png) ContentType() string {
+	return p.contentType
 }
 
 func (p *Png) UnmarshalJSON(data []byte) error {
@@ -7710,203 +7470,24 @@ func (p *Png) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*p = Png(value)
+	p.contentType = "image/png"
 	p._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (p *Png) MarshalJSON() ([]byte, error) {
+	type embed Png
+	var marshaler = struct {
+		embed
+		ContentType string `json:"content_type"`
+	}{
+		embed:       embed(*p),
+		ContentType: "image/png",
+	}
+	return json.Marshal(marshaler)
 }
 
 func (p *Png) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PostOrderCoverage struct {
-	ResourceType string                                                `json:"resourceType"`
-	Network      string                                                `json:"network"`
-	SubscriberId string                                                `json:"subscriberId"`
-	Status       string                                                `json:"status"`
-	Beneficiary  *Beneficiary                                          `json:"beneficiary,omitempty"`
-	Identifier   []*VitalCoreSchemasRequestSchemasOrdersIdentifierItem `json:"identifier,omitempty"`
-	Payor        []*PayorItem                                          `json:"payor,omitempty"`
-	Relationship *Relationship                                         `json:"relationship,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PostOrderCoverage) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostOrderCoverage
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostOrderCoverage(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostOrderCoverage) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PostOrderPatient struct {
-	ResourceType string                                          `json:"resourceType"`
-	Name         []*VitalCoreSchemasRequestSchemasOrdersNameItem `json:"name,omitempty"`
-	Telecom      []*TelecomItem                                  `json:"telecom,omitempty"`
-	Gender       string                                          `json:"gender"`
-	BirthDate    *PostOrderPatientBirthDate                      `json:"birthDate,omitempty"`
-	Address      []*Addres                                       `json:"address,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PostOrderPatient) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostOrderPatient
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostOrderPatient(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostOrderPatient) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PostOrderPatientBirthDate struct {
-	typeName string
-	String   string
-	DateTime time.Time
-}
-
-func NewPostOrderPatientBirthDateFromString(value string) *PostOrderPatientBirthDate {
-	return &PostOrderPatientBirthDate{typeName: "string", String: value}
-}
-
-func NewPostOrderPatientBirthDateFromDateTime(value time.Time) *PostOrderPatientBirthDate {
-	return &PostOrderPatientBirthDate{typeName: "dateTime", DateTime: value}
-}
-
-func (p *PostOrderPatientBirthDate) UnmarshalJSON(data []byte) error {
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		p.typeName = "string"
-		p.String = valueString
-		return nil
-	}
-	var valueDateTime time.Time
-	if err := json.Unmarshal(data, &valueDateTime); err == nil {
-		p.typeName = "dateTime"
-		p.DateTime = valueDateTime
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
-}
-
-func (p PostOrderPatientBirthDate) MarshalJSON() ([]byte, error) {
-	switch p.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", p.typeName, p)
-	case "string":
-		return json.Marshal(p.String)
-	case "dateTime":
-		return json.Marshal(p.DateTime)
-	}
-}
-
-type PostOrderPatientBirthDateVisitor interface {
-	VisitString(string) error
-	VisitDateTime(time.Time) error
-}
-
-func (p *PostOrderPatientBirthDate) Accept(visitor PostOrderPatientBirthDateVisitor) error {
-	switch p.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", p.typeName, p)
-	case "string":
-		return visitor.VisitString(p.String)
-	case "dateTime":
-		return visitor.VisitDateTime(p.DateTime)
-	}
-}
-
-type PostOrderPhysician struct {
-	ResourceType  string                                                `json:"resourceType"`
-	Name          []*VitalCoreSchemasRequestSchemasOrdersNameItem       `json:"name,omitempty"`
-	Telecom       []*TelecomItem                                        `json:"telecom,omitempty"`
-	Identifier    []*VitalCoreSchemasRequestSchemasOrdersIdentifierItem `json:"identifier,omitempty"`
-	Qualification []*QualificationItem                                  `json:"qualification,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PostOrderPhysician) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostOrderPhysician
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostOrderPhysician(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostOrderPhysician) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PostOrderQuestionnaireResponse struct {
-	ResourceType  string             `json:"resourceType"`
-	Questionnaire string             `json:"questionnaire"`
-	Status        string             `json:"status"`
-	Item          []*QuestionaryItem `json:"item,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PostOrderQuestionnaireResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostOrderQuestionnaireResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostOrderQuestionnaireResponse(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostOrderQuestionnaireResponse) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -7947,70 +7528,6 @@ func (p *PostOrderResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
-}
-
-type PostOrderServiceRequest struct {
-	ResourceType string                                                `json:"resourceType"`
-	Identifier   []*VitalCoreSchemasRequestSchemasOrdersIdentifierItem `json:"identifier,omitempty"`
-	Status       string                                                `json:"status"`
-	Intent       string                                                `json:"intent"`
-	Priority     Priority                                              `json:"priority,omitempty"`
-	Subject      *Subject                                              `json:"subject,omitempty"`
-	Requester    *Requester                                            `json:"requester,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PostOrderServiceRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler PostOrderServiceRequest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PostOrderServiceRequest(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PostOrderServiceRequest) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-// An enumeration.
-type Priority string
-
-const (
-	PriorityRoutine Priority = "routine"
-	PriorityUrgent  Priority = "urgent"
-	PriorityAsap    Priority = "asap"
-	PriorityStat    Priority = "stat"
-)
-
-func NewPriorityFromString(s string) (Priority, error) {
-	switch s {
-	case "routine":
-		return PriorityRoutine, nil
-	case "urgent":
-		return PriorityUrgent, nil
-	case "asap":
-		return PriorityAsap, nil
-	case "stat":
-		return PriorityStat, nil
-	}
-	var t Priority
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (p Priority) Ptr() *Priority {
-	return &p
 }
 
 type ProfileInDb struct {
@@ -8056,7 +7573,7 @@ type ProviderLinkResponse struct {
 	ProviderMfa *ProviderMfaRequest       `json:"provider_mfa,omitempty"`
 	Provider    PasswordProviders         `json:"provider,omitempty"`
 	Connected   bool                      `json:"connected"`
-	ProviderId  string                    `json:"provider_id"`
+	ProviderId  *string                   `json:"provider_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8161,7 +7678,6 @@ func (p ProviderMfaRequestMethod) Ptr() *ProviderMfaRequestMethod {
 	return &p
 }
 
-// An enumeration.
 type Providers string
 
 const (
@@ -8280,37 +7796,6 @@ func (p Providers) Ptr() *Providers {
 	return &p
 }
 
-type QualificationItem struct {
-	Code       *VitalCoreSchemasRequestSchemasOrdersCode `json:"code,omitempty"`
-	Period     *Period                                   `json:"period,omitempty"`
-	Identifier []*IdentifierItem1                        `json:"identifier,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (q *QualificationItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler QualificationItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*q = QualificationItem(value)
-	q._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (q *QualificationItem) String() string {
-	if len(q._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(q); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", q)
-}
-
 type Question struct {
 	Id       int          `json:"id"`
 	Required bool         `json:"required"`
@@ -8346,7 +7831,6 @@ func (q *Question) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
-// An enumeration.
 type QuestionType string
 
 const (
@@ -8373,37 +7857,6 @@ func NewQuestionTypeFromString(s string) (QuestionType, error) {
 
 func (q QuestionType) Ptr() *QuestionType {
 	return &q
-}
-
-type QuestionaryItem struct {
-	LinkId string        `json:"linkId"`
-	Text   string        `json:"text"`
-	Answer []*AnswerItem `json:"answer,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (q *QuestionaryItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler QuestionaryItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*q = QuestionaryItem(value)
-	q._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (q *QuestionaryItem) String() string {
-	if len(q._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(q); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", q)
 }
 
 type RawActivity struct {
@@ -8580,37 +8033,6 @@ func (r *RawWorkout) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
-type ReferenceRangeItem struct {
-	Low  *Low  `json:"low,omitempty"`
-	High *High `json:"high,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (r *ReferenceRangeItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ReferenceRangeItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = ReferenceRangeItem(value)
-	r._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *ReferenceRangeItem) String() string {
-	if len(r._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
-}
-
-// An enumeration.
 type Region string
 
 const (
@@ -8657,65 +8079,6 @@ func (r Region) Ptr() *Region {
 	return &r
 }
 
-type Relationship struct {
-	Coding []*VitalCoreSchemasRequestSchemasOrdersCodingItem `json:"coding,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (r *Relationship) UnmarshalJSON(data []byte) error {
-	type unmarshaler Relationship
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = Relationship(value)
-	r._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *Relationship) String() string {
-	if len(r._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
-}
-
-type Requester struct {
-	Reference string  `json:"reference"`
-	Display   *string `json:"display,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (r *Requester) UnmarshalJSON(data []byte) error {
-	type unmarshaler Requester
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = Requester(value)
-	r._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *Requester) String() string {
-	if len(r._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
-}
-
 type ResourceAvailability struct {
 	Status            Availability             `json:"status,omitempty"`
 	ScopeRequirements *ScopeRequirementsGrants `json:"scope_requirements,omitempty"`
@@ -8746,7 +8109,6 @@ func (r *ResourceAvailability) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
-// An enumeration.
 type ResponsibleRelationship string
 
 const (
@@ -8772,7 +8134,6 @@ func (r ResponsibleRelationship) Ptr() *ResponsibleRelationship {
 	return &r
 }
 
-// An enumeration.
 type ResultType string
 
 const (
@@ -9127,7 +8488,6 @@ func (s *Source) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-// An enumeration.
 type SourceAuthType string
 
 const (
@@ -9201,7 +8561,6 @@ func (s *SourceLink) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-// An enumeration.
 type SourceType string
 
 const (
@@ -9233,36 +8592,6 @@ func (s SourceType) Ptr() *SourceType {
 	return &s
 }
 
-type Subject struct {
-	Reference string  `json:"reference"`
-	Display   *string `json:"display,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (s *Subject) UnmarshalJSON(data []byte) error {
-	type unmarshaler Subject
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = Subject(value)
-	s._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *Subject) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
 type TeamConfig struct {
 	Libreview                 *LibreConfig                 `json:"libreview,omitempty"`
 	TextsEnabled              *bool                        `json:"texts_enabled,omitempty"`
@@ -9287,37 +8616,6 @@ func (t *TeamConfig) UnmarshalJSON(data []byte) error {
 }
 
 func (t *TeamConfig) String() string {
-	if len(t._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(t); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", t)
-}
-
-type TelecomItem struct {
-	System string `json:"system"`
-	Use    string `json:"use"`
-	Value  string `json:"value"`
-
-	_rawJSON json.RawMessage
-}
-
-func (t *TelecomItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler TelecomItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*t = TelecomItem(value)
-	t._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (t *TelecomItem) String() string {
 	if len(t._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
 			return value
@@ -9396,7 +8694,6 @@ func (t *TimeseriesMetricPoint) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-// An enumeration.
 type TimeseriesResource string
 
 const (
@@ -9500,8 +8797,7 @@ type UsAddress struct {
 	City       string  `json:"city"`
 	State      string  `json:"state"`
 	ZipCode    string  `json:"zip_code"`
-	// Deprecated. Use `second_line` instead to provide the unit number. Subject to removal after 20 Nov 2023.
-	Unit *string `json:"unit,omitempty"`
+	Unit       *string `json:"unit,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -9804,526 +9100,6 @@ func (v *ValidationErrorLocItem) Accept(visitor ValidationErrorLocItemVisitor) e
 	case "integer":
 		return visitor.VisitInteger(v.Integer)
 	}
-}
-
-type ValueQuantity struct {
-	Value      int    `json:"value"`
-	Comparator string `json:"comparator"`
-	Unit       string `json:"unit"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *ValueQuantity) UnmarshalJSON(data []byte) error {
-	type unmarshaler ValueQuantity
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = ValueQuantity(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *ValueQuantity) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type ValueRange struct {
-	Low  *ValueQuantity `json:"low,omitempty"`
-	High *ValueQuantity `json:"high,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *ValueRange) UnmarshalJSON(data []byte) error {
-	type unmarshaler ValueRange
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = ValueRange(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *ValueRange) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreProvidersLabTestLabsSchemasResultsFhirCode struct {
-	Coding []*VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem `json:"coding,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCode) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirCode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirCode(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCode) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem struct {
-	System  *string `json:"system,omitempty"`
-	Code    string  `json:"code"`
-	Display string  `json:"display"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirCodingItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem struct {
-	Resource *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource `json:"resource,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource struct {
-	typeName    string
-	Patient     *Patient
-	Observation *Observation
-}
-
-func NewVitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceFromPatient(value *Patient) *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource {
-	return &VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource{typeName: "patient", Patient: value}
-}
-
-func NewVitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceFromObservation(value *Observation) *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource {
-	return &VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource{typeName: "observation", Observation: value}
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource) UnmarshalJSON(data []byte) error {
-	valuePatient := new(Patient)
-	if err := json.Unmarshal(data, &valuePatient); err == nil {
-		v.typeName = "patient"
-		v.Patient = valuePatient
-		return nil
-	}
-	valueObservation := new(Observation)
-	if err := json.Unmarshal(data, &valueObservation); err == nil {
-		v.typeName = "observation"
-		v.Observation = valueObservation
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
-}
-
-func (v VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource) MarshalJSON() ([]byte, error) {
-	switch v.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", v.typeName, v)
-	case "patient":
-		return json.Marshal(v.Patient)
-	case "observation":
-		return json.Marshal(v.Observation)
-	}
-}
-
-type VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceVisitor interface {
-	VisitPatient(*Patient) error
-	VisitObservation(*Observation) error
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResource) Accept(visitor VitalCoreProvidersLabTestLabsSchemasResultsFhirEntryItemResourceVisitor) error {
-	switch v.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", v.typeName, v)
-	case "patient":
-		return visitor.VisitPatient(v.Patient)
-	case "observation":
-		return visitor.VisitObservation(v.Observation)
-	}
-}
-
-type VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem struct {
-	Value string `json:"value"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirIdentifierItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem struct {
-	Text string `json:"text"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreProvidersLabTestLabsSchemasResultsFhirNameItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasRequestSchemasOrdersCode struct {
-	Coding []*VitalCoreSchemasRequestSchemasOrdersCodingItem `json:"coding,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersCode) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasRequestSchemasOrdersCode
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasRequestSchemasOrdersCode(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersCode) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasRequestSchemasOrdersCodingItem struct {
-	System  string  `json:"system"`
-	Code    string  `json:"code"`
-	Display *string `json:"display,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersCodingItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasRequestSchemasOrdersCodingItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasRequestSchemasOrdersCodingItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersCodingItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasRequestSchemasOrdersEntryItem struct {
-	Resource *VitalCoreSchemasRequestSchemasOrdersEntryItemResource `json:"resource,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersEntryItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasRequestSchemasOrdersEntryItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasRequestSchemasOrdersEntryItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersEntryItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasRequestSchemasOrdersEntryItemResource struct {
-	typeName                       string
-	PostOrderPatient               *PostOrderPatient
-	PostOrderPhysician             *PostOrderPhysician
-	PostOrderServiceRequest        *PostOrderServiceRequest
-	PostOrderQuestionnaireResponse *PostOrderQuestionnaireResponse
-	PostOrderCoverage              *PostOrderCoverage
-}
-
-func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderPatient(value *PostOrderPatient) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
-	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderPatient", PostOrderPatient: value}
-}
-
-func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderPhysician(value *PostOrderPhysician) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
-	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderPhysician", PostOrderPhysician: value}
-}
-
-func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderServiceRequest(value *PostOrderServiceRequest) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
-	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderServiceRequest", PostOrderServiceRequest: value}
-}
-
-func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderQuestionnaireResponse(value *PostOrderQuestionnaireResponse) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
-	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderQuestionnaireResponse", PostOrderQuestionnaireResponse: value}
-}
-
-func NewVitalCoreSchemasRequestSchemasOrdersEntryItemResourceFromPostOrderCoverage(value *PostOrderCoverage) *VitalCoreSchemasRequestSchemasOrdersEntryItemResource {
-	return &VitalCoreSchemasRequestSchemasOrdersEntryItemResource{typeName: "postOrderCoverage", PostOrderCoverage: value}
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersEntryItemResource) UnmarshalJSON(data []byte) error {
-	valuePostOrderPatient := new(PostOrderPatient)
-	if err := json.Unmarshal(data, &valuePostOrderPatient); err == nil {
-		v.typeName = "postOrderPatient"
-		v.PostOrderPatient = valuePostOrderPatient
-		return nil
-	}
-	valuePostOrderPhysician := new(PostOrderPhysician)
-	if err := json.Unmarshal(data, &valuePostOrderPhysician); err == nil {
-		v.typeName = "postOrderPhysician"
-		v.PostOrderPhysician = valuePostOrderPhysician
-		return nil
-	}
-	valuePostOrderServiceRequest := new(PostOrderServiceRequest)
-	if err := json.Unmarshal(data, &valuePostOrderServiceRequest); err == nil {
-		v.typeName = "postOrderServiceRequest"
-		v.PostOrderServiceRequest = valuePostOrderServiceRequest
-		return nil
-	}
-	valuePostOrderQuestionnaireResponse := new(PostOrderQuestionnaireResponse)
-	if err := json.Unmarshal(data, &valuePostOrderQuestionnaireResponse); err == nil {
-		v.typeName = "postOrderQuestionnaireResponse"
-		v.PostOrderQuestionnaireResponse = valuePostOrderQuestionnaireResponse
-		return nil
-	}
-	valuePostOrderCoverage := new(PostOrderCoverage)
-	if err := json.Unmarshal(data, &valuePostOrderCoverage); err == nil {
-		v.typeName = "postOrderCoverage"
-		v.PostOrderCoverage = valuePostOrderCoverage
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, v)
-}
-
-func (v VitalCoreSchemasRequestSchemasOrdersEntryItemResource) MarshalJSON() ([]byte, error) {
-	switch v.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", v.typeName, v)
-	case "postOrderPatient":
-		return json.Marshal(v.PostOrderPatient)
-	case "postOrderPhysician":
-		return json.Marshal(v.PostOrderPhysician)
-	case "postOrderServiceRequest":
-		return json.Marshal(v.PostOrderServiceRequest)
-	case "postOrderQuestionnaireResponse":
-		return json.Marshal(v.PostOrderQuestionnaireResponse)
-	case "postOrderCoverage":
-		return json.Marshal(v.PostOrderCoverage)
-	}
-}
-
-type VitalCoreSchemasRequestSchemasOrdersEntryItemResourceVisitor interface {
-	VisitPostOrderPatient(*PostOrderPatient) error
-	VisitPostOrderPhysician(*PostOrderPhysician) error
-	VisitPostOrderServiceRequest(*PostOrderServiceRequest) error
-	VisitPostOrderQuestionnaireResponse(*PostOrderQuestionnaireResponse) error
-	VisitPostOrderCoverage(*PostOrderCoverage) error
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersEntryItemResource) Accept(visitor VitalCoreSchemasRequestSchemasOrdersEntryItemResourceVisitor) error {
-	switch v.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", v.typeName, v)
-	case "postOrderPatient":
-		return visitor.VisitPostOrderPatient(v.PostOrderPatient)
-	case "postOrderPhysician":
-		return visitor.VisitPostOrderPhysician(v.PostOrderPhysician)
-	case "postOrderServiceRequest":
-		return visitor.VisitPostOrderServiceRequest(v.PostOrderServiceRequest)
-	case "postOrderQuestionnaireResponse":
-		return visitor.VisitPostOrderQuestionnaireResponse(v.PostOrderQuestionnaireResponse)
-	case "postOrderCoverage":
-		return visitor.VisitPostOrderCoverage(v.PostOrderCoverage)
-	}
-}
-
-type VitalCoreSchemasRequestSchemasOrdersIdentifierItem struct {
-	Value  string `json:"value"`
-	System string `json:"system"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersIdentifierItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasRequestSchemasOrdersIdentifierItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasRequestSchemasOrdersIdentifierItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersIdentifierItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasRequestSchemasOrdersNameItem struct {
-	Use    string   `json:"use"`
-	Given  []string `json:"given,omitempty"`
-	Family string   `json:"family"`
-
-	_rawJSON json.RawMessage
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersNameItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasRequestSchemasOrdersNameItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasRequestSchemasOrdersNameItem(value)
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasRequestSchemasOrdersNameItem) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
 }
 
 type VitalTokenCreatedResponse struct {

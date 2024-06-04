@@ -817,50 +817,6 @@ func (c *Client) GetResultRaw(ctx context.Context, orderId string) (*vitalgo.Lab
 	return response, nil
 }
 
-// Return both metadata and raw json test data
-func (c *Client) GetResultRawFhir(ctx context.Context, orderId string) (*vitalgo.LabResultsFhir, error) {
-	baseURL := "https://api.tryvital.io"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/order/%v/result/fhir", orderId)
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 422:
-			value := new(vitalgo.UnprocessableEntityError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *vitalgo.LabResultsFhir
-	if err := core.DoRequest(
-		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
 // This endpoint returns the printed labels for the order.
 func (c *Client) GetLabelsPdf(ctx context.Context, orderId string, request *vitalgo.LabTestsGetLabelsPdfRequest) (io.Reader, error) {
 	baseURL := "https://api.tryvital.io"
@@ -996,50 +952,6 @@ func (c *Client) GetOrder(ctx context.Context, orderId string) (*vitalgo.ClientF
 		endpointURL,
 		http.MethodGet,
 		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-// POST create new order
-func (c *Client) CreateOrderFhir(ctx context.Context, request *vitalgo.PostOrderFhir) (*vitalgo.PostOrderResponse, error) {
-	baseURL := "https://api.tryvital.io"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	endpointURL := baseURL + "/" + "v3/order/fhir"
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 422:
-			value := new(vitalgo.UnprocessableEntityError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *vitalgo.PostOrderResponse
-	if err := core.DoRequest(
-		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
 		&response,
 		false,
 		c.header,

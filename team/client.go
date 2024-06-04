@@ -255,37 +255,12 @@ func (c *Client) GetSourcePriorities(ctx context.Context, request *vitalgo.TeamG
 }
 
 // Patch source priorities.
-func (c *Client) UpdateSourcePriorities(ctx context.Context, request *vitalgo.TeamUpdateSourcePrioritiesRequest) ([]map[string]interface{}, error) {
+func (c *Client) UpdateSourcePriorities(ctx context.Context) ([]map[string]interface{}, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
 	endpointURL := baseURL + "/" + "v2/team/source/priorities"
-
-	queryParams := make(url.Values)
-	queryParams.Add("team_id", fmt.Sprintf("%v", request.TeamId))
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 422:
-			value := new(vitalgo.UnprocessableEntityError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
 
 	var response []map[string]interface{}
 	if err := core.DoRequest(
@@ -297,7 +272,7 @@ func (c *Client) UpdateSourcePriorities(ctx context.Context, request *vitalgo.Te
 		&response,
 		false,
 		c.header,
-		errorDecoder,
+		nil,
 	); err != nil {
 		return nil, err
 	}

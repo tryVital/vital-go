@@ -31,19 +31,12 @@ type CreateOrderRequestCompatible struct {
 	Physician       *PhysicianCreateRequest       `json:"physician,omitempty"`
 	HealthInsurance *HealthInsuranceCreateRequest `json:"health_insurance,omitempty"`
 	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
-	Priority *bool      `json:"priority,omitempty"`
-	Consents []*Consent `json:"consents,omitempty"`
-	// Schedule an Order to be processed in a future date.
-	ActivateBy     *string                   `json:"activate_by,omitempty"`
-	AoeAnswers     []*AoEAnswer              `json:"aoe_answers,omitempty"`
-	PatientDetails *PatientDetails           `json:"patient_details,omitempty"`
-	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`
-}
-
-type PostOrderFhir struct {
-	ResourceType string                                           `json:"resourceType"`
-	Type         string                                           `json:"type"`
-	Entry        []*VitalCoreSchemasRequestSchemasOrdersEntryItem `json:"entry,omitempty"`
+	Priority       *bool                          `json:"priority,omitempty"`
+	Consents       []*Consent                     `json:"consents,omitempty"`
+	ActivateBy     *string                        `json:"activate_by,omitempty"`
+	AoeAnswers     []*AoEAnswer                   `json:"aoe_answers,omitempty"`
+	PatientDetails *PatientDetails                `json:"patient_details,omitempty"`
+	PatientAddress *PatientAddressCompatibleInput `json:"patient_address,omitempty"`
 }
 
 type LabTestsGetAreaInfoRequest struct {
