@@ -1935,6 +1935,7 @@ type ClientFacingOrder struct {
 	Priority        *bool            `json:"priority,omitempty"`
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
 	ActivateBy      *string          `json:"activate_by,omitempty"`
+	Passthrough     *string          `json:"passthrough,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2362,6 +2363,8 @@ const (
 	ClientFacingResourceDevice                   ClientFacingResource = "device"
 	ClientFacingResourceWeight                   ClientFacingResource = "weight"
 	ClientFacingResourceFat                      ClientFacingResource = "fat"
+	ClientFacingResourceBodyTemperature          ClientFacingResource = "body_temperature"
+	ClientFacingResourceBodyTemperatureDelta     ClientFacingResource = "body_temperature_delta"
 	ClientFacingResourceMeal                     ClientFacingResource = "meal"
 	ClientFacingResourceWater                    ClientFacingResource = "water"
 	ClientFacingResourceCaffeine                 ClientFacingResource = "caffeine"
@@ -2424,6 +2427,10 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceWeight, nil
 	case "fat":
 		return ClientFacingResourceFat, nil
+	case "body_temperature":
+		return ClientFacingResourceBodyTemperature, nil
+	case "body_temperature_delta":
+		return ClientFacingResourceBodyTemperatureDelta, nil
 	case "meal":
 		return ClientFacingResourceMeal, nil
 	case "water":
@@ -8593,13 +8600,14 @@ func (s SourceType) Ptr() *SourceType {
 }
 
 type TeamConfig struct {
-	Libreview                 *LibreConfig                 `json:"libreview,omitempty"`
-	TextsEnabled              *bool                        `json:"texts_enabled,omitempty"`
-	PushHistoricalData        *bool                        `json:"push_historical_data,omitempty"`
-	ProviderRawData           *bool                        `json:"provider_raw_data,omitempty"`
-	RejectDuplicateConnection *bool                        `json:"reject_duplicate_connection,omitempty"`
-	EdsPreferences            *EventDestinationPreferences `json:"eds_preferences,omitempty"`
-	EventTypePrefixes         []string                     `json:"event_type_prefixes,omitempty"`
+	Libreview                      *LibreConfig                 `json:"libreview,omitempty"`
+	TextsEnabled                   *bool                        `json:"texts_enabled,omitempty"`
+	PushHistoricalData             *bool                        `json:"push_historical_data,omitempty"`
+	ProviderRawData                *bool                        `json:"provider_raw_data,omitempty"`
+	RejectDuplicateConnection      *bool                        `json:"reject_duplicate_connection,omitempty"`
+	SdkPerDeviceActivityTimeseries *bool                        `json:"sdk_per_device_activity_timeseries,omitempty"`
+	EdsPreferences                 *EventDestinationPreferences `json:"eds_preferences,omitempty"`
+	EventTypePrefixes              []string                     `json:"event_type_prefixes,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8704,6 +8712,8 @@ const (
 	TimeseriesResourceBloodPressure            TimeseriesResource = "blood_pressure"
 	TimeseriesResourceBodyFat                  TimeseriesResource = "body_fat"
 	TimeseriesResourceBodyWeight               TimeseriesResource = "body_weight"
+	TimeseriesResourceBodyTemperature          TimeseriesResource = "body_temperature"
+	TimeseriesResourceBodyTemperatureDelta     TimeseriesResource = "body_temperature_delta"
 	TimeseriesResourceCholesterol              TimeseriesResource = "cholesterol"
 	TimeseriesResourceCholesterolLdl           TimeseriesResource = "cholesterol/ldl"
 	TimeseriesResourceCholesterolHdl           TimeseriesResource = "cholesterol/hdl"
@@ -8742,6 +8752,10 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceBodyFat, nil
 	case "body_weight":
 		return TimeseriesResourceBodyWeight, nil
+	case "body_temperature":
+		return TimeseriesResourceBodyTemperature, nil
+	case "body_temperature_delta":
+		return TimeseriesResourceBodyTemperatureDelta, nil
 	case "cholesterol":
 		return TimeseriesResourceCholesterol, nil
 	case "cholesterol/ldl":

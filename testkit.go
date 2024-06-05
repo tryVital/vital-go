@@ -6,6 +6,7 @@ type CreateRegistrableTestkitOrderRequest struct {
 	UserId          string           `json:"user_id"`
 	LabTestId       string           `json:"lab_test_id"`
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
+	Passthrough     *string          `json:"passthrough,omitempty"`
 }
 
 type RegisterTestkitRequest struct {

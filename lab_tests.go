@@ -35,6 +35,7 @@ type CreateOrderRequestCompatible struct {
 	Consents       []*Consent                     `json:"consents,omitempty"`
 	ActivateBy     *string                        `json:"activate_by,omitempty"`
 	AoeAnswers     []*AoEAnswer                   `json:"aoe_answers,omitempty"`
+	Passthrough    *string                        `json:"passthrough,omitempty"`
 	PatientDetails *PatientDetails                `json:"patient_details,omitempty"`
 	PatientAddress *PatientAddressCompatibleInput `json:"patient_address,omitempty"`
 }
