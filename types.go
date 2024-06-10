@@ -314,6 +314,7 @@ type AppointmentType = string
 type AreaInfo struct {
 	ZipCode    string              `json:"zip_code"`
 	Phlebotomy *PhlebotomyAreaInfo `json:"phlebotomy,omitempty"`
+	Psc        *PscAreaInfo        `json:"psc,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -951,6 +952,226 @@ func (c *ClientFacingBodyFatTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingBodyTemperatureDeltaSample struct {
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end"`
+	// The recorded value for the interval.
+	Value          float64                                               `json:"value"`
+	SensorLocation *ClientFacingBodyTemperatureDeltaSampleSensorLocation `json:"sensor_location,omitempty"`
+	unit           string
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingBodyTemperatureDeltaSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingBodyTemperatureDeltaSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingBodyTemperatureDeltaSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingBodyTemperatureDeltaSample(value)
+	c.unit = "°C"
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBodyTemperatureDeltaSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingBodyTemperatureDeltaSample
+	var marshaler = struct {
+		embed
+		Unit string `json:"unit"`
+	}{
+		embed: embed(*c),
+		Unit:  "°C",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingBodyTemperatureDeltaSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBodyTemperatureDeltaSampleSensorLocation string
+
+const (
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationArmpit           ClientFacingBodyTemperatureDeltaSampleSensorLocation = "armpit"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationBody             ClientFacingBodyTemperatureDeltaSampleSensorLocation = "body"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationEar              ClientFacingBodyTemperatureDeltaSampleSensorLocation = "ear"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationFinger           ClientFacingBodyTemperatureDeltaSampleSensorLocation = "finger"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationGastrointestinal ClientFacingBodyTemperatureDeltaSampleSensorLocation = "gastrointestinal"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationMouth            ClientFacingBodyTemperatureDeltaSampleSensorLocation = "mouth"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationRectum           ClientFacingBodyTemperatureDeltaSampleSensorLocation = "rectum"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationToe              ClientFacingBodyTemperatureDeltaSampleSensorLocation = "toe"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationEardrum          ClientFacingBodyTemperatureDeltaSampleSensorLocation = "eardrum"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationTemporalArtery   ClientFacingBodyTemperatureDeltaSampleSensorLocation = "temporal_artery"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationForehead         ClientFacingBodyTemperatureDeltaSampleSensorLocation = "forehead"
+	ClientFacingBodyTemperatureDeltaSampleSensorLocationWrist            ClientFacingBodyTemperatureDeltaSampleSensorLocation = "wrist"
+)
+
+func NewClientFacingBodyTemperatureDeltaSampleSensorLocationFromString(s string) (ClientFacingBodyTemperatureDeltaSampleSensorLocation, error) {
+	switch s {
+	case "armpit":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationArmpit, nil
+	case "body":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationBody, nil
+	case "ear":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationEar, nil
+	case "finger":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationFinger, nil
+	case "gastrointestinal":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationGastrointestinal, nil
+	case "mouth":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationMouth, nil
+	case "rectum":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationRectum, nil
+	case "toe":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationToe, nil
+	case "eardrum":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationEardrum, nil
+	case "temporal_artery":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationTemporalArtery, nil
+	case "forehead":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationForehead, nil
+	case "wrist":
+		return ClientFacingBodyTemperatureDeltaSampleSensorLocationWrist, nil
+	}
+	var t ClientFacingBodyTemperatureDeltaSampleSensorLocation
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingBodyTemperatureDeltaSampleSensorLocation) Ptr() *ClientFacingBodyTemperatureDeltaSampleSensorLocation {
+	return &c
+}
+
+type ClientFacingBodyTemperatureSample struct {
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end"`
+	// The recorded value for the interval.
+	Value          float64                                          `json:"value"`
+	SensorLocation *ClientFacingBodyTemperatureSampleSensorLocation `json:"sensor_location,omitempty"`
+	unit           string
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingBodyTemperatureSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingBodyTemperatureSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingBodyTemperatureSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingBodyTemperatureSample(value)
+	c.unit = "°C"
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBodyTemperatureSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingBodyTemperatureSample
+	var marshaler = struct {
+		embed
+		Unit string `json:"unit"`
+	}{
+		embed: embed(*c),
+		Unit:  "°C",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingBodyTemperatureSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBodyTemperatureSampleSensorLocation string
+
+const (
+	ClientFacingBodyTemperatureSampleSensorLocationArmpit           ClientFacingBodyTemperatureSampleSensorLocation = "armpit"
+	ClientFacingBodyTemperatureSampleSensorLocationBody             ClientFacingBodyTemperatureSampleSensorLocation = "body"
+	ClientFacingBodyTemperatureSampleSensorLocationEar              ClientFacingBodyTemperatureSampleSensorLocation = "ear"
+	ClientFacingBodyTemperatureSampleSensorLocationFinger           ClientFacingBodyTemperatureSampleSensorLocation = "finger"
+	ClientFacingBodyTemperatureSampleSensorLocationGastrointestinal ClientFacingBodyTemperatureSampleSensorLocation = "gastrointestinal"
+	ClientFacingBodyTemperatureSampleSensorLocationMouth            ClientFacingBodyTemperatureSampleSensorLocation = "mouth"
+	ClientFacingBodyTemperatureSampleSensorLocationRectum           ClientFacingBodyTemperatureSampleSensorLocation = "rectum"
+	ClientFacingBodyTemperatureSampleSensorLocationToe              ClientFacingBodyTemperatureSampleSensorLocation = "toe"
+	ClientFacingBodyTemperatureSampleSensorLocationEardrum          ClientFacingBodyTemperatureSampleSensorLocation = "eardrum"
+	ClientFacingBodyTemperatureSampleSensorLocationTemporalArtery   ClientFacingBodyTemperatureSampleSensorLocation = "temporal_artery"
+	ClientFacingBodyTemperatureSampleSensorLocationForehead         ClientFacingBodyTemperatureSampleSensorLocation = "forehead"
+	ClientFacingBodyTemperatureSampleSensorLocationWrist            ClientFacingBodyTemperatureSampleSensorLocation = "wrist"
+)
+
+func NewClientFacingBodyTemperatureSampleSensorLocationFromString(s string) (ClientFacingBodyTemperatureSampleSensorLocation, error) {
+	switch s {
+	case "armpit":
+		return ClientFacingBodyTemperatureSampleSensorLocationArmpit, nil
+	case "body":
+		return ClientFacingBodyTemperatureSampleSensorLocationBody, nil
+	case "ear":
+		return ClientFacingBodyTemperatureSampleSensorLocationEar, nil
+	case "finger":
+		return ClientFacingBodyTemperatureSampleSensorLocationFinger, nil
+	case "gastrointestinal":
+		return ClientFacingBodyTemperatureSampleSensorLocationGastrointestinal, nil
+	case "mouth":
+		return ClientFacingBodyTemperatureSampleSensorLocationMouth, nil
+	case "rectum":
+		return ClientFacingBodyTemperatureSampleSensorLocationRectum, nil
+	case "toe":
+		return ClientFacingBodyTemperatureSampleSensorLocationToe, nil
+	case "eardrum":
+		return ClientFacingBodyTemperatureSampleSensorLocationEardrum, nil
+	case "temporal_artery":
+		return ClientFacingBodyTemperatureSampleSensorLocationTemporalArtery, nil
+	case "forehead":
+		return ClientFacingBodyTemperatureSampleSensorLocationForehead, nil
+	case "wrist":
+		return ClientFacingBodyTemperatureSampleSensorLocationWrist, nil
+	}
+	var t ClientFacingBodyTemperatureSampleSensorLocation
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingBodyTemperatureSampleSensorLocation) Ptr() *ClientFacingBodyTemperatureSampleSensorLocation {
+	return &c
+}
+
 type ClientFacingBodyWeightTimeseries struct {
 	Id             *int    `json:"id,omitempty"`
 	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
@@ -1428,6 +1649,68 @@ func (c *ClientFacingGlucoseTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample `json:"groups,omitempty"`
+	Next   *string                                                                         `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample `json:"groups,omitempty"`
+	Next   *string                                                                    `json:"next,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingHeartRate struct {
 	AvgBpm     *float64 `json:"avg_bpm,omitempty"`
 	MinBpm     *float64 `json:"min_bpm,omitempty"`
@@ -1674,6 +1957,36 @@ func (c *ClientFacingLab) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingLab) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingLabLocation struct {
+	Metadata *LabLocationMetadata `json:"metadata,omitempty"`
+	Distance int                  `json:"distance"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingLabLocation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingLabLocation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingLabLocation(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLabLocation) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -3520,6 +3833,66 @@ func (c *ClientFacingTestkitOrder) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingTestkitOrder) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample struct {
+	Source *ClientFacingSource                       `json:"source,omitempty"`
+	Data   []*ClientFacingBodyTemperatureDeltaSample `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample struct {
+	Source *ClientFacingSource                  `json:"source,omitempty"`
+	Data   []*ClientFacingBodyTemperatureSample `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -6280,6 +6653,43 @@ func (j *Jpeg) String() string {
 	return fmt.Sprintf("%#v", j)
 }
 
+type LabLocationMetadata struct {
+	Name        string                 `json:"name"`
+	State       string                 `json:"state"`
+	City        string                 `json:"city"`
+	ZipCode     string                 `json:"zip_code"`
+	Address     string                 `json:"address"`
+	Unit        *string                `json:"unit,omitempty"`
+	PhoneNumber *string                `json:"phone_number,omitempty"`
+	FaxNumber   *string                `json:"fax_number,omitempty"`
+	Hours       map[string]interface{} `json:"hours,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (l *LabLocationMetadata) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabLocationMetadata
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabLocationMetadata(value)
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabLocationMetadata) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
 type LabResultsMetadata struct {
 	Age            string  `json:"age"`
 	Dob            string  `json:"dob"`
@@ -7801,6 +8211,35 @@ func NewProvidersFromString(s string) (Providers, error) {
 
 func (p Providers) Ptr() *Providers {
 	return &p
+}
+
+type PscAreaInfo struct {
+	Locations map[string][]*ClientFacingLabLocation `json:"locations,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PscAreaInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler PscAreaInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PscAreaInfo(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PscAreaInfo) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
 }
 
 type Question struct {

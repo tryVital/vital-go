@@ -635,6 +635,7 @@ func (c *Client) GetPhlebotomyAppointment(ctx context.Context, orderId string) (
 // Information returned:
 //
 // - Whether a given zip code is served by our Phlebotomy network.
+// - List of Lab locations in the area.
 func (c *Client) GetAreaInfo(ctx context.Context, request *vitalgo.LabTestsGetAreaInfoRequest) (*vitalgo.AreaInfo, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {

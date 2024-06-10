@@ -1077,6 +1077,122 @@ func (c *Client) CholesterolGrouped(ctx context.Context, userId string, request 
 	return response, nil
 }
 
+func (c *Client) BodyTemperatureDeltaGrouped(ctx context.Context, userId string, request *vitalgo.VitalsBodyTemperatureDeltaGroupedRequest) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/timeseries/%v/body_temperature_delta/grouped", userId)
+
+	queryParams := make(url.Values)
+	if request.Cursor != nil {
+		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.Provider != nil {
+		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
+	}
+	queryParams.Add("start_date", fmt.Sprintf("%v", request.StartDate))
+	if request.EndDate != nil {
+		queryParams.Add("end_date", fmt.Sprintf("%v", *request.EndDate))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (c *Client) BodyTemperatureGrouped(ctx context.Context, userId string, request *vitalgo.VitalsBodyTemperatureGroupedRequest) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/timeseries/%v/body_temperature/grouped", userId)
+
+	queryParams := make(url.Values)
+	if request.Cursor != nil {
+		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.Provider != nil {
+		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
+	}
+	queryParams.Add("start_date", fmt.Sprintf("%v", request.StartDate))
+	if request.EndDate != nil {
+		queryParams.Add("end_date", fmt.Sprintf("%v", *request.EndDate))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) BodyWeightGrouped(ctx context.Context, userId string, request *vitalgo.VitalsBodyWeightGroupedRequest) (*vitalgo.GroupedBodyWeightResponse, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {

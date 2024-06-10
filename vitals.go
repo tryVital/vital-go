@@ -62,6 +62,28 @@ type VitalsBodyFatGroupedRequest struct {
 	EndDate *string `json:"-"`
 }
 
+type VitalsBodyTemperatureDeltaGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-"`
+	// Provider oura/strava etc
+	Provider *string `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-"`
+}
+
+type VitalsBodyTemperatureGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-"`
+	// Provider oura/strava etc
+	Provider *string `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-"`
+}
+
 type VitalsBodyWeightRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-"`
