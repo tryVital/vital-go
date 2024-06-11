@@ -685,6 +685,100 @@ func (c *Client) GetAreaInfo(ctx context.Context, request *vitalgo.LabTestsGetAr
 	return response, nil
 }
 
+func (c *Client) GetPscInfo(ctx context.Context, request *vitalgo.LabTestsGetPscInfoRequest) (*vitalgo.PscInfo, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := baseURL + "/" + "v3/order/psc/info"
+
+	queryParams := make(url.Values)
+	queryParams.Add("zip_code", fmt.Sprintf("%v", request.ZipCode))
+	queryParams.Add("lab_id", fmt.Sprintf("%v", request.LabId))
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.PscInfo
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// Your Order ID.
+func (c *Client) GetOrderPscInfo(ctx context.Context, orderId string) (*vitalgo.PscInfo, error) {
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/order/%v/psc/info", orderId)
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.PscInfo
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 // This endpoint returns the lab results for the order.
 func (c *Client) GetResultPdf(ctx context.Context, orderId string) (io.Reader, error) {
 	baseURL := "https://api.tryvital.io"
@@ -1128,6 +1222,9 @@ func (c *Client) GetOrders(ctx context.Context, request *vitalgo.LabTestsGetOrde
 	}
 	if request.PatientName != nil {
 		queryParams.Add("patient_name", fmt.Sprintf("%v", *request.PatientName))
+	}
+	if request.ShippingRecipientName != nil {
+		queryParams.Add("shipping_recipient_name", fmt.Sprintf("%v", *request.ShippingRecipientName))
 	}
 	for _, value := range request.OrderIds {
 		queryParams.Add("order_ids", fmt.Sprintf("%v", *value))

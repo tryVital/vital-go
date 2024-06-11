@@ -75,10 +75,19 @@ type LabTestsGetOrdersRequest struct {
 	UserId *string `json:"-"`
 	// Filter by patient name.
 	PatientName *string `json:"-"`
+	// Filter by shipping recipient name.
+	ShippingRecipientName *string `json:"-"`
 	// Filter by order ids.
 	OrderIds []*string `json:"-"`
 	Page     *int      `json:"-"`
 	Size     *int      `json:"-"`
+}
+
+type LabTestsGetPscInfoRequest struct {
+	// Zip code of the area to check
+	ZipCode string `json:"-"`
+	// Lab ID to check for PSCs
+	LabId int `json:"-"`
 }
 
 type RequestAppointmentRequest struct {

@@ -8214,7 +8214,7 @@ func (p Providers) Ptr() *Providers {
 }
 
 type PscAreaInfo struct {
-	Locations map[string][]*ClientFacingLabLocation `json:"locations,omitempty"`
+	Locations map[string]*PscAreaInfoDetails `json:"locations,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8231,6 +8231,66 @@ func (p *PscAreaInfo) UnmarshalJSON(data []byte) error {
 }
 
 func (p *PscAreaInfo) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PscAreaInfoDetails struct {
+	WithinRadius int `json:"within_radius"`
+	Radius       int `json:"radius"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PscAreaInfoDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler PscAreaInfoDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PscAreaInfoDetails(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PscAreaInfoDetails) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PscInfo struct {
+	LabId int                        `json:"lab_id"`
+	Pscs  []*ClientFacingLabLocation `json:"pscs,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *PscInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler PscInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PscInfo(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PscInfo) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
