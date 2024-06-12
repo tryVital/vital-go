@@ -645,6 +645,9 @@ func (c *Client) GetAreaInfo(ctx context.Context, request *vitalgo.LabTestsGetAr
 
 	queryParams := make(url.Values)
 	queryParams.Add("zip_code", fmt.Sprintf("%v", request.ZipCode))
+	if request.Radius != nil {
+		queryParams.Add("radius", fmt.Sprintf("%v", *request.Radius))
+	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
@@ -695,6 +698,9 @@ func (c *Client) GetPscInfo(ctx context.Context, request *vitalgo.LabTestsGetPsc
 	queryParams := make(url.Values)
 	queryParams.Add("zip_code", fmt.Sprintf("%v", request.ZipCode))
 	queryParams.Add("lab_id", fmt.Sprintf("%v", request.LabId))
+	if request.Radius != nil {
+		queryParams.Add("radius", fmt.Sprintf("%v", *request.Radius))
+	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
@@ -736,12 +742,20 @@ func (c *Client) GetPscInfo(ctx context.Context, request *vitalgo.LabTestsGetPsc
 }
 
 // Your Order ID.
-func (c *Client) GetOrderPscInfo(ctx context.Context, orderId string) (*vitalgo.PscInfo, error) {
+func (c *Client) GetOrderPscInfo(ctx context.Context, orderId string, request *vitalgo.LabTestsGetOrderPscInfoRequest) (*vitalgo.PscInfo, error) {
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
 	endpointURL := fmt.Sprintf(baseURL+"/"+"v3/order/%v/psc/info", orderId)
+
+	queryParams := make(url.Values)
+	if request.Radius != nil {
+		queryParams.Add("radius", fmt.Sprintf("%v", *request.Radius))
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

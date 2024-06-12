@@ -43,6 +43,8 @@ type CreateOrderRequestCompatible struct {
 type LabTestsGetAreaInfoRequest struct {
 	// Zip code of the area to check
 	ZipCode string `json:"-"`
+	// Radius in which to search (meters)
+	Radius *AllowedRadius `json:"-"`
 }
 
 type LabTestsGetLabelsPdfRequest struct {
@@ -64,6 +66,11 @@ type LabTestsGetMarkersRequest struct {
 type LabTestsGetMarkersForLabTestRequest struct {
 	Page *int `json:"-"`
 	Size *int `json:"-"`
+}
+
+type LabTestsGetOrderPscInfoRequest struct {
+	// Radius in which to search. (meters)
+	Radius *AllowedRadius `json:"-"`
 }
 
 type LabTestsGetOrdersRequest struct {
@@ -88,6 +95,8 @@ type LabTestsGetPscInfoRequest struct {
 	ZipCode string `json:"-"`
 	// Lab ID to check for PSCs
 	LabId int `json:"-"`
+	// Radius in which to search. (meters)
+	Radius *AllowedRadius `json:"-"`
 }
 
 type RequestAppointmentRequest struct {

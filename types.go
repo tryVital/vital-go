@@ -79,6 +79,8 @@ func (a *Address) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type AllowedRadius = int
+
 type Answer struct {
 	Id    int    `json:"id"`
 	Code  string `json:"code"`
