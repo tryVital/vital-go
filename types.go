@@ -1653,8 +1653,9 @@ func (c *ClientFacingGlucoseTimeseries) String() string {
 
 type ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample `json:"groups,omitempty"`
-	Next   *string                                                                         `json:"next,omitempty"`
+	Groups     map[string][]*ClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample `json:"groups,omitempty"`
+	Next       *string                                                                         `json:"next,omitempty"`
+	NextCursor *string                                                                         `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -1684,8 +1685,9 @@ func (c *ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSa
 
 type ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample `json:"groups,omitempty"`
-	Next   *string                                                                    `json:"next,omitempty"`
+	Groups     map[string][]*ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample `json:"groups,omitempty"`
+	Next       *string                                                                    `json:"next,omitempty"`
+	NextCursor *string                                                                    `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4664,6 +4666,7 @@ const (
 	EventDestinationPreferencesEnabledItemCloudPubsub EventDestinationPreferencesEnabledItem = "cloud_pubsub"
 	EventDestinationPreferencesEnabledItemRabbitmq    EventDestinationPreferencesEnabledItem = "rabbitmq"
 	EventDestinationPreferencesEnabledItemSvix        EventDestinationPreferencesEnabledItem = "svix"
+	EventDestinationPreferencesEnabledItemAzureAmqp   EventDestinationPreferencesEnabledItem = "azure_amqp"
 )
 
 func NewEventDestinationPreferencesEnabledItemFromString(s string) (EventDestinationPreferencesEnabledItem, error) {
@@ -4674,6 +4677,8 @@ func NewEventDestinationPreferencesEnabledItemFromString(s string) (EventDestina
 		return EventDestinationPreferencesEnabledItemRabbitmq, nil
 	case "svix":
 		return EventDestinationPreferencesEnabledItemSvix, nil
+	case "azure_amqp":
+		return EventDestinationPreferencesEnabledItemAzureAmqp, nil
 	}
 	var t EventDestinationPreferencesEnabledItem
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -4689,6 +4694,7 @@ const (
 	EventDestinationPreferencesPreferredCloudPubsub EventDestinationPreferencesPreferred = "cloud_pubsub"
 	EventDestinationPreferencesPreferredRabbitmq    EventDestinationPreferencesPreferred = "rabbitmq"
 	EventDestinationPreferencesPreferredSvix        EventDestinationPreferencesPreferred = "svix"
+	EventDestinationPreferencesPreferredAzureAmqp   EventDestinationPreferencesPreferred = "azure_amqp"
 )
 
 func NewEventDestinationPreferencesPreferredFromString(s string) (EventDestinationPreferencesPreferred, error) {
@@ -4699,6 +4705,8 @@ func NewEventDestinationPreferencesPreferredFromString(s string) (EventDestinati
 		return EventDestinationPreferencesPreferredRabbitmq, nil
 	case "svix":
 		return EventDestinationPreferencesPreferredSvix, nil
+	case "azure_amqp":
+		return EventDestinationPreferencesPreferredAzureAmqp, nil
 	}
 	var t EventDestinationPreferencesPreferred
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -4934,8 +4942,9 @@ func (g *GroupedBloodOxygen) String() string {
 
 type GroupedBloodOxygenResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedBloodOxygen `json:"groups,omitempty"`
-	Next   *string                          `json:"next,omitempty"`
+	Groups     map[string][]*GroupedBloodOxygen `json:"groups,omitempty"`
+	Next       *string                          `json:"next,omitempty"`
+	NextCursor *string                          `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4995,8 +5004,9 @@ func (g *GroupedBloodPressure) String() string {
 
 type GroupedBloodPressureResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedBloodPressure `json:"groups,omitempty"`
-	Next   *string                            `json:"next,omitempty"`
+	Groups     map[string][]*GroupedBloodPressure `json:"groups,omitempty"`
+	Next       *string                            `json:"next,omitempty"`
+	NextCursor *string                            `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5056,8 +5066,9 @@ func (g *GroupedBodyFat) String() string {
 
 type GroupedBodyFatResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedBodyFat `json:"groups,omitempty"`
-	Next   *string                      `json:"next,omitempty"`
+	Groups     map[string][]*GroupedBodyFat `json:"groups,omitempty"`
+	Next       *string                      `json:"next,omitempty"`
+	NextCursor *string                      `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5117,8 +5128,9 @@ func (g *GroupedBodyWeight) String() string {
 
 type GroupedBodyWeightResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedBodyWeight `json:"groups,omitempty"`
-	Next   *string                         `json:"next,omitempty"`
+	Groups     map[string][]*GroupedBodyWeight `json:"groups,omitempty"`
+	Next       *string                         `json:"next,omitempty"`
+	NextCursor *string                         `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5178,8 +5190,9 @@ func (g *GroupedCaffeine) String() string {
 
 type GroupedCaffeineResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedCaffeine `json:"groups,omitempty"`
-	Next   *string                       `json:"next,omitempty"`
+	Groups     map[string][]*GroupedCaffeine `json:"groups,omitempty"`
+	Next       *string                       `json:"next,omitempty"`
+	NextCursor *string                       `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5239,8 +5252,9 @@ func (g *GroupedCaloriesActive) String() string {
 
 type GroupedCaloriesActiveResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedCaloriesActive `json:"groups,omitempty"`
-	Next   *string                             `json:"next,omitempty"`
+	Groups     map[string][]*GroupedCaloriesActive `json:"groups,omitempty"`
+	Next       *string                             `json:"next,omitempty"`
+	NextCursor *string                             `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5300,8 +5314,9 @@ func (g *GroupedCaloriesBasal) String() string {
 
 type GroupedCaloriesBasalResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedCaloriesBasal `json:"groups,omitempty"`
-	Next   *string                            `json:"next,omitempty"`
+	Groups     map[string][]*GroupedCaloriesBasal `json:"groups,omitempty"`
+	Next       *string                            `json:"next,omitempty"`
+	NextCursor *string                            `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5361,8 +5376,9 @@ func (g *GroupedCholesterol) String() string {
 
 type GroupedCholesterolResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedCholesterol `json:"groups,omitempty"`
-	Next   *string                          `json:"next,omitempty"`
+	Groups     map[string][]*GroupedCholesterol `json:"groups,omitempty"`
+	Next       *string                          `json:"next,omitempty"`
+	NextCursor *string                          `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5422,8 +5438,9 @@ func (g *GroupedDistance) String() string {
 
 type GroupedDistanceResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedDistance `json:"groups,omitempty"`
-	Next   *string                       `json:"next,omitempty"`
+	Groups     map[string][]*GroupedDistance `json:"groups,omitempty"`
+	Next       *string                       `json:"next,omitempty"`
+	NextCursor *string                       `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5483,8 +5500,9 @@ func (g *GroupedElectrocardiogramVoltage) String() string {
 
 type GroupedElectrocardiogramVoltageResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedElectrocardiogramVoltage `json:"groups,omitempty"`
-	Next   *string                                       `json:"next,omitempty"`
+	Groups     map[string][]*GroupedElectrocardiogramVoltage `json:"groups,omitempty"`
+	Next       *string                                       `json:"next,omitempty"`
+	NextCursor *string                                       `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5544,8 +5562,9 @@ func (g *GroupedFloorsClimbed) String() string {
 
 type GroupedFloorsClimbedResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedFloorsClimbed `json:"groups,omitempty"`
-	Next   *string                            `json:"next,omitempty"`
+	Groups     map[string][]*GroupedFloorsClimbed `json:"groups,omitempty"`
+	Next       *string                            `json:"next,omitempty"`
+	NextCursor *string                            `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5605,8 +5624,9 @@ func (g *GroupedGlucose) String() string {
 
 type GroupedGlucoseResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedGlucose `json:"groups,omitempty"`
-	Next   *string                      `json:"next,omitempty"`
+	Groups     map[string][]*GroupedGlucose `json:"groups,omitempty"`
+	Next       *string                      `json:"next,omitempty"`
+	NextCursor *string                      `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5666,8 +5686,9 @@ func (g *GroupedHeartRate) String() string {
 
 type GroupedHeartRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedHeartRate `json:"groups,omitempty"`
-	Next   *string                        `json:"next,omitempty"`
+	Groups     map[string][]*GroupedHeartRate `json:"groups,omitempty"`
+	Next       *string                        `json:"next,omitempty"`
+	NextCursor *string                        `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5727,8 +5748,9 @@ func (g *GroupedHrv) String() string {
 
 type GroupedHrvResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedHrv `json:"groups,omitempty"`
-	Next   *string                  `json:"next,omitempty"`
+	Groups     map[string][]*GroupedHrv `json:"groups,omitempty"`
+	Next       *string                  `json:"next,omitempty"`
+	NextCursor *string                  `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5788,8 +5810,9 @@ func (g *GroupedHypnogram) String() string {
 
 type GroupedHypnogramResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedHypnogram `json:"groups,omitempty"`
-	Next   *string                        `json:"next,omitempty"`
+	Groups     map[string][]*GroupedHypnogram `json:"groups,omitempty"`
+	Next       *string                        `json:"next,omitempty"`
+	NextCursor *string                        `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5849,8 +5872,9 @@ func (g *GroupedIge) String() string {
 
 type GroupedIgeResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedIge `json:"groups,omitempty"`
-	Next   *string                  `json:"next,omitempty"`
+	Groups     map[string][]*GroupedIge `json:"groups,omitempty"`
+	Next       *string                  `json:"next,omitempty"`
+	NextCursor *string                  `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5910,8 +5934,9 @@ func (g *GroupedIgg) String() string {
 
 type GroupedIggResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedIgg `json:"groups,omitempty"`
-	Next   *string                  `json:"next,omitempty"`
+	Groups     map[string][]*GroupedIgg `json:"groups,omitempty"`
+	Next       *string                  `json:"next,omitempty"`
+	NextCursor *string                  `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -5971,8 +5996,9 @@ func (g *GroupedMindfulnessMinutes) String() string {
 
 type GroupedMindfulnessMinutesResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedMindfulnessMinutes `json:"groups,omitempty"`
-	Next   *string                                 `json:"next,omitempty"`
+	Groups     map[string][]*GroupedMindfulnessMinutes `json:"groups,omitempty"`
+	Next       *string                                 `json:"next,omitempty"`
+	NextCursor *string                                 `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6032,8 +6058,9 @@ func (g *GroupedRespiratoryRate) String() string {
 
 type GroupedRespiratoryRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedRespiratoryRate `json:"groups,omitempty"`
-	Next   *string                              `json:"next,omitempty"`
+	Groups     map[string][]*GroupedRespiratoryRate `json:"groups,omitempty"`
+	Next       *string                              `json:"next,omitempty"`
+	NextCursor *string                              `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6093,8 +6120,9 @@ func (g *GroupedSteps) String() string {
 
 type GroupedStepsResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedSteps `json:"groups,omitempty"`
-	Next   *string                    `json:"next,omitempty"`
+	Groups     map[string][]*GroupedSteps `json:"groups,omitempty"`
+	Next       *string                    `json:"next,omitempty"`
+	NextCursor *string                    `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6154,8 +6182,9 @@ func (g *GroupedStressLevel) String() string {
 
 type GroupedStressLevelResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedStressLevel `json:"groups,omitempty"`
-	Next   *string                          `json:"next,omitempty"`
+	Groups     map[string][]*GroupedStressLevel `json:"groups,omitempty"`
+	Next       *string                          `json:"next,omitempty"`
+	NextCursor *string                          `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6215,8 +6244,9 @@ func (g *GroupedVo2Max) String() string {
 
 type GroupedVo2MaxResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedVo2Max `json:"groups,omitempty"`
-	Next   *string                     `json:"next,omitempty"`
+	Groups     map[string][]*GroupedVo2Max `json:"groups,omitempty"`
+	Next       *string                     `json:"next,omitempty"`
+	NextCursor *string                     `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6276,8 +6306,9 @@ func (g *GroupedWater) String() string {
 
 type GroupedWaterResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*GroupedWater `json:"groups,omitempty"`
-	Next   *string                    `json:"next,omitempty"`
+	Groups     map[string][]*GroupedWater `json:"groups,omitempty"`
+	Next       *string                    `json:"next,omitempty"`
+	NextCursor *string                    `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -9341,8 +9372,9 @@ func (u *UsAddress) String() string {
 }
 
 type UserHistoricalPullsResponse struct {
-	Data []*SingleUserHistoricalPullResponse `json:"data,omitempty"`
-	Next *string                             `json:"next,omitempty"`
+	Data       []*SingleUserHistoricalPullResponse `json:"data,omitempty"`
+	Next       *string                             `json:"next,omitempty"`
+	NextCursor *string                             `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -9440,8 +9472,9 @@ func (u *UserRefreshSuccessResponse) String() string {
 }
 
 type UserResourcesResponse struct {
-	Data []*SingleUserResourceResponse `json:"data,omitempty"`
-	Next *string                       `json:"next,omitempty"`
+	Data       []*SingleUserResourceResponse `json:"data,omitempty"`
+	Next       *string                       `json:"next,omitempty"`
+	NextCursor *string                       `json:"next_cursor,omitempty"`
 
 	_rawJSON json.RawMessage
 }

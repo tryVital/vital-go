@@ -53,6 +53,9 @@ func (c *Client) GetUserResources(ctx context.Context, request *vitalgo.Introspe
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
@@ -112,6 +115,9 @@ func (c *Client) GetUserHistoricalPulls(ctx context.Context, request *vitalgo.In
 	}
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()

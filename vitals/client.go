@@ -44,6 +44,9 @@ func (c *Client) Vo2MaxGrouped(ctx context.Context, userId string, request *vita
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -101,6 +104,9 @@ func (c *Client) StressLevelGrouped(ctx context.Context, userId string, request 
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -160,6 +166,9 @@ func (c *Client) MindfulnessMinutesGrouped(ctx context.Context, userId string, r
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -217,6 +226,9 @@ func (c *Client) CaffeineGrouped(ctx context.Context, userId string, request *vi
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -276,6 +288,9 @@ func (c *Client) WaterGrouped(ctx context.Context, userId string, request *vital
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -333,6 +348,9 @@ func (c *Client) StepsGrouped(ctx context.Context, userId string, request *vital
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -392,6 +410,9 @@ func (c *Client) FloorsClimbedGrouped(ctx context.Context, userId string, reques
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -449,6 +470,9 @@ func (c *Client) DistanceGrouped(ctx context.Context, userId string, request *vi
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -508,6 +532,9 @@ func (c *Client) CaloriesBasalGrouped(ctx context.Context, userId string, reques
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -565,6 +592,9 @@ func (c *Client) CaloriesActiveGrouped(ctx context.Context, userId string, reque
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -624,6 +654,9 @@ func (c *Client) RespiratoryRateGrouped(ctx context.Context, userId string, requ
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -681,6 +714,9 @@ func (c *Client) IgeGrouped(ctx context.Context, userId string, request *vitalgo
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -740,6 +776,9 @@ func (c *Client) IggGrouped(ctx context.Context, userId string, request *vitalgo
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -797,6 +836,9 @@ func (c *Client) HypnogramGrouped(ctx context.Context, userId string, request *v
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -856,6 +898,9 @@ func (c *Client) HrvGrouped(ctx context.Context, userId string, request *vitalgo
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -913,6 +958,9 @@ func (c *Client) HeartrateGrouped(ctx context.Context, userId string, request *v
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -972,6 +1020,9 @@ func (c *Client) GlucoseGrouped(ctx context.Context, userId string, request *vit
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -1029,6 +1080,9 @@ func (c *Client) CholesterolGrouped(ctx context.Context, userId string, request 
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -1088,6 +1142,9 @@ func (c *Client) BodyTemperatureDeltaGrouped(ctx context.Context, userId string,
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -1145,6 +1202,9 @@ func (c *Client) BodyTemperatureGrouped(ctx context.Context, userId string, requ
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -1204,6 +1264,9 @@ func (c *Client) BodyWeightGrouped(ctx context.Context, userId string, request *
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -1261,6 +1324,9 @@ func (c *Client) BodyFatGrouped(ctx context.Context, userId string, request *vit
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
@@ -1320,6 +1386,9 @@ func (c *Client) BloodOxygenGrouped(ctx context.Context, userId string, request 
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -1378,6 +1447,9 @@ func (c *Client) ElectrocardiogramVoltageGrouped(ctx context.Context, userId str
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
 	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
+	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
 	}
@@ -1435,6 +1507,9 @@ func (c *Client) BloodPressureGrouped(ctx context.Context, userId string, reques
 	queryParams := make(url.Values)
 	if request.Cursor != nil {
 		queryParams.Add("cursor", fmt.Sprintf("%v", *request.Cursor))
+	}
+	if request.NextCursor != nil {
+		queryParams.Add("next_cursor", fmt.Sprintf("%v", *request.NextCursor))
 	}
 	if request.Provider != nil {
 		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))

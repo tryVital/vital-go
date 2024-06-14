@@ -7,6 +7,8 @@ type IntrospectGetUserHistoricalPullsRequest struct {
 	Provider  *Providers `json:"-"`
 	UserLimit *int       `json:"-"`
 	Cursor    *string    `json:"-"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-"`
 }
 
 type IntrospectGetUserResourcesRequest struct {
@@ -14,4 +16,6 @@ type IntrospectGetUserResourcesRequest struct {
 	Provider  *Providers `json:"-"`
 	UserLimit *int       `json:"-"`
 	Cursor    *string    `json:"-"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-"`
 }
