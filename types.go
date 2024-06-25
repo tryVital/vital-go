@@ -79,7 +79,34 @@ func (a *Address) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-type AllowedRadius = int
+// Maps miles to meters
+type AllowedRadius string
+
+const (
+	AllowedRadiusTen        AllowedRadius = "10"
+	AllowedRadiusTwenty     AllowedRadius = "20"
+	AllowedRadiusTwentyFive AllowedRadius = "25"
+	AllowedRadiusFifty      AllowedRadius = "50"
+)
+
+func NewAllowedRadiusFromString(s string) (AllowedRadius, error) {
+	switch s {
+	case "10":
+		return AllowedRadiusTen, nil
+	case "20":
+		return AllowedRadiusTwenty, nil
+	case "25":
+		return AllowedRadiusTwentyFive, nil
+	case "50":
+		return AllowedRadiusFifty, nil
+	}
+	var t AllowedRadius
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AllowedRadius) Ptr() *AllowedRadius {
+	return &a
+}
 
 type Answer struct {
 	Id    int    `json:"id"`
@@ -314,9 +341,9 @@ func (a AppointmentStatus) Ptr() *AppointmentStatus {
 type AppointmentType = string
 
 type AreaInfo struct {
-	ZipCode    string              `json:"zip_code"`
-	Phlebotomy *PhlebotomyAreaInfo `json:"phlebotomy,omitempty"`
-	Psc        *PscAreaInfo        `json:"psc,omitempty"`
+	ZipCode     string                  `json:"zip_code"`
+	Phlebotomy  *PhlebotomyAreaInfo     `json:"phlebotomy,omitempty"`
+	CentralLabs map[string]*PscAreaInfo `json:"central_labs,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -6691,8 +6718,8 @@ type LabLocationMetadata struct {
 	State       string                 `json:"state"`
 	City        string                 `json:"city"`
 	ZipCode     string                 `json:"zip_code"`
-	Address     string                 `json:"address"`
-	Unit        *string                `json:"unit,omitempty"`
+	FirstLine   string                 `json:"first_line"`
+	SecondLine  *string                `json:"second_line,omitempty"`
 	PhoneNumber *string                `json:"phone_number,omitempty"`
 	FaxNumber   *string                `json:"fax_number,omitempty"`
 	Hours       map[string]interface{} `json:"hours,omitempty"`
@@ -8247,7 +8274,7 @@ func (p Providers) Ptr() *Providers {
 }
 
 type PscAreaInfo struct {
-	Locations map[string]*PscAreaInfoDetails `json:"locations,omitempty"`
+	PatientServiceCenters *PscAreaInfoDetails `json:"patient_service_centers,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8276,8 +8303,8 @@ func (p *PscAreaInfo) String() string {
 }
 
 type PscAreaInfoDetails struct {
-	WithinRadius int `json:"within_radius"`
-	Radius       int `json:"radius"`
+	WithinRadius int    `json:"within_radius"`
+	Radius       string `json:"radius"`
 
 	_rawJSON json.RawMessage
 }
@@ -8307,6 +8334,7 @@ func (p *PscAreaInfoDetails) String() string {
 
 type PscInfo struct {
 	LabId int                        `json:"lab_id"`
+	Slug  Labs                       `json:"slug,omitempty"`
 	Pscs  []*ClientFacingLabLocation `json:"pscs,omitempty"`
 
 	_rawJSON json.RawMessage

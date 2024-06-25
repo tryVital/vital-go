@@ -17,10 +17,10 @@ type AppointmentCancelRequest struct {
 
 type CreateLabTestRequest struct {
 	MarkerIds   []int                   `json:"marker_ids,omitempty"`
+	ProviderIds []string                `json:"provider_ids,omitempty"`
 	LabId       int                     `json:"lab_id"`
 	Name        string                  `json:"name"`
 	Method      LabTestCollectionMethod `json:"method,omitempty"`
-	SampleType  LabTestSampleType       `json:"sample_type,omitempty"`
 	Description string                  `json:"description"`
 	Fasting     *bool                   `json:"fasting,omitempty"`
 }
@@ -43,8 +43,10 @@ type CreateOrderRequestCompatible struct {
 type LabTestsGetAreaInfoRequest struct {
 	// Zip code of the area to check
 	ZipCode string `json:"-"`
-	// Radius in which to search (meters)
+	// Radius in which to search in miles
 	Radius *AllowedRadius `json:"-"`
+	// Lab to check for PSCs
+	Lab *Labs `json:"-"`
 }
 
 type LabTestsGetLabelsPdfRequest struct {
@@ -69,7 +71,7 @@ type LabTestsGetMarkersForLabTestRequest struct {
 }
 
 type LabTestsGetOrderPscInfoRequest struct {
-	// Radius in which to search. (meters)
+	// Radius in which to search in miles
 	Radius *AllowedRadius `json:"-"`
 }
 

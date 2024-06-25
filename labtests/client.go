@@ -648,6 +648,9 @@ func (c *Client) GetAreaInfo(ctx context.Context, request *vitalgo.LabTestsGetAr
 	if request.Radius != nil {
 		queryParams.Add("radius", fmt.Sprintf("%v", *request.Radius))
 	}
+	if request.Lab != nil {
+		queryParams.Add("lab", fmt.Sprintf("%v", *request.Lab))
+	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
