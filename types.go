@@ -2721,6 +2721,7 @@ const (
 	ClientFacingResourceVo2Max                   ClientFacingResource = "vo2_max"
 	ClientFacingResourceCaloriesBasal            ClientFacingResource = "calories_basal"
 	ClientFacingResourceStressLevel              ClientFacingResource = "stress_level"
+	ClientFacingResourceMenstrualCycle           ClientFacingResource = "menstrual_cycle"
 	ClientFacingResourceElectrocardiogramVoltage ClientFacingResource = "electrocardiogram_voltage"
 	ClientFacingResourceSleepStream              ClientFacingResource = "sleep_stream"
 )
@@ -2799,6 +2800,8 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceCaloriesBasal, nil
 	case "stress_level":
 		return ClientFacingResourceStressLevel, nil
+	case "menstrual_cycle":
+		return ClientFacingResourceMenstrualCycle, nil
 	case "electrocardiogram_voltage":
 		return ClientFacingResourceElectrocardiogramVoltage, nil
 	case "sleep_stream":
