@@ -3035,11 +3035,11 @@ type ClientFacingSource struct {
 	Type  *string `json:"type,omitempty"`
 	AppId *string `json:"app_id,omitempty"`
 	// Deprecated. Subject to removal after 1 Jan 2024.
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 	// Deprecated. Use `provider` instead. Subject to removal after 1 Jan 2024.
-	Slug string `json:"slug"`
+	Slug *string `json:"slug,omitempty"`
 	// Deprecated. Subject to removal after 1 Jan 2024.
-	Logo string `json:"logo"`
+	Logo *string `json:"logo,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8336,9 +8336,9 @@ func (p *PscAreaInfoDetails) String() string {
 }
 
 type PscInfo struct {
-	LabId int                        `json:"lab_id"`
-	Slug  Labs                       `json:"slug,omitempty"`
-	Pscs  []*ClientFacingLabLocation `json:"pscs,omitempty"`
+	LabId                 int                        `json:"lab_id"`
+	Slug                  Labs                       `json:"slug,omitempty"`
+	PatientServiceCenters []*ClientFacingLabLocation `json:"patient_service_centers,omitempty"`
 
 	_rawJSON json.RawMessage
 }
