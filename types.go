@@ -440,6 +440,36 @@ func (a Availability) Ptr() *Availability {
 	return &a
 }
 
+type BasalBodyTemperatureEntry struct {
+	Date  string  `json:"date"`
+	Value float64 `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (b *BasalBodyTemperatureEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler BasalBodyTemperatureEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BasalBodyTemperatureEntry(value)
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BasalBodyTemperatureEntry) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Represent the schema for an individual biomarker result.
 type BiomarkerResult struct {
 	Name            string     `json:"name"`
@@ -519,6 +549,67 @@ func (b *BodyV2InDb) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type CervicalMucusEntry struct {
+	Date    string                    `json:"date"`
+	Quality CervicalMucusEntryQuality `json:"quality,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CervicalMucusEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler CervicalMucusEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CervicalMucusEntry(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CervicalMucusEntry) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CervicalMucusEntryQuality string
+
+const (
+	CervicalMucusEntryQualityDry      CervicalMucusEntryQuality = "dry"
+	CervicalMucusEntryQualitySticky   CervicalMucusEntryQuality = "sticky"
+	CervicalMucusEntryQualityCreamy   CervicalMucusEntryQuality = "creamy"
+	CervicalMucusEntryQualityWatery   CervicalMucusEntryQuality = "watery"
+	CervicalMucusEntryQualityEggWhite CervicalMucusEntryQuality = "egg_white"
+)
+
+func NewCervicalMucusEntryQualityFromString(s string) (CervicalMucusEntryQuality, error) {
+	switch s {
+	case "dry":
+		return CervicalMucusEntryQualityDry, nil
+	case "sticky":
+		return CervicalMucusEntryQualitySticky, nil
+	case "creamy":
+		return CervicalMucusEntryQualityCreamy, nil
+	case "watery":
+		return CervicalMucusEntryQualityWatery, nil
+	case "egg_white":
+		return CervicalMucusEntryQualityEggWhite, nil
+	}
+	var t CervicalMucusEntryQuality
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CervicalMucusEntryQuality) Ptr() *CervicalMucusEntryQuality {
+	return &c
 }
 
 type ClientActivityResponse struct {
@@ -4464,6 +4555,73 @@ func (c ConsentType) Ptr() *ConsentType {
 	return &c
 }
 
+type ContraceptiveEntry struct {
+	Date string                 `json:"date"`
+	Type ContraceptiveEntryType `json:"type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ContraceptiveEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler ContraceptiveEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ContraceptiveEntry(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ContraceptiveEntry) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ContraceptiveEntryType string
+
+const (
+	ContraceptiveEntryTypeUnspecified      ContraceptiveEntryType = "unspecified"
+	ContraceptiveEntryTypeImplant          ContraceptiveEntryType = "implant"
+	ContraceptiveEntryTypeInjection        ContraceptiveEntryType = "injection"
+	ContraceptiveEntryTypeIud              ContraceptiveEntryType = "iud"
+	ContraceptiveEntryTypeIntravaginalRing ContraceptiveEntryType = "intravaginal_ring"
+	ContraceptiveEntryTypeOral             ContraceptiveEntryType = "oral"
+	ContraceptiveEntryTypePatch            ContraceptiveEntryType = "patch"
+)
+
+func NewContraceptiveEntryTypeFromString(s string) (ContraceptiveEntryType, error) {
+	switch s {
+	case "unspecified":
+		return ContraceptiveEntryTypeUnspecified, nil
+	case "implant":
+		return ContraceptiveEntryTypeImplant, nil
+	case "injection":
+		return ContraceptiveEntryTypeInjection, nil
+	case "iud":
+		return ContraceptiveEntryTypeIud, nil
+	case "intravaginal_ring":
+		return ContraceptiveEntryTypeIntravaginalRing, nil
+	case "oral":
+		return ContraceptiveEntryTypeOral, nil
+	case "patch":
+		return ContraceptiveEntryTypePatch, nil
+	}
+	var t ContraceptiveEntryType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ContraceptiveEntryType) Ptr() *ContraceptiveEntryType {
+	return &c
+}
+
 type DaySlots struct {
 	Date  string      `json:"date"`
 	Slots []*TimeSlot `json:"slots,omitempty"`
@@ -4574,6 +4732,64 @@ func NewDemoProvidersFromString(s string) (DemoProviders, error) {
 }
 
 func (d DemoProviders) Ptr() *DemoProviders {
+	return &d
+}
+
+type DetectedDeviationEntry struct {
+	Date      string                          `json:"date"`
+	Deviation DetectedDeviationEntryDeviation `json:"deviation,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (d *DetectedDeviationEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler DetectedDeviationEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DetectedDeviationEntry(value)
+	d._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DetectedDeviationEntry) String() string {
+	if len(d._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(d._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type DetectedDeviationEntryDeviation string
+
+const (
+	DetectedDeviationEntryDeviationPersistentIntermenstrualBleeding DetectedDeviationEntryDeviation = "persistent_intermenstrual_bleeding"
+	DetectedDeviationEntryDeviationProlongedMenstrualPeriods        DetectedDeviationEntryDeviation = "prolonged_menstrual_periods"
+	DetectedDeviationEntryDeviationIrregularMenstrualCycles         DetectedDeviationEntryDeviation = "irregular_menstrual_cycles"
+	DetectedDeviationEntryDeviationInfrequentMenstrualCycles        DetectedDeviationEntryDeviation = "infrequent_menstrual_cycles"
+)
+
+func NewDetectedDeviationEntryDeviationFromString(s string) (DetectedDeviationEntryDeviation, error) {
+	switch s {
+	case "persistent_intermenstrual_bleeding":
+		return DetectedDeviationEntryDeviationPersistentIntermenstrualBleeding, nil
+	case "prolonged_menstrual_periods":
+		return DetectedDeviationEntryDeviationProlongedMenstrualPeriods, nil
+	case "irregular_menstrual_cycles":
+		return DetectedDeviationEntryDeviationIrregularMenstrualCycles, nil
+	case "infrequent_menstrual_cycles":
+		return DetectedDeviationEntryDeviationInfrequentMenstrualCycles, nil
+	}
+	var t DetectedDeviationEntryDeviation
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DetectedDeviationEntryDeviation) Ptr() *DetectedDeviationEntryDeviation {
 	return &d
 }
 
@@ -6640,6 +6856,116 @@ func (h *HistoricalPullTimeline) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+type HomePregnancyTestEntry struct {
+	Date       string                           `json:"date"`
+	TestResult HomePregnancyTestEntryTestResult `json:"test_result,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (h *HomePregnancyTestEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler HomePregnancyTestEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HomePregnancyTestEntry(value)
+	h._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HomePregnancyTestEntry) String() string {
+	if len(h._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(h._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+type HomePregnancyTestEntryTestResult string
+
+const (
+	HomePregnancyTestEntryTestResultNegative      HomePregnancyTestEntryTestResult = "negative"
+	HomePregnancyTestEntryTestResultPositive      HomePregnancyTestEntryTestResult = "positive"
+	HomePregnancyTestEntryTestResultIndeterminate HomePregnancyTestEntryTestResult = "indeterminate"
+)
+
+func NewHomePregnancyTestEntryTestResultFromString(s string) (HomePregnancyTestEntryTestResult, error) {
+	switch s {
+	case "negative":
+		return HomePregnancyTestEntryTestResultNegative, nil
+	case "positive":
+		return HomePregnancyTestEntryTestResultPositive, nil
+	case "indeterminate":
+		return HomePregnancyTestEntryTestResultIndeterminate, nil
+	}
+	var t HomePregnancyTestEntryTestResult
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HomePregnancyTestEntryTestResult) Ptr() *HomePregnancyTestEntryTestResult {
+	return &h
+}
+
+type HomeProgesteroneTestEntry struct {
+	Date       string                              `json:"date"`
+	TestResult HomeProgesteroneTestEntryTestResult `json:"test_result,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (h *HomeProgesteroneTestEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler HomeProgesteroneTestEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HomeProgesteroneTestEntry(value)
+	h._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HomeProgesteroneTestEntry) String() string {
+	if len(h._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(h._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+type HomeProgesteroneTestEntryTestResult string
+
+const (
+	HomeProgesteroneTestEntryTestResultNegative      HomeProgesteroneTestEntryTestResult = "negative"
+	HomeProgesteroneTestEntryTestResultPositive      HomeProgesteroneTestEntryTestResult = "positive"
+	HomeProgesteroneTestEntryTestResultIndeterminate HomeProgesteroneTestEntryTestResult = "indeterminate"
+)
+
+func NewHomeProgesteroneTestEntryTestResultFromString(s string) (HomeProgesteroneTestEntryTestResult, error) {
+	switch s {
+	case "negative":
+		return HomeProgesteroneTestEntryTestResultNegative, nil
+	case "positive":
+		return HomeProgesteroneTestEntryTestResultPositive, nil
+	case "indeterminate":
+		return HomeProgesteroneTestEntryTestResultIndeterminate, nil
+	}
+	var t HomeProgesteroneTestEntryTestResult
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HomeProgesteroneTestEntryTestResult) Ptr() *HomeProgesteroneTestEntryTestResult {
+	return &h
+}
+
 type HttpValidationError struct {
 	Detail []*ValidationError `json:"detail,omitempty"`
 
@@ -6667,6 +6993,35 @@ func (h *HttpValidationError) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", h)
+}
+
+type IntermenstrualBleedingEntry struct {
+	Date string `json:"date"`
+
+	_rawJSON json.RawMessage
+}
+
+func (i *IntermenstrualBleedingEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler IntermenstrualBleedingEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IntermenstrualBleedingEntry(value)
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IntermenstrualBleedingEntry) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
 }
 
 type Jpeg struct {
@@ -7260,6 +7615,139 @@ func (m *MealInDbBaseClientFacingSource) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
+type MenstrualCycle struct {
+	PeriodStart            string                         `json:"period_start"`
+	PeriodEnd              *string                        `json:"period_end,omitempty"`
+	CycleEnd               *string                        `json:"cycle_end,omitempty"`
+	IsPredicted            *bool                          `json:"is_predicted,omitempty"`
+	MenstrualFlow          []*MenstrualFlowEntry          `json:"menstrual_flow,omitempty"`
+	CervicalMucus          []*CervicalMucusEntry          `json:"cervical_mucus,omitempty"`
+	IntermenstrualBleeding []*IntermenstrualBleedingEntry `json:"intermenstrual_bleeding,omitempty"`
+	Contraceptive          []*ContraceptiveEntry          `json:"contraceptive,omitempty"`
+	DetectedDeviations     []*DetectedDeviationEntry      `json:"detected_deviations,omitempty"`
+	OvulationTest          []*OvulationTestEntry          `json:"ovulation_test,omitempty"`
+	HomePregnancyTest      []*HomePregnancyTestEntry      `json:"home_pregnancy_test,omitempty"`
+	HomeProgesteroneTest   []*HomeProgesteroneTestEntry   `json:"home_progesterone_test,omitempty"`
+	SexualActivity         []*SexualActivityEntry         `json:"sexual_activity,omitempty"`
+	BasalBodyTemperature   []*BasalBodyTemperatureEntry   `json:"basal_body_temperature,omitempty"`
+	Source                 *ClientFacingSource            `json:"source,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *MenstrualCycle) UnmarshalJSON(data []byte) error {
+	type unmarshaler MenstrualCycle
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MenstrualCycle(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MenstrualCycle) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type MenstrualCycleResponse struct {
+	MenstrualCycle []*MenstrualCycle `json:"menstrual_cycle,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *MenstrualCycleResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler MenstrualCycleResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MenstrualCycleResponse(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MenstrualCycleResponse) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type MenstrualFlowEntry struct {
+	Date string                 `json:"date"`
+	Flow MenstrualFlowEntryFlow `json:"flow,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (m *MenstrualFlowEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler MenstrualFlowEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MenstrualFlowEntry(value)
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MenstrualFlowEntry) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type MenstrualFlowEntryFlow string
+
+const (
+	MenstrualFlowEntryFlowUnspecified MenstrualFlowEntryFlow = "unspecified"
+	MenstrualFlowEntryFlowNone        MenstrualFlowEntryFlow = "none"
+	MenstrualFlowEntryFlowLight       MenstrualFlowEntryFlow = "light"
+	MenstrualFlowEntryFlowMedium      MenstrualFlowEntryFlow = "medium"
+	MenstrualFlowEntryFlowHeavy       MenstrualFlowEntryFlow = "heavy"
+)
+
+func NewMenstrualFlowEntryFlowFromString(s string) (MenstrualFlowEntryFlow, error) {
+	switch s {
+	case "unspecified":
+		return MenstrualFlowEntryFlowUnspecified, nil
+	case "none":
+		return MenstrualFlowEntryFlowNone, nil
+	case "light":
+		return MenstrualFlowEntryFlowLight, nil
+	case "medium":
+		return MenstrualFlowEntryFlowMedium, nil
+	case "heavy":
+		return MenstrualFlowEntryFlowHeavy, nil
+	}
+	var t MenstrualFlowEntryFlow
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m MenstrualFlowEntryFlow) Ptr() *MenstrualFlowEntryFlow {
+	return &m
+}
+
 type MetricsResult struct {
 	TeamId                          string                   `json:"team_id"`
 	NumberOfConnectedSources        *int                     `json:"number_of_connected_sources,omitempty"`
@@ -7523,6 +8011,64 @@ func NewOrderTopLevelStatusFromString(s string) (OrderTopLevelStatus, error) {
 }
 
 func (o OrderTopLevelStatus) Ptr() *OrderTopLevelStatus {
+	return &o
+}
+
+type OvulationTestEntry struct {
+	Date       string                       `json:"date"`
+	TestResult OvulationTestEntryTestResult `json:"test_result,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (o *OvulationTestEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler OvulationTestEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OvulationTestEntry(value)
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OvulationTestEntry) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+type OvulationTestEntryTestResult string
+
+const (
+	OvulationTestEntryTestResultNegative                OvulationTestEntryTestResult = "negative"
+	OvulationTestEntryTestResultLuteinizingHormoneSurge OvulationTestEntryTestResult = "luteinizing_hormone_surge"
+	OvulationTestEntryTestResultEstrogenSurge           OvulationTestEntryTestResult = "estrogen_surge"
+	OvulationTestEntryTestResultIndeterminate           OvulationTestEntryTestResult = "indeterminate"
+)
+
+func NewOvulationTestEntryTestResultFromString(s string) (OvulationTestEntryTestResult, error) {
+	switch s {
+	case "negative":
+		return OvulationTestEntryTestResultNegative, nil
+	case "luteinizing_hormone_surge":
+		return OvulationTestEntryTestResultLuteinizingHormoneSurge, nil
+	case "estrogen_surge":
+		return OvulationTestEntryTestResultEstrogenSurge, nil
+	case "indeterminate":
+		return OvulationTestEntryTestResultIndeterminate, nil
+	}
+	var t OvulationTestEntryTestResult
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OvulationTestEntryTestResult) Ptr() *OvulationTestEntryTestResult {
 	return &o
 }
 
@@ -8778,6 +9324,36 @@ func (s *ScopeRequirementsStr) UnmarshalJSON(data []byte) error {
 }
 
 func (s *ScopeRequirementsStr) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SexualActivityEntry struct {
+	Date           string `json:"date"`
+	ProtectionUsed bool   `json:"protection_used"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SexualActivityEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler SexualActivityEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SexualActivityEntry(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SexualActivityEntry) String() string {
 	if len(s._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value

@@ -12,6 +12,7 @@ import (
 	labtests "github.com/tryVital/vital-go/labtests"
 	link "github.com/tryVital/vital-go/link"
 	meal "github.com/tryVital/vital-go/meal"
+	menstrualcycle "github.com/tryVital/vital-go/menstrualcycle"
 	profile "github.com/tryVital/vital-go/profile"
 	providers "github.com/tryVital/vital-go/providers"
 	sleep "github.com/tryVital/vital-go/sleep"
@@ -28,22 +29,23 @@ type Client struct {
 	httpClient core.HTTPClient
 	header     http.Header
 
-	Link       *link.Client
-	Profile    *profile.Client
-	Devices    *devices.Client
-	Activity   *activity.Client
-	Workouts   *workouts.Client
-	Sleep      *sleep.Client
-	Body       *body.Client
-	Meal       *meal.Client
-	Vitals     *vitals.Client
-	User       *user.Client
-	Team       *team.Client
-	Providers  *providers.Client
-	Introspect *introspect.Client
-	LabTests   *labtests.Client
-	Testkit    *testkit.Client
-	Insurance  *insurance.Client
+	Link           *link.Client
+	Profile        *profile.Client
+	Devices        *devices.Client
+	Activity       *activity.Client
+	Workouts       *workouts.Client
+	Sleep          *sleep.Client
+	Body           *body.Client
+	Meal           *meal.Client
+	MenstrualCycle *menstrualcycle.Client
+	Vitals         *vitals.Client
+	User           *user.Client
+	Team           *team.Client
+	Providers      *providers.Client
+	Introspect     *introspect.Client
+	LabTests       *labtests.Client
+	Testkit        *testkit.Client
+	Insurance      *insurance.Client
 }
 
 func NewClient(opts ...core.ClientOption) *Client {
@@ -52,24 +54,25 @@ func NewClient(opts ...core.ClientOption) *Client {
 		opt(options)
 	}
 	return &Client{
-		baseURL:    options.BaseURL,
-		httpClient: options.HTTPClient,
-		header:     options.ToHeader(),
-		Link:       link.NewClient(opts...),
-		Profile:    profile.NewClient(opts...),
-		Devices:    devices.NewClient(opts...),
-		Activity:   activity.NewClient(opts...),
-		Workouts:   workouts.NewClient(opts...),
-		Sleep:      sleep.NewClient(opts...),
-		Body:       body.NewClient(opts...),
-		Meal:       meal.NewClient(opts...),
-		Vitals:     vitals.NewClient(opts...),
-		User:       user.NewClient(opts...),
-		Team:       team.NewClient(opts...),
-		Providers:  providers.NewClient(opts...),
-		Introspect: introspect.NewClient(opts...),
-		LabTests:   labtests.NewClient(opts...),
-		Testkit:    testkit.NewClient(opts...),
-		Insurance:  insurance.NewClient(opts...),
+		baseURL:        options.BaseURL,
+		httpClient:     options.HTTPClient,
+		header:         options.ToHeader(),
+		Link:           link.NewClient(opts...),
+		Profile:        profile.NewClient(opts...),
+		Devices:        devices.NewClient(opts...),
+		Activity:       activity.NewClient(opts...),
+		Workouts:       workouts.NewClient(opts...),
+		Sleep:          sleep.NewClient(opts...),
+		Body:           body.NewClient(opts...),
+		Meal:           meal.NewClient(opts...),
+		MenstrualCycle: menstrualcycle.NewClient(opts...),
+		Vitals:         vitals.NewClient(opts...),
+		User:           user.NewClient(opts...),
+		Team:           team.NewClient(opts...),
+		Providers:      providers.NewClient(opts...),
+		Introspect:     introspect.NewClient(opts...),
+		LabTests:       labtests.NewClient(opts...),
+		Testkit:        testkit.NewClient(opts...),
+		Insurance:      insurance.NewClient(opts...),
 	}
 }
