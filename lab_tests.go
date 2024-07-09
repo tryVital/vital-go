@@ -18,7 +18,6 @@ type AppointmentCancelRequest struct {
 type CreateLabTestRequest struct {
 	MarkerIds   []int                   `json:"marker_ids,omitempty"`
 	ProviderIds []string                `json:"provider_ids,omitempty"`
-	LabId       int                     `json:"lab_id"`
 	Name        string                  `json:"name"`
 	Method      LabTestCollectionMethod `json:"method,omitempty"`
 	Description string                  `json:"description"`
