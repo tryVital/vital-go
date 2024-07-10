@@ -2351,7 +2351,7 @@ type ClientFacingOrder struct {
 	// Your team id.
 	TeamId         string                                `json:"team_id"`
 	PatientDetails *ClientFacingPatientDetailsCompatible `json:"patient_details,omitempty"`
-	PatientAddress *PatientAddressCompatibleOutput       `json:"patient_address,omitempty"`
+	PatientAddress *PatientAddressCompatible             `json:"patient_address,omitempty"`
 	// The Vital Test associated with the order
 	LabTest  *ClientFacingLabTest      `json:"lab_test,omitempty"`
 	Details  *ClientFacingOrderDetails `json:"details,omitempty"`
@@ -8153,43 +8153,7 @@ func (p PasswordProviders) Ptr() *PasswordProviders {
 	return &p
 }
 
-type PatientAddressCompatibleInput struct {
-	ReceiverName *string `json:"receiver_name,omitempty"`
-	Street       string  `json:"street"`
-	StreetNumber *string `json:"street_number,omitempty"`
-	City         string  `json:"city"`
-	State        string  `json:"state"`
-	Zip          string  `json:"zip"`
-	Country      string  `json:"country"`
-	PhoneNumber  *string `json:"phone_number,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (p *PatientAddressCompatibleInput) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatientAddressCompatibleInput
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PatientAddressCompatibleInput(value)
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PatientAddressCompatibleInput) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PatientAddressCompatibleOutput struct {
+type PatientAddressCompatible struct {
 	ReceiverName *string `json:"receiver_name,omitempty"`
 	FirstLine    string  `json:"first_line"`
 	SecondLine   *string `json:"second_line,omitempty"`
@@ -8202,18 +8166,18 @@ type PatientAddressCompatibleOutput struct {
 	_rawJSON json.RawMessage
 }
 
-func (p *PatientAddressCompatibleOutput) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatientAddressCompatibleOutput
+func (p *PatientAddressCompatible) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatientAddressCompatible
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PatientAddressCompatibleOutput(value)
+	*p = PatientAddressCompatible(value)
 	p._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PatientAddressCompatibleOutput) String() string {
+func (p *PatientAddressCompatible) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -8913,13 +8877,14 @@ func (p *PscInfo) String() string {
 }
 
 type Question struct {
-	Id       int          `json:"id"`
-	Required bool         `json:"required"`
-	Code     string       `json:"code"`
-	Value    string       `json:"value"`
-	Type     QuestionType `json:"type,omitempty"`
-	Sequence int          `json:"sequence"`
-	Answers  []*Answer    `json:"answers,omitempty"`
+	Id         int          `json:"id"`
+	Required   bool         `json:"required"`
+	Code       string       `json:"code"`
+	Value      string       `json:"value"`
+	Type       QuestionType `json:"type,omitempty"`
+	Sequence   int          `json:"sequence"`
+	Answers    []*Answer    `json:"answers,omitempty"`
+	Constraint *string      `json:"constraint,omitempty"`
 
 	_rawJSON json.RawMessage
 }

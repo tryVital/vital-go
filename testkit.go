@@ -10,11 +10,11 @@ type CreateRegistrableTestkitOrderRequest struct {
 }
 
 type RegisterTestkitRequest struct {
-	UserId          string                         `json:"user_id"`
-	SampleId        string                         `json:"sample_id"`
-	PatientDetails  *PatientDetails                `json:"patient_details,omitempty"`
-	PatientAddress  *PatientAddressCompatibleInput `json:"patient_address,omitempty"`
-	Physician       *PhysicianCreateRequestBase    `json:"physician,omitempty"`
-	HealthInsurance *HealthInsuranceCreateRequest  `json:"health_insurance,omitempty"`
-	Consents        []*Consent                     `json:"consents,omitempty"`
+	UserId          string                        `json:"user_id"`
+	SampleId        string                        `json:"sample_id"`
+	PatientDetails  *PatientDetails               `json:"patient_details,omitempty"`
+	PatientAddress  *PatientAddressCompatible     `json:"patient_address,omitempty"`
+	Physician       *PhysicianCreateRequestBase   `json:"physician,omitempty"`
+	HealthInsurance *HealthInsuranceCreateRequest `json:"health_insurance,omitempty"`
+	Consents        []*Consent                    `json:"consents,omitempty"`
 }
