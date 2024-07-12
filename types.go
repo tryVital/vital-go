@@ -8048,6 +8048,7 @@ type OvulationTestEntryTestResult string
 
 const (
 	OvulationTestEntryTestResultNegative                OvulationTestEntryTestResult = "negative"
+	OvulationTestEntryTestResultPositive                OvulationTestEntryTestResult = "positive"
 	OvulationTestEntryTestResultLuteinizingHormoneSurge OvulationTestEntryTestResult = "luteinizing_hormone_surge"
 	OvulationTestEntryTestResultEstrogenSurge           OvulationTestEntryTestResult = "estrogen_surge"
 	OvulationTestEntryTestResultIndeterminate           OvulationTestEntryTestResult = "indeterminate"
@@ -8057,6 +8058,8 @@ func NewOvulationTestEntryTestResultFromString(s string) (OvulationTestEntryTest
 	switch s {
 	case "negative":
 		return OvulationTestEntryTestResultNegative, nil
+	case "positive":
+		return OvulationTestEntryTestResultPositive, nil
 	case "luteinizing_hormone_surge":
 		return OvulationTestEntryTestResultLuteinizingHormoneSurge, nil
 	case "estrogen_surge":
@@ -9302,7 +9305,7 @@ func (s *ScopeRequirementsStr) String() string {
 
 type SexualActivityEntry struct {
 	Date           string `json:"date"`
-	ProtectionUsed bool   `json:"protection_used"`
+	ProtectionUsed *bool  `json:"protection_used,omitempty"`
 
 	_rawJSON json.RawMessage
 }
