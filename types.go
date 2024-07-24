@@ -2814,6 +2814,9 @@ const (
 	ClientFacingResourceStressLevel              ClientFacingResource = "stress_level"
 	ClientFacingResourceMenstrualCycle           ClientFacingResource = "menstrual_cycle"
 	ClientFacingResourceElectrocardiogramVoltage ClientFacingResource = "electrocardiogram_voltage"
+	ClientFacingResourceWorkoutDuration          ClientFacingResource = "workout_duration"
+	ClientFacingResourceInsulinInjection         ClientFacingResource = "insulin_injection"
+	ClientFacingResourceCarbohydrates            ClientFacingResource = "carbohydrates"
 	ClientFacingResourceSleepStream              ClientFacingResource = "sleep_stream"
 )
 
@@ -2895,6 +2898,12 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceMenstrualCycle, nil
 	case "electrocardiogram_voltage":
 		return ClientFacingResourceElectrocardiogramVoltage, nil
+	case "workout_duration":
+		return ClientFacingResourceWorkoutDuration, nil
+	case "insulin_injection":
+		return ClientFacingResourceInsulinInjection, nil
+	case "carbohydrates":
+		return ClientFacingResourceCarbohydrates, nil
 	case "sleep_stream":
 		return ClientFacingResourceSleepStream, nil
 	}
@@ -9843,6 +9852,9 @@ const (
 	TimeseriesResourceWater                    TimeseriesResource = "water"
 	TimeseriesResourceCaffeine                 TimeseriesResource = "caffeine"
 	TimeseriesResourceMindfulnessMinutes       TimeseriesResource = "mindfulness_minutes"
+	TimeseriesResourceWorkoutDuration          TimeseriesResource = "workout_duration"
+	TimeseriesResourceInsulinInjection         TimeseriesResource = "insulin_injection"
+	TimeseriesResourceCarbohydrates            TimeseriesResource = "carbohydrates"
 )
 
 func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
@@ -9905,6 +9917,12 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceCaffeine, nil
 	case "mindfulness_minutes":
 		return TimeseriesResourceMindfulnessMinutes, nil
+	case "workout_duration":
+		return TimeseriesResourceWorkoutDuration, nil
+	case "insulin_injection":
+		return TimeseriesResourceInsulinInjection, nil
+	case "carbohydrates":
+		return TimeseriesResourceCarbohydrates, nil
 	}
 	var t TimeseriesResource
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
