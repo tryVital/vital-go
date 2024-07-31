@@ -470,6 +470,31 @@ func (b *BasalBodyTemperatureEntry) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type Billing string
+
+const (
+	BillingClientBill             Billing = "client_bill"
+	BillingCommercialInsurance    Billing = "commercial_insurance"
+	BillingPatientBillPassthrough Billing = "patient_bill_passthrough"
+)
+
+func NewBillingFromString(s string) (Billing, error) {
+	switch s {
+	case "client_bill":
+		return BillingClientBill, nil
+	case "commercial_insurance":
+		return BillingCommercialInsurance, nil
+	case "patient_bill_passthrough":
+		return BillingPatientBillPassthrough, nil
+	}
+	var t Billing
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b Billing) Ptr() *Billing {
+	return &b
+}
+
 // Represent the schema for an individual biomarker result.
 type BiomarkerResult struct {
 	Name            string     `json:"name"`
@@ -2163,6 +2188,31 @@ func (c *ClientFacingLabTest) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingLabs string
+
+const (
+	ClientFacingLabsQuest        ClientFacingLabs = "quest"
+	ClientFacingLabsLabcorp      ClientFacingLabs = "labcorp"
+	ClientFacingLabsBioreference ClientFacingLabs = "bioreference"
+)
+
+func NewClientFacingLabsFromString(s string) (ClientFacingLabs, error) {
+	switch s {
+	case "quest":
+		return ClientFacingLabsQuest, nil
+	case "labcorp":
+		return ClientFacingLabsLabcorp, nil
+	case "bioreference":
+		return ClientFacingLabsBioreference, nil
+	}
+	var t ClientFacingLabs
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingLabs) Ptr() *ClientFacingLabs {
+	return &c
+}
+
 type ClientFacingLoinc struct {
 	Id   int     `json:"id"`
 	Name string  `json:"name"`
@@ -2571,6 +2621,8 @@ type ClientFacingPayorSearchResponse struct {
 	Code string `json:"code"`
 	// Insurance name returned for the insurance information.
 	Name string `json:"name"`
+	// Insurance name aliases returned for the insurance information.
+	Aliases []string `json:"aliases,omitempty"`
 	// Insurance business address returned for the insurance information.
 	OrgAddress *Address `json:"org_address,omitempty"`
 
@@ -8802,6 +8854,7 @@ func (p Providers) Ptr() *Providers {
 
 type PscAreaInfo struct {
 	PatientServiceCenters *PscAreaInfoDetails `json:"patient_service_centers,omitempty"`
+	SupportedBillTypes    []Billing           `json:"supported_bill_types,omitempty"`
 
 	_rawJSON json.RawMessage
 }

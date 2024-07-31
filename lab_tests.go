@@ -45,7 +45,7 @@ type LabTestsGetAreaInfoRequest struct {
 	// Radius in which to search in miles
 	Radius *AllowedRadius `json:"-"`
 	// Lab to check for PSCs
-	Lab *Labs `json:"-"`
+	Lab *ClientFacingLabs `json:"-"`
 }
 
 type LabTestsGetLabelsPdfRequest struct {
