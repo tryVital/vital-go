@@ -2869,6 +2869,7 @@ const (
 	ClientFacingResourceWorkoutDuration          ClientFacingResource = "workout_duration"
 	ClientFacingResourceInsulinInjection         ClientFacingResource = "insulin_injection"
 	ClientFacingResourceCarbohydrates            ClientFacingResource = "carbohydrates"
+	ClientFacingResourceNote                     ClientFacingResource = "note"
 	ClientFacingResourceSleepStream              ClientFacingResource = "sleep_stream"
 )
 
@@ -2956,6 +2957,8 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceInsulinInjection, nil
 	case "carbohydrates":
 		return ClientFacingResourceCarbohydrates, nil
+	case "note":
+		return ClientFacingResourceNote, nil
 	case "sleep_stream":
 		return ClientFacingResourceSleepStream, nil
 	}
@@ -9908,6 +9911,7 @@ const (
 	TimeseriesResourceWorkoutDuration          TimeseriesResource = "workout_duration"
 	TimeseriesResourceInsulinInjection         TimeseriesResource = "insulin_injection"
 	TimeseriesResourceCarbohydrates            TimeseriesResource = "carbohydrates"
+	TimeseriesResourceNote                     TimeseriesResource = "note"
 )
 
 func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
@@ -9976,6 +9980,8 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceInsulinInjection, nil
 	case "carbohydrates":
 		return TimeseriesResourceCarbohydrates, nil
+	case "note":
+		return TimeseriesResourceNote, nil
 	}
 	var t TimeseriesResource
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
