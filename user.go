@@ -11,6 +11,15 @@ type UserCreateBody struct {
 	IngestionEnd      *string `json:"ingestion_end,omitempty"`
 }
 
+type CreateInsuranceRequest struct {
+	PayorCode    string                                                  `json:"payor_code"`
+	MemberId     string                                                  `json:"member_id"`
+	GroupId      *string                                                 `json:"group_id,omitempty"`
+	Relationship ResponsibleRelationship                                 `json:"relationship,omitempty"`
+	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty"`
+	Guarantor    *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"guarantor,omitempty"`
+}
+
 type UserGetAllRequest struct {
 	Offset *int `json:"-"`
 	Limit  *int `json:"-"`
@@ -32,4 +41,14 @@ type UserUndoDeleteRequest struct {
 	UserId *string `json:"-"`
 	// Client User ID to undo deletion. Mutually exclusive with `user_id`.
 	ClientUserId *string `json:"-"`
+}
+
+type UserInfoCreateRequest struct {
+	FirstName   string   `json:"first_name"`
+	LastName    string   `json:"last_name"`
+	Email       string   `json:"email"`
+	PhoneNumber string   `json:"phone_number"`
+	Gender      string   `json:"gender"`
+	Dob         string   `json:"dob"`
+	Address     *Address `json:"address,omitempty"`
 }

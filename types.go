@@ -2079,6 +2079,41 @@ func (c *ClientFacingIggTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingInsurance struct {
+	MemberId     string                  `json:"member_id"`
+	PayorCode    string                  `json:"payor_code"`
+	Relationship ResponsibleRelationship `json:"relationship,omitempty"`
+	Insured      *PersonDetailsOutput    `json:"insured,omitempty"`
+	Company      *CompanyDetails         `json:"company,omitempty"`
+	GroupId      *string                 `json:"group_id,omitempty"`
+	Guarantor    *PersonDetailsOutput    `json:"guarantor,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingInsurance) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingInsurance
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingInsurance(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingInsurance) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingLab struct {
 	Id                int                       `json:"id"`
 	Slug              string                    `json:"slug"`
@@ -2421,6 +2456,8 @@ type ClientFacingOrder struct {
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty"`
 	ActivateBy      *string          `json:"activate_by,omitempty"`
 	Passthrough     *string          `json:"passthrough,omitempty"`
+	BillingType     *Billing         `json:"billing_type,omitempty"`
+	IcdCodes        []string         `json:"icd_codes,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4450,6 +4487,36 @@ func (c *ClientWorkoutResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientWorkoutResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CompanyDetails struct {
+	Name    string   `json:"name"`
+	Address *Address `json:"address,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *CompanyDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler CompanyDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CompanyDetails(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CompanyDetails) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -6652,14 +6719,14 @@ type HealthInsuranceCreateRequest struct {
 	// An image of the back of the patient insurance card.
 	BackImage *HealthInsuranceCreateRequestBackImage `json:"back_image,omitempty"`
 	// An image of the patient signature for health insurance billing.
-	PatientSignatureImage   *HealthInsuranceCreateRequestPatientSignatureImage `json:"patient_signature_image,omitempty"`
-	Subjective              *string                                            `json:"subjective,omitempty"`
-	AssessmentPlan          *string                                            `json:"assessment_plan,omitempty"`
-	PayorCode               *string                                            `json:"payor_code,omitempty"`
-	InsuranceId             *string                                            `json:"insurance_id,omitempty"`
-	ResponsibleRelationship *ResponsibleRelationship                           `json:"responsible_relationship,omitempty"`
-	ResponsibleDetails      *PersonDetails                                     `json:"responsible_details,omitempty"`
-	DiagnosisCodes          []string                                           `json:"diagnosis_codes,omitempty"`
+	PatientSignatureImage   *HealthInsuranceCreateRequestPatientSignatureImage            `json:"patient_signature_image,omitempty"`
+	Subjective              *string                                                       `json:"subjective,omitempty"`
+	AssessmentPlan          *string                                                       `json:"assessment_plan,omitempty"`
+	PayorCode               *string                                                       `json:"payor_code,omitempty"`
+	InsuranceId             *string                                                       `json:"insurance_id,omitempty"`
+	ResponsibleRelationship *ResponsibleRelationship                                      `json:"responsible_relationship,omitempty"`
+	ResponsibleDetails      *VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails `json:"responsible_details,omitempty"`
+	DiagnosisCodes          []string                                                      `json:"diagnosis_codes,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8292,28 +8359,30 @@ func (p *PatientDetails) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-type PersonDetails struct {
+type PersonDetailsOutput struct {
 	FirstName   string   `json:"first_name"`
 	LastName    string   `json:"last_name"`
+	Gender      Gender   `json:"gender,omitempty"`
 	Address     *Address `json:"address,omitempty"`
+	Dob         string   `json:"dob"`
+	Email       string   `json:"email"`
 	PhoneNumber string   `json:"phone_number"`
-	PhoneType   *string  `json:"phone_type,omitempty"`
 
 	_rawJSON json.RawMessage
 }
 
-func (p *PersonDetails) UnmarshalJSON(data []byte) error {
-	type unmarshaler PersonDetails
+func (p *PersonDetailsOutput) UnmarshalJSON(data []byte) error {
+	type unmarshaler PersonDetailsOutput
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PersonDetails(value)
+	*p = PersonDetailsOutput(value)
 	p._rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (p *PersonDetails) String() string {
+func (p *PersonDetailsOutput) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
@@ -9263,9 +9332,9 @@ func (r *ResourceAvailability) String() string {
 type ResponsibleRelationship string
 
 const (
-	ResponsibleRelationshipSelf              ResponsibleRelationship = "Self"
-	ResponsibleRelationshipSpouse            ResponsibleRelationship = "Spouse"
-	ResponsibleRelationshipOtherRelationship ResponsibleRelationship = "Other Relationship"
+	ResponsibleRelationshipSelf   ResponsibleRelationship = "Self"
+	ResponsibleRelationshipSpouse ResponsibleRelationship = "Spouse"
+	ResponsibleRelationshipOther  ResponsibleRelationship = "Other"
 )
 
 func NewResponsibleRelationshipFromString(s string) (ResponsibleRelationship, error) {
@@ -9274,8 +9343,8 @@ func NewResponsibleRelationshipFromString(s string) (ResponsibleRelationship, er
 		return ResponsibleRelationshipSelf, nil
 	case "Spouse":
 		return ResponsibleRelationshipSpouse, nil
-	case "Other Relationship":
-		return ResponsibleRelationshipOtherRelationship, nil
+	case "Other":
+		return ResponsibleRelationshipOther, nil
 	}
 	var t ResponsibleRelationship
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -10056,6 +10125,41 @@ func (u *UserHistoricalPullsResponse) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+type UserInfo struct {
+	FirstName   string   `json:"first_name"`
+	LastName    string   `json:"last_name"`
+	Email       string   `json:"email"`
+	PhoneNumber string   `json:"phone_number"`
+	Gender      string   `json:"gender"`
+	Dob         string   `json:"dob"`
+	Address     *Address `json:"address,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (u *UserInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserInfo(value)
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserInfo) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
 type UserRefreshErrorResponse struct {
 	// Whether operation was successful or not
 	Success bool `json:"success"`
@@ -10302,6 +10406,74 @@ func (v *ValidationErrorLocItem) Accept(visitor ValidationErrorLocItemVisitor) e
 	case "integer":
 		return visitor.VisitInteger(v.Integer)
 	}
+}
+
+type VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails struct {
+	FirstName   string   `json:"first_name"`
+	LastName    string   `json:"last_name"`
+	Address     *Address `json:"address,omitempty"`
+	PhoneNumber string   `json:"phone_number"`
+	PhoneType   *string  `json:"phone_type,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails struct {
+	FirstName   string   `json:"first_name"`
+	LastName    string   `json:"last_name"`
+	Gender      Gender   `json:"gender,omitempty"`
+	Address     *Address `json:"address,omitempty"`
+	Dob         string   `json:"dob"`
+	Email       string   `json:"email"`
+	PhoneNumber string   `json:"phone_number"`
+
+	_rawJSON json.RawMessage
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails(value)
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 type VitalTokenCreatedResponse struct {
