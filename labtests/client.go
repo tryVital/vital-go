@@ -1228,11 +1228,26 @@ func (c *Client) GetOrders(ctx context.Context, request *vitalgo.LabTestsGetOrde
 	endpointURL := baseURL + "/" + "v3/orders"
 
 	queryParams := make(url.Values)
+	if request.SearchInput != nil {
+		queryParams.Add("search_input", fmt.Sprintf("%v", *request.SearchInput))
+	}
 	if request.StartDate != nil {
 		queryParams.Add("start_date", fmt.Sprintf("%v", request.StartDate.Format(time.RFC3339)))
 	}
 	if request.EndDate != nil {
 		queryParams.Add("end_date", fmt.Sprintf("%v", request.EndDate.Format(time.RFC3339)))
+	}
+	if request.UpdatedStartDate != nil {
+		queryParams.Add("updated_start_date", fmt.Sprintf("%v", request.UpdatedStartDate.Format(time.RFC3339)))
+	}
+	if request.UpdatedEndDate != nil {
+		queryParams.Add("updated_end_date", fmt.Sprintf("%v", request.UpdatedEndDate.Format(time.RFC3339)))
+	}
+	if request.OrderKey != nil {
+		queryParams.Add("order_key", fmt.Sprintf("%v", *request.OrderKey))
+	}
+	if request.OrderDirection != nil {
+		queryParams.Add("order_direction", fmt.Sprintf("%v", *request.OrderDirection))
 	}
 	if request.UserId != nil {
 		queryParams.Add("user_id", fmt.Sprintf("%v", *request.UserId))

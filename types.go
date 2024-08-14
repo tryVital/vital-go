@@ -1507,6 +1507,47 @@ func (c *ClientFacingCaloriesBasalTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingCarbohydratesSample struct {
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
+	// Measured in grams.
+	Unit string `json:"unit"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingCarbohydratesSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingCarbohydratesSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingCarbohydratesSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingCarbohydratesSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingCholesterolTimeseries struct {
 	Id             *int    `json:"id,omitempty"`
 	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
@@ -1858,6 +1899,134 @@ func (c *ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample)
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingGroupedTimeseriesResponseClientFacingCarbohydratesSample struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups     map[string][]*ClientFacingTimeseriesGroupClientFacingCarbohydratesSample `json:"groups,omitempty"`
+	Next       *string                                                                  `json:"next,omitempty"`
+	NextCursor *string                                                                  `json:"next_cursor,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingCarbohydratesSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingGroupedTimeseriesResponseClientFacingCarbohydratesSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingGroupedTimeseriesResponseClientFacingCarbohydratesSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingCarbohydratesSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingGroupedTimeseriesResponseClientFacingInsulinInjectionSample struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups     map[string][]*ClientFacingTimeseriesGroupClientFacingInsulinInjectionSample `json:"groups,omitempty"`
+	Next       *string                                                                     `json:"next,omitempty"`
+	NextCursor *string                                                                     `json:"next_cursor,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingInsulinInjectionSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingGroupedTimeseriesResponseClientFacingInsulinInjectionSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingGroupedTimeseriesResponseClientFacingInsulinInjectionSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingInsulinInjectionSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingGroupedTimeseriesResponseClientFacingNoteSample struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups     map[string][]*ClientFacingTimeseriesGroupClientFacingNoteSample `json:"groups,omitempty"`
+	Next       *string                                                         `json:"next,omitempty"`
+	NextCursor *string                                                         `json:"next_cursor,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingNoteSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingGroupedTimeseriesResponseClientFacingNoteSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingGroupedTimeseriesResponseClientFacingNoteSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingNoteSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingGroupedTimeseriesResponseClientFacingWorkoutDurationSample struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups     map[string][]*ClientFacingTimeseriesGroupClientFacingWorkoutDurationSample `json:"groups,omitempty"`
+	Next       *string                                                                    `json:"next,omitempty"`
+	NextCursor *string                                                                    `json:"next_cursor,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingWorkoutDurationSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingGroupedTimeseriesResponseClientFacingWorkoutDurationSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingGroupedTimeseriesResponseClientFacingWorkoutDurationSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingGroupedTimeseriesResponseClientFacingWorkoutDurationSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingHeartRate struct {
 	AvgBpm     *float64 `json:"avg_bpm,omitempty"`
 	MinBpm     *float64 `json:"min_bpm,omitempty"`
@@ -2077,6 +2246,87 @@ func (c *ClientFacingIggTimeseries) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingInsulinInjectionSample struct {
+	Id             *int `json:"id,omitempty"`
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
+	// Insulin type: rapid vs long acting
+	Type ClientFacingInsulinInjectionSampleType `json:"type,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value"`
+	unit  string
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingInsulinInjectionSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingInsulinInjectionSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingInsulinInjectionSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingInsulinInjectionSample(value)
+	c.unit = "unit"
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingInsulinInjectionSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingInsulinInjectionSample
+	var marshaler = struct {
+		embed
+		Unit string `json:"unit"`
+	}{
+		embed: embed(*c),
+		Unit:  "unit",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingInsulinInjectionSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Insulin type: rapid vs long acting
+type ClientFacingInsulinInjectionSampleType string
+
+const (
+	ClientFacingInsulinInjectionSampleTypeRapidActing ClientFacingInsulinInjectionSampleType = "rapid_acting"
+	ClientFacingInsulinInjectionSampleTypeLongActing  ClientFacingInsulinInjectionSampleType = "long_acting"
+)
+
+func NewClientFacingInsulinInjectionSampleTypeFromString(s string) (ClientFacingInsulinInjectionSampleType, error) {
+	switch s {
+	case "rapid_acting":
+		return ClientFacingInsulinInjectionSampleTypeRapidActing, nil
+	case "long_acting":
+		return ClientFacingInsulinInjectionSampleTypeLongActing, nil
+	}
+	var t ClientFacingInsulinInjectionSampleType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingInsulinInjectionSampleType) Ptr() *ClientFacingInsulinInjectionSampleType {
+	return &c
 }
 
 type ClientFacingInsurance struct {
@@ -2426,6 +2676,76 @@ func (c *ClientFacingMindfulnessMinutesTimeseries) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingNoteSample struct {
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
+	// User notes as text.
+	Unit string `json:"unit"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end"`
+	// The recorded value for the interval.
+	Value string                           `json:"value"`
+	Tags  []ClientFacingNoteSampleTagsItem `json:"tags,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingNoteSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingNoteSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingNoteSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingNoteSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingNoteSampleTagsItem string
+
+const (
+	ClientFacingNoteSampleTagsItemFood             ClientFacingNoteSampleTagsItem = "food"
+	ClientFacingNoteSampleTagsItemExercise         ClientFacingNoteSampleTagsItem = "exercise"
+	ClientFacingNoteSampleTagsItemInsulinInjection ClientFacingNoteSampleTagsItem = "insulin_injection"
+	ClientFacingNoteSampleTagsItemUnspecified      ClientFacingNoteSampleTagsItem = "unspecified"
+)
+
+func NewClientFacingNoteSampleTagsItemFromString(s string) (ClientFacingNoteSampleTagsItem, error) {
+	switch s {
+	case "food":
+		return ClientFacingNoteSampleTagsItemFood, nil
+	case "exercise":
+		return ClientFacingNoteSampleTagsItemExercise, nil
+	case "insulin_injection":
+		return ClientFacingNoteSampleTagsItemInsulinInjection, nil
+	case "unspecified":
+		return ClientFacingNoteSampleTagsItemUnspecified, nil
+	}
+	var t ClientFacingNoteSampleTagsItem
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingNoteSampleTagsItem) Ptr() *ClientFacingNoteSampleTagsItem {
+	return &c
 }
 
 type ClientFacingOrder struct {
@@ -4130,6 +4450,126 @@ func (c *ClientFacingTimeseriesGroupClientFacingBodyTemperatureSample) String() 
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingTimeseriesGroupClientFacingCarbohydratesSample struct {
+	Source *ClientFacingSource                `json:"source,omitempty"`
+	Data   []*ClientFacingCarbohydratesSample `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingCarbohydratesSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingTimeseriesGroupClientFacingCarbohydratesSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingTimeseriesGroupClientFacingCarbohydratesSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingCarbohydratesSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingTimeseriesGroupClientFacingInsulinInjectionSample struct {
+	Source *ClientFacingSource                   `json:"source,omitempty"`
+	Data   []*ClientFacingInsulinInjectionSample `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingInsulinInjectionSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingTimeseriesGroupClientFacingInsulinInjectionSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingTimeseriesGroupClientFacingInsulinInjectionSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingInsulinInjectionSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingTimeseriesGroupClientFacingNoteSample struct {
+	Source *ClientFacingSource       `json:"source,omitempty"`
+	Data   []*ClientFacingNoteSample `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingNoteSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingTimeseriesGroupClientFacingNoteSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingTimeseriesGroupClientFacingNoteSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingNoteSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingTimeseriesGroupClientFacingWorkoutDurationSample struct {
+	Source *ClientFacingSource                  `json:"source,omitempty"`
+	Data   []*ClientFacingWorkoutDurationSample `json:"data,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingWorkoutDurationSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingTimeseriesGroupClientFacingWorkoutDurationSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingTimeseriesGroupClientFacingWorkoutDurationSample(value)
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingTimeseriesGroupClientFacingWorkoutDurationSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingUser struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
 	UserId string `json:"user_id"`
@@ -4406,6 +4846,89 @@ func (c *ClientFacingWorkout) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWorkoutDurationSample struct {
+	Id             *int    `json:"id,omitempty"`
+	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
+	Type           *string `json:"type,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end"`
+	// The recorded value for the interval.
+	Value     float64                                     `json:"value"`
+	Intensity *ClientFacingWorkoutDurationSampleIntensity `json:"intensity,omitempty"`
+	unit      string
+
+	_rawJSON json.RawMessage
+}
+
+func (c *ClientFacingWorkoutDurationSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingWorkoutDurationSample) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingWorkoutDurationSample
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutDurationSample(value)
+	c.unit = "min"
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutDurationSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWorkoutDurationSample
+	var marshaler = struct {
+		embed
+		Unit string `json:"unit"`
+	}{
+		embed: embed(*c),
+		Unit:  "min",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWorkoutDurationSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWorkoutDurationSampleIntensity string
+
+const (
+	ClientFacingWorkoutDurationSampleIntensityLow    ClientFacingWorkoutDurationSampleIntensity = "low"
+	ClientFacingWorkoutDurationSampleIntensityMedium ClientFacingWorkoutDurationSampleIntensity = "medium"
+	ClientFacingWorkoutDurationSampleIntensityHigh   ClientFacingWorkoutDurationSampleIntensity = "high"
+)
+
+func NewClientFacingWorkoutDurationSampleIntensityFromString(s string) (ClientFacingWorkoutDurationSampleIntensity, error) {
+	switch s {
+	case "low":
+		return ClientFacingWorkoutDurationSampleIntensityLow, nil
+	case "medium":
+		return ClientFacingWorkoutDurationSampleIntensityMedium, nil
+	case "high":
+		return ClientFacingWorkoutDurationSampleIntensityHigh, nil
+	}
+	var t ClientFacingWorkoutDurationSampleIntensity
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingWorkoutDurationSampleIntensity) Ptr() *ClientFacingWorkoutDurationSampleIntensity {
+	return &c
 }
 
 type ClientSleepResponse struct {

@@ -182,6 +182,19 @@ type VitalsCaloriesBasalGroupedRequest struct {
 	EndDate *string `json:"-"`
 }
 
+type VitalsCarbohydratesGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-"`
+	// Provider oura/strava etc
+	Provider *string `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-"`
+}
+
 type VitalsCholesterolRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-"`
@@ -438,6 +451,19 @@ type VitalsIggGroupedRequest struct {
 	EndDate *string `json:"-"`
 }
 
+type VitalsInsulinInjectionGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-"`
+	// Provider oura/strava etc
+	Provider *string `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-"`
+}
+
 type VitalsMindfulnessMinutesRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-"`
@@ -448,6 +474,19 @@ type VitalsMindfulnessMinutesRequest struct {
 }
 
 type VitalsMindfulnessMinutesGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-"`
+	// Provider oura/strava etc
+	Provider *string `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-"`
+}
+
+type VitalsNoteGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -558,6 +597,19 @@ type VitalsWaterRequest struct {
 }
 
 type VitalsWaterGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-"`
+	// Provider oura/strava etc
+	Provider *string `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-"`
+}
+
+type VitalsWorkoutDurationGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.

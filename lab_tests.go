@@ -3,6 +3,7 @@
 package api
 
 import (
+	fmt "fmt"
 	time "time"
 )
 
@@ -77,10 +78,18 @@ type LabTestsGetOrderPscInfoRequest struct {
 }
 
 type LabTestsGetOrdersRequest struct {
+	// Search by order id, user id, patient name, shipping dob, or shipping recipient name.
+	SearchInput *string `json:"-"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
 	StartDate *time.Time `json:"-"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
 	EndDate *time.Time `json:"-"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	UpdatedStartDate *time.Time `json:"-"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	UpdatedEndDate *time.Time                              `json:"-"`
+	OrderKey       *LabTestsGetOrdersRequestOrderKey       `json:"-"`
+	OrderDirection *LabTestsGetOrdersRequestOrderDirection `json:"-"`
 	// Filter by user ID.
 	UserId *string `json:"-"`
 	// Filter by patient name.
@@ -115,4 +124,51 @@ type AppointmentRescheduleRequest struct {
 type LabTestsSimulateOrderProcessRequest struct {
 	FinalStatus *OrderStatus `json:"-"`
 	Delay       *int         `json:"-"`
+}
+
+type LabTestsGetOrdersRequestOrderDirection string
+
+const (
+	LabTestsGetOrdersRequestOrderDirectionAsc  LabTestsGetOrdersRequestOrderDirection = "asc"
+	LabTestsGetOrdersRequestOrderDirectionDesc LabTestsGetOrdersRequestOrderDirection = "desc"
+)
+
+func NewLabTestsGetOrdersRequestOrderDirectionFromString(s string) (LabTestsGetOrdersRequestOrderDirection, error) {
+	switch s {
+	case "asc":
+		return LabTestsGetOrdersRequestOrderDirectionAsc, nil
+	case "desc":
+		return LabTestsGetOrdersRequestOrderDirectionDesc, nil
+	}
+	var t LabTestsGetOrdersRequestOrderDirection
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetOrdersRequestOrderDirection) Ptr() *LabTestsGetOrdersRequestOrderDirection {
+	return &l
+}
+
+type LabTestsGetOrdersRequestOrderKey string
+
+const (
+	LabTestsGetOrdersRequestOrderKeyCreatedAt   LabTestsGetOrdersRequestOrderKey = "created_at"
+	LabTestsGetOrdersRequestOrderKeyPatientName LabTestsGetOrdersRequestOrderKey = "patient_name"
+	LabTestsGetOrdersRequestOrderKeyLastStatus  LabTestsGetOrdersRequestOrderKey = "last_status"
+)
+
+func NewLabTestsGetOrdersRequestOrderKeyFromString(s string) (LabTestsGetOrdersRequestOrderKey, error) {
+	switch s {
+	case "created_at":
+		return LabTestsGetOrdersRequestOrderKeyCreatedAt, nil
+	case "patient_name":
+		return LabTestsGetOrdersRequestOrderKeyPatientName, nil
+	case "last_status":
+		return LabTestsGetOrdersRequestOrderKeyLastStatus, nil
+	}
+	var t LabTestsGetOrdersRequestOrderKey
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetOrdersRequestOrderKey) Ptr() *LabTestsGetOrdersRequestOrderKey {
+	return &l
 }
