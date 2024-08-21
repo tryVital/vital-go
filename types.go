@@ -9450,6 +9450,7 @@ func (p Providers) Ptr() *Providers {
 type PscAreaInfo struct {
 	PatientServiceCenters *PscAreaInfoDetails `json:"patient_service_centers,omitempty"`
 	SupportedBillTypes    []Billing           `json:"supported_bill_types,omitempty"`
+	LabId                 int                 `json:"lab_id"`
 
 	_rawJSON json.RawMessage
 }
