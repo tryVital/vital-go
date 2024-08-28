@@ -3465,17 +3465,18 @@ type ClientFacingSleep struct {
 	// Total amount of REM sleep registered during the sleep period, minutes::seconds
 	Rem int `json:"rem"`
 	// Total amount of deep (N3) sleep registered during the sleep period::seconds
-	Deep             int      `json:"deep"`
-	Score            *int     `json:"score,omitempty"`
-	HrLowest         *int     `json:"hr_lowest,omitempty"`
-	HrAverage        *int     `json:"hr_average,omitempty"`
-	Efficiency       *float64 `json:"efficiency,omitempty"`
-	Latency          *int     `json:"latency,omitempty"`
-	TemperatureDelta *float64 `json:"temperature_delta,omitempty"`
-	SkinTemperature  *float64 `json:"skin_temperature,omitempty"`
-	HrDip            *float64 `json:"hr_dip,omitempty"`
-	AverageHrv       *float64 `json:"average_hrv,omitempty"`
-	RespiratoryRate  *float64 `json:"respiratory_rate,omitempty"`
+	Deep             int                `json:"deep"`
+	Score            *int               `json:"score,omitempty"`
+	HrLowest         *int               `json:"hr_lowest,omitempty"`
+	HrAverage        *int               `json:"hr_average,omitempty"`
+	Efficiency       *float64           `json:"efficiency,omitempty"`
+	Latency          *int               `json:"latency,omitempty"`
+	TemperatureDelta *float64           `json:"temperature_delta,omitempty"`
+	SkinTemperature  *float64           `json:"skin_temperature,omitempty"`
+	HrDip            *float64           `json:"hr_dip,omitempty"`
+	State            *SleepSummaryState `json:"state,omitempty"`
+	AverageHrv       *float64           `json:"average_hrv,omitempty"`
+	RespiratoryRate  *float64           `json:"respiratory_rate,omitempty"`
 	// Source the data has come from.
 	Source      *ClientFacingSource      `json:"source,omitempty"`
 	SleepStream *ClientFacingSleepStream `json:"sleep_stream,omitempty"`
@@ -10184,6 +10185,28 @@ func (s *SingleUserResourceResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
+}
+
+type SleepSummaryState string
+
+const (
+	SleepSummaryStateTentative SleepSummaryState = "tentative"
+	SleepSummaryStateConfirmed SleepSummaryState = "confirmed"
+)
+
+func NewSleepSummaryStateFromString(s string) (SleepSummaryState, error) {
+	switch s {
+	case "tentative":
+		return SleepSummaryStateTentative, nil
+	case "confirmed":
+		return SleepSummaryStateConfirmed, nil
+	}
+	var t SleepSummaryState
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SleepSummaryState) Ptr() *SleepSummaryState {
+	return &s
 }
 
 type SleepV2InDb struct {
