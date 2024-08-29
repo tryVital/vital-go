@@ -3691,6 +3691,8 @@ type ClientFacingStream struct {
 	Power *ClientFacingStreamPower `json:"power,omitempty"`
 	// Resistance on bike
 	Resistance *ClientFacingStreamResistance `json:"resistance,omitempty"`
+	// Temperature stream measured by device in Celsius
+	Temperature *ClientFacingStreamTemperature `json:"temperature,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -4172,6 +4174,64 @@ type ClientFacingStreamResistanceVisitor interface {
 }
 
 func (c *ClientFacingStreamResistance) Accept(visitor ClientFacingStreamResistanceVisitor) error {
+	switch c.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	case "doubleList":
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+}
+
+// Temperature stream measured by device in Celsius
+type ClientFacingStreamTemperature struct {
+	typeName           string
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamTemperatureFromDoubleOptionalList(value []*float64) *ClientFacingStreamTemperature {
+	return &ClientFacingStreamTemperature{typeName: "doubleOptionalList", DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamTemperatureFromDoubleList(value []float64) *ClientFacingStreamTemperature {
+	return &ClientFacingStreamTemperature{typeName: "doubleList", DoubleList: value}
+}
+
+func (c *ClientFacingStreamTemperature) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.typeName = "doubleOptionalList"
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.typeName = "doubleList"
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamTemperature) MarshalJSON() ([]byte, error) {
+	switch c.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", c.typeName, c)
+	case "doubleOptionalList":
+		return json.Marshal(c.DoubleOptionalList)
+	case "doubleList":
+		return json.Marshal(c.DoubleList)
+	}
+}
+
+type ClientFacingStreamTemperatureVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamTemperature) Accept(visitor ClientFacingStreamTemperatureVisitor) error {
 	switch c.typeName {
 	default:
 		return fmt.Errorf("invalid type %s in %T", c.typeName, c)
