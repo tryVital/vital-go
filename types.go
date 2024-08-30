@@ -9,6 +9,105 @@ import (
 	time "time"
 )
 
+type ActivitySelector struct {
+	Activity ActivitySelectorActivity `json:"activity,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *ActivitySelector) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivitySelector
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivitySelector(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivitySelector) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ActivitySelectorActivity string
+
+const (
+	ActivitySelectorActivityDate                     ActivitySelectorActivity = "date"
+	ActivitySelectorActivityCaloriesTotal            ActivitySelectorActivity = "calories_total"
+	ActivitySelectorActivityCaloriesActive           ActivitySelectorActivity = "calories_active"
+	ActivitySelectorActivitySteps                    ActivitySelectorActivity = "steps"
+	ActivitySelectorActivityDistanceMeter            ActivitySelectorActivity = "distance_meter"
+	ActivitySelectorActivityFloorsClimbed            ActivitySelectorActivity = "floors_climbed"
+	ActivitySelectorActivityDurationActiveSecond     ActivitySelectorActivity = "duration_active_second"
+	ActivitySelectorActivityIntensitySedentarySecond ActivitySelectorActivity = "intensity_sedentary_second"
+	ActivitySelectorActivityIntensityLowSecond       ActivitySelectorActivity = "intensity_low_second"
+	ActivitySelectorActivityIntensityMediumSecond    ActivitySelectorActivity = "intensity_medium_second"
+	ActivitySelectorActivityIntensityHighSecond      ActivitySelectorActivity = "intensity_high_second"
+	ActivitySelectorActivityHeartRateMean            ActivitySelectorActivity = "heart_rate_mean"
+	ActivitySelectorActivityHeartRateMin             ActivitySelectorActivity = "heart_rate_min"
+	ActivitySelectorActivityHeartRateMax             ActivitySelectorActivity = "heart_rate_max"
+	ActivitySelectorActivityHeartRateResting         ActivitySelectorActivity = "heart_rate_resting"
+	ActivitySelectorActivitySourceType               ActivitySelectorActivity = "source_type"
+	ActivitySelectorActivitySourceProvider           ActivitySelectorActivity = "source_provider"
+	ActivitySelectorActivitySourceAppId              ActivitySelectorActivity = "source_app_id"
+)
+
+func NewActivitySelectorActivityFromString(s string) (ActivitySelectorActivity, error) {
+	switch s {
+	case "date":
+		return ActivitySelectorActivityDate, nil
+	case "calories_total":
+		return ActivitySelectorActivityCaloriesTotal, nil
+	case "calories_active":
+		return ActivitySelectorActivityCaloriesActive, nil
+	case "steps":
+		return ActivitySelectorActivitySteps, nil
+	case "distance_meter":
+		return ActivitySelectorActivityDistanceMeter, nil
+	case "floors_climbed":
+		return ActivitySelectorActivityFloorsClimbed, nil
+	case "duration_active_second":
+		return ActivitySelectorActivityDurationActiveSecond, nil
+	case "intensity_sedentary_second":
+		return ActivitySelectorActivityIntensitySedentarySecond, nil
+	case "intensity_low_second":
+		return ActivitySelectorActivityIntensityLowSecond, nil
+	case "intensity_medium_second":
+		return ActivitySelectorActivityIntensityMediumSecond, nil
+	case "intensity_high_second":
+		return ActivitySelectorActivityIntensityHighSecond, nil
+	case "heart_rate_mean":
+		return ActivitySelectorActivityHeartRateMean, nil
+	case "heart_rate_min":
+		return ActivitySelectorActivityHeartRateMin, nil
+	case "heart_rate_max":
+		return ActivitySelectorActivityHeartRateMax, nil
+	case "heart_rate_resting":
+		return ActivitySelectorActivityHeartRateResting, nil
+	case "source_type":
+		return ActivitySelectorActivitySourceType, nil
+	case "source_provider":
+		return ActivitySelectorActivitySourceProvider, nil
+	case "source_app_id":
+		return ActivitySelectorActivitySourceAppId, nil
+	}
+	var t ActivitySelectorActivity
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a ActivitySelectorActivity) Ptr() *ActivitySelectorActivity {
+	return &a
+}
+
 type ActivityV2InDb struct {
 	Timestamp  time.Time              `json:"timestamp"`
 	Data       map[string]interface{} `json:"data,omitempty"`
@@ -5337,6 +5436,40 @@ func (c ContraceptiveEntryType) Ptr() *ContraceptiveEntryType {
 	return &c
 }
 
+type DateTimeUnit string
+
+const (
+	DateTimeUnitMinute DateTimeUnit = "minute"
+	DateTimeUnitHour   DateTimeUnit = "hour"
+	DateTimeUnitDay    DateTimeUnit = "day"
+	DateTimeUnitWeek   DateTimeUnit = "week"
+	DateTimeUnitMonth  DateTimeUnit = "month"
+	DateTimeUnitYear   DateTimeUnit = "year"
+)
+
+func NewDateTimeUnitFromString(s string) (DateTimeUnit, error) {
+	switch s {
+	case "minute":
+		return DateTimeUnitMinute, nil
+	case "hour":
+		return DateTimeUnitHour, nil
+	case "day":
+		return DateTimeUnitDay, nil
+	case "week":
+		return DateTimeUnitWeek, nil
+	case "month":
+		return DateTimeUnitMonth, nil
+	case "year":
+		return DateTimeUnitYear, nil
+	}
+	var t DateTimeUnit
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DateTimeUnit) Ptr() *DateTimeUnit {
+	return &d
+}
+
 type DaySlots struct {
 	Date  string      `json:"date"`
 	Slots []*TimeSlot `json:"slots,omitempty"`
@@ -8943,6 +9076,36 @@ func (p *PatientDetails) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type Period struct {
+	Value *int         `json:"value,omitempty"`
+	Unit  DateTimeUnit `json:"unit,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *Period) UnmarshalJSON(data []byte) error {
+	type unmarshaler Period
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Period(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Period) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type PersonDetailsOutput struct {
 	FirstName   string   `json:"first_name"`
 	LastName    string   `json:"last_name"`
@@ -9600,6 +9763,326 @@ func (p *PscInfo) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type QueryConfig struct {
+	WeekStartsOn              *QueryConfigWeekStartsOn                    `json:"week_starts_on,omitempty"`
+	ProviderPriorityOverrides []*QueryConfigProviderPriorityOverridesItem `json:"provider_priority_overrides,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (q *QueryConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QueryConfig(value)
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryConfig) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+type QueryConfigProviderPriorityOverridesItem struct {
+	typeName  string
+	Providers Providers
+	Labs      Labs
+}
+
+func NewQueryConfigProviderPriorityOverridesItemFromProviders(value Providers) *QueryConfigProviderPriorityOverridesItem {
+	return &QueryConfigProviderPriorityOverridesItem{typeName: "providers", Providers: value}
+}
+
+func NewQueryConfigProviderPriorityOverridesItemFromLabs(value Labs) *QueryConfigProviderPriorityOverridesItem {
+	return &QueryConfigProviderPriorityOverridesItem{typeName: "labs", Labs: value}
+}
+
+func (q *QueryConfigProviderPriorityOverridesItem) UnmarshalJSON(data []byte) error {
+	var valueProviders Providers
+	if err := json.Unmarshal(data, &valueProviders); err == nil {
+		q.typeName = "providers"
+		q.Providers = valueProviders
+		return nil
+	}
+	var valueLabs Labs
+	if err := json.Unmarshal(data, &valueLabs); err == nil {
+		q.typeName = "labs"
+		q.Labs = valueLabs
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QueryConfigProviderPriorityOverridesItem) MarshalJSON() ([]byte, error) {
+	switch q.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "providers":
+		return json.Marshal(q.Providers)
+	case "labs":
+		return json.Marshal(q.Labs)
+	}
+}
+
+type QueryConfigProviderPriorityOverridesItemVisitor interface {
+	VisitProviders(Providers) error
+	VisitLabs(Labs) error
+}
+
+func (q *QueryConfigProviderPriorityOverridesItem) Accept(visitor QueryConfigProviderPriorityOverridesItemVisitor) error {
+	switch q.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "providers":
+		return visitor.VisitProviders(q.Providers)
+	case "labs":
+		return visitor.VisitLabs(q.Labs)
+	}
+}
+
+type QueryConfigWeekStartsOn string
+
+const (
+	QueryConfigWeekStartsOnSunday QueryConfigWeekStartsOn = "sunday"
+	QueryConfigWeekStartsOnMonday QueryConfigWeekStartsOn = "monday"
+)
+
+func NewQueryConfigWeekStartsOnFromString(s string) (QueryConfigWeekStartsOn, error) {
+	switch s {
+	case "sunday":
+		return QueryConfigWeekStartsOnSunday, nil
+	case "monday":
+		return QueryConfigWeekStartsOnMonday, nil
+	}
+	var t QueryConfigWeekStartsOn
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (q QueryConfigWeekStartsOn) Ptr() *QueryConfigWeekStartsOn {
+	return &q
+}
+
+type QueryInstruction struct {
+	Select        *QueryInstructionSelect      `json:"select,omitempty"`
+	PartitionBy   *QueryInstructionPartitionBy `json:"partition_by,omitempty"`
+	SwizzleBy     *QueryInstructionSwizzleBy   `json:"swizzle_by,omitempty"`
+	ReduceBy      []*Reducer                   `json:"reduce_by,omitempty"`
+	PrioritizeBy  []string                     `json:"prioritize_by,omitempty"`
+	SplitBySource *bool                        `json:"split_by_source,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (q *QueryInstruction) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryInstruction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QueryInstruction(value)
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryInstruction) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+type QueryInstructionPartitionBy struct {
+	typeName            string
+	Period              *Period
+	SessionPartitioning *SessionPartitioning
+}
+
+func NewQueryInstructionPartitionByFromPeriod(value *Period) *QueryInstructionPartitionBy {
+	return &QueryInstructionPartitionBy{typeName: "period", Period: value}
+}
+
+func NewQueryInstructionPartitionByFromSessionPartitioning(value *SessionPartitioning) *QueryInstructionPartitionBy {
+	return &QueryInstructionPartitionBy{typeName: "sessionPartitioning", SessionPartitioning: value}
+}
+
+func (q *QueryInstructionPartitionBy) UnmarshalJSON(data []byte) error {
+	valuePeriod := new(Period)
+	if err := json.Unmarshal(data, &valuePeriod); err == nil {
+		q.typeName = "period"
+		q.Period = valuePeriod
+		return nil
+	}
+	valueSessionPartitioning := new(SessionPartitioning)
+	if err := json.Unmarshal(data, &valueSessionPartitioning); err == nil {
+		q.typeName = "sessionPartitioning"
+		q.SessionPartitioning = valueSessionPartitioning
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QueryInstructionPartitionBy) MarshalJSON() ([]byte, error) {
+	switch q.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "period":
+		return json.Marshal(q.Period)
+	case "sessionPartitioning":
+		return json.Marshal(q.SessionPartitioning)
+	}
+}
+
+type QueryInstructionPartitionByVisitor interface {
+	VisitPeriod(*Period) error
+	VisitSessionPartitioning(*SessionPartitioning) error
+}
+
+func (q *QueryInstructionPartitionBy) Accept(visitor QueryInstructionPartitionByVisitor) error {
+	switch q.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "period":
+		return visitor.VisitPeriod(q.Period)
+	case "sessionPartitioning":
+		return visitor.VisitSessionPartitioning(q.SessionPartitioning)
+	}
+}
+
+type QueryInstructionSelect struct {
+	typeName         string
+	SleepSelector    *SleepSelector
+	ActivitySelector *ActivitySelector
+}
+
+func NewQueryInstructionSelectFromSleepSelector(value *SleepSelector) *QueryInstructionSelect {
+	return &QueryInstructionSelect{typeName: "sleepSelector", SleepSelector: value}
+}
+
+func NewQueryInstructionSelectFromActivitySelector(value *ActivitySelector) *QueryInstructionSelect {
+	return &QueryInstructionSelect{typeName: "activitySelector", ActivitySelector: value}
+}
+
+func (q *QueryInstructionSelect) UnmarshalJSON(data []byte) error {
+	valueSleepSelector := new(SleepSelector)
+	if err := json.Unmarshal(data, &valueSleepSelector); err == nil {
+		q.typeName = "sleepSelector"
+		q.SleepSelector = valueSleepSelector
+		return nil
+	}
+	valueActivitySelector := new(ActivitySelector)
+	if err := json.Unmarshal(data, &valueActivitySelector); err == nil {
+		q.typeName = "activitySelector"
+		q.ActivitySelector = valueActivitySelector
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QueryInstructionSelect) MarshalJSON() ([]byte, error) {
+	switch q.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "sleepSelector":
+		return json.Marshal(q.SleepSelector)
+	case "activitySelector":
+		return json.Marshal(q.ActivitySelector)
+	}
+}
+
+type QueryInstructionSelectVisitor interface {
+	VisitSleepSelector(*SleepSelector) error
+	VisitActivitySelector(*ActivitySelector) error
+}
+
+func (q *QueryInstructionSelect) Accept(visitor QueryInstructionSelectVisitor) error {
+	switch q.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "sleepSelector":
+		return visitor.VisitSleepSelector(q.SleepSelector)
+	case "activitySelector":
+		return visitor.VisitActivitySelector(q.ActivitySelector)
+	}
+}
+
+type QueryInstructionSwizzleBy struct {
+	typeName      string
+	Swizzling     *Swizzling
+	stringLiteral string
+}
+
+func NewQueryInstructionSwizzleByFromSwizzling(value *Swizzling) *QueryInstructionSwizzleBy {
+	return &QueryInstructionSwizzleBy{typeName: "swizzling", Swizzling: value}
+}
+
+func NewQueryInstructionSwizzleByWithStringLiteral() *QueryInstructionSwizzleBy {
+	return &QueryInstructionSwizzleBy{typeName: "stringLiteral", stringLiteral: "passthrough"}
+}
+
+func (q *QueryInstructionSwizzleBy) StringLiteral() string {
+	return q.stringLiteral
+}
+
+func (q *QueryInstructionSwizzleBy) UnmarshalJSON(data []byte) error {
+	valueSwizzling := new(Swizzling)
+	if err := json.Unmarshal(data, &valueSwizzling); err == nil {
+		q.typeName = "swizzling"
+		q.Swizzling = valueSwizzling
+		return nil
+	}
+	var valueStringLiteral string
+	if err := json.Unmarshal(data, &valueStringLiteral); err == nil {
+		if valueStringLiteral == "passthrough" {
+			q.typeName = "stringLiteral"
+			q.stringLiteral = valueStringLiteral
+			return nil
+		}
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QueryInstructionSwizzleBy) MarshalJSON() ([]byte, error) {
+	switch q.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "swizzling":
+		return json.Marshal(q.Swizzling)
+	case "stringLiteral":
+		return json.Marshal("passthrough")
+	}
+}
+
+type QueryInstructionSwizzleByVisitor interface {
+	VisitSwizzling(*Swizzling) error
+	VisitStringLiteral(string) error
+}
+
+func (q *QueryInstructionSwizzleBy) Accept(visitor QueryInstructionSwizzleByVisitor) error {
+	switch q.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "swizzling":
+		return visitor.VisitSwizzling(q.Swizzling)
+	case "stringLiteral":
+		return visitor.VisitStringLiteral(q.stringLiteral)
+	}
+}
+
 type Question struct {
 	Id         int          `json:"id"`
 	Required   bool         `json:"required"`
@@ -9838,6 +10321,78 @@ func (r *RawWorkout) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+type Reducer struct {
+	Function ReducerFunction `json:"function,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (r *Reducer) UnmarshalJSON(data []byte) error {
+	type unmarshaler Reducer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = Reducer(value)
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *Reducer) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type ReducerFunction string
+
+const (
+	ReducerFunctionMean   ReducerFunction = "mean"
+	ReducerFunctionMin    ReducerFunction = "min"
+	ReducerFunctionMax    ReducerFunction = "max"
+	ReducerFunctionSum    ReducerFunction = "sum"
+	ReducerFunctionCount  ReducerFunction = "count"
+	ReducerFunctionMedian ReducerFunction = "median"
+	ReducerFunctionStddev ReducerFunction = "stddev"
+	ReducerFunctionOldest ReducerFunction = "oldest"
+	ReducerFunctionNewest ReducerFunction = "newest"
+)
+
+func NewReducerFunctionFromString(s string) (ReducerFunction, error) {
+	switch s {
+	case "mean":
+		return ReducerFunctionMean, nil
+	case "min":
+		return ReducerFunctionMin, nil
+	case "max":
+		return ReducerFunctionMax, nil
+	case "sum":
+		return ReducerFunctionSum, nil
+	case "count":
+		return ReducerFunctionCount, nil
+	case "median":
+		return ReducerFunctionMedian, nil
+	case "stddev":
+		return ReducerFunctionStddev, nil
+	case "oldest":
+		return ReducerFunctionOldest, nil
+	case "newest":
+		return ReducerFunctionNewest, nil
+	}
+	var t ReducerFunction
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r ReducerFunction) Ptr() *ReducerFunction {
+	return &r
+}
+
 type Region string
 
 const (
@@ -9882,6 +10437,54 @@ func NewRegionFromString(s string) (Region, error) {
 
 func (r Region) Ptr() *Region {
 	return &r
+}
+
+type RelativeTimeframe struct {
+	Anchor string  `json:"anchor"`
+	Past   *Period `json:"past,omitempty"`
+	type_  string
+
+	_rawJSON json.RawMessage
+}
+
+func (r *RelativeTimeframe) Type() string {
+	return r.type_
+}
+
+func (r *RelativeTimeframe) UnmarshalJSON(data []byte) error {
+	type unmarshaler RelativeTimeframe
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RelativeTimeframe(value)
+	r.type_ = "relative"
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RelativeTimeframe) MarshalJSON() ([]byte, error) {
+	type embed RelativeTimeframe
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*r),
+		Type:  "relative",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (r *RelativeTimeframe) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }
 
 type ResourceAvailability struct {
@@ -10022,6 +10625,57 @@ func (s *ScopeRequirementsStr) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
+}
+
+type SessionPartitioning struct {
+	Session SessionPartitioningSession `json:"session,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SessionPartitioning) UnmarshalJSON(data []byte) error {
+	type unmarshaler SessionPartitioning
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SessionPartitioning(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SessionPartitioning) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SessionPartitioningSession string
+
+const (
+	SessionPartitioningSessionMenstrualCycle SessionPartitioningSession = "menstrual_cycle"
+	SessionPartitioningSessionWorkout        SessionPartitioningSession = "workout"
+)
+
+func NewSessionPartitioningSessionFromString(s string) (SessionPartitioningSession, error) {
+	switch s {
+	case "menstrual_cycle":
+		return SessionPartitioningSessionMenstrualCycle, nil
+	case "workout":
+		return SessionPartitioningSessionWorkout, nil
+	}
+	var t SessionPartitioningSession
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SessionPartitioningSession) Ptr() *SessionPartitioningSession {
+	return &s
 }
 
 type SexualActivityEntry struct {
@@ -10247,6 +10901,123 @@ func (s *SingleUserResourceResponse) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type SleepSelector struct {
+	Sleep SleepSelectorSleep `json:"sleep,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *SleepSelector) UnmarshalJSON(data []byte) error {
+	type unmarshaler SleepSelector
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SleepSelector(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SleepSelector) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SleepSelectorSleep string
+
+const (
+	SleepSelectorSleepSessionStart         SleepSelectorSleep = "session_start"
+	SleepSelectorSleepSessionEnd           SleepSelectorSleep = "session_end"
+	SleepSelectorSleepState                SleepSelectorSleep = "state"
+	SleepSelectorSleepDurationSecond       SleepSelectorSleep = "duration_second"
+	SleepSelectorSleepStageAsleepSecond    SleepSelectorSleep = "stage_asleep_second"
+	SleepSelectorSleepStageAwakeSecond     SleepSelectorSleep = "stage_awake_second"
+	SleepSelectorSleepStageLightSecond     SleepSelectorSleep = "stage_light_second"
+	SleepSelectorSleepStageRemSecond       SleepSelectorSleep = "stage_rem_second"
+	SleepSelectorSleepStageDeepSecond      SleepSelectorSleep = "stage_deep_second"
+	SleepSelectorSleepStageUnknownSecond   SleepSelectorSleep = "stage_unknown_second"
+	SleepSelectorSleepLatencySecond        SleepSelectorSleep = "latency_second"
+	SleepSelectorSleepHeartRateMinimum     SleepSelectorSleep = "heart_rate_minimum"
+	SleepSelectorSleepHeartRateMean        SleepSelectorSleep = "heart_rate_mean"
+	SleepSelectorSleepHeartRateMaximum     SleepSelectorSleep = "heart_rate_maximum"
+	SleepSelectorSleepHeartRateDip         SleepSelectorSleep = "heart_rate_dip"
+	SleepSelectorSleepEfficiency           SleepSelectorSleep = "efficiency"
+	SleepSelectorSleepHrvMeanRmssd         SleepSelectorSleep = "hrv_mean_rmssd"
+	SleepSelectorSleepHrvMeanSdnn          SleepSelectorSleep = "hrv_mean_sdnn"
+	SleepSelectorSleepSkinTemperatureDelta SleepSelectorSleep = "skin_temperature_delta"
+	SleepSelectorSleepRespiratoryRate      SleepSelectorSleep = "respiratory_rate"
+	SleepSelectorSleepScore                SleepSelectorSleep = "score"
+	SleepSelectorSleepSourceType           SleepSelectorSleep = "source_type"
+	SleepSelectorSleepSourceProvider       SleepSelectorSleep = "source_provider"
+	SleepSelectorSleepSourceAppId          SleepSelectorSleep = "source_app_id"
+)
+
+func NewSleepSelectorSleepFromString(s string) (SleepSelectorSleep, error) {
+	switch s {
+	case "session_start":
+		return SleepSelectorSleepSessionStart, nil
+	case "session_end":
+		return SleepSelectorSleepSessionEnd, nil
+	case "state":
+		return SleepSelectorSleepState, nil
+	case "duration_second":
+		return SleepSelectorSleepDurationSecond, nil
+	case "stage_asleep_second":
+		return SleepSelectorSleepStageAsleepSecond, nil
+	case "stage_awake_second":
+		return SleepSelectorSleepStageAwakeSecond, nil
+	case "stage_light_second":
+		return SleepSelectorSleepStageLightSecond, nil
+	case "stage_rem_second":
+		return SleepSelectorSleepStageRemSecond, nil
+	case "stage_deep_second":
+		return SleepSelectorSleepStageDeepSecond, nil
+	case "stage_unknown_second":
+		return SleepSelectorSleepStageUnknownSecond, nil
+	case "latency_second":
+		return SleepSelectorSleepLatencySecond, nil
+	case "heart_rate_minimum":
+		return SleepSelectorSleepHeartRateMinimum, nil
+	case "heart_rate_mean":
+		return SleepSelectorSleepHeartRateMean, nil
+	case "heart_rate_maximum":
+		return SleepSelectorSleepHeartRateMaximum, nil
+	case "heart_rate_dip":
+		return SleepSelectorSleepHeartRateDip, nil
+	case "efficiency":
+		return SleepSelectorSleepEfficiency, nil
+	case "hrv_mean_rmssd":
+		return SleepSelectorSleepHrvMeanRmssd, nil
+	case "hrv_mean_sdnn":
+		return SleepSelectorSleepHrvMeanSdnn, nil
+	case "skin_temperature_delta":
+		return SleepSelectorSleepSkinTemperatureDelta, nil
+	case "respiratory_rate":
+		return SleepSelectorSleepRespiratoryRate, nil
+	case "score":
+		return SleepSelectorSleepScore, nil
+	case "source_type":
+		return SleepSelectorSleepSourceType, nil
+	case "source_provider":
+		return SleepSelectorSleepSourceProvider, nil
+	case "source_app_id":
+		return SleepSelectorSleepSourceAppId, nil
+	}
+	var t SleepSelectorSleep
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SleepSelectorSleep) Ptr() *SleepSelectorSleep {
+	return &s
+}
+
 type SleepSummaryState string
 
 const (
@@ -10446,6 +11217,93 @@ func NewSourceTypeFromString(s string) (SourceType, error) {
 }
 
 func (s SourceType) Ptr() *SourceType {
+	return &s
+}
+
+// The Swizzling mode makes the reducer functions produce statistics
+// based on X-of-Y granularity (e.g., day-of-week) for each and every data partition.
+//
+// ## Basic usages
+//
+// - Hour of Day — gather_every={1, hour}, bin_granularity=day, bin_count=1
+// - Day of Week — gather_every={1, day}, bin_granularity=week, bin_count=1
+// - Day of Month — gather_every={1, day}, bin_granularity=month, bin_count=1
+//
+// ## Output columns
+//
+// Swizzling mode adds two additional columns to the output dataframes:
+//
+//  1. `swizzle_bin`: The bin index of the data point post-binning (with respect to `bin_count`
+//     and `bin_granularity); and 2 `swizzle_period_start`: The bin-relative period start of the data point with respect to `gather_every`.
+//
+// ## Supported combinations
+//
+// | gather_every | group_by          |
+// | ------------ | ----------------- |
+// | minute       | minute, hour, day |
+// | hour         | hour, day, week   |
+// | day          | day, week, month  |
+// | week         | week, month       |
+// | month        | month             |
+type Swizzling struct {
+	BinGranularity SwizzlingBinGranularity `json:"bin_granularity,omitempty"`
+	BinCount       *int                    `json:"bin_count,omitempty"`
+	GatherEvery    *Period                 `json:"gather_every,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (s *Swizzling) UnmarshalJSON(data []byte) error {
+	type unmarshaler Swizzling
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = Swizzling(value)
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Swizzling) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SwizzlingBinGranularity string
+
+const (
+	SwizzlingBinGranularityMinute SwizzlingBinGranularity = "minute"
+	SwizzlingBinGranularityHour   SwizzlingBinGranularity = "hour"
+	SwizzlingBinGranularityDay    SwizzlingBinGranularity = "day"
+	SwizzlingBinGranularityWeek   SwizzlingBinGranularity = "week"
+	SwizzlingBinGranularityMonth  SwizzlingBinGranularity = "month"
+)
+
+func NewSwizzlingBinGranularityFromString(s string) (SwizzlingBinGranularity, error) {
+	switch s {
+	case "minute":
+		return SwizzlingBinGranularityMinute, nil
+	case "hour":
+		return SwizzlingBinGranularityHour, nil
+	case "day":
+		return SwizzlingBinGranularityDay, nil
+	case "week":
+		return SwizzlingBinGranularityWeek, nil
+	case "month":
+		return SwizzlingBinGranularityMonth, nil
+	}
+	var t SwizzlingBinGranularity
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SwizzlingBinGranularity) Ptr() *SwizzlingBinGranularity {
 	return &s
 }
 

@@ -4,6 +4,7 @@ package client
 
 import (
 	activity "github.com/tryVital/vital-go/activity"
+	aggregate "github.com/tryVital/vital-go/aggregate"
 	body "github.com/tryVital/vital-go/body"
 	core "github.com/tryVital/vital-go/core"
 	devices "github.com/tryVital/vital-go/devices"
@@ -46,6 +47,7 @@ type Client struct {
 	LabTests       *labtests.Client
 	Testkit        *testkit.Client
 	Insurance      *insurance.Client
+	Aggregate      *aggregate.Client
 }
 
 func NewClient(opts ...core.ClientOption) *Client {
@@ -74,5 +76,6 @@ func NewClient(opts ...core.ClientOption) *Client {
 		LabTests:       labtests.NewClient(opts...),
 		Testkit:        testkit.NewClient(opts...),
 		Insurance:      insurance.NewClient(opts...),
+		Aggregate:      aggregate.NewClient(opts...),
 	}
 }
