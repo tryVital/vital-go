@@ -8326,11 +8326,12 @@ type Macros struct {
 	Carbs   *float64 `json:"carbs,omitempty"`
 	Protein *float64 `json:"protein,omitempty"`
 	// Details of fat content
-	Fats    *Fats    `json:"fats,omitempty"`
-	Alcohol *float64 `json:"alcohol,omitempty"`
-	Water   *float64 `json:"water,omitempty"`
-	Fibre   *float64 `json:"fibre,omitempty"`
-	Sugar   *float64 `json:"sugar,omitempty"`
+	Fats        *Fats    `json:"fats,omitempty"`
+	Alcohol     *float64 `json:"alcohol,omitempty"`
+	Water       *float64 `json:"water,omitempty"`
+	Fibre       *float64 `json:"fibre,omitempty"`
+	Sugar       *float64 `json:"sugar,omitempty"`
+	Cholesterol *float64 `json:"cholesterol,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8661,6 +8662,136 @@ func (m *Micros) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
+}
+
+type Minerals string
+
+const (
+	MineralsSodium     Minerals = "sodium"
+	MineralsPotassium  Minerals = "potassium"
+	MineralsCalcium    Minerals = "calcium"
+	MineralsPhosphorus Minerals = "phosphorus"
+	MineralsMagnesium  Minerals = "magnesium"
+	MineralsIron       Minerals = "iron"
+	MineralsZinc       Minerals = "zinc"
+	MineralsFluoride   Minerals = "fluoride"
+	MineralsChloride   Minerals = "chloride"
+	MineralsBoron      Minerals = "boron"
+	MineralsCobalt     Minerals = "cobalt"
+	MineralsNickel     Minerals = "nickel"
+	MineralsSilicon    Minerals = "silicon"
+	MineralsVanadium   Minerals = "vanadium"
+	MineralsLithium    Minerals = "lithium"
+	MineralsRubidium   Minerals = "rubidium"
+	MineralsStrontium  Minerals = "strontium"
+	MineralsAluminum   Minerals = "aluminum"
+	MineralsArsenic    Minerals = "arsenic"
+	MineralsBarium     Minerals = "barium"
+	MineralsBeryllium  Minerals = "beryllium"
+	MineralsBismuth    Minerals = "bismuth"
+	MineralsCadmium    Minerals = "cadmium"
+	MineralsCesium     Minerals = "cesium"
+	MineralsGermanium  Minerals = "germanium"
+	MineralsGold       Minerals = "gold"
+	MineralsLead       Minerals = "lead"
+	MineralsMercury    Minerals = "mercury"
+	MineralsPalladium  Minerals = "palladium"
+	MineralsPlatinum   Minerals = "platinum"
+	MineralsSilver     Minerals = "silver"
+	MineralsThallium   Minerals = "thallium"
+	MineralsThorium    Minerals = "thorium"
+	MineralsTin        Minerals = "tin"
+	MineralsTitanium   Minerals = "titanium"
+	MineralsTungsten   Minerals = "tungsten"
+	MineralsUranium    Minerals = "uranium"
+	MineralsZirconium  Minerals = "zirconium"
+)
+
+func NewMineralsFromString(s string) (Minerals, error) {
+	switch s {
+	case "sodium":
+		return MineralsSodium, nil
+	case "potassium":
+		return MineralsPotassium, nil
+	case "calcium":
+		return MineralsCalcium, nil
+	case "phosphorus":
+		return MineralsPhosphorus, nil
+	case "magnesium":
+		return MineralsMagnesium, nil
+	case "iron":
+		return MineralsIron, nil
+	case "zinc":
+		return MineralsZinc, nil
+	case "fluoride":
+		return MineralsFluoride, nil
+	case "chloride":
+		return MineralsChloride, nil
+	case "boron":
+		return MineralsBoron, nil
+	case "cobalt":
+		return MineralsCobalt, nil
+	case "nickel":
+		return MineralsNickel, nil
+	case "silicon":
+		return MineralsSilicon, nil
+	case "vanadium":
+		return MineralsVanadium, nil
+	case "lithium":
+		return MineralsLithium, nil
+	case "rubidium":
+		return MineralsRubidium, nil
+	case "strontium":
+		return MineralsStrontium, nil
+	case "aluminum":
+		return MineralsAluminum, nil
+	case "arsenic":
+		return MineralsArsenic, nil
+	case "barium":
+		return MineralsBarium, nil
+	case "beryllium":
+		return MineralsBeryllium, nil
+	case "bismuth":
+		return MineralsBismuth, nil
+	case "cadmium":
+		return MineralsCadmium, nil
+	case "cesium":
+		return MineralsCesium, nil
+	case "germanium":
+		return MineralsGermanium, nil
+	case "gold":
+		return MineralsGold, nil
+	case "lead":
+		return MineralsLead, nil
+	case "mercury":
+		return MineralsMercury, nil
+	case "palladium":
+		return MineralsPalladium, nil
+	case "platinum":
+		return MineralsPlatinum, nil
+	case "silver":
+		return MineralsSilver, nil
+	case "thallium":
+		return MineralsThallium, nil
+	case "thorium":
+		return MineralsThorium, nil
+	case "tin":
+		return MineralsTin, nil
+	case "titanium":
+		return MineralsTitanium, nil
+	case "tungsten":
+		return MineralsTungsten, nil
+	case "uranium":
+		return MineralsUranium, nil
+	case "zirconium":
+		return MineralsZirconium, nil
+	}
+	var t Minerals
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m Minerals) Ptr() *Minerals {
+	return &m
 }
 
 type OAuthProviders string
@@ -9590,6 +9721,7 @@ const (
 	ProvidersCronometer        Providers = "cronometer"
 	ProvidersKardia            Providers = "kardia"
 	ProvidersWhoopV2           Providers = "whoop_v2"
+	ProvidersUltrahuman        Providers = "ultrahuman"
 )
 
 func NewProvidersFromString(s string) (Providers, error) {
@@ -9662,6 +9794,8 @@ func NewProvidersFromString(s string) (Providers, error) {
 		return ProvidersKardia, nil
 	case "whoop_v2":
 		return ProvidersWhoopV2, nil
+	case "ultrahuman":
+		return ProvidersUltrahuman, nil
 	}
 	var t Providers
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -11525,6 +11659,40 @@ func (t TimeseriesResource) Ptr() *TimeseriesResource {
 	return &t
 }
 
+type TraceElements string
+
+const (
+	TraceElementsChromium   TraceElements = "chromium"
+	TraceElementsCopper     TraceElements = "copper"
+	TraceElementsIodine     TraceElements = "iodine"
+	TraceElementsManganese  TraceElements = "manganese"
+	TraceElementsMolybdenum TraceElements = "molybdenum"
+	TraceElementsSelenium   TraceElements = "selenium"
+)
+
+func NewTraceElementsFromString(s string) (TraceElements, error) {
+	switch s {
+	case "chromium":
+		return TraceElementsChromium, nil
+	case "copper":
+		return TraceElementsCopper, nil
+	case "iodine":
+		return TraceElementsIodine, nil
+	case "manganese":
+		return TraceElementsManganese, nil
+	case "molybdenum":
+		return TraceElementsMolybdenum, nil
+	case "selenium":
+		return TraceElementsSelenium, nil
+	}
+	var t TraceElements
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (t TraceElements) Ptr() *TraceElements {
+	return &t
+}
+
 type UsAddress struct {
 	FirstLine  string  `json:"first_line"`
 	SecondLine *string `json:"second_line,omitempty"`
@@ -11969,6 +12137,61 @@ func (v *VitalTokenCreatedResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)
+}
+
+type Vitamins string
+
+const (
+	VitaminsVitaminA        Vitamins = "vitamin_a"
+	VitaminsVitaminB1       Vitamins = "vitamin_b1"
+	VitaminsRiboflavin      Vitamins = "riboflavin"
+	VitaminsNiacin          Vitamins = "niacin"
+	VitaminsPantothenicAcid Vitamins = "pantothenic_acid"
+	VitaminsVitaminB6       Vitamins = "vitamin_b6"
+	VitaminsBiotin          Vitamins = "biotin"
+	VitaminsVitaminB12      Vitamins = "vitamin_b12"
+	VitaminsVitaminC        Vitamins = "vitamin_c"
+	VitaminsVitaminD        Vitamins = "vitamin_d"
+	VitaminsVitaminE        Vitamins = "vitamin_e"
+	VitaminsVitaminK        Vitamins = "vitamin_k"
+	VitaminsFolicAcid       Vitamins = "folic_acid"
+)
+
+func NewVitaminsFromString(s string) (Vitamins, error) {
+	switch s {
+	case "vitamin_a":
+		return VitaminsVitaminA, nil
+	case "vitamin_b1":
+		return VitaminsVitaminB1, nil
+	case "riboflavin":
+		return VitaminsRiboflavin, nil
+	case "niacin":
+		return VitaminsNiacin, nil
+	case "pantothenic_acid":
+		return VitaminsPantothenicAcid, nil
+	case "vitamin_b6":
+		return VitaminsVitaminB6, nil
+	case "biotin":
+		return VitaminsBiotin, nil
+	case "vitamin_b12":
+		return VitaminsVitaminB12, nil
+	case "vitamin_c":
+		return VitaminsVitaminC, nil
+	case "vitamin_d":
+		return VitaminsVitaminD, nil
+	case "vitamin_e":
+		return VitaminsVitaminE, nil
+	case "vitamin_k":
+		return VitaminsVitaminK, nil
+	case "folic_acid":
+		return VitaminsFolicAcid, nil
+	}
+	var t Vitamins
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (v Vitamins) Ptr() *Vitamins {
+	return &v
 }
 
 type WorkoutV2InDb struct {
