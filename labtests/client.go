@@ -117,6 +117,9 @@ func (c *Client) GetMarkers(ctx context.Context, request *vitalgo.LabTestsGetMar
 	if request.Name != nil {
 		queryParams.Add("name", fmt.Sprintf("%v", *request.Name))
 	}
+	if request.ALaCarteEnabled != nil {
+		queryParams.Add("a_la_carte_enabled", fmt.Sprintf("%v", *request.ALaCarteEnabled))
+	}
 	if request.Page != nil {
 		queryParams.Add("page", fmt.Sprintf("%v", *request.Page))
 	}

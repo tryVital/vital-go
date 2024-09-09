@@ -4,10 +4,11 @@ package api
 
 import (
 	json "encoding/json"
+	fmt "fmt"
 )
 
 type Query struct {
-	Timeframe    *RelativeTimeframe  `json:"timeframe,omitempty"`
+	Timeframe    *QueryTimeframe     `json:"timeframe,omitempty"`
 	Instructions []*QueryInstruction `json:"instructions,omitempty"`
 	Config       *QueryConfig        `json:"config,omitempty"`
 	accept       string
@@ -38,4 +39,61 @@ func (q *Query) MarshalJSON() ([]byte, error) {
 		Accept: "*/*",
 	}
 	return json.Marshal(marshaler)
+}
+
+type QueryTimeframe struct {
+	typeName          string
+	RelativeTimeframe *RelativeTimeframe
+	Placeholder       *Placeholder
+}
+
+func NewQueryTimeframeFromRelativeTimeframe(value *RelativeTimeframe) *QueryTimeframe {
+	return &QueryTimeframe{typeName: "relativeTimeframe", RelativeTimeframe: value}
+}
+
+func NewQueryTimeframeFromPlaceholder(value *Placeholder) *QueryTimeframe {
+	return &QueryTimeframe{typeName: "placeholder", Placeholder: value}
+}
+
+func (q *QueryTimeframe) UnmarshalJSON(data []byte) error {
+	valueRelativeTimeframe := new(RelativeTimeframe)
+	if err := json.Unmarshal(data, &valueRelativeTimeframe); err == nil {
+		q.typeName = "relativeTimeframe"
+		q.RelativeTimeframe = valueRelativeTimeframe
+		return nil
+	}
+	valuePlaceholder := new(Placeholder)
+	if err := json.Unmarshal(data, &valuePlaceholder); err == nil {
+		q.typeName = "placeholder"
+		q.Placeholder = valuePlaceholder
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QueryTimeframe) MarshalJSON() ([]byte, error) {
+	switch q.typeName {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "relativeTimeframe":
+		return json.Marshal(q.RelativeTimeframe)
+	case "placeholder":
+		return json.Marshal(q.Placeholder)
+	}
+}
+
+type QueryTimeframeVisitor interface {
+	VisitRelativeTimeframe(*RelativeTimeframe) error
+	VisitPlaceholder(*Placeholder) error
+}
+
+func (q *QueryTimeframe) Accept(visitor QueryTimeframeVisitor) error {
+	switch q.typeName {
+	default:
+		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
+	case "relativeTimeframe":
+		return visitor.VisitRelativeTimeframe(q.RelativeTimeframe)
+	case "placeholder":
+		return visitor.VisitPlaceholder(q.Placeholder)
+	}
 }

@@ -144,6 +144,36 @@ func (a *ActivityV2InDb) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type AddOnOrder struct {
+	MarkerIds   []int    `json:"marker_ids,omitempty"`
+	ProviderIds []string `json:"provider_ids,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (a *AddOnOrder) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddOnOrder
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AddOnOrder(value)
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AddOnOrder) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type Address struct {
 	FirstLine  string  `json:"first_line"`
 	SecondLine *string `json:"second_line,omitempty"`
@@ -602,7 +632,7 @@ type BiomarkerResult struct {
 	Result          string     `json:"result"`
 	Type            ResultType `json:"type,omitempty"`
 	Unit            *string    `json:"unit,omitempty"`
-	Timestamp       *time.Time `json:"timestamp,omitempty"`
+	Timestamp       *string    `json:"timestamp,omitempty"`
 	Notes           *string    `json:"notes,omitempty"`
 	MinRangeValue   *float64   `json:"min_range_value,omitempty"`
 	MaxRangeValue   *float64   `json:"max_range_value,omitempty"`
@@ -611,6 +641,7 @@ type BiomarkerResult struct {
 	Interpretation  *string    `json:"interpretation,omitempty"`
 	Loinc           *string    `json:"loinc,omitempty"`
 	LoincSlug       *string    `json:"loinc_slug,omitempty"`
+	ProviderId      *string    `json:"provider_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -799,7 +830,7 @@ type ClientFacingActivity struct {
 	UserId string `json:"user_id"`
 	Id     string `json:"id"`
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
-	Date time.Time `json:"date"`
+	Date string `json:"date"`
 	// Date of the summary in the YYYY-mm-dd format.
 	CalendarDate   string   `json:"calendar_date"`
 	CaloriesTotal  *float64 `json:"calories_total,omitempty"`
@@ -844,12 +875,12 @@ func (c *ClientFacingActivity) String() string {
 }
 
 type ClientFacingApiKey struct {
-	Label     string     `json:"label"`
-	Value     string     `json:"value"`
-	TeamId    *string    `json:"team_id,omitempty"`
-	Id        string     `json:"id"`
-	CreatedAt time.Time  `json:"created_at"`
-	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	Label     string  `json:"label"`
+	Value     string  `json:"value"`
+	TeamId    *string `json:"team_id,omitempty"`
+	Id        string  `json:"id"`
+	CreatedAt string  `json:"created_at"`
+	DeletedAt *string `json:"deleted_at,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -883,8 +914,8 @@ type ClientFacingAppointment struct {
 	OrderId       string                          `json:"order_id"`
 	Address       *UsAddress                      `json:"address,omitempty"`
 	Location      *LngLat                         `json:"location,omitempty"`
-	StartAt       *time.Time                      `json:"start_at,omitempty"`
-	EndAt         *time.Time                      `json:"end_at,omitempty"`
+	StartAt       *string                         `json:"start_at,omitempty"`
+	EndAt         *string                         `json:"end_at,omitempty"`
 	IanaTimezone  *string                         `json:"iana_timezone,omitempty"`
 	Type          AppointmentType                 `json:"type,omitempty"`
 	Provider      AppointmentProvider             `json:"provider,omitempty"`
@@ -953,7 +984,7 @@ func (c *ClientFacingAppointmentCancellationReason) String() string {
 }
 
 type ClientFacingAppointmentEvent struct {
-	CreatedAt time.Time              `json:"created_at"`
+	CreatedAt string                 `json:"created_at"`
 	Status    AppointmentEventStatus `json:"status,omitempty"`
 	Data      map[string]interface{} `json:"data,omitempty"`
 
@@ -988,10 +1019,10 @@ func (c *ClientFacingAppointmentEvent) String() string {
 // To be used as part of a ClientFacingOrder.
 type ClientFacingAtHomePhlebotomyOrder struct {
 	// The Vital at-home phlebotomy Order ID
-	Id            string    `json:"id"`
-	AppointmentId *string   `json:"appointment_id,omitempty"`
-	CreatedAt     time.Time `json:"created_at"`
-	UpdatedAt     time.Time `json:"updated_at"`
+	Id            string  `json:"id"`
+	AppointmentId *string `json:"appointment_id,omitempty"`
+	CreatedAt     string  `json:"created_at"`
+	UpdatedAt     string  `json:"updated_at"`
 
 	_rawJSON json.RawMessage
 }
@@ -1055,7 +1086,7 @@ type ClientFacingBloodOxygenTimeseries struct {
 	// Measured in percentage (spo2).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -1090,10 +1121,10 @@ type ClientFacingBloodPressureTimeseries struct {
 	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
 	Type           *string `json:"type,omitempty"`
 	// The unit of the value. We use SI units where possible, e.g. mmol/L for glucose/cholesterol, bpm for heart rate, etc.
-	Unit      string    `json:"unit"`
-	Timestamp time.Time `json:"timestamp"`
-	Systolic  float64   `json:"systolic"`
-	Diastolic float64   `json:"diastolic"`
+	Unit      string  `json:"unit"`
+	Timestamp string  `json:"timestamp"`
+	Systolic  float64 `json:"systolic"`
+	Diastolic float64 `json:"diastolic"`
 
 	_rawJSON json.RawMessage
 }
@@ -1126,7 +1157,7 @@ type ClientFacingBody struct {
 	UserId string `json:"user_id"`
 	Id     string `json:"id"`
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
-	Date time.Time `json:"date"`
+	Date string `json:"date"`
 	// Date of the summary in the YYYY-mm-dd format.
 	CalendarDate string              `json:"calendar_date"`
 	Weight       *float64            `json:"weight,omitempty"`
@@ -1166,7 +1197,7 @@ type ClientFacingBodyFatTimeseries struct {
 	// Measured in percentage (0-100).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -1201,11 +1232,11 @@ type ClientFacingBodyTemperatureDeltaSample struct {
 	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
 	Type           *string `json:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The recorded value for the interval.
 	Value          float64                                               `json:"value"`
 	SensorLocation *ClientFacingBodyTemperatureDeltaSampleSensorLocation `json:"sensor_location,omitempty"`
@@ -1311,11 +1342,11 @@ type ClientFacingBodyTemperatureSample struct {
 	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
 	Type           *string `json:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The recorded value for the interval.
 	Value          float64                                          `json:"value"`
 	SensorLocation *ClientFacingBodyTemperatureSampleSensorLocation `json:"sensor_location,omitempty"`
@@ -1423,7 +1454,7 @@ type ClientFacingBodyWeightTimeseries struct {
 	// Measured in kilograms (kg).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -1460,11 +1491,11 @@ type ClientFacingCaffeineTimeseries struct {
 	// Measured in grams.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// Quantity of caffeine consumed during the time period.
 	Value float64 `json:"value"`
 
@@ -1500,11 +1531,11 @@ type ClientFacingCaloriesActiveTimeseries struct {
 	Type           *string `json:"type,omitempty"`
 	// Measured in kilocalories (kcal)
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// Energy consumption caused by the physical activity at the time or interval::kilocalories
 	Value float64 `json:"value"`
 	unit  string
@@ -1558,7 +1589,7 @@ type ClientFacingCaloriesBasalTimeseries struct {
 	Type           *string `json:"type,omitempty"`
 	// Measured in kilocalories (kcal)
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// Basal Metabolic Rate at the time or interval::kilocalories
 	Value float64 `json:"value"`
 	unit  string
@@ -1613,11 +1644,11 @@ type ClientFacingCarbohydratesSample struct {
 	// Measured in grams.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The recorded value for the interval.
 	Value float64 `json:"value"`
 
@@ -1654,7 +1685,7 @@ type ClientFacingCholesterolTimeseries struct {
 	// Measured in mmol/L.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -1722,11 +1753,11 @@ type ClientFacingDistanceTimeseries struct {
 	Type           *string `json:"type,omitempty"`
 	// Measured in meters (m)
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// Distance traveled during activities at the time or interval::steps
 	Value float64 `json:"value"`
 	unit  string
@@ -1818,7 +1849,7 @@ type ClientFacingFloorsClimbedTimeseries struct {
 	Type           *string `json:"type,omitempty"`
 	// Measured in counts
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// Number of floors climbed at the time or interval::count
 	Value float64 `json:"value"`
 	unit  string
@@ -1904,7 +1935,7 @@ type ClientFacingGlucoseTimeseries struct {
 	// Measured in mmol/L.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -2165,7 +2196,7 @@ type ClientFacingHeartRateTimeseries struct {
 	// Measured in bpm.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// Heart rate in bpm
 	Value float64 `json:"value"`
 
@@ -2202,7 +2233,7 @@ type ClientFacingHrvTimeseries struct {
 	// Measured in rmssd.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// HRV calculated using rmssd during sleep
 	Value float64 `json:"value"`
 
@@ -2239,11 +2270,11 @@ type ClientFacingHypnogramTimeseries struct {
 	// enum: 1: deep, 2: light, 3: rem, 4: awake, -1: missing_data.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// Hypnogram for sleep stages {"deep": 1, "light": 2, "rem": 3, "awake": 4, "manual": 5, "missing_data": -1}
 	Value float64 `json:"value"`
 
@@ -2280,7 +2311,7 @@ type ClientFacingIgeTimeseries struct {
 	// Measured in FSU.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -2317,7 +2348,7 @@ type ClientFacingIggTimeseries struct {
 	// Measured in FSU.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The value of the measurement.
 	Value float64 `json:"value"`
 
@@ -2353,11 +2384,11 @@ type ClientFacingInsulinInjectionSample struct {
 	// Insulin type: rapid vs long acting
 	Type ClientFacingInsulinInjectionSampleType `json:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The recorded value for the interval.
 	Value float64 `json:"value"`
 	unit  string
@@ -2545,6 +2576,8 @@ type ClientFacingLabTest struct {
 	Markers []*ClientFacingMarker `json:"markers,omitempty"`
 	// Denotes whether a lab test requires using non-Vital physician networks. If it does then it's delegated - no otherwise.
 	IsDelegated *bool `json:"is_delegated,omitempty"`
+	// Whether the lab test was auto-generated by Vital
+	AutoGenerated *bool `json:"auto_generated,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2631,16 +2664,17 @@ func (c *ClientFacingLoinc) String() string {
 }
 
 type ClientFacingMarker struct {
-	Id          int         `json:"id"`
-	Name        string      `json:"name"`
-	Slug        string      `json:"slug"`
-	Description *string     `json:"description,omitempty"`
-	LabId       *int        `json:"lab_id,omitempty"`
-	ProviderId  *string     `json:"provider_id,omitempty"`
-	Type        *MarkerType `json:"type,omitempty"`
-	Unit        *string     `json:"unit,omitempty"`
-	Price       *string     `json:"price,omitempty"`
-	Aoe         *AoE        `json:"aoe,omitempty"`
+	Id              int         `json:"id"`
+	Name            string      `json:"name"`
+	Slug            string      `json:"slug"`
+	Description     *string     `json:"description,omitempty"`
+	LabId           *int        `json:"lab_id,omitempty"`
+	ProviderId      *string     `json:"provider_id,omitempty"`
+	Type            *MarkerType `json:"type,omitempty"`
+	Unit            *string     `json:"unit,omitempty"`
+	Price           *string     `json:"price,omitempty"`
+	Aoe             *AoE        `json:"aoe,omitempty"`
+	ALaCarteEnabled *bool       `json:"a_la_carte_enabled,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -2679,6 +2713,7 @@ type ClientFacingMarkerComplete struct {
 	Unit            *string               `json:"unit,omitempty"`
 	Price           *string               `json:"price,omitempty"`
 	Aoe             *AoE                  `json:"aoe,omitempty"`
+	ALaCarteEnabled *bool                 `json:"a_la_carte_enabled,omitempty"`
 	ExpectedResults []*ClientFacingResult `json:"expected_results,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -2743,11 +2778,11 @@ type ClientFacingMindfulnessMinutesTimeseries struct {
 	// Measured in minutes.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// Number of minutes spent in a mindful state.
 	Value float64 `json:"value"`
 
@@ -2784,11 +2819,11 @@ type ClientFacingNoteSample struct {
 	// User notes as text.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The recorded value for the interval.
 	Value string                           `json:"value"`
 	Tags  []ClientFacingNoteSampleTagsItem `json:"tags,omitempty"`
@@ -2862,9 +2897,9 @@ type ClientFacingOrder struct {
 	SampleId *string                   `json:"sample_id,omitempty"`
 	Notes    *string                   `json:"notes,omitempty"`
 	// When your order was created
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt string `json:"created_at"`
 	// When your order was last updated.
-	UpdatedAt          time.Time                 `json:"updated_at"`
+	UpdatedAt          string                    `json:"updated_at"`
 	Events             []*ClientFacingOrderEvent `json:"events,omitempty"`
 	Status             *OrderTopLevelStatus      `json:"status,omitempty"`
 	Physician          *ClientFacingPhysician    `json:"physician,omitempty"`
@@ -3009,7 +3044,7 @@ func (c *ClientFacingOrderDetails) Accept(visitor ClientFacingOrderDetailsVisito
 
 type ClientFacingOrderEvent struct {
 	Id        int         `json:"id"`
-	CreatedAt time.Time   `json:"created_at"`
+	CreatedAt string      `json:"created_at"`
 	Status    OrderStatus `json:"status,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -3039,12 +3074,12 @@ func (c *ClientFacingOrderEvent) String() string {
 }
 
 type ClientFacingPatientDetailsCompatible struct {
-	FirstName   *string   `json:"first_name,omitempty"`
-	LastName    *string   `json:"last_name,omitempty"`
-	Dob         time.Time `json:"dob"`
-	Gender      string    `json:"gender"`
-	PhoneNumber *string   `json:"phone_number,omitempty"`
-	Email       *string   `json:"email,omitempty"`
+	FirstName   *string `json:"first_name,omitempty"`
+	LastName    *string `json:"last_name,omitempty"`
+	Dob         string  `json:"dob"`
+	Gender      string  `json:"gender"`
+	PhoneNumber *string `json:"phone_number,omitempty"`
+	Email       *string `json:"email,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -3433,7 +3468,7 @@ type ClientFacingRespiratoryRateTimeseries struct {
 	// Measured in bpm.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// Average respiratory rate::breaths per minute
 	Value float64 `json:"value"`
 
@@ -3545,14 +3580,14 @@ type ClientFacingSleep struct {
 	UserId string `json:"user_id"`
 	Id     string `json:"id"`
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
-	Date time.Time `json:"date"`
+	Date string `json:"date"`
 	// Date of the sleep summary in the YYYY-mm-dd format. This generally matches the sleep end date.
 	CalendarDate string `json:"calendar_date"`
 	// UTC Time when the sleep period started
-	BedtimeStart time.Time `json:"bedtime_start"`
+	BedtimeStart string `json:"bedtime_start"`
 	// UTC Time when the sleep period ended
-	BedtimeStop    time.Time `json:"bedtime_stop"`
-	TimezoneOffset *int      `json:"timezone_offset,omitempty"`
+	BedtimeStop    string `json:"bedtime_stop"`
+	TimezoneOffset *int   `json:"timezone_offset,omitempty"`
 	// Total duration of the sleep period (sleep.duration = sleep.bedtime_end - sleep.bedtime_start)::seconds
 	Duration int `json:"duration"`
 	// Total amount of sleep registered during the sleep period (sleep.total = sleep.rem + sleep.light + sleep.deep)::seconds
@@ -3718,11 +3753,11 @@ type ClientFacingStepsTimeseries struct {
 	Type           *string `json:"type,omitempty"`
 	// Measured in counts
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The number of steps sampled at the time or interval::count
 	Value float64 `json:"value"`
 	unit  string
@@ -4406,8 +4441,8 @@ type ClientFacingStressLevelTimeseries struct {
 	// Measured in percentage (0-100).
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
-	Value     float64   `json:"value"`
+	Timestamp string  `json:"timestamp"`
+	Value     float64 `json:"value"`
 
 	_rawJSON json.RawMessage
 }
@@ -4521,8 +4556,8 @@ type ClientFacingTestkitOrder struct {
 	// The Vital TestKit Order ID
 	Id        string                `json:"id"`
 	Shipment  *ClientFacingShipment `json:"shipment,omitempty"`
-	CreatedAt time.Time             `json:"created_at"`
-	UpdatedAt time.Time             `json:"updated_at"`
+	CreatedAt string                `json:"created_at"`
+	UpdatedAt string                `json:"updated_at"`
 
 	_rawJSON json.RawMessage
 }
@@ -4738,7 +4773,7 @@ type ClientFacingUser struct {
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	ClientUserId string `json:"client_user_id"`
 	// When your item is created
-	CreatedOn time.Time `json:"created_on"`
+	CreatedOn string `json:"created_on"`
 	// A list of the users connected sources.
 	ConnectedSources  []*ConnectedSourceClientFacing `json:"connected_sources,omitempty"`
 	FallbackTimeZone  *FallbackTimeZone              `json:"fallback_time_zone,omitempty"`
@@ -4811,11 +4846,11 @@ type ClientFacingVo2MaxTimeseries struct {
 	// Measured in mL/kg/min.
 	Unit string `json:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The recorded value for the interval.
 	Value float64 `json:"value"`
 
@@ -4879,9 +4914,9 @@ func (c *ClientFacingWalkInOrderDetails) String() string {
 // To be used as part of a ClientFacingOrder.
 type ClientFacingWalkInTestOrder struct {
 	// The Vital walk-in test Order ID
-	Id        string    `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	Id        string `json:"id"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
 
 	_rawJSON json.RawMessage
 }
@@ -4916,7 +4951,7 @@ type ClientFacingWaterTimeseries struct {
 	// Measured in milliters.
 	Unit string `json:"unit"`
 	// The timestamp of the measurement.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// Quantity of water drank during the time period.
 	Value float64 `json:"value"`
 
@@ -4958,10 +4993,10 @@ type ClientFacingWorkout struct {
 	// Date of the workout summary in the YYYY-mm-dd format. This generally matches the workout start date.
 	CalendarDate string `json:"calendar_date"`
 	// Start time of the workout::time
-	TimeStart time.Time `json:"time_start"`
+	TimeStart string `json:"time_start"`
 	// End time of the workout::time
-	TimeEnd  time.Time `json:"time_end"`
-	Calories *float64  `json:"calories,omitempty"`
+	TimeEnd  string   `json:"time_end"`
+	Calories *float64 `json:"calories,omitempty"`
 	// Sport's name
 	Sport                *ClientFacingSport     `json:"sport,omitempty"`
 	HrZones              []int                  `json:"hr_zones,omitempty"`
@@ -5013,11 +5048,11 @@ type ClientFacingWorkoutDurationSample struct {
 	TimezoneOffset *int    `json:"timezone_offset,omitempty"`
 	Type           *string `json:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp string `json:"timestamp"`
 	// The start time (inclusive) of the interval.
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// The end time (exclusive) of the interval.
-	End time.Time `json:"end"`
+	End string `json:"end"`
 	// The recorded value for the interval.
 	Value     float64                                     `json:"value"`
 	Intensity *ClientFacingWorkoutDurationSampleIntensity `json:"intensity,omitempty"`
@@ -5215,7 +5250,7 @@ type ConnectedSourceClientFacing struct {
 	// The provider of this connected source.
 	Provider *ClientFacingProvider `json:"provider,omitempty"`
 	// When your item is created
-	CreatedOn time.Time `json:"created_on"`
+	CreatedOn string `json:"created_on"`
 	// Deprecated. Use `provider` instead. Subject to removal after 1 Jan 2024.
 	Source *ClientFacingProvider `json:"source,omitempty"`
 
@@ -5434,40 +5469,6 @@ func NewContraceptiveEntryTypeFromString(s string) (ContraceptiveEntryType, erro
 
 func (c ContraceptiveEntryType) Ptr() *ContraceptiveEntryType {
 	return &c
-}
-
-type DateTimeUnit string
-
-const (
-	DateTimeUnitMinute DateTimeUnit = "minute"
-	DateTimeUnitHour   DateTimeUnit = "hour"
-	DateTimeUnitDay    DateTimeUnit = "day"
-	DateTimeUnitWeek   DateTimeUnit = "week"
-	DateTimeUnitMonth  DateTimeUnit = "month"
-	DateTimeUnitYear   DateTimeUnit = "year"
-)
-
-func NewDateTimeUnitFromString(s string) (DateTimeUnit, error) {
-	switch s {
-	case "minute":
-		return DateTimeUnitMinute, nil
-	case "hour":
-		return DateTimeUnitHour, nil
-	case "day":
-		return DateTimeUnitDay, nil
-	case "week":
-		return DateTimeUnitWeek, nil
-	case "month":
-		return DateTimeUnitMonth, nil
-	case "year":
-		return DateTimeUnitYear, nil
-	}
-	var t DateTimeUnit
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (d DateTimeUnit) Ptr() *DateTimeUnit {
-	return &d
 }
 
 type DaySlots struct {
@@ -5814,8 +5815,8 @@ type FallbackBirthDate struct {
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	Value string `json:"value"`
 	// Slug for designated source
-	SourceSlug string    `json:"source_slug"`
-	UpdatedAt  time.Time `json:"updated_at"`
+	SourceSlug string `json:"source_slug"`
+	UpdatedAt  string `json:"updated_at"`
 
 	_rawJSON json.RawMessage
 }
@@ -5848,8 +5849,8 @@ type FallbackTimeZone struct {
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
 	Id string `json:"id"`
 	// Slug for designated source
-	SourceSlug string    `json:"source_slug"`
-	UpdatedAt  time.Time `json:"updated_at"`
+	SourceSlug string `json:"source_slug"`
+	UpdatedAt  string `json:"updated_at"`
 
 	_rawJSON json.RawMessage
 }
@@ -7674,9 +7675,9 @@ func (h HistoricalPullStatus) Ptr() *HistoricalPullStatus {
 }
 
 type HistoricalPullTimeline struct {
-	ScheduledAt time.Time  `json:"scheduled_at"`
-	StartedAt   *time.Time `json:"started_at,omitempty"`
-	EndedAt     *time.Time `json:"ended_at,omitempty"`
+	ScheduledAt string  `json:"scheduled_at"`
+	StartedAt   *string `json:"started_at,omitempty"`
+	EndedAt     *string `json:"ended_at,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8201,7 +8202,7 @@ func (l Labs) Ptr() *Labs {
 }
 
 type LastAttempt struct {
-	Timestamp time.Time     `json:"timestamp"`
+	Timestamp string        `json:"timestamp"`
 	Status    AttemptStatus `json:"status,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -8425,20 +8426,21 @@ func (m MarkerType) Ptr() *MarkerType {
 }
 
 type MealInDbBaseClientFacingSource struct {
-	Id         string                       `json:"id"`
-	UserId     string                       `json:"user_id"`
-	PriorityId int                          `json:"priority_id"`
-	SourceId   int                          `json:"source_id"`
-	ProviderId string                       `json:"provider_id"`
-	Timestamp  time.Time                    `json:"timestamp"`
-	Name       string                       `json:"name"`
-	Energy     *Energy                      `json:"energy,omitempty"`
-	Macros     *Macros                      `json:"macros,omitempty"`
-	Micros     *Micros                      `json:"micros,omitempty"`
-	Data       map[string]*ClientFacingFood `json:"data,omitempty"`
-	Source     *ClientFacingSource          `json:"source,omitempty"`
-	CreatedAt  time.Time                    `json:"created_at"`
-	UpdatedAt  time.Time                    `json:"updated_at"`
+	Id          string                       `json:"id"`
+	UserId      string                       `json:"user_id"`
+	PriorityId  int                          `json:"priority_id"`
+	SourceId    int                          `json:"source_id"`
+	ProviderId  string                       `json:"provider_id"`
+	Timestamp   string                       `json:"timestamp"`
+	Name        string                       `json:"name"`
+	Energy      *Energy                      `json:"energy,omitempty"`
+	Macros      *Macros                      `json:"macros,omitempty"`
+	Micros      *Micros                      `json:"micros,omitempty"`
+	Data        map[string]*ClientFacingFood `json:"data,omitempty"`
+	Source      *ClientFacingSource          `json:"source,omitempty"`
+	CreatedAt   string                       `json:"created_at"`
+	UpdatedAt   string                       `json:"updated_at"`
+	SourceAppId *string                      `json:"source_app_id,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -8849,6 +8851,36 @@ func (o OAuthProviders) Ptr() *OAuthProviders {
 	return &o
 }
 
+type OrderSetRequest struct {
+	LabTestIds []string    `json:"lab_test_ids,omitempty"`
+	AddOn      *AddOnOrder `json:"add_on,omitempty"`
+
+	_rawJSON json.RawMessage
+}
+
+func (o *OrderSetRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler OrderSetRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OrderSetRequest(value)
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OrderSetRequest) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
 type OrderStatus string
 
 const (
@@ -9208,8 +9240,8 @@ func (p *PatientDetails) String() string {
 }
 
 type Period struct {
-	Value *int         `json:"value,omitempty"`
-	Unit  DateTimeUnit `json:"unit,omitempty"`
+	Value *int       `json:"value,omitempty"`
+	Unit  PeriodUnit `json:"unit,omitempty"`
 
 	_rawJSON json.RawMessage
 }
@@ -9235,6 +9267,40 @@ func (p *Period) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
+}
+
+type PeriodUnit string
+
+const (
+	PeriodUnitMinute PeriodUnit = "minute"
+	PeriodUnitHour   PeriodUnit = "hour"
+	PeriodUnitDay    PeriodUnit = "day"
+	PeriodUnitWeek   PeriodUnit = "week"
+	PeriodUnitMonth  PeriodUnit = "month"
+	PeriodUnitYear   PeriodUnit = "year"
+)
+
+func NewPeriodUnitFromString(s string) (PeriodUnit, error) {
+	switch s {
+	case "minute":
+		return PeriodUnitMinute, nil
+	case "hour":
+		return PeriodUnitHour, nil
+	case "day":
+		return PeriodUnitDay, nil
+	case "week":
+		return PeriodUnitWeek, nil
+	case "month":
+		return PeriodUnitMonth, nil
+	case "year":
+		return PeriodUnitYear, nil
+	}
+	var t PeriodUnit
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PeriodUnit) Ptr() *PeriodUnit {
+	return &p
 }
 
 type PersonDetailsOutput struct {
@@ -9456,6 +9522,35 @@ func (p *PhysicianCreateRequestSignatureImage) Accept(visitor PhysicianCreateReq
 	case "png":
 		return visitor.VisitPng(p.Png)
 	}
+}
+
+type Placeholder struct {
+	Placeholder bool `json:"placeholder"`
+
+	_rawJSON json.RawMessage
+}
+
+func (p *Placeholder) UnmarshalJSON(data []byte) error {
+	type unmarshaler Placeholder
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Placeholder(value)
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Placeholder) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
 }
 
 type Png struct {
@@ -10009,9 +10104,8 @@ func (q QueryConfigWeekStartsOn) Ptr() *QueryConfigWeekStartsOn {
 type QueryInstruction struct {
 	Select        *QueryInstructionSelect      `json:"select,omitempty"`
 	PartitionBy   *QueryInstructionPartitionBy `json:"partition_by,omitempty"`
-	SwizzleBy     *QueryInstructionSwizzleBy   `json:"swizzle_by,omitempty"`
+	SwizzleBy     *Swizzling                   `json:"swizzle_by,omitempty"`
 	ReduceBy      []*Reducer                   `json:"reduce_by,omitempty"`
-	PrioritizeBy  []string                     `json:"prioritize_by,omitempty"`
 	SplitBySource *bool                        `json:"split_by_source,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -10041,17 +10135,17 @@ func (q *QueryInstruction) String() string {
 }
 
 type QueryInstructionPartitionBy struct {
-	typeName            string
-	Period              *Period
-	SessionPartitioning *SessionPartitioning
+	typeName    string
+	Period      *Period
+	Placeholder *Placeholder
 }
 
 func NewQueryInstructionPartitionByFromPeriod(value *Period) *QueryInstructionPartitionBy {
 	return &QueryInstructionPartitionBy{typeName: "period", Period: value}
 }
 
-func NewQueryInstructionPartitionByFromSessionPartitioning(value *SessionPartitioning) *QueryInstructionPartitionBy {
-	return &QueryInstructionPartitionBy{typeName: "sessionPartitioning", SessionPartitioning: value}
+func NewQueryInstructionPartitionByFromPlaceholder(value *Placeholder) *QueryInstructionPartitionBy {
+	return &QueryInstructionPartitionBy{typeName: "placeholder", Placeholder: value}
 }
 
 func (q *QueryInstructionPartitionBy) UnmarshalJSON(data []byte) error {
@@ -10061,10 +10155,10 @@ func (q *QueryInstructionPartitionBy) UnmarshalJSON(data []byte) error {
 		q.Period = valuePeriod
 		return nil
 	}
-	valueSessionPartitioning := new(SessionPartitioning)
-	if err := json.Unmarshal(data, &valueSessionPartitioning); err == nil {
-		q.typeName = "sessionPartitioning"
-		q.SessionPartitioning = valueSessionPartitioning
+	valuePlaceholder := new(Placeholder)
+	if err := json.Unmarshal(data, &valuePlaceholder); err == nil {
+		q.typeName = "placeholder"
+		q.Placeholder = valuePlaceholder
 		return nil
 	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
@@ -10076,14 +10170,14 @@ func (q QueryInstructionPartitionBy) MarshalJSON() ([]byte, error) {
 		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
 	case "period":
 		return json.Marshal(q.Period)
-	case "sessionPartitioning":
-		return json.Marshal(q.SessionPartitioning)
+	case "placeholder":
+		return json.Marshal(q.Placeholder)
 	}
 }
 
 type QueryInstructionPartitionByVisitor interface {
 	VisitPeriod(*Period) error
-	VisitSessionPartitioning(*SessionPartitioning) error
+	VisitPlaceholder(*Placeholder) error
 }
 
 func (q *QueryInstructionPartitionBy) Accept(visitor QueryInstructionPartitionByVisitor) error {
@@ -10092,8 +10186,8 @@ func (q *QueryInstructionPartitionBy) Accept(visitor QueryInstructionPartitionBy
 		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
 	case "period":
 		return visitor.VisitPeriod(q.Period)
-	case "sessionPartitioning":
-		return visitor.VisitSessionPartitioning(q.SessionPartitioning)
+	case "placeholder":
+		return visitor.VisitPlaceholder(q.Placeholder)
 	}
 }
 
@@ -10151,69 +10245,6 @@ func (q *QueryInstructionSelect) Accept(visitor QueryInstructionSelectVisitor) e
 		return visitor.VisitSleepSelector(q.SleepSelector)
 	case "activitySelector":
 		return visitor.VisitActivitySelector(q.ActivitySelector)
-	}
-}
-
-type QueryInstructionSwizzleBy struct {
-	typeName      string
-	Swizzling     *Swizzling
-	stringLiteral string
-}
-
-func NewQueryInstructionSwizzleByFromSwizzling(value *Swizzling) *QueryInstructionSwizzleBy {
-	return &QueryInstructionSwizzleBy{typeName: "swizzling", Swizzling: value}
-}
-
-func NewQueryInstructionSwizzleByWithStringLiteral() *QueryInstructionSwizzleBy {
-	return &QueryInstructionSwizzleBy{typeName: "stringLiteral", stringLiteral: "passthrough"}
-}
-
-func (q *QueryInstructionSwizzleBy) StringLiteral() string {
-	return q.stringLiteral
-}
-
-func (q *QueryInstructionSwizzleBy) UnmarshalJSON(data []byte) error {
-	valueSwizzling := new(Swizzling)
-	if err := json.Unmarshal(data, &valueSwizzling); err == nil {
-		q.typeName = "swizzling"
-		q.Swizzling = valueSwizzling
-		return nil
-	}
-	var valueStringLiteral string
-	if err := json.Unmarshal(data, &valueStringLiteral); err == nil {
-		if valueStringLiteral == "passthrough" {
-			q.typeName = "stringLiteral"
-			q.stringLiteral = valueStringLiteral
-			return nil
-		}
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
-}
-
-func (q QueryInstructionSwizzleBy) MarshalJSON() ([]byte, error) {
-	switch q.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
-	case "swizzling":
-		return json.Marshal(q.Swizzling)
-	case "stringLiteral":
-		return json.Marshal("passthrough")
-	}
-}
-
-type QueryInstructionSwizzleByVisitor interface {
-	VisitSwizzling(*Swizzling) error
-	VisitStringLiteral(string) error
-}
-
-func (q *QueryInstructionSwizzleBy) Accept(visitor QueryInstructionSwizzleByVisitor) error {
-	switch q.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
-	case "swizzling":
-		return visitor.VisitSwizzling(q.Swizzling)
-	case "stringLiteral":
-		return visitor.VisitStringLiteral(q.stringLiteral)
 	}
 }
 
@@ -10761,57 +10792,6 @@ func (s *ScopeRequirementsStr) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-type SessionPartitioning struct {
-	Session SessionPartitioningSession `json:"session,omitempty"`
-
-	_rawJSON json.RawMessage
-}
-
-func (s *SessionPartitioning) UnmarshalJSON(data []byte) error {
-	type unmarshaler SessionPartitioning
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SessionPartitioning(value)
-	s._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SessionPartitioning) String() string {
-	if len(s._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SessionPartitioningSession string
-
-const (
-	SessionPartitioningSessionMenstrualCycle SessionPartitioningSession = "menstrual_cycle"
-	SessionPartitioningSessionWorkout        SessionPartitioningSession = "workout"
-)
-
-func NewSessionPartitioningSessionFromString(s string) (SessionPartitioningSession, error) {
-	switch s {
-	case "menstrual_cycle":
-		return SessionPartitioningSessionMenstrualCycle, nil
-	case "workout":
-		return SessionPartitioningSessionWorkout, nil
-	}
-	var t SessionPartitioningSession
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (s SessionPartitioningSession) Ptr() *SessionPartitioningSession {
-	return &s
-}
-
 type SexualActivityEntry struct {
 	Date           string `json:"date"`
 	ProtectionUsed *bool  `json:"protection_used,omitempty"`
@@ -10880,8 +10860,8 @@ func (s *ShippingAddress) String() string {
 
 type SingleHistoricalPullStatistics struct {
 	Status       HistoricalPullStatus    `json:"status,omitempty"`
-	RangeStart   *time.Time              `json:"range_start,omitempty"`
-	RangeEnd     *time.Time              `json:"range_end,omitempty"`
+	RangeStart   *string                 `json:"range_start,omitempty"`
+	RangeEnd     *string                 `json:"range_end,omitempty"`
 	Timeline     *HistoricalPullTimeline `json:"timeline,omitempty"`
 	DaysWithData *int                    `json:"days_with_data,omitempty"`
 	Release      string                  `json:"release"`
@@ -10945,8 +10925,8 @@ func (s *SingleProviderHistoricalPullResponse) String() string {
 
 type SingleResourceStatistics struct {
 	LastAttempt *LastAttempt `json:"last_attempt,omitempty"`
-	OldestData  *time.Time   `json:"oldest_data,omitempty"`
-	NewestData  *time.Time   `json:"newest_data,omitempty"`
+	OldestData  *string      `json:"oldest_data,omitempty"`
+	NewestData  *string      `json:"newest_data,omitempty"`
 	SentCount   *int         `json:"sent_count,omitempty"`
 
 	_rawJSON json.RawMessage
@@ -11480,13 +11460,13 @@ func (t *TeamConfig) String() string {
 type TimeSlot struct {
 	BookingKey *string `json:"booking_key,omitempty"`
 	// Time is in UTC
-	Start time.Time `json:"start"`
+	Start string `json:"start"`
 	// Time is in UTC
-	End                      time.Time  `json:"end"`
-	ExpiresAt                *time.Time `json:"expires_at,omitempty"`
-	Price                    float64    `json:"price"`
-	IsPriority               bool       `json:"is_priority"`
-	NumAppointmentsAvailable int        `json:"num_appointments_available"`
+	End                      string  `json:"end"`
+	ExpiresAt                *string `json:"expires_at,omitempty"`
+	Price                    float64 `json:"price"`
+	IsPriority               bool    `json:"is_priority"`
+	NumAppointmentsAvailable int     `json:"num_appointments_available"`
 
 	_rawJSON json.RawMessage
 }
@@ -11515,8 +11495,8 @@ func (t *TimeSlot) String() string {
 }
 
 type TimeseriesMetricPoint struct {
-	Date  time.Time `json:"date"`
-	Value float64   `json:"value"`
+	Date  string  `json:"date"`
+	Value float64 `json:"value"`
 
 	_rawJSON json.RawMessage
 }

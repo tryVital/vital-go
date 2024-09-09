@@ -26,10 +26,12 @@ type CreateLabTestRequest struct {
 }
 
 type CreateOrderRequestCompatible struct {
-	UserId          string                        `json:"user_id"`
-	LabTestId       string                        `json:"lab_test_id"`
-	Physician       *PhysicianCreateRequest       `json:"physician,omitempty"`
-	HealthInsurance *HealthInsuranceCreateRequest `json:"health_insurance,omitempty"`
+	UserId           string                        `json:"user_id"`
+	LabTestId        *string                       `json:"lab_test_id,omitempty"`
+	OrderSet         *OrderSetRequest              `json:"order_set,omitempty"`
+	CollectionMethod *LabTestCollectionMethod      `json:"collection_method,omitempty"`
+	Physician        *PhysicianCreateRequest       `json:"physician,omitempty"`
+	HealthInsurance  *HealthInsuranceCreateRequest `json:"health_insurance,omitempty"`
 	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
 	Priority       *bool                     `json:"priority,omitempty"`
 	BillingType    *Billing                  `json:"billing_type,omitempty"`
@@ -62,9 +64,10 @@ type LabTestsGetMarkersRequest struct {
 	// The identifier Vital assigned to a lab partner.
 	LabId []*int `json:"-"`
 	// The name or test code of an individual biomarker or a panel.
-	Name *string `json:"-"`
-	Page *int    `json:"-"`
-	Size *int    `json:"-"`
+	Name            *string `json:"-"`
+	ALaCarteEnabled *bool   `json:"-"`
+	Page            *int    `json:"-"`
+	Size            *int    `json:"-"`
 }
 
 type LabTestsGetMarkersForLabTestRequest struct {
