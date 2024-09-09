@@ -7,50 +7,59 @@ import (
 	context "context"
 	json "encoding/json"
 	errors "errors"
-	fmt "fmt"
 	vitalgo "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
+	option "github.com/tryVital/vital-go/option"
 	io "io"
 	http "net/http"
-	url "net/url"
 )
 
 type Client struct {
-	baseURL    string
-	httpClient core.HTTPClient
-	header     http.Header
+	baseURL string
+	caller  *core.Caller
+	header  http.Header
 }
 
-func NewClient(opts ...core.ClientOption) *Client {
-	options := core.NewClientOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
+func NewClient(opts ...option.RequestOption) *Client {
+	options := core.NewRequestOptions(opts...)
 	return &Client{
-		baseURL:    options.BaseURL,
-		httpClient: options.HTTPClient,
-		header:     options.ToHeader(),
+		baseURL: options.BaseURL,
+		caller: core.NewCaller(
+			&core.CallerParams{
+				Client:      options.HTTPClient,
+				MaxAttempts: options.MaxAttempts,
+			},
+		),
+		header: options.ToHeader(),
 	}
 }
 
 // GET All users for team.
-func (c *Client) GetAll(ctx context.Context, request *vitalgo.UserGetAllRequest) (*vitalgo.PaginatedUsersResponse, error) {
+func (c *Client) GetAll(
+	ctx context.Context,
+	request *vitalgo.UserGetAllRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.PaginatedUsersResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/user"
-
-	queryParams := make(url.Values)
-	if request.Offset != nil {
-		queryParams.Add("offset", fmt.Sprintf("%v", *request.Offset))
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
 	}
-	if request.Limit != nil {
-		queryParams.Add("limit", fmt.Sprintf("%v", *request.Limit))
+	endpointURL := baseURL + "/v2/user"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -72,16 +81,19 @@ func (c *Client) GetAll(ctx context.Context, request *vitalgo.UserGetAllRequest)
 	}
 
 	var response *vitalgo.PaginatedUsersResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -89,12 +101,23 @@ func (c *Client) GetAll(ctx context.Context, request *vitalgo.UserGetAllRequest)
 }
 
 // POST Create a Vital user given a client_user_id and returns the user_id.
-func (c *Client) Create(ctx context.Context, request *vitalgo.UserCreateBody) (*vitalgo.ClientFacingUserKey, error) {
+func (c *Client) Create(
+	ctx context.Context,
+	request *vitalgo.UserCreateBody,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientFacingUserKey, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/user"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/user"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -123,16 +146,20 @@ func (c *Client) Create(ctx context.Context, request *vitalgo.UserCreateBody) (*
 	}
 
 	var response *vitalgo.ClientFacingUserKey
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -140,36 +167,59 @@ func (c *Client) Create(ctx context.Context, request *vitalgo.UserCreateBody) (*
 }
 
 // GET metrics for team.
-func (c *Client) GetTeamMetrics(ctx context.Context) (*vitalgo.MetricsResult, error) {
+func (c *Client) GetTeamMetrics(
+	ctx context.Context,
+	opts ...option.RequestOption,
+) (*vitalgo.MetricsResult, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/user/metrics"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/user/metrics"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	var response *vitalgo.MetricsResult
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		nil,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) GetUserSignInToken(ctx context.Context, userId string) (*vitalgo.UserSignInTokenResponse, error) {
+func (c *Client) GetUserSignInToken(
+	ctx context.Context,
+	userId string,
+	opts ...option.RequestOption,
+) (*vitalgo.UserSignInTokenResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v/sign_in_token", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v/sign_in_token", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -191,16 +241,19 @@ func (c *Client) GetUserSignInToken(ctx context.Context, userId string) (*vitalg
 	}
 
 	var response *vitalgo.UserSignInTokenResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -208,12 +261,23 @@ func (c *Client) GetUserSignInToken(ctx context.Context, userId string) (*vitalg
 }
 
 // GET Users connected providers
-func (c *Client) GetConnectedProviders(ctx context.Context, userId string) (map[string][]*vitalgo.ClientFacingProviderWithStatus, error) {
+func (c *Client) GetConnectedProviders(
+	ctx context.Context,
+	userId string,
+	opts ...option.RequestOption,
+) (map[string][]*vitalgo.ClientFacingProviderWithStatus, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/providers/%v", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/providers/%v", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -235,16 +299,19 @@ func (c *Client) GetConnectedProviders(ctx context.Context, userId string) (map[
 	}
 
 	var response map[string][]*vitalgo.ClientFacingProviderWithStatus
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -252,12 +319,23 @@ func (c *Client) GetConnectedProviders(ctx context.Context, userId string) (map[
 }
 
 // GET User details given the user_id.
-func (c *Client) Get(ctx context.Context, userId string) (*vitalgo.ClientFacingUser, error) {
+func (c *Client) Get(
+	ctx context.Context,
+	userId string,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientFacingUser, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -279,28 +357,42 @@ func (c *Client) Get(ctx context.Context, userId string) (*vitalgo.ClientFacingU
 	}
 
 	var response *vitalgo.ClientFacingUser
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) Delete(ctx context.Context, userId string) (*vitalgo.UserSuccessResponse, error) {
+func (c *Client) Delete(
+	ctx context.Context,
+	userId string,
+	opts ...option.RequestOption,
+) (*vitalgo.UserSuccessResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -322,28 +414,43 @@ func (c *Client) Delete(ctx context.Context, userId string) (*vitalgo.UserSucces
 	}
 
 	var response *vitalgo.UserSuccessResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodDelete,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) Patch(ctx context.Context, userId string, request *vitalgo.UserPatchBody) error {
+func (c *Client) Patch(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.UserPatchBody,
+	opts ...option.RequestOption,
+) error {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -364,28 +471,42 @@ func (c *Client) Patch(ctx context.Context, userId string, request *vitalgo.User
 		return apiError
 	}
 
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPatch,
-		request,
-		nil,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Client) GetLatestUserInfo(ctx context.Context, userId string) (*vitalgo.UserInfo, error) {
+func (c *Client) GetLatestUserInfo(
+	ctx context.Context,
+	userId string,
+	opts ...option.RequestOption,
+) (*vitalgo.UserInfo, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v/info/latest", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v/info/latest", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -407,28 +528,43 @@ func (c *Client) GetLatestUserInfo(ctx context.Context, userId string) (*vitalgo
 	}
 
 	var response *vitalgo.UserInfo
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) CreateInsurance(ctx context.Context, userId string, request *vitalgo.CreateInsuranceRequest) (*vitalgo.ClientFacingInsurance, error) {
+func (c *Client) CreateInsurance(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.CreateInsuranceRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientFacingInsurance, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v/insurance", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v/insurance", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -450,28 +586,43 @@ func (c *Client) CreateInsurance(ctx context.Context, userId string, request *vi
 	}
 
 	var response *vitalgo.ClientFacingInsurance
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) GetLatestInsurance(ctx context.Context, userId string) (*vitalgo.ClientFacingInsurance, error) {
+func (c *Client) GetLatestInsurance(
+	ctx context.Context,
+	userId string,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientFacingInsurance, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v/insurance/latest", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v/insurance/latest", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -493,28 +644,43 @@ func (c *Client) GetLatestInsurance(ctx context.Context, userId string) (*vitalg
 	}
 
 	var response *vitalgo.ClientFacingInsurance
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) UpsertUserInfo(ctx context.Context, userId string, request *vitalgo.UserInfoCreateRequest) (*vitalgo.UserInfo, error) {
+func (c *Client) UpsertUserInfo(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.UserInfoCreateRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.UserInfo, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v/info", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/%v/info", userId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -536,16 +702,20 @@ func (c *Client) UpsertUserInfo(ctx context.Context, userId string, request *vit
 	}
 
 	var response *vitalgo.UserInfo
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPatch,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -553,14 +723,24 @@ func (c *Client) UpsertUserInfo(ctx context.Context, userId string, request *vit
 }
 
 // GET user_id from client_user_id.
-//
-// A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
-func (c *Client) GetByClientUserId(ctx context.Context, clientUserId string) (*vitalgo.ClientFacingUser, error) {
+func (c *Client) GetByClientUserId(
+	ctx context.Context,
+	// A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
+	clientUserId string,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientFacingUser, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/resolve/%v", clientUserId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/resolve/%v", clientUserId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -582,29 +762,48 @@ func (c *Client) GetByClientUserId(ctx context.Context, clientUserId string) (*v
 	}
 
 	var response *vitalgo.ClientFacingUser
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-// Provider slug. e.g., `oura`, `fitbit`, `garmin`.
-func (c *Client) DeregisterProvider(ctx context.Context, userId string, provider vitalgo.Providers) (*vitalgo.UserSuccessResponse, error) {
+func (c *Client) DeregisterProvider(
+	ctx context.Context,
+	userId string,
+	// Provider slug. e.g., `oura`, `fitbit`, `garmin`.
+	provider vitalgo.Providers,
+	opts ...option.RequestOption,
+) (*vitalgo.UserSuccessResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/%v/%v", userId, provider)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(
+		baseURL+"/v2/user/%v/%v",
+		userId,
+		provider,
+	)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -626,40 +825,51 @@ func (c *Client) DeregisterProvider(ctx context.Context, userId string, provider
 	}
 
 	var response *vitalgo.UserSuccessResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodDelete,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) UndoDelete(ctx context.Context, request *vitalgo.UserUndoDeleteRequest) (*vitalgo.UserSuccessResponse, error) {
+func (c *Client) UndoDelete(
+	ctx context.Context,
+	request *vitalgo.UserUndoDeleteRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.UserSuccessResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/user/undo_delete"
-
-	queryParams := make(url.Values)
-	if request.UserId != nil {
-		queryParams.Add("user_id", fmt.Sprintf("%v", *request.UserId))
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
 	}
-	if request.ClientUserId != nil {
-		queryParams.Add("client_user_id", fmt.Sprintf("%v", *request.ClientUserId))
+	endpointURL := baseURL + "/v2/user/undo_delete"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
 
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
 		if err != nil {
@@ -680,16 +890,19 @@ func (c *Client) UndoDelete(ctx context.Context, request *vitalgo.UserUndoDelete
 	}
 
 	var response *vitalgo.UserSuccessResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -697,20 +910,32 @@ func (c *Client) UndoDelete(ctx context.Context, request *vitalgo.UserUndoDelete
 }
 
 // Trigger a manual refresh for a specific user
-func (c *Client) Refresh(ctx context.Context, userId string, request *vitalgo.UserRefreshRequest) (*vitalgo.UserRefreshSuccessResponse, error) {
+func (c *Client) Refresh(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.UserRefreshRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.UserRefreshSuccessResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/user/refresh/%v", userId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/user/refresh/%v", userId)
 
-	queryParams := make(url.Values)
-	if request.Timeout != nil {
-		queryParams.Add("timeout", fmt.Sprintf("%v", *request.Timeout))
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -739,16 +964,19 @@ func (c *Client) Refresh(ctx context.Context, userId string, request *vitalgo.Us
 	}
 
 	var response *vitalgo.UserRefreshSuccessResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}

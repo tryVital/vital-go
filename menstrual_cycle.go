@@ -4,7 +4,7 @@ package api
 
 type MenstrualCycleGetRequest struct {
 	// Provider oura/strava etc
-	Provider  *string `json:"-"`
-	StartDate string  `json:"-"`
-	EndDate   *string `json:"-"`
+	Provider  *string `json:"-" url:"provider,omitempty"`
+	StartDate string  `json:"-" url:"start_date"`
+	EndDate   *string `json:"-" url:"end_date,omitempty"`
 }

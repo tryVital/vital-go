@@ -7,86 +7,86 @@ import (
 )
 
 type LinkCodeCreateRequest struct {
-	UserId    string     `json:"-"`
-	ExpiresAt *time.Time `json:"-"`
+	UserId    string     `json:"-" url:"user_id"`
+	ExpiresAt *time.Time `json:"-" url:"expires_at,omitempty"`
 }
 
 type CompletePasswordProviderMfaBody struct {
-	VitalLinkToken *string `json:"-"`
-	MfaCode        string  `json:"mfa_code"`
+	VitalLinkToken *string `json:"-" url:"-"`
+	MfaCode        string  `json:"mfa_code" url:"-"`
 }
 
 type DemoConnectionCreationPayload struct {
 	// Vital user ID
-	UserId string `json:"user_id"`
+	UserId string `json:"user_id" url:"-"`
 	// Demo provider. For more information, please check out our docs (https://docs.tryvital.io/wearables/providers/test_data)
-	Provider DemoProviders `json:"provider,omitempty"`
+	Provider DemoProviders `json:"provider" url:"-"`
 }
 
 type EmailProviderAuthLink struct {
-	VitalLinkToken                *string    `json:"-"`
-	Email                         string     `json:"email"`
-	EmailProviderAuthLinkProvider *Providers `json:"provider,omitempty"`
-	Region                        *Region    `json:"region,omitempty"`
+	VitalLinkToken                *string    `json:"-" url:"-"`
+	Email                         string     `json:"email" url:"-"`
+	EmailProviderAuthLinkProvider *Providers `json:"provider,omitempty" url:"-"`
+	Region                        *Region    `json:"region,omitempty" url:"-"`
 }
 
 type ManualConnectionData struct {
-	UserId     string  `json:"user_id"`
-	ProviderId *string `json:"provider_id,omitempty"`
+	UserId     string  `json:"user_id" url:"-"`
+	ProviderId *string `json:"provider_id,omitempty" url:"-"`
 }
 
 type IndividualProviderData struct {
-	VitalLinkToken *string `json:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
 	// Username for provider
-	Username string `json:"username"`
+	Username string `json:"username" url:"-"`
 	// Password for provider
-	Password string  `json:"password"`
-	Region   *Region `json:"region,omitempty"`
+	Password string  `json:"password" url:"-"`
+	Region   *Region `json:"region,omitempty" url:"-"`
 }
 
 type EmailAuthLink struct {
-	VitalLinkToken *string   `json:"-"`
-	Email          string    `json:"email"`
-	Provider       Providers `json:"provider,omitempty"`
-	AuthType       AuthType  `json:"auth_type,omitempty"`
-	Region         *Region   `json:"region,omitempty"`
+	VitalLinkToken *string   `json:"-" url:"-"`
+	Email          string    `json:"email" url:"-"`
+	Provider       Providers `json:"provider" url:"-"`
+	AuthType       AuthType  `json:"auth_type" url:"-"`
+	Region         *Region   `json:"region,omitempty" url:"-"`
 }
 
 type LinkGenerateOauthLinkRequest struct {
-	VitalLinkToken *string `json:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
 }
 
 type LinkGetAllProvidersRequest struct {
-	VitalLinkToken *string `json:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
 }
 
 type LinkTokenBase struct {
-	Token     string                 `json:"token"`
-	IsUsed    *bool                  `json:"is_used,omitempty"`
-	OauthInfo map[string]interface{} `json:"oauth_info,omitempty"`
+	Token     string                 `json:"token" url:"-"`
+	IsUsed    *bool                  `json:"is_used,omitempty" url:"-"`
+	OauthInfo map[string]interface{} `json:"oauth_info,omitempty" url:"-"`
 }
 
 type PasswordAuthLink struct {
-	VitalLinkToken *string   `json:"-"`
-	Username       string    `json:"username"`
-	Password       string    `json:"password"`
-	Provider       Providers `json:"provider,omitempty"`
-	AuthType       AuthType  `json:"auth_type,omitempty"`
+	VitalLinkToken *string   `json:"-" url:"-"`
+	Username       string    `json:"username" url:"-"`
+	Password       string    `json:"password" url:"-"`
+	Provider       Providers `json:"provider" url:"-"`
+	AuthType       AuthType  `json:"auth_type" url:"-"`
 }
 
 type BeginLinkTokenRequest struct {
-	LinkToken string    `json:"link_token"`
-	Provider  Providers `json:"provider,omitempty"`
+	LinkToken string    `json:"link_token" url:"-"`
+	Provider  Providers `json:"provider" url:"-"`
 }
 
 type LinkTokenExchange struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
-	UserId            string      `json:"user_id"`
-	Provider          *Providers  `json:"provider,omitempty"`
-	RedirectUrl       *string     `json:"redirect_url,omitempty"`
-	FilterOnProviders []Providers `json:"filter_on_providers,omitempty"`
+	UserId            string      `json:"user_id" url:"-"`
+	Provider          *Providers  `json:"provider,omitempty" url:"-"`
+	RedirectUrl       *string     `json:"redirect_url,omitempty" url:"-"`
+	FilterOnProviders []Providers `json:"filter_on_providers,omitempty" url:"-"`
 }
 
 type LinkTokenStateRequest struct {
-	VitalLinkToken *string `json:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
 }

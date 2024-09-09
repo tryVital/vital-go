@@ -7,47 +7,59 @@ import (
 	context "context"
 	json "encoding/json"
 	errors "errors"
-	fmt "fmt"
 	vitalgo "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
+	option "github.com/tryVital/vital-go/option"
 	io "io"
 	http "net/http"
-	url "net/url"
 )
 
 type Client struct {
-	baseURL    string
-	httpClient core.HTTPClient
-	header     http.Header
+	baseURL string
+	caller  *core.Caller
+	header  http.Header
 }
 
-func NewClient(opts ...core.ClientOption) *Client {
-	options := core.NewClientOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
+func NewClient(opts ...option.RequestOption) *Client {
+	options := core.NewRequestOptions(opts...)
 	return &Client{
-		baseURL:    options.BaseURL,
-		httpClient: options.HTTPClient,
-		header:     options.ToHeader(),
+		baseURL: options.BaseURL,
+		caller: core.NewCaller(
+			&core.CallerParams{
+				Client:      options.HTTPClient,
+				MaxAttempts: options.MaxAttempts,
+			},
+		),
+		header: options.ToHeader(),
 	}
 }
 
 // Get Provider list
-func (c *Client) GetAll(ctx context.Context, request *vitalgo.ProvidersGetAllRequest) ([]*vitalgo.ClientFacingProviderDetailed, error) {
+func (c *Client) GetAll(
+	ctx context.Context,
+	request *vitalgo.ProvidersGetAllRequest,
+	opts ...option.RequestOption,
+) ([]*vitalgo.ClientFacingProviderDetailed, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/providers"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/providers"
 
-	queryParams := make(url.Values)
-	if request.SourceType != nil {
-		queryParams.Add("source_type", fmt.Sprintf("%v", *request.SourceType))
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -69,16 +81,19 @@ func (c *Client) GetAll(ctx context.Context, request *vitalgo.ProvidersGetAllReq
 	}
 
 	var response []*vitalgo.ClientFacingProviderDetailed
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}

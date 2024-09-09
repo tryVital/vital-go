@@ -4,5 +4,5 @@ package api
 
 type DevicesGetRawRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 }

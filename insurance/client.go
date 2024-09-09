@@ -7,38 +7,50 @@ import (
 	context "context"
 	json "encoding/json"
 	errors "errors"
-	fmt "fmt"
 	vitalgo "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
+	option "github.com/tryVital/vital-go/option"
 	io "io"
 	http "net/http"
-	url "net/url"
 )
 
 type Client struct {
-	baseURL    string
-	httpClient core.HTTPClient
-	header     http.Header
+	baseURL string
+	caller  *core.Caller
+	header  http.Header
 }
 
-func NewClient(opts ...core.ClientOption) *Client {
-	options := core.NewClientOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
+func NewClient(opts ...option.RequestOption) *Client {
+	options := core.NewRequestOptions(opts...)
 	return &Client{
-		baseURL:    options.BaseURL,
-		httpClient: options.HTTPClient,
-		header:     options.ToHeader(),
+		baseURL: options.BaseURL,
+		caller: core.NewCaller(
+			&core.CallerParams{
+				Client:      options.HTTPClient,
+				MaxAttempts: options.MaxAttempts,
+			},
+		),
+		header: options.ToHeader(),
 	}
 }
 
-func (c *Client) SearchPayorInfo(ctx context.Context, request *vitalgo.PayorSearchRequest) ([]*vitalgo.ClientFacingPayorSearchResponse, error) {
+func (c *Client) SearchPayorInfo(
+	ctx context.Context,
+	request *vitalgo.PayorSearchRequest,
+	opts ...option.RequestOption,
+) ([]*vitalgo.ClientFacingPayorSearchResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v3/insurance/search/payor"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v3/insurance/search/payor"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -60,34 +72,51 @@ func (c *Client) SearchPayorInfo(ctx context.Context, request *vitalgo.PayorSear
 	}
 
 	var response []*vitalgo.ClientFacingPayorSearchResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) SearchDiagnosis(ctx context.Context, request *vitalgo.InsuranceSearchDiagnosisRequest) ([]*vitalgo.ClientFacingDiagnosisInformation, error) {
+func (c *Client) SearchDiagnosis(
+	ctx context.Context,
+	request *vitalgo.InsuranceSearchDiagnosisRequest,
+	opts ...option.RequestOption,
+) ([]*vitalgo.ClientFacingDiagnosisInformation, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v3/insurance/search/diagnosis"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v3/insurance/search/diagnosis"
 
-	queryParams := make(url.Values)
-	queryParams.Add("diagnosis_query", fmt.Sprintf("%v", request.DiagnosisQuery))
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -109,16 +138,19 @@ func (c *Client) SearchDiagnosis(ctx context.Context, request *vitalgo.Insurance
 	}
 
 	var response []*vitalgo.ClientFacingDiagnosisInformation
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}

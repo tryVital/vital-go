@@ -4,51 +4,61 @@ package api
 
 type UserCreateBody struct {
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
-	ClientUserId      string  `json:"client_user_id"`
-	FallbackTimeZone  *string `json:"fallback_time_zone,omitempty"`
-	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
-	IngestionStart    *string `json:"ingestion_start,omitempty"`
-	IngestionEnd      *string `json:"ingestion_end,omitempty"`
+	ClientUserId string `json:"client_user_id" url:"-"`
+	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
+	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
+	FallbackTimeZone *string `json:"fallback_time_zone,omitempty" url:"-"`
+	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+	FallbackBirthDate *string `json:"fallback_birth_date,omitempty" url:"-"`
+	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	IngestionStart *string `json:"ingestion_start,omitempty" url:"-"`
+	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
+	IngestionEnd *string `json:"ingestion_end,omitempty" url:"-"`
 }
 
 type CreateInsuranceRequest struct {
-	PayorCode    string                                                  `json:"payor_code"`
-	MemberId     string                                                  `json:"member_id"`
-	GroupId      *string                                                 `json:"group_id,omitempty"`
-	Relationship ResponsibleRelationship                                 `json:"relationship,omitempty"`
-	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty"`
-	Guarantor    *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"guarantor,omitempty"`
+	PayorCode    string                                                  `json:"payor_code" url:"-"`
+	MemberId     string                                                  `json:"member_id" url:"-"`
+	GroupId      *string                                                 `json:"group_id,omitempty" url:"-"`
+	Relationship ResponsibleRelationship                                 `json:"relationship" url:"-"`
+	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty" url:"-"`
+	Guarantor    *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"guarantor,omitempty" url:"-"`
 }
 
 type UserGetAllRequest struct {
-	Offset *int `json:"-"`
-	Limit  *int `json:"-"`
+	Offset *int `json:"-" url:"offset,omitempty"`
+	Limit  *int `json:"-" url:"limit,omitempty"`
 }
 
 type UserPatchBody struct {
-	FallbackTimeZone  *string `json:"fallback_time_zone,omitempty"`
-	FallbackBirthDate *string `json:"fallback_birth_date,omitempty"`
-	IngestionStart    *string `json:"ingestion_start,omitempty"`
-	IngestionEnd      *string `json:"ingestion_end,omitempty"`
+	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
+	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
+	FallbackTimeZone *string `json:"fallback_time_zone,omitempty" url:"-"`
+	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+	FallbackBirthDate *string `json:"fallback_birth_date,omitempty" url:"-"`
+	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	IngestionStart *string `json:"ingestion_start,omitempty" url:"-"`
+	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
+	IngestionEnd *string `json:"ingestion_end,omitempty" url:"-"`
 }
 
 type UserRefreshRequest struct {
-	Timeout *float64 `json:"-"`
+	Timeout *float64 `json:"-" url:"timeout,omitempty"`
 }
 
 type UserUndoDeleteRequest struct {
 	// User ID to undo deletion. Mutually exclusive with `client_user_id`.
-	UserId *string `json:"-"`
+	UserId *string `json:"-" url:"user_id,omitempty"`
 	// Client User ID to undo deletion. Mutually exclusive with `user_id`.
-	ClientUserId *string `json:"-"`
+	ClientUserId *string `json:"-" url:"client_user_id,omitempty"`
 }
 
 type UserInfoCreateRequest struct {
-	FirstName   string   `json:"first_name"`
-	LastName    string   `json:"last_name"`
-	Email       string   `json:"email"`
-	PhoneNumber string   `json:"phone_number"`
-	Gender      string   `json:"gender"`
-	Dob         string   `json:"dob"`
-	Address     *Address `json:"address,omitempty"`
+	FirstName   string   `json:"first_name" url:"-"`
+	LastName    string   `json:"last_name" url:"-"`
+	Email       string   `json:"email" url:"-"`
+	PhoneNumber string   `json:"phone_number" url:"-"`
+	Gender      string   `json:"gender" url:"-"`
+	Dob         string   `json:"dob" url:"-"`
+	Address     *Address `json:"address,omitempty" url:"-"`
 }

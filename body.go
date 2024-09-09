@@ -4,18 +4,18 @@ package api
 
 type BodyGetRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type BodyGetRawRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }

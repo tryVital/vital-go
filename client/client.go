@@ -14,6 +14,7 @@ import (
 	link "github.com/tryVital/vital-go/link"
 	meal "github.com/tryVital/vital-go/meal"
 	menstrualcycle "github.com/tryVital/vital-go/menstrualcycle"
+	option "github.com/tryVital/vital-go/option"
 	profile "github.com/tryVital/vital-go/profile"
 	providers "github.com/tryVital/vital-go/providers"
 	sleep "github.com/tryVital/vital-go/sleep"
@@ -26,9 +27,9 @@ import (
 )
 
 type Client struct {
-	baseURL    string
-	httpClient core.HTTPClient
-	header     http.Header
+	baseURL string
+	caller  *core.Caller
+	header  http.Header
 
 	Link           *link.Client
 	Profile        *profile.Client
@@ -50,14 +51,16 @@ type Client struct {
 	Aggregate      *aggregate.Client
 }
 
-func NewClient(opts ...core.ClientOption) *Client {
-	options := core.NewClientOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
+func NewClient(opts ...option.RequestOption) *Client {
+	options := core.NewRequestOptions(opts...)
 	return &Client{
-		baseURL:        options.BaseURL,
-		httpClient:     options.HTTPClient,
+		baseURL: options.BaseURL,
+		caller: core.NewCaller(
+			&core.CallerParams{
+				Client:      options.HTTPClient,
+				MaxAttempts: options.MaxAttempts,
+			},
+		),
 		header:         options.ToHeader(),
 		Link:           link.NewClient(opts...),
 		Profile:        profile.NewClient(opts...),

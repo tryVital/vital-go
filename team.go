@@ -3,13 +3,13 @@
 package api
 
 type TeamGetLinkConfigRequest struct {
-	VitalLinkToken *string `json:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
 }
 
 type TeamGetSourcePrioritiesRequest struct {
-	DataType *string `json:"-"`
+	DataType *string `json:"-" url:"data_type,omitempty"`
 }
 
 type TeamGetUserByIdRequest struct {
-	QueryId *string `json:"-"`
+	QueryId *string `json:"-" url:"query_id,omitempty"`
 }

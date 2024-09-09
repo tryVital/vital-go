@@ -3,5 +3,5 @@
 package api
 
 type ProvidersGetAllRequest struct {
-	SourceType *string `json:"-"`
+	SourceType *string `json:"-" url:"source_type,omitempty"`
 }

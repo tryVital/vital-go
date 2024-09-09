@@ -10,27 +10,28 @@ import (
 	fmt "fmt"
 	vitalgo "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
+	option "github.com/tryVital/vital-go/option"
 	io "io"
 	http "net/http"
-	url "net/url"
-	time "time"
 )
 
 type Client struct {
-	baseURL    string
-	httpClient core.HTTPClient
-	header     http.Header
+	baseURL string
+	caller  *core.Caller
+	header  http.Header
 }
 
-func NewClient(opts ...core.ClientOption) *Client {
-	options := core.NewClientOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
+func NewClient(opts ...option.RequestOption) *Client {
+	options := core.NewRequestOptions(opts...)
 	return &Client{
-		baseURL:    options.BaseURL,
-		httpClient: options.HTTPClient,
-		header:     options.ToHeader(),
+		baseURL: options.BaseURL,
+		caller: core.NewCaller(
+			&core.CallerParams{
+				Client:      options.HTTPClient,
+				MaxAttempts: options.MaxAttempts,
+			},
+		),
+		header: options.ToHeader(),
 	}
 }
 
@@ -40,12 +41,23 @@ func NewClient(opts ...core.ClientOption) *Client {
 // with a specific provider, pass in a provider in the body. If you would
 // like to redirect to a custom url after successful or error connection,
 // pass in your own custom redirect_url parameter.
-func (c *Client) Token(ctx context.Context, request *vitalgo.LinkTokenExchange) (*vitalgo.LinkTokenExchangeResponse, error) {
+func (c *Client) Token(
+	ctx context.Context,
+	request *vitalgo.LinkTokenExchange,
+	opts ...option.RequestOption,
+) (*vitalgo.LinkTokenExchangeResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/token"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/token"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -67,28 +79,43 @@ func (c *Client) Token(ctx context.Context, request *vitalgo.LinkTokenExchange) 
 	}
 
 	var response *vitalgo.LinkTokenExchangeResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) IsTokenValid(ctx context.Context, request *vitalgo.LinkTokenBase) (map[string]interface{}, error) {
+func (c *Client) IsTokenValid(
+	ctx context.Context,
+	request *vitalgo.LinkTokenBase,
+	opts ...option.RequestOption,
+) (map[string]interface{}, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/token/isValid"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/token/isValid"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -110,16 +137,20 @@ func (c *Client) IsTokenValid(ctx context.Context, request *vitalgo.LinkTokenBas
 	}
 
 	var response map[string]interface{}
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -127,21 +158,31 @@ func (c *Client) IsTokenValid(ctx context.Context, request *vitalgo.LinkTokenBas
 }
 
 // Generate a token to invite a user of Vital mobile app to your team
-func (c *Client) CodeCreate(ctx context.Context, request *vitalgo.LinkCodeCreateRequest) (*vitalgo.VitalTokenCreatedResponse, error) {
+func (c *Client) CodeCreate(
+	ctx context.Context,
+	request *vitalgo.LinkCodeCreateRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.VitalTokenCreatedResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/code/create"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/code/create"
 
-	queryParams := make(url.Values)
-	queryParams.Add("user_id", fmt.Sprintf("%v", request.UserId))
-	if request.ExpiresAt != nil {
-		queryParams.Add("expires_at", fmt.Sprintf("%v", request.ExpiresAt.Format(time.RFC3339)))
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -163,16 +204,19 @@ func (c *Client) CodeCreate(ctx context.Context, request *vitalgo.LinkCodeCreate
 	}
 
 	var response *vitalgo.VitalTokenCreatedResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -181,12 +225,23 @@ func (c *Client) CodeCreate(ctx context.Context, request *vitalgo.LinkCodeCreate
 
 // REQUEST_SOURCE: VITAL-LINK
 // Start link token process
-func (c *Client) StartConnect(ctx context.Context, request *vitalgo.BeginLinkTokenRequest) (map[string]interface{}, error) {
+func (c *Client) StartConnect(
+	ctx context.Context,
+	request *vitalgo.BeginLinkTokenRequest,
+	opts ...option.RequestOption,
+) (map[string]interface{}, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/start"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/start"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -208,16 +263,20 @@ func (c *Client) StartConnect(ctx context.Context, request *vitalgo.BeginLinkTok
 	}
 
 	var response map[string]interface{}
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -226,14 +285,23 @@ func (c *Client) StartConnect(ctx context.Context, request *vitalgo.BeginLinkTok
 
 // REQUEST_SOURCE: VITAL-LINK
 // Check link token state - can be hit continuously used as heartbeat
-func (c *Client) TokenState(ctx context.Context, request *vitalgo.LinkTokenStateRequest) (map[string]interface{}, error) {
+func (c *Client) TokenState(
+	ctx context.Context,
+	request *vitalgo.LinkTokenStateRequest,
+	opts ...option.RequestOption,
+) (map[string]interface{}, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/state"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/state"
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -258,16 +326,19 @@ func (c *Client) TokenState(ctx context.Context, request *vitalgo.LinkTokenState
 	}
 
 	var response map[string]interface{}
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -275,14 +346,23 @@ func (c *Client) TokenState(ctx context.Context, request *vitalgo.LinkTokenState
 }
 
 // Deprecated. Use `POST /v2/link/provider/email/{provider}` instead.
-func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) (*vitalgo.ConnectionStatus, error) {
+func (c *Client) EmailAuth(
+	ctx context.Context,
+	request *vitalgo.EmailAuthLink,
+	opts ...option.RequestOption,
+) (*vitalgo.ConnectionStatus, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/auth/email"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/auth/email"
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -307,16 +387,20 @@ func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) 
 	}
 
 	var response *vitalgo.ConnectionStatus
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -324,14 +408,23 @@ func (c *Client) EmailAuth(ctx context.Context, request *vitalgo.EmailAuthLink) 
 }
 
 // Deprecated. Use `POST /v2/link/provider/password/{provider}` instead.
-func (c *Client) PasswordAuth(ctx context.Context, request *vitalgo.PasswordAuthLink) (*vitalgo.ConnectionStatus, error) {
+func (c *Client) PasswordAuth(
+	ctx context.Context,
+	request *vitalgo.PasswordAuthLink,
+	opts ...option.RequestOption,
+) (*vitalgo.ConnectionStatus, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/auth"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/auth"
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -356,16 +449,20 @@ func (c *Client) PasswordAuth(ctx context.Context, request *vitalgo.PasswordAuth
 	}
 
 	var response *vitalgo.ConnectionStatus
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -373,14 +470,24 @@ func (c *Client) PasswordAuth(ctx context.Context, request *vitalgo.PasswordAuth
 }
 
 // This endpoint generates an OAuth link for oauth provider
-func (c *Client) GenerateOauthLink(ctx context.Context, oauthProvider vitalgo.OAuthProviders, request *vitalgo.LinkGenerateOauthLinkRequest) (*vitalgo.Source, error) {
+func (c *Client) GenerateOauthLink(
+	ctx context.Context,
+	oauthProvider vitalgo.OAuthProviders,
+	request *vitalgo.LinkGenerateOauthLinkRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.Source, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/oauth/%v", oauthProvider)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/link/provider/oauth/%v", oauthProvider)
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -405,16 +512,19 @@ func (c *Client) GenerateOauthLink(ctx context.Context, oauthProvider vitalgo.OA
 	}
 
 	var response *vitalgo.Source
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -422,14 +532,24 @@ func (c *Client) GenerateOauthLink(ctx context.Context, oauthProvider vitalgo.OA
 }
 
 // This connects auth providers that are password based.
-func (c *Client) ConnectPasswordProvider(ctx context.Context, provider vitalgo.PasswordProviders, request *vitalgo.IndividualProviderData) (*vitalgo.ProviderLinkResponse, error) {
+func (c *Client) ConnectPasswordProvider(
+	ctx context.Context,
+	provider vitalgo.PasswordProviders,
+	request *vitalgo.IndividualProviderData,
+	opts ...option.RequestOption,
+) (*vitalgo.ProviderLinkResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/password/%v", provider)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/link/provider/password/%v", provider)
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -454,16 +574,20 @@ func (c *Client) ConnectPasswordProvider(ctx context.Context, provider vitalgo.P
 	}
 
 	var response *vitalgo.ProviderLinkResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -471,14 +595,24 @@ func (c *Client) ConnectPasswordProvider(ctx context.Context, provider vitalgo.P
 }
 
 // This connects auth providers that are password based.
-func (c *Client) CompletePasswordProviderMfa(ctx context.Context, provider vitalgo.PasswordProviders, request *vitalgo.CompletePasswordProviderMfaBody) (*vitalgo.ProviderLinkResponse, error) {
+func (c *Client) CompletePasswordProviderMfa(
+	ctx context.Context,
+	provider vitalgo.PasswordProviders,
+	request *vitalgo.CompletePasswordProviderMfaBody,
+	opts ...option.RequestOption,
+) (*vitalgo.ProviderLinkResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/password/%v/complete_mfa", provider)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/link/provider/password/%v/complete_mfa", provider)
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -503,16 +637,20 @@ func (c *Client) CompletePasswordProviderMfa(ctx context.Context, provider vital
 	}
 
 	var response *vitalgo.ProviderLinkResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -520,14 +658,24 @@ func (c *Client) CompletePasswordProviderMfa(ctx context.Context, provider vital
 }
 
 // This connects auth providers that are email based.
-func (c *Client) ConnectEmailAuthProvider(ctx context.Context, provider vitalgo.EmailProviders, request *vitalgo.EmailProviderAuthLink) (*vitalgo.ConnectionStatus, error) {
+func (c *Client) ConnectEmailAuthProvider(
+	ctx context.Context,
+	provider vitalgo.EmailProviders,
+	request *vitalgo.EmailProviderAuthLink,
+	opts ...option.RequestOption,
+) (*vitalgo.ConnectionStatus, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/email/%v", provider)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/link/provider/email/%v", provider)
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -552,16 +700,20 @@ func (c *Client) ConnectEmailAuthProvider(ctx context.Context, provider vitalgo.
 	}
 
 	var response *vitalgo.ConnectionStatus
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -569,14 +721,23 @@ func (c *Client) ConnectEmailAuthProvider(ctx context.Context, provider vitalgo.
 }
 
 // GET List of all available providers given the generated link token.
-func (c *Client) GetAllProviders(ctx context.Context, request *vitalgo.LinkGetAllProvidersRequest) ([]*vitalgo.SourceLink, error) {
+func (c *Client) GetAllProviders(
+	ctx context.Context,
+	request *vitalgo.LinkGetAllProvidersRequest,
+	opts ...option.RequestOption,
+) ([]*vitalgo.SourceLink, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/providers"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/providers"
 
-	headers := c.header.Clone()
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	if request.VitalLinkToken != nil {
 		headers.Add("x-vital-link-token", fmt.Sprintf("%v", *request.VitalLinkToken))
 	}
@@ -601,28 +762,43 @@ func (c *Client) GetAllProviders(ctx context.Context, request *vitalgo.LinkGetAl
 	}
 
 	var response []*vitalgo.SourceLink
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		headers,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (c *Client) ConnectManualProvider(ctx context.Context, provider vitalgo.ManualProviders, request *vitalgo.ManualConnectionData) (map[string]bool, error) {
+func (c *Client) ConnectManualProvider(
+	ctx context.Context,
+	provider vitalgo.ManualProviders,
+	request *vitalgo.ManualConnectionData,
+	opts ...option.RequestOption,
+) (map[string]bool, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/link/provider/manual/%v", provider)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/link/provider/manual/%v", provider)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -644,16 +820,20 @@ func (c *Client) ConnectManualProvider(ctx context.Context, provider vitalgo.Man
 	}
 
 	var response map[string]bool
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -661,12 +841,23 @@ func (c *Client) ConnectManualProvider(ctx context.Context, provider vitalgo.Man
 }
 
 // POST Connect the given Vital user to a demo provider.
-func (c *Client) ConnectDemoProvider(ctx context.Context, request *vitalgo.DemoConnectionCreationPayload) (*vitalgo.DemoConnectionStatus, error) {
+func (c *Client) ConnectDemoProvider(
+	ctx context.Context,
+	request *vitalgo.DemoConnectionCreationPayload,
+	opts ...option.RequestOption,
+) (*vitalgo.DemoConnectionStatus, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "v2/link/connect/demo"
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/connect/demo"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -688,16 +879,20 @@ func (c *Client) ConnectDemoProvider(ctx context.Context, request *vitalgo.DemoC
 	}
 
 	var response *vitalgo.DemoConnectionStatus
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodPost,
-		request,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}

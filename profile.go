@@ -4,10 +4,10 @@ package api
 
 type ProfileGetRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 }
 
 type ProfileGetRawRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 }

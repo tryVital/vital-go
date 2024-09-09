@@ -3,9 +3,9 @@
 package api
 
 type InsuranceSearchDiagnosisRequest struct {
-	DiagnosisQuery string `json:"-"`
+	DiagnosisQuery string `json:"-" url:"diagnosis_query"`
 }
 
 type PayorSearchRequest struct {
-	InsuranceName string `json:"insurance_name"`
+	InsuranceName string `json:"insurance_name" url:"-"`
 }

@@ -8,9 +8,9 @@ import (
 )
 
 type Query struct {
-	Timeframe    *QueryTimeframe     `json:"timeframe,omitempty"`
-	Instructions []*QueryInstruction `json:"instructions,omitempty"`
-	Config       *QueryConfig        `json:"config,omitempty"`
+	Timeframe    *QueryTimeframe     `json:"timeframe,omitempty" url:"-"`
+	Instructions []*QueryInstruction `json:"instructions,omitempty" url:"-"`
+	Config       *QueryConfig        `json:"config,omitempty" url:"-"`
 	accept       string
 }
 
@@ -42,29 +42,26 @@ func (q *Query) MarshalJSON() ([]byte, error) {
 }
 
 type QueryTimeframe struct {
-	typeName          string
 	RelativeTimeframe *RelativeTimeframe
 	Placeholder       *Placeholder
 }
 
 func NewQueryTimeframeFromRelativeTimeframe(value *RelativeTimeframe) *QueryTimeframe {
-	return &QueryTimeframe{typeName: "relativeTimeframe", RelativeTimeframe: value}
+	return &QueryTimeframe{RelativeTimeframe: value}
 }
 
 func NewQueryTimeframeFromPlaceholder(value *Placeholder) *QueryTimeframe {
-	return &QueryTimeframe{typeName: "placeholder", Placeholder: value}
+	return &QueryTimeframe{Placeholder: value}
 }
 
 func (q *QueryTimeframe) UnmarshalJSON(data []byte) error {
 	valueRelativeTimeframe := new(RelativeTimeframe)
 	if err := json.Unmarshal(data, &valueRelativeTimeframe); err == nil {
-		q.typeName = "relativeTimeframe"
 		q.RelativeTimeframe = valueRelativeTimeframe
 		return nil
 	}
 	valuePlaceholder := new(Placeholder)
 	if err := json.Unmarshal(data, &valuePlaceholder); err == nil {
-		q.typeName = "placeholder"
 		q.Placeholder = valuePlaceholder
 		return nil
 	}
@@ -72,14 +69,13 @@ func (q *QueryTimeframe) UnmarshalJSON(data []byte) error {
 }
 
 func (q QueryTimeframe) MarshalJSON() ([]byte, error) {
-	switch q.typeName {
-	default:
-		return nil, fmt.Errorf("invalid type %s in %T", q.typeName, q)
-	case "relativeTimeframe":
+	if q.RelativeTimeframe != nil {
 		return json.Marshal(q.RelativeTimeframe)
-	case "placeholder":
+	}
+	if q.Placeholder != nil {
 		return json.Marshal(q.Placeholder)
 	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
 type QueryTimeframeVisitor interface {
@@ -88,12 +84,11 @@ type QueryTimeframeVisitor interface {
 }
 
 func (q *QueryTimeframe) Accept(visitor QueryTimeframeVisitor) error {
-	switch q.typeName {
-	default:
-		return fmt.Errorf("invalid type %s in %T", q.typeName, q)
-	case "relativeTimeframe":
+	if q.RelativeTimeframe != nil {
 		return visitor.VisitRelativeTimeframe(q.RelativeTimeframe)
-	case "placeholder":
+	}
+	if q.Placeholder != nil {
 		return visitor.VisitPlaceholder(q.Placeholder)
 	}
+	return fmt.Errorf("type %T does not include a non-empty union type", q)
 }

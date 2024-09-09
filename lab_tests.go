@@ -8,125 +8,126 @@ import (
 )
 
 type AppointmentBookingRequest struct {
-	BookingKey string `json:"booking_key"`
+	BookingKey string `json:"booking_key" url:"-"`
 }
 
 type AppointmentCancelRequest struct {
-	CancellationReasonId string  `json:"cancellation_reason_id"`
-	Notes                *string `json:"notes,omitempty"`
+	CancellationReasonId string  `json:"cancellation_reason_id" url:"-"`
+	Notes                *string `json:"notes,omitempty" url:"-"`
 }
 
 type CreateLabTestRequest struct {
-	MarkerIds   []int                   `json:"marker_ids,omitempty"`
-	ProviderIds []string                `json:"provider_ids,omitempty"`
-	Name        string                  `json:"name"`
-	Method      LabTestCollectionMethod `json:"method,omitempty"`
-	Description string                  `json:"description"`
-	Fasting     *bool                   `json:"fasting,omitempty"`
+	MarkerIds   []int                   `json:"marker_ids,omitempty" url:"-"`
+	ProviderIds []string                `json:"provider_ids,omitempty" url:"-"`
+	Name        string                  `json:"name" url:"-"`
+	Method      LabTestCollectionMethod `json:"method" url:"-"`
+	Description string                  `json:"description" url:"-"`
+	Fasting     *bool                   `json:"fasting,omitempty" url:"-"`
 }
 
 type CreateOrderRequestCompatible struct {
-	UserId           string                        `json:"user_id"`
-	LabTestId        *string                       `json:"lab_test_id,omitempty"`
-	OrderSet         *OrderSetRequest              `json:"order_set,omitempty"`
-	CollectionMethod *LabTestCollectionMethod      `json:"collection_method,omitempty"`
-	Physician        *PhysicianCreateRequest       `json:"physician,omitempty"`
-	HealthInsurance  *HealthInsuranceCreateRequest `json:"health_insurance,omitempty"`
+	UserId           string                        `json:"user_id" url:"-"`
+	LabTestId        *string                       `json:"lab_test_id,omitempty" url:"-"`
+	OrderSet         *OrderSetRequest              `json:"order_set,omitempty" url:"-"`
+	CollectionMethod *LabTestCollectionMethod      `json:"collection_method,omitempty" url:"-"`
+	Physician        *PhysicianCreateRequest       `json:"physician,omitempty" url:"-"`
+	HealthInsurance  *HealthInsuranceCreateRequest `json:"health_insurance,omitempty" url:"-"`
 	// Defines whether order is priority or not. For some labs, this refers to a STAT order.
-	Priority       *bool                     `json:"priority,omitempty"`
-	BillingType    *Billing                  `json:"billing_type,omitempty"`
-	IcdCodes       []string                  `json:"icd_codes,omitempty"`
-	Consents       []*Consent                `json:"consents,omitempty"`
-	ActivateBy     *string                   `json:"activate_by,omitempty"`
-	AoeAnswers     []*AoEAnswer              `json:"aoe_answers,omitempty"`
-	Passthrough    *string                   `json:"passthrough,omitempty"`
-	PatientDetails *PatientDetails           `json:"patient_details,omitempty"`
-	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty"`
+	Priority    *bool      `json:"priority,omitempty" url:"-"`
+	BillingType *Billing   `json:"billing_type,omitempty" url:"-"`
+	IcdCodes    []string   `json:"icd_codes,omitempty" url:"-"`
+	Consents    []*Consent `json:"consents,omitempty" url:"-"`
+	// Schedule an Order to be processed in a future date.
+	ActivateBy     *string                   `json:"activate_by,omitempty" url:"-"`
+	AoeAnswers     []*AoEAnswer              `json:"aoe_answers,omitempty" url:"-"`
+	Passthrough    *string                   `json:"passthrough,omitempty" url:"-"`
+	PatientDetails *PatientDetails           `json:"patient_details,omitempty" url:"-"`
+	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty" url:"-"`
 }
 
 type LabTestsGetAreaInfoRequest struct {
 	// Zip code of the area to check
-	ZipCode string `json:"-"`
+	ZipCode string `json:"-" url:"zip_code"`
 	// Radius in which to search in miles
-	Radius *AllowedRadius `json:"-"`
+	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 	// Lab to check for PSCs
-	Lab *ClientFacingLabs `json:"-"`
+	Lab *ClientFacingLabs `json:"-" url:"lab,omitempty"`
 }
 
 type LabTestsGetLabelsPdfRequest struct {
 	// Number of labels to generate
-	NumberOfLabels *int `json:"-"`
+	NumberOfLabels *int `json:"-" url:"number_of_labels,omitempty"`
 	// Collection date
-	CollectionDate time.Time `json:"-"`
+	CollectionDate time.Time `json:"-" url:"collection_date"`
 }
 
 type LabTestsGetMarkersRequest struct {
 	// The identifier Vital assigned to a lab partner.
-	LabId []*int `json:"-"`
+	LabId []*int `json:"-" url:"lab_id,omitempty"`
 	// The name or test code of an individual biomarker or a panel.
-	Name            *string `json:"-"`
-	ALaCarteEnabled *bool   `json:"-"`
-	Page            *int    `json:"-"`
-	Size            *int    `json:"-"`
+	Name            *string `json:"-" url:"name,omitempty"`
+	ALaCarteEnabled *bool   `json:"-" url:"a_la_carte_enabled,omitempty"`
+	Page            *int    `json:"-" url:"page,omitempty"`
+	Size            *int    `json:"-" url:"size,omitempty"`
 }
 
 type LabTestsGetMarkersForLabTestRequest struct {
-	Page *int `json:"-"`
-	Size *int `json:"-"`
+	Page *int `json:"-" url:"page,omitempty"`
+	Size *int `json:"-" url:"size,omitempty"`
 }
 
 type LabTestsGetOrderPscInfoRequest struct {
 	// Radius in which to search in miles
-	Radius *AllowedRadius `json:"-"`
+	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 }
 
 type LabTestsGetOrdersRequest struct {
 	// Search by order id, user id, patient name, shipping dob, or shipping recipient name.
-	SearchInput *string `json:"-"`
+	SearchInput *string `json:"-" url:"search_input,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate *time.Time `json:"-"`
+	StartDate *time.Time `json:"-" url:"start_date,omitempty"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *time.Time `json:"-"`
+	EndDate *time.Time `json:"-" url:"end_date,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	UpdatedStartDate *time.Time `json:"-"`
+	UpdatedStartDate *time.Time `json:"-" url:"updated_start_date,omitempty"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	UpdatedEndDate *time.Time                              `json:"-"`
-	OrderKey       *LabTestsGetOrdersRequestOrderKey       `json:"-"`
-	OrderDirection *LabTestsGetOrdersRequestOrderDirection `json:"-"`
+	UpdatedEndDate *time.Time                              `json:"-" url:"updated_end_date,omitempty"`
+	OrderKey       *LabTestsGetOrdersRequestOrderKey       `json:"-" url:"order_key,omitempty"`
+	OrderDirection *LabTestsGetOrdersRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
 	// Filter by user ID.
-	UserId *string `json:"-"`
+	UserId *string `json:"-" url:"user_id,omitempty"`
 	// Filter by patient name.
-	PatientName *string `json:"-"`
+	PatientName *string `json:"-" url:"patient_name,omitempty"`
 	// Filter by shipping recipient name.
-	ShippingRecipientName *string `json:"-"`
+	ShippingRecipientName *string `json:"-" url:"shipping_recipient_name,omitempty"`
 	// Filter by order ids.
-	OrderIds []*string `json:"-"`
-	Page     *int      `json:"-"`
-	Size     *int      `json:"-"`
+	OrderIds []*string `json:"-" url:"order_ids,omitempty"`
+	Page     *int      `json:"-" url:"page,omitempty"`
+	Size     *int      `json:"-" url:"size,omitempty"`
 }
 
 type LabTestsGetPscInfoRequest struct {
 	// Zip code of the area to check
-	ZipCode string `json:"-"`
+	ZipCode string `json:"-" url:"zip_code"`
 	// Lab ID to check for PSCs
-	LabId int `json:"-"`
+	LabId int `json:"-" url:"lab_id"`
 	// Radius in which to search. (meters)
-	Radius *AllowedRadius `json:"-"`
+	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 }
 
 type RequestAppointmentRequest struct {
 	// At-home phlebotomy appointment address.
-	Address  *UsAddress          `json:"address,omitempty"`
-	Provider AppointmentProvider `json:"provider,omitempty"`
+	Address  *UsAddress          `json:"address,omitempty" url:"-"`
+	Provider AppointmentProvider `json:"provider" url:"-"`
 }
 
 type AppointmentRescheduleRequest struct {
-	BookingKey string `json:"booking_key"`
+	BookingKey string `json:"booking_key" url:"-"`
 }
 
 type LabTestsSimulateOrderProcessRequest struct {
-	FinalStatus *OrderStatus `json:"-"`
-	Delay       *int         `json:"-"`
+	FinalStatus *OrderStatus `json:"-" url:"final_status,omitempty"`
+	Delay       *int         `json:"-" url:"delay,omitempty"`
 }
 
 type LabTestsGetOrdersRequestOrderDirection string

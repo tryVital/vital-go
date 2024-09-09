@@ -4,620 +4,620 @@ package api
 
 type VitalsBloodOxygenRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBloodOxygenGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBloodPressureRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBloodPressureGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBodyFatRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBodyFatGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBodyTemperatureDeltaGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBodyTemperatureGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBodyWeightRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsBodyWeightGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCaffeineRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCaffeineGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCaloriesActiveRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCaloriesActiveGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCaloriesBasalRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCaloriesBasalGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCarbohydratesGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCholesterolRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCholesterolHdlRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCholesterolLdlRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCholesterolTotalRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCholesterolTriglyceridesRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsCholesterolGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsDistanceRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsDistanceGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsElectrocardiogramVoltageRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsElectrocardiogramVoltageGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsFloorsClimbedRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsFloorsClimbedGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsGlucoseRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsGlucoseGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsHeartrateRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsHeartrateGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsHrvRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsHrvGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsHypnogramRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsHypnogramGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsIgeRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsIgeGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsIggRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsIggGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsInsulinInjectionGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsMindfulnessMinutesRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsMindfulnessMinutesGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsNoteGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsRespiratoryRateRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsRespiratoryRateGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsStepsRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsStepsGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsStressLevelRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsStressLevelGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsVo2MaxRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsVo2MaxGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsWaterRequest struct {
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsWaterGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
 type VitalsWorkoutDurationGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-"`
+	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 	// Provider oura/strava etc
-	Provider *string `json:"-"`
+	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-"`
+	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-"`
+	EndDate *string `json:"-" url:"end_date,omitempty"`
 }

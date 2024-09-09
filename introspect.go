@@ -3,19 +3,19 @@
 package api
 
 type IntrospectGetUserHistoricalPullsRequest struct {
-	UserId    *string    `json:"-"`
-	Provider  *Providers `json:"-"`
-	UserLimit *int       `json:"-"`
-	Cursor    *string    `json:"-"`
+	UserId    *string    `json:"-" url:"user_id,omitempty"`
+	Provider  *Providers `json:"-" url:"provider,omitempty"`
+	UserLimit *int       `json:"-" url:"user_limit,omitempty"`
+	Cursor    *string    `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 }
 
 type IntrospectGetUserResourcesRequest struct {
-	UserId    *string    `json:"-"`
-	Provider  *Providers `json:"-"`
-	UserLimit *int       `json:"-"`
-	Cursor    *string    `json:"-"`
+	UserId    *string    `json:"-" url:"user_id,omitempty"`
+	Provider  *Providers `json:"-" url:"provider,omitempty"`
+	UserLimit *int       `json:"-" url:"user_limit,omitempty"`
+	Cursor    *string    `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 }

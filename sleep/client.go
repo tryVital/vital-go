@@ -7,51 +7,60 @@ import (
 	context "context"
 	json "encoding/json"
 	errors "errors"
-	fmt "fmt"
 	vitalgo "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
+	option "github.com/tryVital/vital-go/option"
 	io "io"
 	http "net/http"
-	url "net/url"
 )
 
 type Client struct {
-	baseURL    string
-	httpClient core.HTTPClient
-	header     http.Header
+	baseURL string
+	caller  *core.Caller
+	header  http.Header
 }
 
-func NewClient(opts ...core.ClientOption) *Client {
-	options := core.NewClientOptions()
-	for _, opt := range opts {
-		opt(options)
-	}
+func NewClient(opts ...option.RequestOption) *Client {
+	options := core.NewRequestOptions(opts...)
 	return &Client{
-		baseURL:    options.BaseURL,
-		httpClient: options.HTTPClient,
-		header:     options.ToHeader(),
+		baseURL: options.BaseURL,
+		caller: core.NewCaller(
+			&core.CallerParams{
+				Client:      options.HTTPClient,
+				MaxAttempts: options.MaxAttempts,
+			},
+		),
+		header: options.ToHeader(),
 	}
 }
 
 // Get Daily sleep for user_id
-func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.SleepGetRequest) (*vitalgo.ClientSleepResponse, error) {
+func (c *Client) Get(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.SleepGetRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientSleepResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/summary/sleep/%v", userId)
-
-	queryParams := make(url.Values)
-	if request.Provider != nil {
-		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
 	}
-	queryParams.Add("start_date", fmt.Sprintf("%v", request.StartDate))
-	if request.EndDate != nil {
-		queryParams.Add("end_date", fmt.Sprintf("%v", *request.EndDate))
+	endpointURL := core.EncodeURL(baseURL+"/v2/summary/sleep/%v", userId)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -73,16 +82,19 @@ func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.SleepG
 	}
 
 	var response *vitalgo.ClientSleepResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -90,24 +102,32 @@ func (c *Client) Get(ctx context.Context, userId string, request *vitalgo.SleepG
 }
 
 // Get Daily sleep stream for user_id
-func (c *Client) GetStream(ctx context.Context, userId string, request *vitalgo.SleepGetStreamRequest) (*vitalgo.ClientSleepResponse, error) {
+func (c *Client) GetStream(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.SleepGetStreamRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientSleepResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/summary/sleep/%v/stream", userId)
-
-	queryParams := make(url.Values)
-	if request.Provider != nil {
-		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
 	}
-	queryParams.Add("start_date", fmt.Sprintf("%v", request.StartDate))
-	if request.EndDate != nil {
-		queryParams.Add("end_date", fmt.Sprintf("%v", *request.EndDate))
+	endpointURL := core.EncodeURL(baseURL+"/v2/summary/sleep/%v/stream", userId)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -129,16 +149,19 @@ func (c *Client) GetStream(ctx context.Context, userId string, request *vitalgo.
 	}
 
 	var response *vitalgo.ClientSleepResponse
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -146,24 +169,32 @@ func (c *Client) GetStream(ctx context.Context, userId string, request *vitalgo.
 }
 
 // Get Daily sleep for user_id
-func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.SleepGetRawRequest) (*vitalgo.RawSleep, error) {
+func (c *Client) GetRaw(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.SleepGetRawRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.RawSleep, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/summary/sleep/%v/raw", userId)
-
-	queryParams := make(url.Values)
-	if request.Provider != nil {
-		queryParams.Add("provider", fmt.Sprintf("%v", *request.Provider))
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
 	}
-	queryParams.Add("start_date", fmt.Sprintf("%v", request.StartDate))
-	if request.EndDate != nil {
-		queryParams.Add("end_date", fmt.Sprintf("%v", *request.EndDate))
+	endpointURL := core.EncodeURL(baseURL+"/v2/summary/sleep/%v/raw", userId)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
 	}
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -185,16 +216,19 @@ func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.Sle
 	}
 
 	var response *vitalgo.RawSleep
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
@@ -202,14 +236,24 @@ func (c *Client) GetRaw(ctx context.Context, userId string, request *vitalgo.Sle
 }
 
 // Get Sleep stream for a user_id
-//
-// The Vital Sleep ID
-func (c *Client) GetStreamBySleepId(ctx context.Context, sleepId string) (*vitalgo.ClientFacingSleepStream, error) {
+func (c *Client) GetStreamBySleepId(
+	ctx context.Context,
+	// The Vital Sleep ID
+	sleepId string,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientFacingSleepStream, error) {
+	options := core.NewRequestOptions(opts...)
+
 	baseURL := "https://api.tryvital.io"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"v2/timeseries/sleep/%v/stream", sleepId)
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/timeseries/sleep/%v/stream", sleepId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -231,16 +275,19 @@ func (c *Client) GetStreamBySleepId(ctx context.Context, sleepId string) (*vital
 	}
 
 	var response *vitalgo.ClientFacingSleepStream
-	if err := core.DoRequest(
+	if err := c.caller.Call(
 		ctx,
-		c.httpClient,
-		endpointURL,
-		http.MethodGet,
-		nil,
-		&response,
-		false,
-		c.header,
-		errorDecoder,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
 	); err != nil {
 		return nil, err
 	}
