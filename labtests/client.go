@@ -423,7 +423,7 @@ func (c *Client) GetById(
 // for the given address and order.
 func (c *Client) GetPhlebotomyAppointmentAvailability(
 	ctx context.Context,
-	request *vitalgo.UsAddress,
+	request *vitalgo.LabTestsGetPhlebotomyAppointmentAvailabilityRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.AppointmentAvailabilitySlots, error) {
 	options := core.NewRequestOptions(opts...)
@@ -436,6 +436,14 @@ func (c *Client) GetPhlebotomyAppointmentAvailability(
 		baseURL = options.BaseURL
 	}
 	endpointURL := baseURL + "/v3/order/phlebotomy/appointment/availability"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

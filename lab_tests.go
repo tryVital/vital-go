@@ -3,6 +3,7 @@
 package api
 
 import (
+	json "encoding/json"
 	fmt "fmt"
 	time "time"
 )
@@ -104,6 +105,25 @@ type LabTestsGetOrdersRequest struct {
 	OrderIds []*string `json:"-" url:"order_ids,omitempty"`
 	Page     *int      `json:"-" url:"page,omitempty"`
 	Size     *int      `json:"-" url:"size,omitempty"`
+}
+
+type LabTestsGetPhlebotomyAppointmentAvailabilityRequest struct {
+	// Start date for appointment availability
+	StartDate *string    `json:"-" url:"start_date,omitempty"`
+	Body      *UsAddress `json:"-" url:"-"`
+}
+
+func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) UnmarshalJSON(data []byte) error {
+	body := new(UsAddress)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	l.Body = body
+	return nil
+}
+
+func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
 }
 
 type LabTestsGetPscInfoRequest struct {
