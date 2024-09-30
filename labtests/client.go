@@ -209,7 +209,7 @@ func (c *Client) GetMarkersForOrderSet(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := baseURL + "/v3/lab_tests/order_set/markers"
+	endpointURL := baseURL + "/v3/lab_tests/list_order_set_markers"
 
 	queryParams, err := core.QueryValues(request)
 	if err != nil {

@@ -40,6 +40,8 @@ type UserPatchBody struct {
 	IngestionStart *string `json:"ingestion_start,omitempty" url:"-"`
 	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
 	IngestionEnd *string `json:"ingestion_end,omitempty" url:"-"`
+	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
+	ClientUserId *string `json:"client_user_id,omitempty" url:"-"`
 }
 
 type UserRefreshRequest struct {
