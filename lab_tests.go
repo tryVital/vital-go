@@ -77,6 +77,25 @@ type LabTestsGetMarkersForLabTestRequest struct {
 	Size *int `json:"-" url:"size,omitempty"`
 }
 
+type LabTestsGetMarkersForOrderSetRequest struct {
+	Page *int             `json:"-" url:"page,omitempty"`
+	Size *int             `json:"-" url:"size,omitempty"`
+	Body *OrderSetRequest `json:"-" url:"-"`
+}
+
+func (l *LabTestsGetMarkersForOrderSetRequest) UnmarshalJSON(data []byte) error {
+	body := new(OrderSetRequest)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	l.Body = body
+	return nil
+}
+
+func (l *LabTestsGetMarkersForOrderSetRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
+}
+
 type LabTestsGetOrderPscInfoRequest struct {
 	// Radius in which to search in miles
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
