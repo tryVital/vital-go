@@ -65,8 +65,8 @@ const (
 	ActivityColumnExprActivityIntensityMediumSecond    ActivityColumnExprActivity = "intensity_medium_second"
 	ActivityColumnExprActivityIntensityHighSecond      ActivityColumnExprActivity = "intensity_high_second"
 	ActivityColumnExprActivityHeartRateMean            ActivityColumnExprActivity = "heart_rate_mean"
-	ActivityColumnExprActivityHeartRateMin             ActivityColumnExprActivity = "heart_rate_min"
-	ActivityColumnExprActivityHeartRateMax             ActivityColumnExprActivity = "heart_rate_max"
+	ActivityColumnExprActivityHeartRateMinimum         ActivityColumnExprActivity = "heart_rate_minimum"
+	ActivityColumnExprActivityHeartRateMaximum         ActivityColumnExprActivity = "heart_rate_maximum"
 	ActivityColumnExprActivityHeartRateResting         ActivityColumnExprActivity = "heart_rate_resting"
 	ActivityColumnExprActivitySourceType               ActivityColumnExprActivity = "source_type"
 	ActivityColumnExprActivitySourceProvider           ActivityColumnExprActivity = "source_provider"
@@ -99,10 +99,10 @@ func NewActivityColumnExprActivityFromString(s string) (ActivityColumnExprActivi
 		return ActivityColumnExprActivityIntensityHighSecond, nil
 	case "heart_rate_mean":
 		return ActivityColumnExprActivityHeartRateMean, nil
-	case "heart_rate_min":
-		return ActivityColumnExprActivityHeartRateMin, nil
-	case "heart_rate_max":
-		return ActivityColumnExprActivityHeartRateMax, nil
+	case "heart_rate_minimum":
+		return ActivityColumnExprActivityHeartRateMinimum, nil
+	case "heart_rate_maximum":
+		return ActivityColumnExprActivityHeartRateMaximum, nil
 	case "heart_rate_resting":
 		return ActivityColumnExprActivityHeartRateResting, nil
 	case "source_type":
@@ -319,6 +319,7 @@ func (a *AggregateExpr) String() string {
 type AggregateExprArg struct {
 	SleepColumnExpr    *SleepColumnExpr
 	ActivityColumnExpr *ActivityColumnExpr
+	WorkoutColumnExpr  *WorkoutColumnExpr
 	IndexColumnExpr    *IndexColumnExpr
 	GroupKeyColumnExpr *GroupKeyColumnExpr
 }
@@ -329,6 +330,10 @@ func NewAggregateExprArgFromSleepColumnExpr(value *SleepColumnExpr) *AggregateEx
 
 func NewAggregateExprArgFromActivityColumnExpr(value *ActivityColumnExpr) *AggregateExprArg {
 	return &AggregateExprArg{ActivityColumnExpr: value}
+}
+
+func NewAggregateExprArgFromWorkoutColumnExpr(value *WorkoutColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{WorkoutColumnExpr: value}
 }
 
 func NewAggregateExprArgFromIndexColumnExpr(value *IndexColumnExpr) *AggregateExprArg {
@@ -348,6 +353,11 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 	valueActivityColumnExpr := new(ActivityColumnExpr)
 	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
 		a.ActivityColumnExpr = valueActivityColumnExpr
+		return nil
+	}
+	valueWorkoutColumnExpr := new(WorkoutColumnExpr)
+	if err := json.Unmarshal(data, &valueWorkoutColumnExpr); err == nil {
+		a.WorkoutColumnExpr = valueWorkoutColumnExpr
 		return nil
 	}
 	valueIndexColumnExpr := new(IndexColumnExpr)
@@ -370,6 +380,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.ActivityColumnExpr != nil {
 		return json.Marshal(a.ActivityColumnExpr)
 	}
+	if a.WorkoutColumnExpr != nil {
+		return json.Marshal(a.WorkoutColumnExpr)
+	}
 	if a.IndexColumnExpr != nil {
 		return json.Marshal(a.IndexColumnExpr)
 	}
@@ -382,6 +395,7 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 type AggregateExprArgVisitor interface {
 	VisitSleepColumnExpr(*SleepColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
+	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 }
@@ -392,6 +406,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(a.ActivityColumnExpr)
+	}
+	if a.WorkoutColumnExpr != nil {
+		return visitor.VisitWorkoutColumnExpr(a.WorkoutColumnExpr)
 	}
 	if a.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(a.IndexColumnExpr)
@@ -10763,6 +10780,7 @@ type IndexColumnExprIndex string
 const (
 	IndexColumnExprIndexSleep    IndexColumnExprIndex = "sleep"
 	IndexColumnExprIndexActivity IndexColumnExprIndex = "activity"
+	IndexColumnExprIndexWorkout  IndexColumnExprIndex = "workout"
 )
 
 func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
@@ -10771,6 +10789,8 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 		return IndexColumnExprIndexSleep, nil
 	case "activity":
 		return IndexColumnExprIndexActivity, nil
+	case "workout":
+		return IndexColumnExprIndexWorkout, nil
 	}
 	var t IndexColumnExprIndex
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -13681,6 +13701,7 @@ type QueryInstructionSelectItem struct {
 	AggregateExpr      *AggregateExpr
 	SleepColumnExpr    *SleepColumnExpr
 	ActivityColumnExpr *ActivityColumnExpr
+	WorkoutColumnExpr  *WorkoutColumnExpr
 	IndexColumnExpr    *IndexColumnExpr
 	GroupKeyColumnExpr *GroupKeyColumnExpr
 }
@@ -13695,6 +13716,10 @@ func NewQueryInstructionSelectItemFromSleepColumnExpr(value *SleepColumnExpr) *Q
 
 func NewQueryInstructionSelectItemFromActivityColumnExpr(value *ActivityColumnExpr) *QueryInstructionSelectItem {
 	return &QueryInstructionSelectItem{ActivityColumnExpr: value}
+}
+
+func NewQueryInstructionSelectItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QueryInstructionSelectItem {
+	return &QueryInstructionSelectItem{WorkoutColumnExpr: value}
 }
 
 func NewQueryInstructionSelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QueryInstructionSelectItem {
@@ -13721,6 +13746,11 @@ func (q *QueryInstructionSelectItem) UnmarshalJSON(data []byte) error {
 		q.ActivityColumnExpr = valueActivityColumnExpr
 		return nil
 	}
+	valueWorkoutColumnExpr := new(WorkoutColumnExpr)
+	if err := json.Unmarshal(data, &valueWorkoutColumnExpr); err == nil {
+		q.WorkoutColumnExpr = valueWorkoutColumnExpr
+		return nil
+	}
 	valueIndexColumnExpr := new(IndexColumnExpr)
 	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
 		q.IndexColumnExpr = valueIndexColumnExpr
@@ -13744,6 +13774,9 @@ func (q QueryInstructionSelectItem) MarshalJSON() ([]byte, error) {
 	if q.ActivityColumnExpr != nil {
 		return json.Marshal(q.ActivityColumnExpr)
 	}
+	if q.WorkoutColumnExpr != nil {
+		return json.Marshal(q.WorkoutColumnExpr)
+	}
 	if q.IndexColumnExpr != nil {
 		return json.Marshal(q.IndexColumnExpr)
 	}
@@ -13757,6 +13790,7 @@ type QueryInstructionSelectItemVisitor interface {
 	VisitAggregateExpr(*AggregateExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
+	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 }
@@ -13770,6 +13804,9 @@ func (q *QueryInstructionSelectItem) Accept(visitor QueryInstructionSelectItemVi
 	}
 	if q.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
+	}
+	if q.WorkoutColumnExpr != nil {
+		return visitor.VisitWorkoutColumnExpr(q.WorkoutColumnExpr)
 	}
 	if q.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(q.IndexColumnExpr)
@@ -16034,6 +16071,159 @@ func NewVitaminsFromString(s string) (Vitamins, error) {
 
 func (v Vitamins) Ptr() *Vitamins {
 	return &v
+}
+
+type WorkoutColumnExpr struct {
+	Workout WorkoutColumnExprWorkout `json:"workout" url:"workout"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (w *WorkoutColumnExpr) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WorkoutColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler WorkoutColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WorkoutColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+
+	w._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WorkoutColumnExpr) String() string {
+	if len(w._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+type WorkoutColumnExprWorkout string
+
+const (
+	WorkoutColumnExprWorkoutSessionStart          WorkoutColumnExprWorkout = "session_start"
+	WorkoutColumnExprWorkoutSessionEnd            WorkoutColumnExprWorkout = "session_end"
+	WorkoutColumnExprWorkoutTitle                 WorkoutColumnExprWorkout = "title"
+	WorkoutColumnExprWorkoutSportId               WorkoutColumnExprWorkout = "sport_id"
+	WorkoutColumnExprWorkoutSportName             WorkoutColumnExprWorkout = "sport_name"
+	WorkoutColumnExprWorkoutSportSlug             WorkoutColumnExprWorkout = "sport_slug"
+	WorkoutColumnExprWorkoutDurationActiveSecond  WorkoutColumnExprWorkout = "duration_active_second"
+	WorkoutColumnExprWorkoutHeartRateMean         WorkoutColumnExprWorkout = "heart_rate_mean"
+	WorkoutColumnExprWorkoutHeartRateMinimum      WorkoutColumnExprWorkout = "heart_rate_minimum"
+	WorkoutColumnExprWorkoutHeartRateMaximum      WorkoutColumnExprWorkout = "heart_rate_maximum"
+	WorkoutColumnExprWorkoutHeartRateZone1        WorkoutColumnExprWorkout = "heart_rate_zone_1"
+	WorkoutColumnExprWorkoutHeartRateZone2        WorkoutColumnExprWorkout = "heart_rate_zone_2"
+	WorkoutColumnExprWorkoutHeartRateZone3        WorkoutColumnExprWorkout = "heart_rate_zone_3"
+	WorkoutColumnExprWorkoutHeartRateZone4        WorkoutColumnExprWorkout = "heart_rate_zone_4"
+	WorkoutColumnExprWorkoutHeartRateZone5        WorkoutColumnExprWorkout = "heart_rate_zone_5"
+	WorkoutColumnExprWorkoutHeartRateZone6        WorkoutColumnExprWorkout = "heart_rate_zone_6"
+	WorkoutColumnExprWorkoutDistanceMeter         WorkoutColumnExprWorkout = "distance_meter"
+	WorkoutColumnExprWorkoutCalories              WorkoutColumnExprWorkout = "calories"
+	WorkoutColumnExprWorkoutElevationGainMeter    WorkoutColumnExprWorkout = "elevation_gain_meter"
+	WorkoutColumnExprWorkoutElevationMaximumMeter WorkoutColumnExprWorkout = "elevation_maximum_meter"
+	WorkoutColumnExprWorkoutElevationMinimumMeter WorkoutColumnExprWorkout = "elevation_minimum_meter"
+	WorkoutColumnExprWorkoutAverageSpeed          WorkoutColumnExprWorkout = "average_speed"
+	WorkoutColumnExprWorkoutMaxSpeed              WorkoutColumnExprWorkout = "max_speed"
+	WorkoutColumnExprWorkoutPowerSource           WorkoutColumnExprWorkout = "power_source"
+	WorkoutColumnExprWorkoutPowerMean             WorkoutColumnExprWorkout = "power_mean"
+	WorkoutColumnExprWorkoutPowerMaximum          WorkoutColumnExprWorkout = "power_maximum"
+	WorkoutColumnExprWorkoutPowerWeightedMean     WorkoutColumnExprWorkout = "power_weighted_mean"
+	WorkoutColumnExprWorkoutSteps                 WorkoutColumnExprWorkout = "steps"
+	WorkoutColumnExprWorkoutMap                   WorkoutColumnExprWorkout = "map"
+	WorkoutColumnExprWorkoutSourceType            WorkoutColumnExprWorkout = "source_type"
+	WorkoutColumnExprWorkoutSourceProvider        WorkoutColumnExprWorkout = "source_provider"
+	WorkoutColumnExprWorkoutSourceAppId           WorkoutColumnExprWorkout = "source_app_id"
+)
+
+func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, error) {
+	switch s {
+	case "session_start":
+		return WorkoutColumnExprWorkoutSessionStart, nil
+	case "session_end":
+		return WorkoutColumnExprWorkoutSessionEnd, nil
+	case "title":
+		return WorkoutColumnExprWorkoutTitle, nil
+	case "sport_id":
+		return WorkoutColumnExprWorkoutSportId, nil
+	case "sport_name":
+		return WorkoutColumnExprWorkoutSportName, nil
+	case "sport_slug":
+		return WorkoutColumnExprWorkoutSportSlug, nil
+	case "duration_active_second":
+		return WorkoutColumnExprWorkoutDurationActiveSecond, nil
+	case "heart_rate_mean":
+		return WorkoutColumnExprWorkoutHeartRateMean, nil
+	case "heart_rate_minimum":
+		return WorkoutColumnExprWorkoutHeartRateMinimum, nil
+	case "heart_rate_maximum":
+		return WorkoutColumnExprWorkoutHeartRateMaximum, nil
+	case "heart_rate_zone_1":
+		return WorkoutColumnExprWorkoutHeartRateZone1, nil
+	case "heart_rate_zone_2":
+		return WorkoutColumnExprWorkoutHeartRateZone2, nil
+	case "heart_rate_zone_3":
+		return WorkoutColumnExprWorkoutHeartRateZone3, nil
+	case "heart_rate_zone_4":
+		return WorkoutColumnExprWorkoutHeartRateZone4, nil
+	case "heart_rate_zone_5":
+		return WorkoutColumnExprWorkoutHeartRateZone5, nil
+	case "heart_rate_zone_6":
+		return WorkoutColumnExprWorkoutHeartRateZone6, nil
+	case "distance_meter":
+		return WorkoutColumnExprWorkoutDistanceMeter, nil
+	case "calories":
+		return WorkoutColumnExprWorkoutCalories, nil
+	case "elevation_gain_meter":
+		return WorkoutColumnExprWorkoutElevationGainMeter, nil
+	case "elevation_maximum_meter":
+		return WorkoutColumnExprWorkoutElevationMaximumMeter, nil
+	case "elevation_minimum_meter":
+		return WorkoutColumnExprWorkoutElevationMinimumMeter, nil
+	case "average_speed":
+		return WorkoutColumnExprWorkoutAverageSpeed, nil
+	case "max_speed":
+		return WorkoutColumnExprWorkoutMaxSpeed, nil
+	case "power_source":
+		return WorkoutColumnExprWorkoutPowerSource, nil
+	case "power_mean":
+		return WorkoutColumnExprWorkoutPowerMean, nil
+	case "power_maximum":
+		return WorkoutColumnExprWorkoutPowerMaximum, nil
+	case "power_weighted_mean":
+		return WorkoutColumnExprWorkoutPowerWeightedMean, nil
+	case "steps":
+		return WorkoutColumnExprWorkoutSteps, nil
+	case "map":
+		return WorkoutColumnExprWorkoutMap, nil
+	case "source_type":
+		return WorkoutColumnExprWorkoutSourceType, nil
+	case "source_provider":
+		return WorkoutColumnExprWorkoutSourceProvider, nil
+	case "source_app_id":
+		return WorkoutColumnExprWorkoutSourceAppId, nil
+	}
+	var t WorkoutColumnExprWorkout
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (w WorkoutColumnExprWorkout) Ptr() *WorkoutColumnExprWorkout {
+	return &w
 }
 
 type WorkoutV2InDb struct {
