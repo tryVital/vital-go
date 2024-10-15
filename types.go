@@ -320,6 +320,7 @@ type AggregateExprArg struct {
 	SleepColumnExpr    *SleepColumnExpr
 	ActivityColumnExpr *ActivityColumnExpr
 	WorkoutColumnExpr  *WorkoutColumnExpr
+	BodyColumnExpr     *BodyColumnExpr
 	IndexColumnExpr    *IndexColumnExpr
 	GroupKeyColumnExpr *GroupKeyColumnExpr
 }
@@ -334,6 +335,10 @@ func NewAggregateExprArgFromActivityColumnExpr(value *ActivityColumnExpr) *Aggre
 
 func NewAggregateExprArgFromWorkoutColumnExpr(value *WorkoutColumnExpr) *AggregateExprArg {
 	return &AggregateExprArg{WorkoutColumnExpr: value}
+}
+
+func NewAggregateExprArgFromBodyColumnExpr(value *BodyColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{BodyColumnExpr: value}
 }
 
 func NewAggregateExprArgFromIndexColumnExpr(value *IndexColumnExpr) *AggregateExprArg {
@@ -360,6 +365,11 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.WorkoutColumnExpr = valueWorkoutColumnExpr
 		return nil
 	}
+	valueBodyColumnExpr := new(BodyColumnExpr)
+	if err := json.Unmarshal(data, &valueBodyColumnExpr); err == nil {
+		a.BodyColumnExpr = valueBodyColumnExpr
+		return nil
+	}
 	valueIndexColumnExpr := new(IndexColumnExpr)
 	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
 		a.IndexColumnExpr = valueIndexColumnExpr
@@ -383,6 +393,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.WorkoutColumnExpr != nil {
 		return json.Marshal(a.WorkoutColumnExpr)
 	}
+	if a.BodyColumnExpr != nil {
+		return json.Marshal(a.BodyColumnExpr)
+	}
 	if a.IndexColumnExpr != nil {
 		return json.Marshal(a.IndexColumnExpr)
 	}
@@ -396,6 +409,7 @@ type AggregateExprArgVisitor interface {
 	VisitSleepColumnExpr(*SleepColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
+	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 }
@@ -409,6 +423,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.WorkoutColumnExpr != nil {
 		return visitor.VisitWorkoutColumnExpr(a.WorkoutColumnExpr)
+	}
+	if a.BodyColumnExpr != nil {
+		return visitor.VisitBodyColumnExpr(a.BodyColumnExpr)
 	}
 	if a.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(a.IndexColumnExpr)
@@ -1005,6 +1022,81 @@ func (b *BiomarkerResult) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type BodyColumnExpr struct {
+	Body BodyColumnExprBody `json:"body" url:"body"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BodyColumnExpr) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BodyColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler BodyColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BodyColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BodyColumnExpr) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BodyColumnExprBody string
+
+const (
+	BodyColumnExprBodyMeasuredAt     BodyColumnExprBody = "measured_at"
+	BodyColumnExprBodyWeightKilogram BodyColumnExprBody = "weight_kilogram"
+	BodyColumnExprBodyFatPercentage  BodyColumnExprBody = "fat_percentage"
+	BodyColumnExprBodySourceType     BodyColumnExprBody = "source_type"
+	BodyColumnExprBodySourceProvider BodyColumnExprBody = "source_provider"
+	BodyColumnExprBodySourceAppId    BodyColumnExprBody = "source_app_id"
+)
+
+func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
+	switch s {
+	case "measured_at":
+		return BodyColumnExprBodyMeasuredAt, nil
+	case "weight_kilogram":
+		return BodyColumnExprBodyWeightKilogram, nil
+	case "fat_percentage":
+		return BodyColumnExprBodyFatPercentage, nil
+	case "source_type":
+		return BodyColumnExprBodySourceType, nil
+	case "source_provider":
+		return BodyColumnExprBodySourceProvider, nil
+	case "source_app_id":
+		return BodyColumnExprBodySourceAppId, nil
+	}
+	var t BodyColumnExprBody
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BodyColumnExprBody) Ptr() *BodyColumnExprBody {
+	return &b
 }
 
 type BodyV2InDb struct {
@@ -10781,6 +10873,7 @@ const (
 	IndexColumnExprIndexSleep    IndexColumnExprIndex = "sleep"
 	IndexColumnExprIndexActivity IndexColumnExprIndex = "activity"
 	IndexColumnExprIndexWorkout  IndexColumnExprIndex = "workout"
+	IndexColumnExprIndexBody     IndexColumnExprIndex = "body"
 )
 
 func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
@@ -10791,6 +10884,8 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 		return IndexColumnExprIndexActivity, nil
 	case "workout":
 		return IndexColumnExprIndexWorkout, nil
+	case "body":
+		return IndexColumnExprIndexBody, nil
 	}
 	var t IndexColumnExprIndex
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -11196,6 +11291,7 @@ const (
 	LabsQuest        Labs = "quest"
 	LabsLabcorp      Labs = "labcorp"
 	LabsBioreference Labs = "bioreference"
+	LabsUsBiotek     Labs = "us_biotek"
 	LabsManual       Labs = "manual"
 	LabsSanocardio   Labs = "sanocardio"
 )
@@ -11214,6 +11310,8 @@ func NewLabsFromString(s string) (Labs, error) {
 		return LabsLabcorp, nil
 	case "bioreference":
 		return LabsBioreference, nil
+	case "us_biotek":
+		return LabsUsBiotek, nil
 	case "manual":
 		return LabsManual, nil
 	case "sanocardio":
@@ -13702,6 +13800,7 @@ type QueryInstructionSelectItem struct {
 	SleepColumnExpr    *SleepColumnExpr
 	ActivityColumnExpr *ActivityColumnExpr
 	WorkoutColumnExpr  *WorkoutColumnExpr
+	BodyColumnExpr     *BodyColumnExpr
 	IndexColumnExpr    *IndexColumnExpr
 	GroupKeyColumnExpr *GroupKeyColumnExpr
 }
@@ -13720,6 +13819,10 @@ func NewQueryInstructionSelectItemFromActivityColumnExpr(value *ActivityColumnEx
 
 func NewQueryInstructionSelectItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QueryInstructionSelectItem {
 	return &QueryInstructionSelectItem{WorkoutColumnExpr: value}
+}
+
+func NewQueryInstructionSelectItemFromBodyColumnExpr(value *BodyColumnExpr) *QueryInstructionSelectItem {
+	return &QueryInstructionSelectItem{BodyColumnExpr: value}
 }
 
 func NewQueryInstructionSelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QueryInstructionSelectItem {
@@ -13751,6 +13854,11 @@ func (q *QueryInstructionSelectItem) UnmarshalJSON(data []byte) error {
 		q.WorkoutColumnExpr = valueWorkoutColumnExpr
 		return nil
 	}
+	valueBodyColumnExpr := new(BodyColumnExpr)
+	if err := json.Unmarshal(data, &valueBodyColumnExpr); err == nil {
+		q.BodyColumnExpr = valueBodyColumnExpr
+		return nil
+	}
 	valueIndexColumnExpr := new(IndexColumnExpr)
 	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
 		q.IndexColumnExpr = valueIndexColumnExpr
@@ -13777,6 +13885,9 @@ func (q QueryInstructionSelectItem) MarshalJSON() ([]byte, error) {
 	if q.WorkoutColumnExpr != nil {
 		return json.Marshal(q.WorkoutColumnExpr)
 	}
+	if q.BodyColumnExpr != nil {
+		return json.Marshal(q.BodyColumnExpr)
+	}
 	if q.IndexColumnExpr != nil {
 		return json.Marshal(q.IndexColumnExpr)
 	}
@@ -13791,6 +13902,7 @@ type QueryInstructionSelectItemVisitor interface {
 	VisitSleepColumnExpr(*SleepColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
+	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 }
@@ -13807,6 +13919,9 @@ func (q *QueryInstructionSelectItem) Accept(visitor QueryInstructionSelectItemVi
 	}
 	if q.WorkoutColumnExpr != nil {
 		return visitor.VisitWorkoutColumnExpr(q.WorkoutColumnExpr)
+	}
+	if q.BodyColumnExpr != nil {
+		return visitor.VisitBodyColumnExpr(q.BodyColumnExpr)
 	}
 	if q.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(q.IndexColumnExpr)
