@@ -677,6 +677,47 @@ func (a *AppointmentAvailabilitySlots) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type AppointmentBookingRequest struct {
+	BookingKey string `json:"booking_key" url:"booking_key"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AppointmentBookingRequest) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AppointmentBookingRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler AppointmentBookingRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AppointmentBookingRequest(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AppointmentBookingRequest) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type AppointmentEventStatus string
 
 const (
@@ -708,12 +749,57 @@ func (a AppointmentEventStatus) Ptr() *AppointmentEventStatus {
 	return &a
 }
 
+type AppointmentLocation struct {
+	Location *LngLat    `json:"location,omitempty" url:"location,omitempty"`
+	Address  *UsAddress `json:"address,omitempty" url:"address,omitempty"`
+	Code     string     `json:"code" url:"code"`
+	Name     string     `json:"name" url:"name"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AppointmentLocation) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AppointmentLocation) UnmarshalJSON(data []byte) error {
+	type unmarshaler AppointmentLocation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AppointmentLocation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AppointmentLocation) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type AppointmentProvider string
 
 const (
 	AppointmentProviderGetlabs      AppointmentProvider = "getlabs"
 	AppointmentProviderAxlehealth   AppointmentProvider = "axlehealth"
 	AppointmentProviderPhlebfinders AppointmentProvider = "phlebfinders"
+	AppointmentProviderQuest        AppointmentProvider = "quest"
 )
 
 func NewAppointmentProviderFromString(s string) (AppointmentProvider, error) {
@@ -724,6 +810,8 @@ func NewAppointmentProviderFromString(s string) (AppointmentProvider, error) {
 		return AppointmentProviderAxlehealth, nil
 	case "phlebfinders":
 		return AppointmentProviderPhlebfinders, nil
+	case "quest":
+		return AppointmentProviderQuest, nil
 	}
 	var t AppointmentProvider
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -731,6 +819,49 @@ func NewAppointmentProviderFromString(s string) (AppointmentProvider, error) {
 
 func (a AppointmentProvider) Ptr() *AppointmentProvider {
 	return &a
+}
+
+type AppointmentPscLabs = string
+
+type AppointmentRescheduleRequest struct {
+	BookingKey string `json:"booking_key" url:"booking_key"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AppointmentRescheduleRequest) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AppointmentRescheduleRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler AppointmentRescheduleRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AppointmentRescheduleRequest(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AppointmentRescheduleRequest) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
 }
 
 type AppointmentServiceType string
@@ -786,7 +917,27 @@ func (a AppointmentStatus) Ptr() *AppointmentStatus {
 	return &a
 }
 
-type AppointmentType = string
+type AppointmentType string
+
+const (
+	AppointmentTypePhlebotomy           AppointmentType = "phlebotomy"
+	AppointmentTypePatientServiceCenter AppointmentType = "patient_service_center"
+)
+
+func NewAppointmentTypeFromString(s string) (AppointmentType, error) {
+	switch s {
+	case "phlebotomy":
+		return AppointmentTypePhlebotomy, nil
+	case "patient_service_center":
+		return AppointmentTypePatientServiceCenter, nil
+	}
+	var t AppointmentType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AppointmentType) Ptr() *AppointmentType {
+	return &a
+}
 
 type AreaInfo struct {
 	ZipCode     string                  `json:"zip_code" url:"zip_code"`
@@ -1451,7 +1602,7 @@ type ClientFacingAppointment struct {
 	// Time is in UTC
 	EndAt         *string                         `json:"end_at,omitempty" url:"end_at,omitempty"`
 	IanaTimezone  *string                         `json:"iana_timezone,omitempty" url:"iana_timezone,omitempty"`
-	Type          AppointmentType                 `json:"type,omitempty" url:"type,omitempty"`
+	Type          AppointmentType                 `json:"type" url:"type"`
 	Provider      AppointmentProvider             `json:"provider" url:"provider"`
 	Status        AppointmentStatus               `json:"status" url:"status"`
 	ProviderId    string                          `json:"provider_id" url:"provider_id"`
@@ -6516,9 +6667,10 @@ func (c *ClientFacingWalkInOrderDetails) String() string {
 // To be used as part of a ClientFacingOrder.
 type ClientFacingWalkInTestOrder struct {
 	// The Vital walk-in test Order ID
-	Id        string `json:"id" url:"id"`
-	CreatedAt string `json:"created_at" url:"created_at"`
-	UpdatedAt string `json:"updated_at" url:"updated_at"`
+	Id            string  `json:"id" url:"id"`
+	CreatedAt     string  `json:"created_at" url:"created_at"`
+	UpdatedAt     string  `json:"updated_at" url:"updated_at"`
+	AppointmentId *string `json:"appointment_id,omitempty" url:"appointment_id,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -7519,8 +7671,9 @@ func (d *DateTruncExprArg) Accept(visitor DateTruncExprArgVisitor) error {
 }
 
 type DaySlots struct {
-	Date  string      `json:"date" url:"date"`
-	Slots []*TimeSlot `json:"slots,omitempty" url:"slots,omitempty"`
+	Location *AppointmentLocation `json:"location,omitempty" url:"location,omitempty"`
+	Date     string               `json:"date" url:"date"`
+	Slots    []*TimeSlot          `json:"slots,omitempty" url:"slots,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -12112,19 +12265,20 @@ func (m *MissingBiomarkerResult) String() string {
 type OAuthProviders string
 
 const (
-	OAuthProvidersOura       OAuthProviders = "oura"
-	OAuthProvidersFitbit     OAuthProviders = "fitbit"
-	OAuthProvidersGarmin     OAuthProviders = "garmin"
-	OAuthProvidersStrava     OAuthProviders = "strava"
-	OAuthProvidersWahoo      OAuthProviders = "wahoo"
-	OAuthProvidersIhealth    OAuthProviders = "ihealth"
-	OAuthProvidersWithings   OAuthProviders = "withings"
-	OAuthProvidersGoogleFit  OAuthProviders = "google_fit"
-	OAuthProvidersDexcomV3   OAuthProviders = "dexcom_v3"
-	OAuthProvidersPolar      OAuthProviders = "polar"
-	OAuthProvidersCronometer OAuthProviders = "cronometer"
-	OAuthProvidersOmron      OAuthProviders = "omron"
-	OAuthProvidersWhoopV2    OAuthProviders = "whoop_v2"
+	OAuthProvidersOura           OAuthProviders = "oura"
+	OAuthProvidersFitbit         OAuthProviders = "fitbit"
+	OAuthProvidersGarmin         OAuthProviders = "garmin"
+	OAuthProvidersStrava         OAuthProviders = "strava"
+	OAuthProvidersWahoo          OAuthProviders = "wahoo"
+	OAuthProvidersIhealth        OAuthProviders = "ihealth"
+	OAuthProvidersWithings       OAuthProviders = "withings"
+	OAuthProvidersGoogleFit      OAuthProviders = "google_fit"
+	OAuthProvidersDexcomV3       OAuthProviders = "dexcom_v3"
+	OAuthProvidersPolar          OAuthProviders = "polar"
+	OAuthProvidersCronometer     OAuthProviders = "cronometer"
+	OAuthProvidersOmron          OAuthProviders = "omron"
+	OAuthProvidersWhoopV2        OAuthProviders = "whoop_v2"
+	OAuthProvidersMyFitnessPalV2 OAuthProviders = "my_fitness_pal_v2"
 )
 
 func NewOAuthProvidersFromString(s string) (OAuthProviders, error) {
@@ -12155,6 +12309,8 @@ func NewOAuthProvidersFromString(s string) (OAuthProviders, error) {
 		return OAuthProvidersOmron, nil
 	case "whoop_v2":
 		return OAuthProvidersWhoopV2, nil
+	case "my_fitness_pal_v2":
+		return OAuthProvidersMyFitnessPalV2, nil
 	}
 	var t OAuthProviders
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -12215,6 +12371,9 @@ const (
 	OrderStatusSampleWithLabWalkInTestPartialResults                OrderStatus = "sample_with_lab.walk_in_test.partial_results"
 	OrderStatusFailedWalkInTestSampleError                          OrderStatus = "failed.walk_in_test.sample_error"
 	OrderStatusCancelledWalkInTestCancelled                         OrderStatus = "cancelled.walk_in_test.cancelled"
+	OrderStatusCollectingSampleWalkInTestAppointmentPending         OrderStatus = "collecting_sample.walk_in_test.appointment_pending"
+	OrderStatusCollectingSampleWalkInTestAppointmentScheduled       OrderStatus = "collecting_sample.walk_in_test.appointment_scheduled"
+	OrderStatusCollectingSampleWalkInTestAppointmentCancelled       OrderStatus = "collecting_sample.walk_in_test.appointment_cancelled"
 	OrderStatusReceivedAtHomePhlebotomyOrdered                      OrderStatus = "received.at_home_phlebotomy.ordered"
 	OrderStatusReceivedAtHomePhlebotomyRequisitionCreated           OrderStatus = "received.at_home_phlebotomy.requisition_created"
 	OrderStatusCollectingSampleAtHomePhlebotomyAppointmentPending   OrderStatus = "collecting_sample.at_home_phlebotomy.appointment_pending"
@@ -12257,6 +12416,12 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusFailedWalkInTestSampleError, nil
 	case "cancelled.walk_in_test.cancelled":
 		return OrderStatusCancelledWalkInTestCancelled, nil
+	case "collecting_sample.walk_in_test.appointment_pending":
+		return OrderStatusCollectingSampleWalkInTestAppointmentPending, nil
+	case "collecting_sample.walk_in_test.appointment_scheduled":
+		return OrderStatusCollectingSampleWalkInTestAppointmentScheduled, nil
+	case "collecting_sample.walk_in_test.appointment_cancelled":
+		return OrderStatusCollectingSampleWalkInTestAppointmentCancelled, nil
 	case "received.at_home_phlebotomy.ordered":
 		return OrderStatusReceivedAtHomePhlebotomyOrdered, nil
 	case "received.at_home_phlebotomy.requisition_created":
@@ -13373,6 +13538,7 @@ const (
 	ProvidersKardia            Providers = "kardia"
 	ProvidersWhoopV2           Providers = "whoop_v2"
 	ProvidersUltrahuman        Providers = "ultrahuman"
+	ProvidersMyFitnessPalV2    Providers = "my_fitness_pal_v2"
 )
 
 func NewProvidersFromString(s string) (Providers, error) {
@@ -13447,6 +13613,8 @@ func NewProvidersFromString(s string) (Providers, error) {
 		return ProvidersWhoopV2, nil
 	case "ultrahuman":
 		return ProvidersUltrahuman, nil
+	case "my_fitness_pal_v2":
+		return ProvidersMyFitnessPalV2, nil
 	}
 	var t Providers
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

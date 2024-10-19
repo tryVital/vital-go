@@ -8,13 +8,14 @@ import (
 	time "time"
 )
 
-type AppointmentBookingRequest struct {
-	BookingKey string `json:"booking_key" url:"-"`
-}
-
-type AppointmentCancelRequest struct {
+type ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest struct {
 	CancellationReasonId string  `json:"cancellation_reason_id" url:"-"`
 	Notes                *string `json:"notes,omitempty" url:"-"`
+}
+
+type VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest struct {
+	CancellationReasonId string  `json:"cancellationReasonId" url:"-"`
+	Note                 *string `json:"note,omitempty" url:"-"`
 }
 
 type CreateLabTestRequest struct {
@@ -145,6 +146,19 @@ func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) MarshalJSON() ([]b
 	return json.Marshal(l.Body)
 }
 
+type LabTestsGetPscAppointmentAvailabilityRequest struct {
+	// Lab to check for availability
+	Lab AppointmentPscLabs `json:"-" url:"lab,omitempty"`
+	// Start date for appointment availability
+	StartDate *string `json:"-" url:"start_date,omitempty"`
+	// List of site codes to fetch availability for
+	SiteCodes []*string `json:"-" url:"site_codes,omitempty"`
+	// Zip code of the area to check
+	ZipCode *string `json:"-" url:"zip_code,omitempty"`
+	// Radius in which to search. (meters)
+	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
+}
+
 type LabTestsGetPscInfoRequest struct {
 	// Zip code of the area to check
 	ZipCode string `json:"-" url:"zip_code"`
@@ -158,10 +172,6 @@ type RequestAppointmentRequest struct {
 	// At-home phlebotomy appointment address.
 	Address  *UsAddress          `json:"address,omitempty" url:"-"`
 	Provider AppointmentProvider `json:"provider" url:"-"`
-}
-
-type AppointmentRescheduleRequest struct {
-	BookingKey string `json:"booking_key" url:"-"`
 }
 
 type LabTestsSimulateOrderProcessRequest struct {
