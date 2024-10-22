@@ -3811,6 +3811,7 @@ func (c *ClientFacingLab) String() string {
 type ClientFacingLabLocation struct {
 	Metadata *LabLocationMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
 	Distance int                  `json:"distance" url:"distance"`
+	SiteCode string               `json:"site_code" url:"site_code"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -13668,8 +13669,9 @@ func (p *PscAreaInfo) String() string {
 }
 
 type PscAreaInfoDetails struct {
-	WithinRadius int    `json:"within_radius" url:"within_radius"`
-	Radius       string `json:"radius" url:"radius"`
+	AppointmentWithVital bool   `json:"appointment_with_vital" url:"appointment_with_vital"`
+	WithinRadius         int    `json:"within_radius" url:"within_radius"`
+	Radius               string `json:"radius" url:"radius"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
