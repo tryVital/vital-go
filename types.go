@@ -1099,6 +1099,7 @@ const (
 	BillingClientBill             Billing = "client_bill"
 	BillingCommercialInsurance    Billing = "commercial_insurance"
 	BillingPatientBillPassthrough Billing = "patient_bill_passthrough"
+	BillingPatientBill            Billing = "patient_bill"
 )
 
 func NewBillingFromString(s string) (Billing, error) {
@@ -1109,6 +1110,8 @@ func NewBillingFromString(s string) (Billing, error) {
 		return BillingCommercialInsurance, nil
 	case "patient_bill_passthrough":
 		return BillingPatientBillPassthrough, nil
+	case "patient_bill":
+		return BillingPatientBill, nil
 	}
 	var t Billing
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -3720,7 +3723,7 @@ type ClientFacingInsurance struct {
 	Insured      *PersonDetailsOutput    `json:"insured,omitempty" url:"insured,omitempty"`
 	Company      *CompanyDetails         `json:"company,omitempty" url:"company,omitempty"`
 	GroupId      *string                 `json:"group_id,omitempty" url:"group_id,omitempty"`
-	Guarantor    *PersonDetailsOutput    `json:"guarantor,omitempty" url:"guarantor,omitempty"`
+	Guarantor    *GuarantorDetails       `json:"guarantor,omitempty" url:"guarantor,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -7005,10 +7008,10 @@ func (c *ClientSleepResponse) String() string {
 }
 
 type ClientUserIdConflict struct {
-	ErrorType    string    `json:"error_type" url:"error_type"`
-	ErrorMessage string    `json:"error_message" url:"error_message"`
-	UserId       string    `json:"user_id" url:"user_id"`
-	CreatedOn    time.Time `json:"created_on" url:"created_on"`
+	ErrorType    string `json:"error_type" url:"error_type"`
+	ErrorMessage string `json:"error_message" url:"error_message"`
+	UserId       string `json:"user_id" url:"user_id"`
+	CreatedOn    string `json:"created_on" url:"created_on"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -7019,18 +7022,12 @@ func (c *ClientUserIdConflict) GetExtraProperties() map[string]interface{} {
 }
 
 func (c *ClientUserIdConflict) UnmarshalJSON(data []byte) error {
-	type embed ClientUserIdConflict
-	var unmarshaler = struct {
-		embed
-		CreatedOn *core.DateTime `json:"created_on"`
-	}{
-		embed: embed(*c),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler ClientUserIdConflict
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = ClientUserIdConflict(unmarshaler.embed)
-	c.CreatedOn = unmarshaler.CreatedOn.Time()
+	*c = ClientUserIdConflict(value)
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -7040,18 +7037,6 @@ func (c *ClientUserIdConflict) UnmarshalJSON(data []byte) error {
 
 	c._rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (c *ClientUserIdConflict) MarshalJSON() ([]byte, error) {
-	type embed ClientUserIdConflict
-	var marshaler = struct {
-		embed
-		CreatedOn *core.DateTime `json:"created_on"`
-	}{
-		embed:     embed(*c),
-		CreatedOn: core.NewDateTime(c.CreatedOn),
-	}
-	return json.Marshal(marshaler)
 }
 
 func (c *ClientUserIdConflict) String() string {
@@ -10504,6 +10489,51 @@ func (g *GroupedWaterResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GroupedWaterResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GuarantorDetails struct {
+	FirstName   string   `json:"first_name" url:"first_name"`
+	LastName    string   `json:"last_name" url:"last_name"`
+	Address     *Address `json:"address,omitempty" url:"address,omitempty"`
+	PhoneNumber string   `json:"phone_number" url:"phone_number"`
+	Email       *string  `json:"email,omitempty" url:"email,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GuarantorDetails) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GuarantorDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler GuarantorDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GuarantorDetails(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GuarantorDetails) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value

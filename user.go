@@ -22,7 +22,7 @@ type CreateInsuranceRequest struct {
 	GroupId      *string                                                 `json:"group_id,omitempty" url:"-"`
 	Relationship ResponsibleRelationship                                 `json:"relationship" url:"-"`
 	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty" url:"-"`
-	Guarantor    *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"guarantor,omitempty" url:"-"`
+	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"-"`
 }
 
 type UserGetAllRequest struct {
