@@ -12310,6 +12310,7 @@ const (
 	OAuthProvidersOmron          OAuthProviders = "omron"
 	OAuthProvidersWhoopV2        OAuthProviders = "whoop_v2"
 	OAuthProvidersMyFitnessPalV2 OAuthProviders = "my_fitness_pal_v2"
+	OAuthProvidersUltrahuman     OAuthProviders = "ultrahuman"
 )
 
 func NewOAuthProvidersFromString(s string) (OAuthProviders, error) {
@@ -12342,6 +12343,8 @@ func NewOAuthProvidersFromString(s string) (OAuthProviders, error) {
 		return OAuthProvidersWhoopV2, nil
 	case "my_fitness_pal_v2":
 		return OAuthProvidersMyFitnessPalV2, nil
+	case "ultrahuman":
+		return OAuthProvidersUltrahuman, nil
 	}
 	var t OAuthProviders
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
