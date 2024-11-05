@@ -317,12 +317,14 @@ func (a *AggregateExpr) String() string {
 }
 
 type AggregateExprArg struct {
-	SleepColumnExpr    *SleepColumnExpr
-	ActivityColumnExpr *ActivityColumnExpr
-	WorkoutColumnExpr  *WorkoutColumnExpr
-	BodyColumnExpr     *BodyColumnExpr
-	IndexColumnExpr    *IndexColumnExpr
-	GroupKeyColumnExpr *GroupKeyColumnExpr
+	SleepColumnExpr            *SleepColumnExpr
+	ActivityColumnExpr         *ActivityColumnExpr
+	WorkoutColumnExpr          *WorkoutColumnExpr
+	BodyColumnExpr             *BodyColumnExpr
+	IndexColumnExpr            *IndexColumnExpr
+	GroupKeyColumnExpr         *GroupKeyColumnExpr
+	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
+	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
 }
 
 func NewAggregateExprArgFromSleepColumnExpr(value *SleepColumnExpr) *AggregateExprArg {
@@ -347,6 +349,14 @@ func NewAggregateExprArgFromIndexColumnExpr(value *IndexColumnExpr) *AggregateEx
 
 func NewAggregateExprArgFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *AggregateExprArg {
 	return &AggregateExprArg{GroupKeyColumnExpr: value}
+}
+
+func NewAggregateExprArgFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *AggregateExprArg {
+	return &AggregateExprArg{SleepScoreValueMacroExpr: value}
+}
+
+func NewAggregateExprArgFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *AggregateExprArg {
+	return &AggregateExprArg{UnrecognizedValueMacroExpr: value}
 }
 
 func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
@@ -380,6 +390,16 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.GroupKeyColumnExpr = valueGroupKeyColumnExpr
 		return nil
 	}
+	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
+	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
+		a.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
+		return nil
+	}
+	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
+	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
+		a.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
 }
 
@@ -402,6 +422,12 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.GroupKeyColumnExpr != nil {
 		return json.Marshal(a.GroupKeyColumnExpr)
 	}
+	if a.SleepScoreValueMacroExpr != nil {
+		return json.Marshal(a.SleepScoreValueMacroExpr)
+	}
+	if a.UnrecognizedValueMacroExpr != nil {
+		return json.Marshal(a.UnrecognizedValueMacroExpr)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
 }
 
@@ -412,6 +438,8 @@ type AggregateExprArgVisitor interface {
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
+	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
+	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 }
 
 func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
@@ -432,6 +460,12 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.GroupKeyColumnExpr != nil {
 		return visitor.VisitGroupKeyColumnExpr(a.GroupKeyColumnExpr)
+	}
+	if a.SleepScoreValueMacroExpr != nil {
+		return visitor.VisitSleepScoreValueMacroExpr(a.SleepScoreValueMacroExpr)
+	}
+	if a.UnrecognizedValueMacroExpr != nil {
+		return visitor.VisitUnrecognizedValueMacroExpr(a.UnrecognizedValueMacroExpr)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", a)
 }
@@ -5117,6 +5151,11 @@ type ClientFacingSleep struct {
 	BedtimeStart string `json:"bedtime_start" url:"bedtime_start"`
 	// UTC Time when the sleep period ended
 	BedtimeStop string `json:"bedtime_stop" url:"bedtime_stop"`
+	// `long_sleep`: >=3 hours of sleep;
+	// `short_sleep`: <3 hours of sleep that was ended before 6:00 PM in local time;
+	// `acknowledged_nap`: User-acknowledged naps, typically under 3 hours of sleep;
+	// `indeterminate`: The sleep session recording is ongoing.
+	Type SleepType `json:"type" url:"type"`
 	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// Total duration of the sleep period (sleep.duration = sleep.bedtime_end - sleep.bedtime_start)::seconds
@@ -13999,13 +14038,15 @@ func (q *QueryInstructionGroupByItem) Accept(visitor QueryInstructionGroupByItem
 }
 
 type QueryInstructionSelectItem struct {
-	AggregateExpr      *AggregateExpr
-	SleepColumnExpr    *SleepColumnExpr
-	ActivityColumnExpr *ActivityColumnExpr
-	WorkoutColumnExpr  *WorkoutColumnExpr
-	BodyColumnExpr     *BodyColumnExpr
-	IndexColumnExpr    *IndexColumnExpr
-	GroupKeyColumnExpr *GroupKeyColumnExpr
+	AggregateExpr              *AggregateExpr
+	SleepColumnExpr            *SleepColumnExpr
+	ActivityColumnExpr         *ActivityColumnExpr
+	WorkoutColumnExpr          *WorkoutColumnExpr
+	BodyColumnExpr             *BodyColumnExpr
+	IndexColumnExpr            *IndexColumnExpr
+	GroupKeyColumnExpr         *GroupKeyColumnExpr
+	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
+	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
 }
 
 func NewQueryInstructionSelectItemFromAggregateExpr(value *AggregateExpr) *QueryInstructionSelectItem {
@@ -14034,6 +14075,14 @@ func NewQueryInstructionSelectItemFromIndexColumnExpr(value *IndexColumnExpr) *Q
 
 func NewQueryInstructionSelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QueryInstructionSelectItem {
 	return &QueryInstructionSelectItem{GroupKeyColumnExpr: value}
+}
+
+func NewQueryInstructionSelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QueryInstructionSelectItem {
+	return &QueryInstructionSelectItem{SleepScoreValueMacroExpr: value}
+}
+
+func NewQueryInstructionSelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QueryInstructionSelectItem {
+	return &QueryInstructionSelectItem{UnrecognizedValueMacroExpr: value}
 }
 
 func (q *QueryInstructionSelectItem) UnmarshalJSON(data []byte) error {
@@ -14072,6 +14121,16 @@ func (q *QueryInstructionSelectItem) UnmarshalJSON(data []byte) error {
 		q.GroupKeyColumnExpr = valueGroupKeyColumnExpr
 		return nil
 	}
+	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
+	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
+		q.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
+		return nil
+	}
+	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
+	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
+		q.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
 }
 
@@ -14097,6 +14156,12 @@ func (q QueryInstructionSelectItem) MarshalJSON() ([]byte, error) {
 	if q.GroupKeyColumnExpr != nil {
 		return json.Marshal(q.GroupKeyColumnExpr)
 	}
+	if q.SleepScoreValueMacroExpr != nil {
+		return json.Marshal(q.SleepScoreValueMacroExpr)
+	}
+	if q.UnrecognizedValueMacroExpr != nil {
+		return json.Marshal(q.UnrecognizedValueMacroExpr)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
@@ -14108,6 +14173,8 @@ type QueryInstructionSelectItemVisitor interface {
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
+	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
+	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 }
 
 func (q *QueryInstructionSelectItem) Accept(visitor QueryInstructionSelectItemVisitor) error {
@@ -14131,6 +14198,12 @@ func (q *QueryInstructionSelectItem) Accept(visitor QueryInstructionSelectItemVi
 	}
 	if q.GroupKeyColumnExpr != nil {
 		return visitor.VisitGroupKeyColumnExpr(q.GroupKeyColumnExpr)
+	}
+	if q.SleepScoreValueMacroExpr != nil {
+		return visitor.VisitSleepScoreValueMacroExpr(q.SleepScoreValueMacroExpr)
+	}
+	if q.UnrecognizedValueMacroExpr != nil {
+		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", q)
 }
@@ -15203,6 +15276,73 @@ func (s SleepColumnExprSleep) Ptr() *SleepColumnExprSleep {
 	return &s
 }
 
+type SleepScoreValueMacroExpr struct {
+	Version    *string `json:"version,omitempty" url:"version,omitempty"`
+	valueMacro string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SleepScoreValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SleepScoreValueMacroExpr) ValueMacro() string {
+	return s.valueMacro
+}
+
+func (s *SleepScoreValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type embed SleepScoreValueMacroExpr
+	var unmarshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SleepScoreValueMacroExpr(unmarshaler.embed)
+	if unmarshaler.ValueMacro != "sleep_score" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", s, "sleep_score", unmarshaler.ValueMacro)
+	}
+	s.valueMacro = unmarshaler.ValueMacro
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s, "value_macro")
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SleepScoreValueMacroExpr) MarshalJSON() ([]byte, error) {
+	type embed SleepScoreValueMacroExpr
+	var marshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed:      embed(*s),
+		ValueMacro: "sleep_score",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *SleepScoreValueMacroExpr) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SleepSummaryState string
 
 const (
@@ -15222,6 +15362,34 @@ func NewSleepSummaryStateFromString(s string) (SleepSummaryState, error) {
 }
 
 func (s SleepSummaryState) Ptr() *SleepSummaryState {
+	return &s
+}
+
+type SleepType string
+
+const (
+	SleepTypeLongSleep       SleepType = "long_sleep"
+	SleepTypeShortSleep      SleepType = "short_sleep"
+	SleepTypeAcknowledgedNap SleepType = "acknowledged_nap"
+	SleepTypeUnknown         SleepType = "unknown"
+)
+
+func NewSleepTypeFromString(s string) (SleepType, error) {
+	switch s {
+	case "long_sleep":
+		return SleepTypeLongSleep, nil
+	case "short_sleep":
+		return SleepTypeShortSleep, nil
+	case "acknowledged_nap":
+		return SleepTypeAcknowledgedNap, nil
+	case "unknown":
+		return SleepTypeUnknown, nil
+	}
+	var t SleepType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SleepType) Ptr() *SleepType {
 	return &s
 }
 
@@ -15746,6 +15914,47 @@ func NewTraceElementsFromString(s string) (TraceElements, error) {
 
 func (t TraceElements) Ptr() *TraceElements {
 	return &t
+}
+
+type UnrecognizedValueMacroExpr struct {
+	ValueMacro string `json:"value_macro" url:"value_macro"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (u *UnrecognizedValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UnrecognizedValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler UnrecognizedValueMacroExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UnrecognizedValueMacroExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UnrecognizedValueMacroExpr) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
 }
 
 type UsAddress struct {
