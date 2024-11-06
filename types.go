@@ -1157,22 +1157,23 @@ func (b Billing) Ptr() *Billing {
 
 // Represent the schema for an individual biomarker result.
 type BiomarkerResult struct {
-	Name            string     `json:"name" url:"name"`
-	Slug            *string    `json:"slug,omitempty" url:"slug,omitempty"`
-	Value           float64    `json:"value" url:"value"`
-	Result          string     `json:"result" url:"result"`
-	Type            ResultType `json:"type" url:"type"`
-	Unit            *string    `json:"unit,omitempty" url:"unit,omitempty"`
-	Timestamp       *string    `json:"timestamp,omitempty" url:"timestamp,omitempty"`
-	Notes           *string    `json:"notes,omitempty" url:"notes,omitempty"`
-	MinRangeValue   *float64   `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
-	MaxRangeValue   *float64   `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
-	IsAboveMaxRange *bool      `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
-	IsBelowMinRange *bool      `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
-	Interpretation  *string    `json:"interpretation,omitempty" url:"interpretation,omitempty"`
-	Loinc           *string    `json:"loinc,omitempty" url:"loinc,omitempty"`
-	LoincSlug       *string    `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
-	ProviderId      *string    `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	Name            string                 `json:"name" url:"name"`
+	Slug            *string                `json:"slug,omitempty" url:"slug,omitempty"`
+	Value           float64                `json:"value" url:"value"`
+	Result          string                 `json:"result" url:"result"`
+	Type            ResultType             `json:"type" url:"type"`
+	Unit            *string                `json:"unit,omitempty" url:"unit,omitempty"`
+	Timestamp       *string                `json:"timestamp,omitempty" url:"timestamp,omitempty"`
+	Notes           *string                `json:"notes,omitempty" url:"notes,omitempty"`
+	MinRangeValue   *float64               `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
+	MaxRangeValue   *float64               `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
+	IsAboveMaxRange *bool                  `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
+	IsBelowMinRange *bool                  `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
+	Interpretation  *string                `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	Loinc           *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
+	LoincSlug       *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
+	ProviderId      *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	SourceMarkers   []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -12332,13 +12333,14 @@ func (m Minerals) Ptr() *Minerals {
 }
 
 type MissingBiomarkerResult struct {
-	Name                string      `json:"name" url:"name"`
-	Slug                string      `json:"slug" url:"slug"`
-	InferredFailureType FailureType `json:"inferred_failure_type" url:"inferred_failure_type"`
-	Note                *string     `json:"note,omitempty" url:"note,omitempty"`
-	Loinc               *string     `json:"loinc,omitempty" url:"loinc,omitempty"`
-	LoincSlug           *string     `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
-	ProviderId          *string     `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	Name                string                 `json:"name" url:"name"`
+	Slug                string                 `json:"slug" url:"slug"`
+	InferredFailureType FailureType            `json:"inferred_failure_type" url:"inferred_failure_type"`
+	Note                *string                `json:"note,omitempty" url:"note,omitempty"`
+	Loinc               *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
+	LoincSlug           *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
+	ProviderId          *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	SourceMarkers       []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -12742,6 +12744,50 @@ func (p *PaginatedUsersResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (p *PaginatedUsersResponse) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type ParentBiomarkerData struct {
+	MarkerId   int     `json:"marker_id" url:"marker_id"`
+	Name       string  `json:"name" url:"name"`
+	Slug       string  `json:"slug" url:"slug"`
+	ProviderId *string `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *ParentBiomarkerData) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ParentBiomarkerData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ParentBiomarkerData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ParentBiomarkerData(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ParentBiomarkerData) String() string {
 	if len(p._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
 			return value
