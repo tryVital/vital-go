@@ -61,9 +61,10 @@ type LinkGetAllProvidersRequest struct {
 }
 
 type LinkTokenBase struct {
-	Token     string                 `json:"token" url:"-"`
-	IsUsed    *bool                  `json:"is_used,omitempty" url:"-"`
-	OauthInfo map[string]interface{} `json:"oauth_info,omitempty" url:"-"`
+	Token        string                 `json:"token" url:"-"`
+	IsUsed       *bool                  `json:"is_used,omitempty" url:"-"`
+	OauthInfo    map[string]interface{} `json:"oauth_info,omitempty" url:"-"`
+	Requirements *LinkRequirements      `json:"requirements,omitempty" url:"-"`
 }
 
 type PasswordAuthLink struct {
