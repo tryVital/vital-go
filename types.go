@@ -4874,6 +4874,7 @@ const (
 	ClientFacingResourceCaloriesBasal            ClientFacingResource = "calories_basal"
 	ClientFacingResourceStressLevel              ClientFacingResource = "stress_level"
 	ClientFacingResourceMenstrualCycle           ClientFacingResource = "menstrual_cycle"
+	ClientFacingResourceSleepCycle               ClientFacingResource = "sleep_cycle"
 	ClientFacingResourceElectrocardiogramVoltage ClientFacingResource = "electrocardiogram_voltage"
 	ClientFacingResourceWorkoutDuration          ClientFacingResource = "workout_duration"
 	ClientFacingResourceInsulinInjection         ClientFacingResource = "insulin_injection"
@@ -4958,6 +4959,8 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceStressLevel, nil
 	case "menstrual_cycle":
 		return ClientFacingResourceMenstrualCycle, nil
+	case "sleep_cycle":
+		return ClientFacingResourceSleepCycle, nil
 	case "electrocardiogram_voltage":
 		return ClientFacingResourceElectrocardiogramVoltage, nil
 	case "workout_duration":
@@ -5152,9 +5155,9 @@ type ClientFacingSleep struct {
 	// UTC Time when the sleep period ended
 	BedtimeStop string `json:"bedtime_stop" url:"bedtime_stop"`
 	// `long_sleep`: >=3 hours of sleep;
-	// `short_sleep`: <3 hours of sleep that was ended before 6:00 PM in local time;
+	// `short_sleep`: <3 hours of sleep;
 	// `acknowledged_nap`: User-acknowledged naps, typically under 3 hours of sleep;
-	// `indeterminate`: The sleep session recording is ongoing.
+	// `unknown`: The sleep session recording is ongoing.
 	Type SleepType `json:"type" url:"type"`
 	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
@@ -15194,6 +15197,7 @@ const (
 	SleepColumnExprSleepSessionStart         SleepColumnExprSleep = "session_start"
 	SleepColumnExprSleepSessionEnd           SleepColumnExprSleep = "session_end"
 	SleepColumnExprSleepState                SleepColumnExprSleep = "state"
+	SleepColumnExprSleepType                 SleepColumnExprSleep = "type"
 	SleepColumnExprSleepDurationSecond       SleepColumnExprSleep = "duration_second"
 	SleepColumnExprSleepStageAsleepSecond    SleepColumnExprSleep = "stage_asleep_second"
 	SleepColumnExprSleepStageAwakeSecond     SleepColumnExprSleep = "stage_awake_second"
@@ -15225,6 +15229,8 @@ func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 		return SleepColumnExprSleepSessionEnd, nil
 	case "state":
 		return SleepColumnExprSleepState, nil
+	case "type":
+		return SleepColumnExprSleepType, nil
 	case "duration_second":
 		return SleepColumnExprSleepDurationSecond, nil
 	case "stage_asleep_second":
