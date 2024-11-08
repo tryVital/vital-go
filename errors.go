@@ -7,6 +7,7 @@ import (
 	core "github.com/tryVital/vital-go/core"
 )
 
+// Bad Request
 type BadRequestError struct {
 	*core.APIError
 	Body interface{}
