@@ -18,6 +18,7 @@ import (
 	profile "github.com/tryVital/vital-go/profile"
 	providers "github.com/tryVital/vital-go/providers"
 	sleep "github.com/tryVital/vital-go/sleep"
+	sleepcycle "github.com/tryVital/vital-go/sleepcycle"
 	team "github.com/tryVital/vital-go/team"
 	testkit "github.com/tryVital/vital-go/testkit"
 	user "github.com/tryVital/vital-go/user"
@@ -32,6 +33,7 @@ type Client struct {
 	header  http.Header
 
 	Link           *link.Client
+	SleepCycle     *sleepcycle.Client
 	Profile        *profile.Client
 	Devices        *devices.Client
 	Activity       *activity.Client
@@ -63,6 +65,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		),
 		header:         options.ToHeader(),
 		Link:           link.NewClient(opts...),
+		SleepCycle:     sleepcycle.NewClient(opts...),
 		Profile:        profile.NewClient(opts...),
 		Devices:        devices.NewClient(opts...),
 		Activity:       activity.NewClient(opts...),
