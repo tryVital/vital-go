@@ -60,11 +60,8 @@ type LinkGetAllProvidersRequest struct {
 	VitalLinkToken *string `json:"-" url:"-"`
 }
 
-type LinkTokenBase struct {
-	Token        string                 `json:"token" url:"-"`
-	IsUsed       *bool                  `json:"is_used,omitempty" url:"-"`
-	OauthInfo    map[string]interface{} `json:"oauth_info,omitempty" url:"-"`
-	Requirements *LinkRequirements      `json:"requirements,omitempty" url:"-"`
+type LinkTokenValidationRequest struct {
+	Token string `json:"token" url:"-"`
 }
 
 type PasswordAuthLink struct {

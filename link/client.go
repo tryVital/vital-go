@@ -101,7 +101,7 @@ func (c *Client) Token(
 
 func (c *Client) IsTokenValid(
 	ctx context.Context,
-	request *vitalgo.LinkTokenBase,
+	request *vitalgo.LinkTokenValidationRequest,
 	opts ...option.RequestOption,
 ) (map[string]interface{}, error) {
 	options := core.NewRequestOptions(opts...)

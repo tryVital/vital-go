@@ -11680,49 +11680,6 @@ func (l *LibreConfig) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
-type LinkRequirements struct {
-	Provider          *Providers  `json:"provider,omitempty" url:"provider,omitempty"`
-	ProviderAllowlist []Providers `json:"provider_allowlist,omitempty" url:"provider_allowlist,omitempty"`
-	RedirectUrl       *string     `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (l *LinkRequirements) GetExtraProperties() map[string]interface{} {
-	return l.extraProperties
-}
-
-func (l *LinkRequirements) UnmarshalJSON(data []byte) error {
-	type unmarshaler LinkRequirements
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = LinkRequirements(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *l)
-	if err != nil {
-		return err
-	}
-	l.extraProperties = extraProperties
-
-	l._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *LinkRequirements) String() string {
-	if len(l._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
-}
-
 type LinkTokenExchangeResponse struct {
 	// A short-lived Vital Link token for your Custom Link Widget to communicate with the Vital API.
 	LinkToken string `json:"link_token" url:"link_token"`
