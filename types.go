@@ -16943,8 +16943,8 @@ const (
 	WorkoutColumnExprWorkoutElevationGainMeter    WorkoutColumnExprWorkout = "elevation_gain_meter"
 	WorkoutColumnExprWorkoutElevationMaximumMeter WorkoutColumnExprWorkout = "elevation_maximum_meter"
 	WorkoutColumnExprWorkoutElevationMinimumMeter WorkoutColumnExprWorkout = "elevation_minimum_meter"
-	WorkoutColumnExprWorkoutAverageSpeed          WorkoutColumnExprWorkout = "average_speed"
-	WorkoutColumnExprWorkoutMaxSpeed              WorkoutColumnExprWorkout = "max_speed"
+	WorkoutColumnExprWorkoutSpeedMean             WorkoutColumnExprWorkout = "speed_mean"
+	WorkoutColumnExprWorkoutSpeedMaximum          WorkoutColumnExprWorkout = "speed_maximum"
 	WorkoutColumnExprWorkoutPowerSource           WorkoutColumnExprWorkout = "power_source"
 	WorkoutColumnExprWorkoutPowerMean             WorkoutColumnExprWorkout = "power_mean"
 	WorkoutColumnExprWorkoutPowerMaximum          WorkoutColumnExprWorkout = "power_maximum"
@@ -17000,10 +17000,10 @@ func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, 
 		return WorkoutColumnExprWorkoutElevationMaximumMeter, nil
 	case "elevation_minimum_meter":
 		return WorkoutColumnExprWorkoutElevationMinimumMeter, nil
-	case "average_speed":
-		return WorkoutColumnExprWorkoutAverageSpeed, nil
-	case "max_speed":
-		return WorkoutColumnExprWorkoutMaxSpeed, nil
+	case "speed_mean":
+		return WorkoutColumnExprWorkoutSpeedMean, nil
+	case "speed_maximum":
+		return WorkoutColumnExprWorkoutSpeedMaximum, nil
 	case "power_source":
 		return WorkoutColumnExprWorkoutPowerSource, nil
 	case "power_mean":
