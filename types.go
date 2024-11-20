@@ -1257,12 +1257,15 @@ func (b *BodyColumnExpr) String() string {
 type BodyColumnExprBody string
 
 const (
-	BodyColumnExprBodyMeasuredAt     BodyColumnExprBody = "measured_at"
-	BodyColumnExprBodyWeightKilogram BodyColumnExprBody = "weight_kilogram"
-	BodyColumnExprBodyFatPercentage  BodyColumnExprBody = "fat_percentage"
-	BodyColumnExprBodySourceType     BodyColumnExprBody = "source_type"
-	BodyColumnExprBodySourceProvider BodyColumnExprBody = "source_provider"
-	BodyColumnExprBodySourceAppId    BodyColumnExprBody = "source_app_id"
+	BodyColumnExprBodyMeasuredAt           BodyColumnExprBody = "measured_at"
+	BodyColumnExprBodyWeightKilogram       BodyColumnExprBody = "weight_kilogram"
+	BodyColumnExprBodyFatMassPercentage    BodyColumnExprBody = "fat_mass_percentage"
+	BodyColumnExprBodyWaterPercentage      BodyColumnExprBody = "water_percentage"
+	BodyColumnExprBodyMuscleMassPercentage BodyColumnExprBody = "muscle_mass_percentage"
+	BodyColumnExprBodyVisceralFatIndex     BodyColumnExprBody = "visceral_fat_index"
+	BodyColumnExprBodySourceType           BodyColumnExprBody = "source_type"
+	BodyColumnExprBodySourceProvider       BodyColumnExprBody = "source_provider"
+	BodyColumnExprBodySourceAppId          BodyColumnExprBody = "source_app_id"
 )
 
 func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
@@ -1271,8 +1274,14 @@ func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
 		return BodyColumnExprBodyMeasuredAt, nil
 	case "weight_kilogram":
 		return BodyColumnExprBodyWeightKilogram, nil
-	case "fat_percentage":
-		return BodyColumnExprBodyFatPercentage, nil
+	case "fat_mass_percentage":
+		return BodyColumnExprBodyFatMassPercentage, nil
+	case "water_percentage":
+		return BodyColumnExprBodyWaterPercentage, nil
+	case "muscle_mass_percentage":
+		return BodyColumnExprBodyMuscleMassPercentage, nil
+	case "visceral_fat_index":
+		return BodyColumnExprBodyVisceralFatIndex, nil
 	case "source_type":
 		return BodyColumnExprBodySourceType, nil
 	case "source_provider":
@@ -1975,9 +1984,15 @@ type ClientFacingBody struct {
 	CalendarDate string `json:"calendar_date" url:"calendar_date"`
 	// Weight in kg::kg
 	Weight *float64 `json:"weight,omitempty" url:"weight,omitempty"`
-	// Body fat percentage::perc
-	Fat    *float64            `json:"fat,omitempty" url:"fat,omitempty"`
-	Source *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	// Total body fat percentage::perc
+	Fat *float64 `json:"fat,omitempty" url:"fat,omitempty"`
+	// Water percentage in the body::perc
+	WaterPercentage *float64 `json:"water_percentage,omitempty" url:"water_percentage,omitempty"`
+	// Muscle mass percentage in the body::perc
+	MuscleMassPercentage *float64 `json:"muscle_mass_percentage,omitempty" url:"muscle_mass_percentage,omitempty"`
+	// Visceral fat index::scalar
+	VisceralFatIndex *float64            `json:"visceral_fat_index,omitempty" url:"visceral_fat_index,omitempty"`
+	Source           *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
