@@ -1263,6 +1263,7 @@ const (
 	BodyColumnExprBodyWaterPercentage      BodyColumnExprBody = "water_percentage"
 	BodyColumnExprBodyMuscleMassPercentage BodyColumnExprBody = "muscle_mass_percentage"
 	BodyColumnExprBodyVisceralFatIndex     BodyColumnExprBody = "visceral_fat_index"
+	BodyColumnExprBodyBoneMassPercentage   BodyColumnExprBody = "bone_mass_percentage"
 	BodyColumnExprBodySourceType           BodyColumnExprBody = "source_type"
 	BodyColumnExprBodySourceProvider       BodyColumnExprBody = "source_provider"
 	BodyColumnExprBodySourceAppId          BodyColumnExprBody = "source_app_id"
@@ -1282,6 +1283,8 @@ func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
 		return BodyColumnExprBodyMuscleMassPercentage, nil
 	case "visceral_fat_index":
 		return BodyColumnExprBodyVisceralFatIndex, nil
+	case "bone_mass_percentage":
+		return BodyColumnExprBodyBoneMassPercentage, nil
 	case "source_type":
 		return BodyColumnExprBodySourceType, nil
 	case "source_provider":
@@ -1991,8 +1994,10 @@ type ClientFacingBody struct {
 	// Muscle mass percentage in the body::perc
 	MuscleMassPercentage *float64 `json:"muscle_mass_percentage,omitempty" url:"muscle_mass_percentage,omitempty"`
 	// Visceral fat index::scalar
-	VisceralFatIndex *float64            `json:"visceral_fat_index,omitempty" url:"visceral_fat_index,omitempty"`
-	Source           *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	VisceralFatIndex *float64 `json:"visceral_fat_index,omitempty" url:"visceral_fat_index,omitempty"`
+	// Bone mass percentage in the body::perc
+	BoneMassPercentage *float64            `json:"bone_mass_percentage,omitempty" url:"bone_mass_percentage,omitempty"`
+	Source             *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
