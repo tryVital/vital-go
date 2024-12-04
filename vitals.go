@@ -2,6 +2,19 @@
 
 package api
 
+type VitalsAfibBurdenGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
 type VitalsBloodOxygenRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
@@ -329,6 +342,19 @@ type VitalsGlucoseRequest struct {
 }
 
 type VitalsGlucoseGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
+type VitalsHeartRateAlertGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
