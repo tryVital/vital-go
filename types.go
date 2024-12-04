@@ -5259,19 +5259,26 @@ func (c *ClientFacingSleep) String() string {
 }
 
 type ClientFacingSleepCycle struct {
-	Id                     string                                `json:"id" url:"id"`
-	SleepId                string                                `json:"sleep_id" url:"sleep_id"`
-	SessionStart           time.Time                             `json:"session_start" url:"session_start"`
-	SessionEnd             time.Time                             `json:"session_end" url:"session_end"`
-	StageStartOffsetSecond []int                                 `json:"stage_start_offset_second,omitempty" url:"stage_start_offset_second,omitempty"`
-	StageEndOffsetSecond   []int                                 `json:"stage_end_offset_second,omitempty" url:"stage_end_offset_second,omitempty"`
-	StageType              []VitalSleepStage                     `json:"stage_type,omitempty" url:"stage_type,omitempty"`
-	TimeZone               *string                               `json:"time_zone,omitempty" url:"time_zone,omitempty"`
-	SourceProvider         *ClientFacingSleepCycleSourceProvider `json:"source_provider,omitempty" url:"source_provider,omitempty"`
-	SourceType             ClientFacingSleepCycleSourceType      `json:"source_type" url:"source_type"`
-	SourceAppId            *string                               `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
-	UserId                 string                                `json:"user_id" url:"user_id"`
-	Source                 *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
+	Id                     string    `json:"id" url:"id"`
+	SleepId                string    `json:"sleep_id" url:"sleep_id"`
+	SessionStart           time.Time `json:"session_start" url:"session_start"`
+	SessionEnd             time.Time `json:"session_end" url:"session_end"`
+	StageStartOffsetSecond []int     `json:"stage_start_offset_second,omitempty" url:"stage_start_offset_second,omitempty"`
+	StageEndOffsetSecond   []int     `json:"stage_end_offset_second,omitempty" url:"stage_end_offset_second,omitempty"`
+	// Sleep stage classification:
+	// `-1`: Unknown or unclassified sleep stage;
+	// `1`: Deep sleep;
+	// `2`: Light/non-REM sleep;
+	// `3`: Rapid Eye Movement sleep;
+	// `4`: Awake period;
+	// `5`: Manually classified stage.
+	StageType      []VitalSleepStage                     `json:"stage_type,omitempty" url:"stage_type,omitempty"`
+	TimeZone       *string                               `json:"time_zone,omitempty" url:"time_zone,omitempty"`
+	SourceProvider *ClientFacingSleepCycleSourceProvider `json:"source_provider,omitempty" url:"source_provider,omitempty"`
+	SourceType     ClientFacingSleepCycleSourceType      `json:"source_type" url:"source_type"`
+	SourceAppId    *string                               `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	UserId         string                                `json:"user_id" url:"user_id"`
+	Source         *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
