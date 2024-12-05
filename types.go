@@ -12873,35 +12873,6 @@ const (
 	MineralsZinc       Minerals = "zinc"
 	MineralsFluoride   Minerals = "fluoride"
 	MineralsChloride   Minerals = "chloride"
-	MineralsBoron      Minerals = "boron"
-	MineralsCobalt     Minerals = "cobalt"
-	MineralsNickel     Minerals = "nickel"
-	MineralsSilicon    Minerals = "silicon"
-	MineralsVanadium   Minerals = "vanadium"
-	MineralsLithium    Minerals = "lithium"
-	MineralsRubidium   Minerals = "rubidium"
-	MineralsStrontium  Minerals = "strontium"
-	MineralsAluminum   Minerals = "aluminum"
-	MineralsArsenic    Minerals = "arsenic"
-	MineralsBarium     Minerals = "barium"
-	MineralsBeryllium  Minerals = "beryllium"
-	MineralsBismuth    Minerals = "bismuth"
-	MineralsCadmium    Minerals = "cadmium"
-	MineralsCesium     Minerals = "cesium"
-	MineralsGermanium  Minerals = "germanium"
-	MineralsGold       Minerals = "gold"
-	MineralsLead       Minerals = "lead"
-	MineralsMercury    Minerals = "mercury"
-	MineralsPalladium  Minerals = "palladium"
-	MineralsPlatinum   Minerals = "platinum"
-	MineralsSilver     Minerals = "silver"
-	MineralsThallium   Minerals = "thallium"
-	MineralsThorium    Minerals = "thorium"
-	MineralsTin        Minerals = "tin"
-	MineralsTitanium   Minerals = "titanium"
-	MineralsTungsten   Minerals = "tungsten"
-	MineralsUranium    Minerals = "uranium"
-	MineralsZirconium  Minerals = "zirconium"
 )
 
 func NewMineralsFromString(s string) (Minerals, error) {
@@ -12924,64 +12895,6 @@ func NewMineralsFromString(s string) (Minerals, error) {
 		return MineralsFluoride, nil
 	case "chloride":
 		return MineralsChloride, nil
-	case "boron":
-		return MineralsBoron, nil
-	case "cobalt":
-		return MineralsCobalt, nil
-	case "nickel":
-		return MineralsNickel, nil
-	case "silicon":
-		return MineralsSilicon, nil
-	case "vanadium":
-		return MineralsVanadium, nil
-	case "lithium":
-		return MineralsLithium, nil
-	case "rubidium":
-		return MineralsRubidium, nil
-	case "strontium":
-		return MineralsStrontium, nil
-	case "aluminum":
-		return MineralsAluminum, nil
-	case "arsenic":
-		return MineralsArsenic, nil
-	case "barium":
-		return MineralsBarium, nil
-	case "beryllium":
-		return MineralsBeryllium, nil
-	case "bismuth":
-		return MineralsBismuth, nil
-	case "cadmium":
-		return MineralsCadmium, nil
-	case "cesium":
-		return MineralsCesium, nil
-	case "germanium":
-		return MineralsGermanium, nil
-	case "gold":
-		return MineralsGold, nil
-	case "lead":
-		return MineralsLead, nil
-	case "mercury":
-		return MineralsMercury, nil
-	case "palladium":
-		return MineralsPalladium, nil
-	case "platinum":
-		return MineralsPlatinum, nil
-	case "silver":
-		return MineralsSilver, nil
-	case "thallium":
-		return MineralsThallium, nil
-	case "thorium":
-		return MineralsThorium, nil
-	case "tin":
-		return MineralsTin, nil
-	case "titanium":
-		return MineralsTitanium, nil
-	case "tungsten":
-		return MineralsTungsten, nil
-	case "uranium":
-		return MineralsUranium, nil
-	case "zirconium":
-		return MineralsZirconium, nil
 	}
 	var t Minerals
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
