@@ -8832,6 +8832,7 @@ const (
 	FailureTypePatientConditionFailure      FailureType = "patient_condition_failure"
 	FailureTypeMissingResultCalcFailure     FailureType = "missing_result_calc_failure"
 	FailureTypeMissingDemoAoeCalcFailure    FailureType = "missing_demo_aoe_calc_failure"
+	FailureTypeInsufficientVolume           FailureType = "insufficient_volume"
 )
 
 func NewFailureTypeFromString(s string) (FailureType, error) {
@@ -8856,6 +8857,8 @@ func NewFailureTypeFromString(s string) (FailureType, error) {
 		return FailureTypeMissingResultCalcFailure, nil
 	case "missing_demo_aoe_calc_failure":
 		return FailureTypeMissingDemoAoeCalcFailure, nil
+	case "insufficient_volume":
+		return FailureTypeInsufficientVolume, nil
 	}
 	var t FailureType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
