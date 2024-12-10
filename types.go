@@ -13625,6 +13625,71 @@ func (p *PatientDetails) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// Patient details with validation for first_name, last_name, email, and dob.
+type PatientDetailsWithValidation struct {
+	FirstName   string    `json:"first_name" url:"first_name"`
+	LastName    string    `json:"last_name" url:"last_name"`
+	Dob         time.Time `json:"dob" url:"dob"`
+	Gender      Gender    `json:"gender" url:"gender"`
+	PhoneNumber string    `json:"phone_number" url:"phone_number"`
+	Email       string    `json:"email" url:"email"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PatientDetailsWithValidation) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PatientDetailsWithValidation) UnmarshalJSON(data []byte) error {
+	type embed PatientDetailsWithValidation
+	var unmarshaler = struct {
+		embed
+		Dob *core.DateTime `json:"dob"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*p = PatientDetailsWithValidation(unmarshaler.embed)
+	p.Dob = unmarshaler.Dob.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PatientDetailsWithValidation) MarshalJSON() ([]byte, error) {
+	type embed PatientDetailsWithValidation
+	var marshaler = struct {
+		embed
+		Dob *core.DateTime `json:"dob"`
+	}{
+		embed: embed(*p),
+		Dob:   core.NewDateTime(p.Dob),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (p *PatientDetailsWithValidation) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type Period struct {
 	Value *int       `json:"value,omitempty" url:"value,omitempty"`
 	Unit  PeriodUnit `json:"unit" url:"unit"`

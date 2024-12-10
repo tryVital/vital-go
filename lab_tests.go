@@ -40,11 +40,11 @@ type CreateOrderRequestCompatible struct {
 	IcdCodes    []string   `json:"icd_codes,omitempty" url:"-"`
 	Consents    []*Consent `json:"consents,omitempty" url:"-"`
 	// Schedule an Order to be processed in a future date.
-	ActivateBy     *string                   `json:"activate_by,omitempty" url:"-"`
-	AoeAnswers     []*AoEAnswer              `json:"aoe_answers,omitempty" url:"-"`
-	Passthrough    *string                   `json:"passthrough,omitempty" url:"-"`
-	PatientDetails *PatientDetails           `json:"patient_details,omitempty" url:"-"`
-	PatientAddress *PatientAddressCompatible `json:"patient_address,omitempty" url:"-"`
+	ActivateBy     *string                       `json:"activate_by,omitempty" url:"-"`
+	AoeAnswers     []*AoEAnswer                  `json:"aoe_answers,omitempty" url:"-"`
+	Passthrough    *string                       `json:"passthrough,omitempty" url:"-"`
+	PatientDetails *PatientDetailsWithValidation `json:"patient_details,omitempty" url:"-"`
+	PatientAddress *PatientAddressCompatible     `json:"patient_address,omitempty" url:"-"`
 }
 
 type LabTestsGetAreaInfoRequest struct {
