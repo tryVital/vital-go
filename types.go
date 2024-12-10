@@ -530,6 +530,89 @@ func (a AggregateExprFunc) Ptr() *AggregateExprFunc {
 	return &a
 }
 
+type AggregationResponse struct {
+	Results []*AggregationResult `json:"results,omitempty" url:"results,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AggregationResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AggregationResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AggregationResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AggregationResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AggregationResponse) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AggregationResult struct {
+	// The result table of the query, organized in a column oriented format.
+	Table map[string][]interface{} `json:"table,omitempty" url:"table,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AggregationResult) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AggregationResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler AggregationResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AggregationResult(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AggregationResult) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 // Maps miles to meters
 type AllowedRadius string
 
@@ -4226,9 +4309,10 @@ func (c *ClientFacingLab) String() string {
 }
 
 type ClientFacingLabLocation struct {
-	Metadata *LabLocationMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Distance int                  `json:"distance" url:"distance"`
-	SiteCode string               `json:"site_code" url:"site_code"`
+	Metadata           *LabLocationMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Distance           int                  `json:"distance" url:"distance"`
+	SiteCode           string               `json:"site_code" url:"site_code"`
+	SupportedBillTypes []Billing            `json:"supported_bill_types,omitempty" url:"supported_bill_types,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -5255,6 +5339,7 @@ const (
 	ClientFacingResourceStressLevel              ClientFacingResource = "stress_level"
 	ClientFacingResourceMenstrualCycle           ClientFacingResource = "menstrual_cycle"
 	ClientFacingResourceSleepCycle               ClientFacingResource = "sleep_cycle"
+	ClientFacingResourceElectrocardiogram        ClientFacingResource = "electrocardiogram"
 	ClientFacingResourceElectrocardiogramVoltage ClientFacingResource = "electrocardiogram_voltage"
 	ClientFacingResourceAfibBurden               ClientFacingResource = "afib_burden"
 	ClientFacingResourceHeartRateAlert           ClientFacingResource = "heart_rate_alert"
@@ -5343,6 +5428,8 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceMenstrualCycle, nil
 	case "sleep_cycle":
 		return ClientFacingResourceSleepCycle, nil
+	case "electrocardiogram":
+		return ClientFacingResourceElectrocardiogram, nil
 	case "electrocardiogram_voltage":
 		return ClientFacingResourceElectrocardiogramVoltage, nil
 	case "afib_burden":
@@ -11803,6 +11890,7 @@ const (
 	IndexColumnExprIndexActivity IndexColumnExprIndex = "activity"
 	IndexColumnExprIndexWorkout  IndexColumnExprIndex = "workout"
 	IndexColumnExprIndexBody     IndexColumnExprIndex = "body"
+	IndexColumnExprIndexMeal     IndexColumnExprIndex = "meal"
 )
 
 func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
@@ -11815,6 +11903,8 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 		return IndexColumnExprIndexWorkout, nil
 	case "body":
 		return IndexColumnExprIndexBody, nil
+	case "meal":
+		return IndexColumnExprIndexMeal, nil
 	}
 	var t IndexColumnExprIndex
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -14496,6 +14586,49 @@ func (p *PscInfo) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type Query struct {
+	Select        []*QuerySelectItem  `json:"select,omitempty" url:"select,omitempty"`
+	GroupBy       []*QueryGroupByItem `json:"group_by,omitempty" url:"group_by,omitempty"`
+	SplitBySource *bool               `json:"split_by_source,omitempty" url:"split_by_source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (q *Query) GetExtraProperties() map[string]interface{} {
+	return q.extraProperties
+}
+
+func (q *Query) UnmarshalJSON(data []byte) error {
+	type unmarshaler Query
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = Query(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *Query) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
 type QueryConfig struct {
 	WeekStartsOn              *QueryConfigWeekStartsOn                    `json:"week_starts_on,omitempty" url:"week_starts_on,omitempty"`
 	ProviderPriorityOverrides []*QueryConfigProviderPriorityOverridesItem `json:"provider_priority_overrides,omitempty" url:"provider_priority_overrides,omitempty"`
@@ -14612,63 +14745,20 @@ func (q QueryConfigWeekStartsOn) Ptr() *QueryConfigWeekStartsOn {
 	return &q
 }
 
-type QueryInstruction struct {
-	Select        []*QueryInstructionSelectItem  `json:"select,omitempty" url:"select,omitempty"`
-	GroupBy       []*QueryInstructionGroupByItem `json:"group_by,omitempty" url:"group_by,omitempty"`
-	SplitBySource *bool                          `json:"split_by_source,omitempty" url:"split_by_source,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (q *QueryInstruction) GetExtraProperties() map[string]interface{} {
-	return q.extraProperties
-}
-
-func (q *QueryInstruction) UnmarshalJSON(data []byte) error {
-	type unmarshaler QueryInstruction
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*q = QueryInstruction(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *q)
-	if err != nil {
-		return err
-	}
-	q.extraProperties = extraProperties
-
-	q._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (q *QueryInstruction) String() string {
-	if len(q._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(q); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", q)
-}
-
-type QueryInstructionGroupByItem struct {
+type QueryGroupByItem struct {
 	DateTruncExpr *DateTruncExpr
 	DatePartExpr  *DatePartExpr
 }
 
-func NewQueryInstructionGroupByItemFromDateTruncExpr(value *DateTruncExpr) *QueryInstructionGroupByItem {
-	return &QueryInstructionGroupByItem{DateTruncExpr: value}
+func NewQueryGroupByItemFromDateTruncExpr(value *DateTruncExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{DateTruncExpr: value}
 }
 
-func NewQueryInstructionGroupByItemFromDatePartExpr(value *DatePartExpr) *QueryInstructionGroupByItem {
-	return &QueryInstructionGroupByItem{DatePartExpr: value}
+func NewQueryGroupByItemFromDatePartExpr(value *DatePartExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{DatePartExpr: value}
 }
 
-func (q *QueryInstructionGroupByItem) UnmarshalJSON(data []byte) error {
+func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 	valueDateTruncExpr := new(DateTruncExpr)
 	if err := json.Unmarshal(data, &valueDateTruncExpr); err == nil {
 		q.DateTruncExpr = valueDateTruncExpr
@@ -14682,7 +14772,7 @@ func (q *QueryInstructionGroupByItem) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
 }
 
-func (q QueryInstructionGroupByItem) MarshalJSON() ([]byte, error) {
+func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.DateTruncExpr != nil {
 		return json.Marshal(q.DateTruncExpr)
 	}
@@ -14692,12 +14782,12 @@ func (q QueryInstructionGroupByItem) MarshalJSON() ([]byte, error) {
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
-type QueryInstructionGroupByItemVisitor interface {
+type QueryGroupByItemVisitor interface {
 	VisitDateTruncExpr(*DateTruncExpr) error
 	VisitDatePartExpr(*DatePartExpr) error
 }
 
-func (q *QueryInstructionGroupByItem) Accept(visitor QueryInstructionGroupByItemVisitor) error {
+func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	if q.DateTruncExpr != nil {
 		return visitor.VisitDateTruncExpr(q.DateTruncExpr)
 	}
@@ -14707,7 +14797,7 @@ func (q *QueryInstructionGroupByItem) Accept(visitor QueryInstructionGroupByItem
 	return fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
-type QueryInstructionSelectItem struct {
+type QuerySelectItem struct {
 	AggregateExpr              *AggregateExpr
 	SleepColumnExpr            *SleepColumnExpr
 	ActivityColumnExpr         *ActivityColumnExpr
@@ -14720,47 +14810,47 @@ type QueryInstructionSelectItem struct {
 	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
 }
 
-func NewQueryInstructionSelectItemFromAggregateExpr(value *AggregateExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{AggregateExpr: value}
+func NewQuerySelectItemFromAggregateExpr(value *AggregateExpr) *QuerySelectItem {
+	return &QuerySelectItem{AggregateExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromSleepColumnExpr(value *SleepColumnExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{SleepColumnExpr: value}
+func NewQuerySelectItemFromSleepColumnExpr(value *SleepColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{SleepColumnExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromActivityColumnExpr(value *ActivityColumnExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{ActivityColumnExpr: value}
+func NewQuerySelectItemFromActivityColumnExpr(value *ActivityColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{ActivityColumnExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{WorkoutColumnExpr: value}
+func NewQuerySelectItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{WorkoutColumnExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromBodyColumnExpr(value *BodyColumnExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{BodyColumnExpr: value}
+func NewQuerySelectItemFromBodyColumnExpr(value *BodyColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{BodyColumnExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{IndexColumnExpr: value}
+func NewQuerySelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{IndexColumnExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{GroupKeyColumnExpr: value}
+func NewQuerySelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{GroupKeyColumnExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{SleepScoreValueMacroExpr: value}
+func NewQuerySelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{SleepScoreValueMacroExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{ChronotypeValueMacroExpr: value}
+func NewQuerySelectItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{ChronotypeValueMacroExpr: value}
 }
 
-func NewQueryInstructionSelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QueryInstructionSelectItem {
-	return &QueryInstructionSelectItem{UnrecognizedValueMacroExpr: value}
+func NewQuerySelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{UnrecognizedValueMacroExpr: value}
 }
 
-func (q *QueryInstructionSelectItem) UnmarshalJSON(data []byte) error {
+func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 	valueAggregateExpr := new(AggregateExpr)
 	if err := json.Unmarshal(data, &valueAggregateExpr); err == nil {
 		q.AggregateExpr = valueAggregateExpr
@@ -14814,7 +14904,7 @@ func (q *QueryInstructionSelectItem) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
 }
 
-func (q QueryInstructionSelectItem) MarshalJSON() ([]byte, error) {
+func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.AggregateExpr != nil {
 		return json.Marshal(q.AggregateExpr)
 	}
@@ -14848,7 +14938,7 @@ func (q QueryInstructionSelectItem) MarshalJSON() ([]byte, error) {
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
-type QueryInstructionSelectItemVisitor interface {
+type QuerySelectItemVisitor interface {
 	VisitAggregateExpr(*AggregateExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
@@ -14861,7 +14951,7 @@ type QueryInstructionSelectItemVisitor interface {
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 }
 
-func (q *QueryInstructionSelectItem) Accept(visitor QueryInstructionSelectItemVisitor) error {
+func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	if q.AggregateExpr != nil {
 		return visitor.VisitAggregateExpr(q.AggregateExpr)
 	}

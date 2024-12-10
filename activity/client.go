@@ -34,7 +34,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-// Get Daily Activity for user_id
+// Get activity summary for user_id
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
@@ -101,7 +101,7 @@ func (c *Client) Get(
 	return response, nil
 }
 
-// Get Daily Activity for user_id
+// Get raw activity summary for user_id
 func (c *Client) GetRaw(
 	ctx context.Context,
 	userId string,

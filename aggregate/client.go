@@ -38,9 +38,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) QueryOne(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.Query,
+	request *vitalgo.QueryBatch,
 	opts ...option.RequestOption,
-) (interface{}, error) {
+) (*vitalgo.AggregationResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -50,7 +50,7 @@ func (c *Client) QueryOne(
 	if options.BaseURL != "" {
 		baseURL = options.BaseURL
 	}
-	endpointURL := core.EncodeURL(baseURL+"/aggregate/v1/query_one/%v", userId)
+	endpointURL := core.EncodeURL(baseURL+"/aggregate/v1/user/%v/query", userId)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	headers.Add("accept", fmt.Sprintf("%v", "*/*"))
@@ -74,7 +74,7 @@ func (c *Client) QueryOne(
 		return apiError
 	}
 
-	var response interface{}
+	var response *vitalgo.AggregationResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

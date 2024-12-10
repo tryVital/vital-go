@@ -7,30 +7,30 @@ import (
 	fmt "fmt"
 )
 
-type Query struct {
-	Timeframe    *QueryTimeframe     `json:"timeframe,omitempty" url:"-"`
-	Instructions []*QueryInstruction `json:"instructions,omitempty" url:"-"`
-	Config       *QueryConfig        `json:"config,omitempty" url:"-"`
-	accept       string
+type QueryBatch struct {
+	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
+	Queries   []*Query             `json:"queries,omitempty" url:"-"`
+	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
+	accept    string
 }
 
-func (q *Query) Accept() string {
+func (q *QueryBatch) Accept() string {
 	return q.accept
 }
 
-func (q *Query) UnmarshalJSON(data []byte) error {
-	type unmarshaler Query
+func (q *QueryBatch) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryBatch
 	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*q = Query(body)
+	*q = QueryBatch(body)
 	q.accept = "*/*"
 	return nil
 }
 
-func (q *Query) MarshalJSON() ([]byte, error) {
-	type embed Query
+func (q *QueryBatch) MarshalJSON() ([]byte, error) {
+	type embed QueryBatch
 	var marshaler = struct {
 		embed
 		Accept string `json:"accept"`
@@ -41,20 +41,20 @@ func (q *Query) MarshalJSON() ([]byte, error) {
 	return json.Marshal(marshaler)
 }
 
-type QueryTimeframe struct {
+type QueryBatchTimeframe struct {
 	RelativeTimeframe *RelativeTimeframe
 	Placeholder       *Placeholder
 }
 
-func NewQueryTimeframeFromRelativeTimeframe(value *RelativeTimeframe) *QueryTimeframe {
-	return &QueryTimeframe{RelativeTimeframe: value}
+func NewQueryBatchTimeframeFromRelativeTimeframe(value *RelativeTimeframe) *QueryBatchTimeframe {
+	return &QueryBatchTimeframe{RelativeTimeframe: value}
 }
 
-func NewQueryTimeframeFromPlaceholder(value *Placeholder) *QueryTimeframe {
-	return &QueryTimeframe{Placeholder: value}
+func NewQueryBatchTimeframeFromPlaceholder(value *Placeholder) *QueryBatchTimeframe {
+	return &QueryBatchTimeframe{Placeholder: value}
 }
 
-func (q *QueryTimeframe) UnmarshalJSON(data []byte) error {
+func (q *QueryBatchTimeframe) UnmarshalJSON(data []byte) error {
 	valueRelativeTimeframe := new(RelativeTimeframe)
 	if err := json.Unmarshal(data, &valueRelativeTimeframe); err == nil {
 		q.RelativeTimeframe = valueRelativeTimeframe
@@ -68,7 +68,7 @@ func (q *QueryTimeframe) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
 }
 
-func (q QueryTimeframe) MarshalJSON() ([]byte, error) {
+func (q QueryBatchTimeframe) MarshalJSON() ([]byte, error) {
 	if q.RelativeTimeframe != nil {
 		return json.Marshal(q.RelativeTimeframe)
 	}
@@ -78,12 +78,12 @@ func (q QueryTimeframe) MarshalJSON() ([]byte, error) {
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
-type QueryTimeframeVisitor interface {
+type QueryBatchTimeframeVisitor interface {
 	VisitRelativeTimeframe(*RelativeTimeframe) error
 	VisitPlaceholder(*Placeholder) error
 }
 
-func (q *QueryTimeframe) Accept(visitor QueryTimeframeVisitor) error {
+func (q *QueryBatchTimeframe) Accept(visitor QueryBatchTimeframeVisitor) error {
 	if q.RelativeTimeframe != nil {
 		return visitor.VisitRelativeTimeframe(q.RelativeTimeframe)
 	}

@@ -34,7 +34,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-// Get Daily sleep cycle for user_id
+// Get sleep cycle for user_id
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,

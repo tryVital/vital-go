@@ -34,7 +34,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-// Get Daily sleep for user_id
+// Get sleep summary for user_id
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
@@ -101,7 +101,7 @@ func (c *Client) Get(
 	return response, nil
 }
 
-// Get Daily sleep stream for user_id
+// Get sleep stream for user_id
 func (c *Client) GetStream(
 	ctx context.Context,
 	userId string,
@@ -168,7 +168,7 @@ func (c *Client) GetStream(
 	return response, nil
 }
 
-// Get Daily sleep for user_id
+// Get raw sleep summary for user_id
 func (c *Client) GetRaw(
 	ctx context.Context,
 	userId string,
