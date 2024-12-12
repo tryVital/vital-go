@@ -8,6 +8,7 @@ import (
 	body "github.com/tryVital/vital-go/body"
 	core "github.com/tryVital/vital-go/core"
 	devices "github.com/tryVital/vital-go/devices"
+	electrocardiogram "github.com/tryVital/vital-go/electrocardiogram"
 	insurance "github.com/tryVital/vital-go/insurance"
 	introspect "github.com/tryVital/vital-go/introspect"
 	labtests "github.com/tryVital/vital-go/labtests"
@@ -32,25 +33,26 @@ type Client struct {
 	caller  *core.Caller
 	header  http.Header
 
-	Link           *link.Client
-	SleepCycle     *sleepcycle.Client
-	Profile        *profile.Client
-	Devices        *devices.Client
-	Activity       *activity.Client
-	Workouts       *workouts.Client
-	Sleep          *sleep.Client
-	Body           *body.Client
-	Meal           *meal.Client
-	MenstrualCycle *menstrualcycle.Client
-	Vitals         *vitals.Client
-	User           *user.Client
-	Team           *team.Client
-	Providers      *providers.Client
-	Introspect     *introspect.Client
-	LabTests       *labtests.Client
-	Testkit        *testkit.Client
-	Insurance      *insurance.Client
-	Aggregate      *aggregate.Client
+	Link              *link.Client
+	Electrocardiogram *electrocardiogram.Client
+	SleepCycle        *sleepcycle.Client
+	Profile           *profile.Client
+	Devices           *devices.Client
+	Activity          *activity.Client
+	Workouts          *workouts.Client
+	Sleep             *sleep.Client
+	Body              *body.Client
+	Meal              *meal.Client
+	MenstrualCycle    *menstrualcycle.Client
+	Vitals            *vitals.Client
+	User              *user.Client
+	Team              *team.Client
+	Providers         *providers.Client
+	Introspect        *introspect.Client
+	LabTests          *labtests.Client
+	Testkit           *testkit.Client
+	Insurance         *insurance.Client
+	Aggregate         *aggregate.Client
 }
 
 func NewClient(opts ...option.RequestOption) *Client {
@@ -63,25 +65,26 @@ func NewClient(opts ...option.RequestOption) *Client {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header:         options.ToHeader(),
-		Link:           link.NewClient(opts...),
-		SleepCycle:     sleepcycle.NewClient(opts...),
-		Profile:        profile.NewClient(opts...),
-		Devices:        devices.NewClient(opts...),
-		Activity:       activity.NewClient(opts...),
-		Workouts:       workouts.NewClient(opts...),
-		Sleep:          sleep.NewClient(opts...),
-		Body:           body.NewClient(opts...),
-		Meal:           meal.NewClient(opts...),
-		MenstrualCycle: menstrualcycle.NewClient(opts...),
-		Vitals:         vitals.NewClient(opts...),
-		User:           user.NewClient(opts...),
-		Team:           team.NewClient(opts...),
-		Providers:      providers.NewClient(opts...),
-		Introspect:     introspect.NewClient(opts...),
-		LabTests:       labtests.NewClient(opts...),
-		Testkit:        testkit.NewClient(opts...),
-		Insurance:      insurance.NewClient(opts...),
-		Aggregate:      aggregate.NewClient(opts...),
+		header:            options.ToHeader(),
+		Link:              link.NewClient(opts...),
+		Electrocardiogram: electrocardiogram.NewClient(opts...),
+		SleepCycle:        sleepcycle.NewClient(opts...),
+		Profile:           profile.NewClient(opts...),
+		Devices:           devices.NewClient(opts...),
+		Activity:          activity.NewClient(opts...),
+		Workouts:          workouts.NewClient(opts...),
+		Sleep:             sleep.NewClient(opts...),
+		Body:              body.NewClient(opts...),
+		Meal:              meal.NewClient(opts...),
+		MenstrualCycle:    menstrualcycle.NewClient(opts...),
+		Vitals:            vitals.NewClient(opts...),
+		User:              user.NewClient(opts...),
+		Team:              team.NewClient(opts...),
+		Providers:         providers.NewClient(opts...),
+		Introspect:        introspect.NewClient(opts...),
+		LabTests:          labtests.NewClient(opts...),
+		Testkit:           testkit.NewClient(opts...),
+		Insurance:         insurance.NewClient(opts...),
+		Aggregate:         aggregate.NewClient(opts...),
 	}
 }
