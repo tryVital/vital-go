@@ -4589,6 +4589,7 @@ type ClientFacingLabLocation struct {
 	Distance           int                  `json:"distance" url:"distance"`
 	SiteCode           string               `json:"site_code" url:"site_code"`
 	SupportedBillTypes []Billing            `json:"supported_bill_types,omitempty" url:"supported_bill_types,omitempty"`
+	Location           *LngLat              `json:"location,omitempty" url:"location,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
