@@ -322,7 +322,6 @@ type AggregateExprArg struct {
 	WorkoutColumnExpr          *WorkoutColumnExpr
 	BodyColumnExpr             *BodyColumnExpr
 	IndexColumnExpr            *IndexColumnExpr
-	GroupKeyColumnExpr         *GroupKeyColumnExpr
 	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr   *ChronotypeValueMacroExpr
 	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
@@ -346,10 +345,6 @@ func NewAggregateExprArgFromBodyColumnExpr(value *BodyColumnExpr) *AggregateExpr
 
 func NewAggregateExprArgFromIndexColumnExpr(value *IndexColumnExpr) *AggregateExprArg {
 	return &AggregateExprArg{IndexColumnExpr: value}
-}
-
-func NewAggregateExprArgFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *AggregateExprArg {
-	return &AggregateExprArg{GroupKeyColumnExpr: value}
 }
 
 func NewAggregateExprArgFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *AggregateExprArg {
@@ -390,11 +385,6 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.IndexColumnExpr = valueIndexColumnExpr
 		return nil
 	}
-	valueGroupKeyColumnExpr := new(GroupKeyColumnExpr)
-	if err := json.Unmarshal(data, &valueGroupKeyColumnExpr); err == nil {
-		a.GroupKeyColumnExpr = valueGroupKeyColumnExpr
-		return nil
-	}
 	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
 	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
 		a.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
@@ -429,9 +419,6 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.IndexColumnExpr != nil {
 		return json.Marshal(a.IndexColumnExpr)
 	}
-	if a.GroupKeyColumnExpr != nil {
-		return json.Marshal(a.GroupKeyColumnExpr)
-	}
 	if a.SleepScoreValueMacroExpr != nil {
 		return json.Marshal(a.SleepScoreValueMacroExpr)
 	}
@@ -450,7 +437,6 @@ type AggregateExprArgVisitor interface {
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
-	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
@@ -471,9 +457,6 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(a.IndexColumnExpr)
-	}
-	if a.GroupKeyColumnExpr != nil {
-		return visitor.VisitGroupKeyColumnExpr(a.GroupKeyColumnExpr)
 	}
 	if a.SleepScoreValueMacroExpr != nil {
 		return visitor.VisitSleepScoreValueMacroExpr(a.SleepScoreValueMacroExpr)
@@ -15254,12 +15237,12 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 
 type QuerySelectItem struct {
 	AggregateExpr              *AggregateExpr
+	GroupKeyColumnExpr         *GroupKeyColumnExpr
 	SleepColumnExpr            *SleepColumnExpr
 	ActivityColumnExpr         *ActivityColumnExpr
 	WorkoutColumnExpr          *WorkoutColumnExpr
 	BodyColumnExpr             *BodyColumnExpr
 	IndexColumnExpr            *IndexColumnExpr
-	GroupKeyColumnExpr         *GroupKeyColumnExpr
 	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr   *ChronotypeValueMacroExpr
 	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
@@ -15267,6 +15250,10 @@ type QuerySelectItem struct {
 
 func NewQuerySelectItemFromAggregateExpr(value *AggregateExpr) *QuerySelectItem {
 	return &QuerySelectItem{AggregateExpr: value}
+}
+
+func NewQuerySelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{GroupKeyColumnExpr: value}
 }
 
 func NewQuerySelectItemFromSleepColumnExpr(value *SleepColumnExpr) *QuerySelectItem {
@@ -15289,10 +15276,6 @@ func NewQuerySelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QuerySelectI
 	return &QuerySelectItem{IndexColumnExpr: value}
 }
 
-func NewQuerySelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QuerySelectItem {
-	return &QuerySelectItem{GroupKeyColumnExpr: value}
-}
-
 func NewQuerySelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QuerySelectItem {
 	return &QuerySelectItem{SleepScoreValueMacroExpr: value}
 }
@@ -15309,6 +15292,11 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 	valueAggregateExpr := new(AggregateExpr)
 	if err := json.Unmarshal(data, &valueAggregateExpr); err == nil {
 		q.AggregateExpr = valueAggregateExpr
+		return nil
+	}
+	valueGroupKeyColumnExpr := new(GroupKeyColumnExpr)
+	if err := json.Unmarshal(data, &valueGroupKeyColumnExpr); err == nil {
+		q.GroupKeyColumnExpr = valueGroupKeyColumnExpr
 		return nil
 	}
 	valueSleepColumnExpr := new(SleepColumnExpr)
@@ -15336,11 +15324,6 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.IndexColumnExpr = valueIndexColumnExpr
 		return nil
 	}
-	valueGroupKeyColumnExpr := new(GroupKeyColumnExpr)
-	if err := json.Unmarshal(data, &valueGroupKeyColumnExpr); err == nil {
-		q.GroupKeyColumnExpr = valueGroupKeyColumnExpr
-		return nil
-	}
 	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
 	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
 		q.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
@@ -15363,6 +15346,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.AggregateExpr != nil {
 		return json.Marshal(q.AggregateExpr)
 	}
+	if q.GroupKeyColumnExpr != nil {
+		return json.Marshal(q.GroupKeyColumnExpr)
+	}
 	if q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
 	}
@@ -15378,9 +15364,6 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.IndexColumnExpr != nil {
 		return json.Marshal(q.IndexColumnExpr)
 	}
-	if q.GroupKeyColumnExpr != nil {
-		return json.Marshal(q.GroupKeyColumnExpr)
-	}
 	if q.SleepScoreValueMacroExpr != nil {
 		return json.Marshal(q.SleepScoreValueMacroExpr)
 	}
@@ -15395,12 +15378,12 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 
 type QuerySelectItemVisitor interface {
 	VisitAggregateExpr(*AggregateExpr) error
+	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
-	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
@@ -15409,6 +15392,9 @@ type QuerySelectItemVisitor interface {
 func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	if q.AggregateExpr != nil {
 		return visitor.VisitAggregateExpr(q.AggregateExpr)
+	}
+	if q.GroupKeyColumnExpr != nil {
+		return visitor.VisitGroupKeyColumnExpr(q.GroupKeyColumnExpr)
 	}
 	if q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
@@ -15424,9 +15410,6 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(q.IndexColumnExpr)
-	}
-	if q.GroupKeyColumnExpr != nil {
-		return visitor.VisitGroupKeyColumnExpr(q.GroupKeyColumnExpr)
 	}
 	if q.SleepScoreValueMacroExpr != nil {
 		return visitor.VisitSleepScoreValueMacroExpr(q.SleepScoreValueMacroExpr)
