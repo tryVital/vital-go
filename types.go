@@ -2961,6 +2961,86 @@ func (c *ClientFacingCholesterolTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingConnectionErrorDetails struct {
+	ErrorType    ClientFacingConnectionErrorDetailsErrorType `json:"error_type" url:"error_type"`
+	ErrorMessage string                                      `json:"error_message" url:"error_message"`
+	ErroredAt    string                                      `json:"errored_at" url:"errored_at"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingConnectionErrorDetails) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingConnectionErrorDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingConnectionErrorDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingConnectionErrorDetails(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingConnectionErrorDetails) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingConnectionErrorDetailsErrorType string
+
+const (
+	ClientFacingConnectionErrorDetailsErrorTypeTokenRefreshFailed        ClientFacingConnectionErrorDetailsErrorType = "token_refresh_failed"
+	ClientFacingConnectionErrorDetailsErrorTypeWebhookRegistrationFailed ClientFacingConnectionErrorDetailsErrorType = "webhook_registration_failed"
+	ClientFacingConnectionErrorDetailsErrorTypeUserNotFound              ClientFacingConnectionErrorDetailsErrorType = "user_not_found"
+	ClientFacingConnectionErrorDetailsErrorTypeDeregisteredPerProvider   ClientFacingConnectionErrorDetailsErrorType = "deregistered_per_provider"
+	ClientFacingConnectionErrorDetailsErrorTypeRequiredScopesNotGranted  ClientFacingConnectionErrorDetailsErrorType = "required_scopes_not_granted"
+	ClientFacingConnectionErrorDetailsErrorTypeProviderCredentialError   ClientFacingConnectionErrorDetailsErrorType = "provider_credential_error"
+	ClientFacingConnectionErrorDetailsErrorTypeUnknown                   ClientFacingConnectionErrorDetailsErrorType = "unknown"
+)
+
+func NewClientFacingConnectionErrorDetailsErrorTypeFromString(s string) (ClientFacingConnectionErrorDetailsErrorType, error) {
+	switch s {
+	case "token_refresh_failed":
+		return ClientFacingConnectionErrorDetailsErrorTypeTokenRefreshFailed, nil
+	case "webhook_registration_failed":
+		return ClientFacingConnectionErrorDetailsErrorTypeWebhookRegistrationFailed, nil
+	case "user_not_found":
+		return ClientFacingConnectionErrorDetailsErrorTypeUserNotFound, nil
+	case "deregistered_per_provider":
+		return ClientFacingConnectionErrorDetailsErrorTypeDeregisteredPerProvider, nil
+	case "required_scopes_not_granted":
+		return ClientFacingConnectionErrorDetailsErrorTypeRequiredScopesNotGranted, nil
+	case "provider_credential_error":
+		return ClientFacingConnectionErrorDetailsErrorTypeProviderCredentialError, nil
+	case "unknown":
+		return ClientFacingConnectionErrorDetailsErrorTypeUnknown, nil
+	}
+	var t ClientFacingConnectionErrorDetailsErrorType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingConnectionErrorDetailsErrorType) Ptr() *ClientFacingConnectionErrorDetailsErrorType {
+	return &c
+}
+
 type ClientFacingDiagnosisInformation struct {
 	// Diagnosis code for insurance information.
 	DiagnosisCode string `json:"diagnosis_code" url:"diagnosis_code"`
@@ -5682,10 +5762,13 @@ type ClientFacingProviderWithStatus struct {
 	// Slug for designated source
 	Slug string `json:"slug" url:"slug"`
 	// URL for source logo
-	Logo string `json:"logo" url:"logo"`
+	Logo      string `json:"logo" url:"logo"`
+	CreatedOn string `json:"created_on" url:"created_on"`
 	// Status of source, either error or connected
-	Status               string                           `json:"status" url:"status"`
-	ResourceAvailability map[string]*ResourceAvailability `json:"resource_availability,omitempty" url:"resource_availability,omitempty"`
+	Status string `json:"status" url:"status"`
+	// Details of the terminal connection error — populated only when the status is `error`.
+	ErrorDetails         *ClientFacingConnectionErrorDetails `json:"error_details,omitempty" url:"error_details,omitempty"`
+	ResourceAvailability map[string]*ResourceAvailability    `json:"resource_availability,omitempty" url:"resource_availability,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -14063,6 +14146,28 @@ func (p *PatientDetailsWithValidation) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type PayorCodeExternalProvider string
+
+const (
+	PayorCodeExternalProviderChangeHealthcare PayorCodeExternalProvider = "change_healthcare"
+	PayorCodeExternalProviderAvaility         PayorCodeExternalProvider = "availity"
+)
+
+func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider, error) {
+	switch s {
+	case "change_healthcare":
+		return PayorCodeExternalProviderChangeHealthcare, nil
+	case "availity":
+		return PayorCodeExternalProviderAvaility, nil
+	}
+	var t PayorCodeExternalProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PayorCodeExternalProvider) Ptr() *PayorCodeExternalProvider {
+	return &p
+}
+
 type Period struct {
 	Value *int       `json:"value,omitempty" url:"value,omitempty"`
 	Unit  PeriodUnit `json:"unit" url:"unit"`
@@ -17732,6 +17837,7 @@ type VitalSleepStage = int
 type VitalTokenCreatedResponse struct {
 	Code        string `json:"code" url:"code"`
 	ExchangeUrl string `json:"exchange_url" url:"exchange_url"`
+	ExpiresAt   string `json:"expires_at" url:"expires_at"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage

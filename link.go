@@ -7,7 +7,8 @@ import (
 )
 
 type LinkCodeCreateRequest struct {
-	UserId    string     `json:"-" url:"user_id"`
+	UserId string `json:"-" url:"user_id"`
+	// When the link code should expire. Defaults to server time plus 1 hour.
 	ExpiresAt *time.Time `json:"-" url:"expires_at,omitempty"`
 }
 

@@ -7,5 +7,7 @@ type InsuranceSearchDiagnosisRequest struct {
 }
 
 type PayorSearchRequest struct {
-	InsuranceName string `json:"insurance_name" url:"-"`
+	InsuranceName *string                    `json:"insurance_name,omitempty" url:"-"`
+	Provider      *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`
+	ProviderId    *string                    `json:"provider_id,omitempty" url:"-"`
 }
