@@ -5525,7 +5525,7 @@ func (c *ClientFacingPatientDetailsCompatible) String() string {
 
 type ClientFacingPayorSearchResponse struct {
 	// Payor code returned for the insurance information.
-	Code string `json:"code" url:"code"`
+	PayorCode string `json:"payor_code" url:"payor_code"`
 	// Insurance name returned for the insurance information.
 	Name string `json:"name" url:"name"`
 	// Insurance name aliases returned for the insurance information.
@@ -5560,6 +5560,54 @@ func (c *ClientFacingPayorSearchResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingPayorSearchResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingPayorSearchResponseDeprecated struct {
+	// Payor code returned for the insurance information.
+	Code string `json:"code" url:"code"`
+	// Insurance name returned for the insurance information.
+	Name string `json:"name" url:"name"`
+	// Insurance name aliases returned for the insurance information.
+	Aliases []string `json:"aliases,omitempty" url:"aliases,omitempty"`
+	// Insurance business address returned for the insurance information.
+	OrgAddress *Address `json:"org_address,omitempty" url:"org_address,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingPayorSearchResponseDeprecated) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingPayorSearchResponseDeprecated) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingPayorSearchResponseDeprecated
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingPayorSearchResponseDeprecated(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingPayorSearchResponseDeprecated) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value

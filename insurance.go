@@ -6,6 +6,12 @@ type InsuranceSearchDiagnosisRequest struct {
 	DiagnosisQuery string `json:"-" url:"diagnosis_query"`
 }
 
+type InsuranceSearchGetPayorInfoRequest struct {
+	InsuranceName   *string                    `json:"-" url:"insurance_name,omitempty"`
+	Provider        *PayorCodeExternalProvider `json:"-" url:"provider,omitempty"`
+	ProviderPayorId *string                    `json:"-" url:"provider_payor_id,omitempty"`
+}
+
 type PayorSearchRequest struct {
 	InsuranceName *string                    `json:"insurance_name,omitempty" url:"-"`
 	Provider      *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`

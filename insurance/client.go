@@ -34,11 +34,76 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+func (c *Client) SearchGetPayorInfo(
+	ctx context.Context,
+	request *vitalgo.InsuranceSearchGetPayorInfoRequest,
+	opts ...option.RequestOption,
+) ([]*vitalgo.ClientFacingPayorSearchResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v3/insurance/search/payor"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response []*vitalgo.ClientFacingPayorSearchResponse
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) SearchPayorInfo(
 	ctx context.Context,
 	request *vitalgo.PayorSearchRequest,
 	opts ...option.RequestOption,
-) ([]*vitalgo.ClientFacingPayorSearchResponse, error) {
+) ([]*vitalgo.ClientFacingPayorSearchResponseDeprecated, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -71,7 +136,7 @@ func (c *Client) SearchPayorInfo(
 		return apiError
 	}
 
-	var response []*vitalgo.ClientFacingPayorSearchResponse
+	var response []*vitalgo.ClientFacingPayorSearchResponseDeprecated
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
