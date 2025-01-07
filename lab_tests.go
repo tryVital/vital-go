@@ -44,7 +44,7 @@ type CreateOrderRequestCompatible struct {
 	AoeAnswers     []*AoEAnswer                  `json:"aoe_answers,omitempty" url:"-"`
 	Passthrough    *string                       `json:"passthrough,omitempty" url:"-"`
 	PatientDetails *PatientDetailsWithValidation `json:"patient_details,omitempty" url:"-"`
-	PatientAddress *PatientAddressCompatible     `json:"patient_address,omitempty" url:"-"`
+	PatientAddress *PatientAddressWithValidation `json:"patient_address,omitempty" url:"-"`
 }
 
 type LabTestsGetAreaInfoRequest struct {

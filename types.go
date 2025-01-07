@@ -14065,6 +14065,54 @@ func (p *PatientAddressCompatible) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type PatientAddressWithValidation struct {
+	ReceiverName *string `json:"receiver_name,omitempty" url:"receiver_name,omitempty"`
+	FirstLine    string  `json:"first_line" url:"first_line"`
+	SecondLine   *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	City         string  `json:"city" url:"city"`
+	State        string  `json:"state" url:"state"`
+	Zip          string  `json:"zip" url:"zip"`
+	Country      string  `json:"country" url:"country"`
+	PhoneNumber  *string `json:"phone_number,omitempty" url:"phone_number,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PatientAddressWithValidation) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PatientAddressWithValidation) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatientAddressWithValidation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PatientAddressWithValidation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PatientAddressWithValidation) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type PatientDetails struct {
 	FirstName   string    `json:"first_name" url:"first_name"`
 	LastName    string    `json:"last_name" url:"last_name"`
@@ -15221,7 +15269,6 @@ func (q *Query) String() string {
 }
 
 type QueryConfig struct {
-	WeekStartsOn              *QueryConfigWeekStartsOn                    `json:"week_starts_on,omitempty" url:"week_starts_on,omitempty"`
 	ProviderPriorityOverrides []*QueryConfigProviderPriorityOverridesItem `json:"provider_priority_overrides,omitempty" url:"provider_priority_overrides,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -15312,28 +15359,6 @@ func (q *QueryConfigProviderPriorityOverridesItem) Accept(visitor QueryConfigPro
 		return visitor.VisitLabs(q.Labs)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", q)
-}
-
-type QueryConfigWeekStartsOn string
-
-const (
-	QueryConfigWeekStartsOnSunday QueryConfigWeekStartsOn = "sunday"
-	QueryConfigWeekStartsOnMonday QueryConfigWeekStartsOn = "monday"
-)
-
-func NewQueryConfigWeekStartsOnFromString(s string) (QueryConfigWeekStartsOn, error) {
-	switch s {
-	case "sunday":
-		return QueryConfigWeekStartsOnSunday, nil
-	case "monday":
-		return QueryConfigWeekStartsOnMonday, nil
-	}
-	var t QueryConfigWeekStartsOn
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (q QueryConfigWeekStartsOn) Ptr() *QueryConfigWeekStartsOn {
-	return &q
 }
 
 type QueryGroupByItem struct {
