@@ -84,6 +84,7 @@ type LinkTokenExchange struct {
 	Provider          *Providers  `json:"provider,omitempty" url:"-"`
 	RedirectUrl       *string     `json:"redirect_url,omitempty" url:"-"`
 	FilterOnProviders []Providers `json:"filter_on_providers,omitempty" url:"-"`
+	OnError           *string     `json:"on_error,omitempty" url:"-"`
 }
 
 type LinkTokenStateRequest struct {
