@@ -10,7 +10,8 @@ type CreateRegistrableTestkitOrderRequest struct {
 }
 
 type RegisterTestkitRequest struct {
-	UserId          string                        `json:"user_id" url:"-"`
+	// The user ID of the patient.
+	UserId          *string                       `json:"user_id,omitempty" url:"-"`
 	SampleId        string                        `json:"sample_id" url:"-"`
 	PatientDetails  *PatientDetails               `json:"patient_details,omitempty" url:"-"`
 	PatientAddress  *PatientAddressCompatible     `json:"patient_address,omitempty" url:"-"`
