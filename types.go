@@ -5762,9 +5762,9 @@ type ClientFacingProviderDetailed struct {
 	// Description of source of information
 	Description string `json:"description" url:"description"`
 	// URL for source logo
-	Logo               *string         `json:"logo,omitempty" url:"logo,omitempty"`
-	AuthType           *SourceAuthType `json:"auth_type,omitempty" url:"auth_type,omitempty"`
-	SupportedResources []Resource      `json:"supported_resources,omitempty" url:"supported_resources,omitempty"`
+	Logo               *string                `json:"logo,omitempty" url:"logo,omitempty"`
+	AuthType           *SourceAuthType        `json:"auth_type,omitempty" url:"auth_type,omitempty"`
+	SupportedResources []ClientFacingResource `json:"supported_resources,omitempty" url:"supported_resources,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -5854,6 +5854,163 @@ func (c *ClientFacingProviderWithStatus) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingResource string
+
+const (
+	ClientFacingResourceProfile                  ClientFacingResource = "profile"
+	ClientFacingResourceActivity                 ClientFacingResource = "activity"
+	ClientFacingResourceSleep                    ClientFacingResource = "sleep"
+	ClientFacingResourceBody                     ClientFacingResource = "body"
+	ClientFacingResourceWorkouts                 ClientFacingResource = "workouts"
+	ClientFacingResourceWorkoutStream            ClientFacingResource = "workout_stream"
+	ClientFacingResourceConnection               ClientFacingResource = "connection"
+	ClientFacingResourceOrder                    ClientFacingResource = "order"
+	ClientFacingResourceResult                   ClientFacingResource = "result"
+	ClientFacingResourceAppointment              ClientFacingResource = "appointment"
+	ClientFacingResourceGlucose                  ClientFacingResource = "glucose"
+	ClientFacingResourceHeartrate                ClientFacingResource = "heartrate"
+	ClientFacingResourceHrv                      ClientFacingResource = "hrv"
+	ClientFacingResourceIge                      ClientFacingResource = "ige"
+	ClientFacingResourceIgg                      ClientFacingResource = "igg"
+	ClientFacingResourceBloodOxygen              ClientFacingResource = "blood_oxygen"
+	ClientFacingResourceBloodPressure            ClientFacingResource = "blood_pressure"
+	ClientFacingResourceCholesterol              ClientFacingResource = "cholesterol"
+	ClientFacingResourceDevice                   ClientFacingResource = "device"
+	ClientFacingResourceWeight                   ClientFacingResource = "weight"
+	ClientFacingResourceFat                      ClientFacingResource = "fat"
+	ClientFacingResourceBodyTemperature          ClientFacingResource = "body_temperature"
+	ClientFacingResourceBodyTemperatureDelta     ClientFacingResource = "body_temperature_delta"
+	ClientFacingResourceMeal                     ClientFacingResource = "meal"
+	ClientFacingResourceWater                    ClientFacingResource = "water"
+	ClientFacingResourceCaffeine                 ClientFacingResource = "caffeine"
+	ClientFacingResourceMindfulnessMinutes       ClientFacingResource = "mindfulness_minutes"
+	ClientFacingResourceSteps                    ClientFacingResource = "steps"
+	ClientFacingResourceCaloriesActive           ClientFacingResource = "calories_active"
+	ClientFacingResourceDistance                 ClientFacingResource = "distance"
+	ClientFacingResourceFloorsClimbed            ClientFacingResource = "floors_climbed"
+	ClientFacingResourceRespiratoryRate          ClientFacingResource = "respiratory_rate"
+	ClientFacingResourceVo2Max                   ClientFacingResource = "vo2_max"
+	ClientFacingResourceCaloriesBasal            ClientFacingResource = "calories_basal"
+	ClientFacingResourceStressLevel              ClientFacingResource = "stress_level"
+	ClientFacingResourceMenstrualCycle           ClientFacingResource = "menstrual_cycle"
+	ClientFacingResourceSleepCycle               ClientFacingResource = "sleep_cycle"
+	ClientFacingResourceElectrocardiogram        ClientFacingResource = "electrocardiogram"
+	ClientFacingResourceElectrocardiogramVoltage ClientFacingResource = "electrocardiogram_voltage"
+	ClientFacingResourceAfibBurden               ClientFacingResource = "afib_burden"
+	ClientFacingResourceHeartRateAlert           ClientFacingResource = "heart_rate_alert"
+	ClientFacingResourceWorkoutDuration          ClientFacingResource = "workout_duration"
+	ClientFacingResourceInsulinInjection         ClientFacingResource = "insulin_injection"
+	ClientFacingResourceCarbohydrates            ClientFacingResource = "carbohydrates"
+	ClientFacingResourceNote                     ClientFacingResource = "note"
+	ClientFacingResourceSleepStream              ClientFacingResource = "sleep_stream"
+	ClientFacingResourceHypnogram                ClientFacingResource = "hypnogram"
+)
+
+func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
+	switch s {
+	case "profile":
+		return ClientFacingResourceProfile, nil
+	case "activity":
+		return ClientFacingResourceActivity, nil
+	case "sleep":
+		return ClientFacingResourceSleep, nil
+	case "body":
+		return ClientFacingResourceBody, nil
+	case "workouts":
+		return ClientFacingResourceWorkouts, nil
+	case "workout_stream":
+		return ClientFacingResourceWorkoutStream, nil
+	case "connection":
+		return ClientFacingResourceConnection, nil
+	case "order":
+		return ClientFacingResourceOrder, nil
+	case "result":
+		return ClientFacingResourceResult, nil
+	case "appointment":
+		return ClientFacingResourceAppointment, nil
+	case "glucose":
+		return ClientFacingResourceGlucose, nil
+	case "heartrate":
+		return ClientFacingResourceHeartrate, nil
+	case "hrv":
+		return ClientFacingResourceHrv, nil
+	case "ige":
+		return ClientFacingResourceIge, nil
+	case "igg":
+		return ClientFacingResourceIgg, nil
+	case "blood_oxygen":
+		return ClientFacingResourceBloodOxygen, nil
+	case "blood_pressure":
+		return ClientFacingResourceBloodPressure, nil
+	case "cholesterol":
+		return ClientFacingResourceCholesterol, nil
+	case "device":
+		return ClientFacingResourceDevice, nil
+	case "weight":
+		return ClientFacingResourceWeight, nil
+	case "fat":
+		return ClientFacingResourceFat, nil
+	case "body_temperature":
+		return ClientFacingResourceBodyTemperature, nil
+	case "body_temperature_delta":
+		return ClientFacingResourceBodyTemperatureDelta, nil
+	case "meal":
+		return ClientFacingResourceMeal, nil
+	case "water":
+		return ClientFacingResourceWater, nil
+	case "caffeine":
+		return ClientFacingResourceCaffeine, nil
+	case "mindfulness_minutes":
+		return ClientFacingResourceMindfulnessMinutes, nil
+	case "steps":
+		return ClientFacingResourceSteps, nil
+	case "calories_active":
+		return ClientFacingResourceCaloriesActive, nil
+	case "distance":
+		return ClientFacingResourceDistance, nil
+	case "floors_climbed":
+		return ClientFacingResourceFloorsClimbed, nil
+	case "respiratory_rate":
+		return ClientFacingResourceRespiratoryRate, nil
+	case "vo2_max":
+		return ClientFacingResourceVo2Max, nil
+	case "calories_basal":
+		return ClientFacingResourceCaloriesBasal, nil
+	case "stress_level":
+		return ClientFacingResourceStressLevel, nil
+	case "menstrual_cycle":
+		return ClientFacingResourceMenstrualCycle, nil
+	case "sleep_cycle":
+		return ClientFacingResourceSleepCycle, nil
+	case "electrocardiogram":
+		return ClientFacingResourceElectrocardiogram, nil
+	case "electrocardiogram_voltage":
+		return ClientFacingResourceElectrocardiogramVoltage, nil
+	case "afib_burden":
+		return ClientFacingResourceAfibBurden, nil
+	case "heart_rate_alert":
+		return ClientFacingResourceHeartRateAlert, nil
+	case "workout_duration":
+		return ClientFacingResourceWorkoutDuration, nil
+	case "insulin_injection":
+		return ClientFacingResourceInsulinInjection, nil
+	case "carbohydrates":
+		return ClientFacingResourceCarbohydrates, nil
+	case "note":
+		return ClientFacingResourceNote, nil
+	case "sleep_stream":
+		return ClientFacingResourceSleepStream, nil
+	case "hypnogram":
+		return ClientFacingResourceHypnogram, nil
+	}
+	var t ClientFacingResource
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingResource) Ptr() *ClientFacingResource {
+	return &c
 }
 
 type ClientFacingRespiratoryRateTimeseries struct {
@@ -15881,163 +16038,6 @@ func (r *RelativeTimeframe) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
-type Resource string
-
-const (
-	ResourceProfile                  Resource = "profile"
-	ResourceActivity                 Resource = "activity"
-	ResourceSleep                    Resource = "sleep"
-	ResourceBody                     Resource = "body"
-	ResourceWorkouts                 Resource = "workouts"
-	ResourceWorkoutStream            Resource = "workout_stream"
-	ResourceConnection               Resource = "connection"
-	ResourceOrder                    Resource = "order"
-	ResourceResult                   Resource = "result"
-	ResourceAppointment              Resource = "appointment"
-	ResourceGlucose                  Resource = "glucose"
-	ResourceHeartrate                Resource = "heartrate"
-	ResourceHrv                      Resource = "hrv"
-	ResourceIge                      Resource = "ige"
-	ResourceIgg                      Resource = "igg"
-	ResourceBloodOxygen              Resource = "blood_oxygen"
-	ResourceBloodPressure            Resource = "blood_pressure"
-	ResourceCholesterol              Resource = "cholesterol"
-	ResourceDevice                   Resource = "device"
-	ResourceWeight                   Resource = "weight"
-	ResourceFat                      Resource = "fat"
-	ResourceBodyTemperature          Resource = "body_temperature"
-	ResourceBodyTemperatureDelta     Resource = "body_temperature_delta"
-	ResourceMeal                     Resource = "meal"
-	ResourceWater                    Resource = "water"
-	ResourceCaffeine                 Resource = "caffeine"
-	ResourceMindfulnessMinutes       Resource = "mindfulness_minutes"
-	ResourceSteps                    Resource = "steps"
-	ResourceCaloriesActive           Resource = "calories_active"
-	ResourceDistance                 Resource = "distance"
-	ResourceFloorsClimbed            Resource = "floors_climbed"
-	ResourceRespiratoryRate          Resource = "respiratory_rate"
-	ResourceVo2Max                   Resource = "vo2_max"
-	ResourceCaloriesBasal            Resource = "calories_basal"
-	ResourceStressLevel              Resource = "stress_level"
-	ResourceMenstrualCycle           Resource = "menstrual_cycle"
-	ResourceSleepCycle               Resource = "sleep_cycle"
-	ResourceElectrocardiogram        Resource = "electrocardiogram"
-	ResourceElectrocardiogramVoltage Resource = "electrocardiogram_voltage"
-	ResourceAfibBurden               Resource = "afib_burden"
-	ResourceHeartRateAlert           Resource = "heart_rate_alert"
-	ResourceWorkoutDuration          Resource = "workout_duration"
-	ResourceInsulinInjection         Resource = "insulin_injection"
-	ResourceCarbohydrates            Resource = "carbohydrates"
-	ResourceNote                     Resource = "note"
-	ResourceSleepStream              Resource = "sleep_stream"
-	ResourceHypnogram                Resource = "hypnogram"
-)
-
-func NewResourceFromString(s string) (Resource, error) {
-	switch s {
-	case "profile":
-		return ResourceProfile, nil
-	case "activity":
-		return ResourceActivity, nil
-	case "sleep":
-		return ResourceSleep, nil
-	case "body":
-		return ResourceBody, nil
-	case "workouts":
-		return ResourceWorkouts, nil
-	case "workout_stream":
-		return ResourceWorkoutStream, nil
-	case "connection":
-		return ResourceConnection, nil
-	case "order":
-		return ResourceOrder, nil
-	case "result":
-		return ResourceResult, nil
-	case "appointment":
-		return ResourceAppointment, nil
-	case "glucose":
-		return ResourceGlucose, nil
-	case "heartrate":
-		return ResourceHeartrate, nil
-	case "hrv":
-		return ResourceHrv, nil
-	case "ige":
-		return ResourceIge, nil
-	case "igg":
-		return ResourceIgg, nil
-	case "blood_oxygen":
-		return ResourceBloodOxygen, nil
-	case "blood_pressure":
-		return ResourceBloodPressure, nil
-	case "cholesterol":
-		return ResourceCholesterol, nil
-	case "device":
-		return ResourceDevice, nil
-	case "weight":
-		return ResourceWeight, nil
-	case "fat":
-		return ResourceFat, nil
-	case "body_temperature":
-		return ResourceBodyTemperature, nil
-	case "body_temperature_delta":
-		return ResourceBodyTemperatureDelta, nil
-	case "meal":
-		return ResourceMeal, nil
-	case "water":
-		return ResourceWater, nil
-	case "caffeine":
-		return ResourceCaffeine, nil
-	case "mindfulness_minutes":
-		return ResourceMindfulnessMinutes, nil
-	case "steps":
-		return ResourceSteps, nil
-	case "calories_active":
-		return ResourceCaloriesActive, nil
-	case "distance":
-		return ResourceDistance, nil
-	case "floors_climbed":
-		return ResourceFloorsClimbed, nil
-	case "respiratory_rate":
-		return ResourceRespiratoryRate, nil
-	case "vo2_max":
-		return ResourceVo2Max, nil
-	case "calories_basal":
-		return ResourceCaloriesBasal, nil
-	case "stress_level":
-		return ResourceStressLevel, nil
-	case "menstrual_cycle":
-		return ResourceMenstrualCycle, nil
-	case "sleep_cycle":
-		return ResourceSleepCycle, nil
-	case "electrocardiogram":
-		return ResourceElectrocardiogram, nil
-	case "electrocardiogram_voltage":
-		return ResourceElectrocardiogramVoltage, nil
-	case "afib_burden":
-		return ResourceAfibBurden, nil
-	case "heart_rate_alert":
-		return ResourceHeartRateAlert, nil
-	case "workout_duration":
-		return ResourceWorkoutDuration, nil
-	case "insulin_injection":
-		return ResourceInsulinInjection, nil
-	case "carbohydrates":
-		return ResourceCarbohydrates, nil
-	case "note":
-		return ResourceNote, nil
-	case "sleep_stream":
-		return ResourceSleepStream, nil
-	case "hypnogram":
-		return ResourceHypnogram, nil
-	}
-	var t Resource
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (r Resource) Ptr() *Resource {
-	return &r
-}
-
 type ResourceAvailability struct {
 	Status            Availability             `json:"status" url:"status"`
 	ScopeRequirements *ScopeRequirementsGrants `json:"scope_requirements,omitempty" url:"scope_requirements,omitempty"`
@@ -16372,7 +16372,7 @@ func (s *SingleHistoricalPullStatistics) String() string {
 
 type SingleProviderHistoricalPullResponse struct {
 	Pulled    map[string]*SingleHistoricalPullStatistics `json:"pulled,omitempty" url:"pulled,omitempty"`
-	NotPulled []Resource                                 `json:"not_pulled,omitempty" url:"not_pulled,omitempty"`
+	NotPulled []ClientFacingResource                     `json:"not_pulled,omitempty" url:"not_pulled,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
