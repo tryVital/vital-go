@@ -1450,6 +1450,216 @@ func (b *BodyV2InDb) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type BulkExportConnectionsBody struct {
+	UserIds  []string       `json:"user_ids,omitempty" url:"user_ids,omitempty"`
+	Provider OAuthProviders `json:"provider" url:"provider"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkExportConnectionsBody) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkExportConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkExportConnectionsBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkExportConnectionsBody(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkExportConnectionsBody) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkExportConnectionsResponse struct {
+	Data      []*ConnectionRecipe `json:"data,omitempty" url:"data,omitempty"`
+	NextToken *string             `json:"next_token,omitempty" url:"next_token,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkExportConnectionsResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkExportConnectionsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkExportConnectionsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkExportConnectionsResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkExportConnectionsResponse) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkImportConnectionsBody struct {
+	Provider    OAuthProviders      `json:"provider" url:"provider"`
+	Connections []*ConnectionRecipe `json:"connections,omitempty" url:"connections,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkImportConnectionsBody) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkImportConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkImportConnectionsBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkImportConnectionsBody(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkImportConnectionsBody) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkPauseConnectionsBody struct {
+	UserIds  []string       `json:"user_ids,omitempty" url:"user_ids,omitempty"`
+	Provider OAuthProviders `json:"provider" url:"provider"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkPauseConnectionsBody) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkPauseConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkPauseConnectionsBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkPauseConnectionsBody(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkPauseConnectionsBody) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkTriggerHistoricalPullBody struct {
+	UserIds  []string       `json:"user_ids,omitempty" url:"user_ids,omitempty"`
+	Provider OAuthProviders `json:"provider" url:"provider"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkTriggerHistoricalPullBody) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkTriggerHistoricalPullBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkTriggerHistoricalPullBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkTriggerHistoricalPullBody(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkTriggerHistoricalPullBody) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type CervicalMucusEntry struct {
 	Date    string                    `json:"date" url:"date"`
 	Quality CervicalMucusEntryQuality `json:"quality" url:"quality"`
@@ -8557,6 +8767,52 @@ func (c *ConnectedSourceClientFacing) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ConnectedSourceClientFacing) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConnectionRecipe struct {
+	UserId       string   `json:"user_id" url:"user_id"`
+	AccessToken  string   `json:"access_token" url:"access_token"`
+	RefreshToken string   `json:"refresh_token" url:"refresh_token"`
+	ProviderId   string   `json:"provider_id" url:"provider_id"`
+	ExpiresAt    int      `json:"expires_at" url:"expires_at"`
+	OauthScopes  []string `json:"oauth_scopes,omitempty" url:"oauth_scopes,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ConnectionRecipe) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConnectionRecipe) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionRecipe
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionRecipe(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionRecipe) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
