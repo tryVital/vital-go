@@ -14369,70 +14369,6 @@ func (p *PatientAddressWithValidation) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-type PatientDetails struct {
-	FirstName   string    `json:"first_name" url:"first_name"`
-	LastName    string    `json:"last_name" url:"last_name"`
-	Dob         time.Time `json:"dob" url:"dob"`
-	Gender      Gender    `json:"gender" url:"gender"`
-	PhoneNumber string    `json:"phone_number" url:"phone_number"`
-	Email       string    `json:"email" url:"email"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (p *PatientDetails) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PatientDetails) UnmarshalJSON(data []byte) error {
-	type embed PatientDetails
-	var unmarshaler = struct {
-		embed
-		Dob *core.DateTime `json:"dob"`
-	}{
-		embed: embed(*p),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*p = PatientDetails(unmarshaler.embed)
-	p.Dob = unmarshaler.Dob.Time()
-
-	extraProperties, err := core.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-
-	p._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PatientDetails) MarshalJSON() ([]byte, error) {
-	type embed PatientDetails
-	var marshaler = struct {
-		embed
-		Dob *core.DateTime `json:"dob"`
-	}{
-		embed: embed(*p),
-		Dob:   core.NewDateTime(p.Dob),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (p *PatientDetails) String() string {
-	if len(p._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
 // Patient details with validation for first_name, last_name, email, and dob.
 type PatientDetailsWithValidation struct {
 	FirstName   string    `json:"first_name" url:"first_name"`
@@ -16568,6 +16504,54 @@ func (s *ShippingAddress) UnmarshalJSON(data []byte) error {
 }
 
 func (s *ShippingAddress) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type ShippingAddressWithValidation struct {
+	ReceiverName string  `json:"receiver_name" url:"receiver_name"`
+	FirstLine    string  `json:"first_line" url:"first_line"`
+	SecondLine   *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	City         string  `json:"city" url:"city"`
+	State        string  `json:"state" url:"state"`
+	Zip          string  `json:"zip" url:"zip"`
+	Country      string  `json:"country" url:"country"`
+	PhoneNumber  string  `json:"phone_number" url:"phone_number"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *ShippingAddressWithValidation) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *ShippingAddressWithValidation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ShippingAddressWithValidation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ShippingAddressWithValidation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ShippingAddressWithValidation) String() string {
 	if len(s._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
 			return value
