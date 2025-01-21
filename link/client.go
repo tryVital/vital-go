@@ -350,7 +350,7 @@ func (c *Client) EmailAuth(
 	ctx context.Context,
 	request *vitalgo.EmailAuthLink,
 	opts ...option.RequestOption,
-) (*vitalgo.ConnectionStatus, error) {
+) (interface{}, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -386,7 +386,7 @@ func (c *Client) EmailAuth(
 		return apiError
 	}
 
-	var response *vitalgo.ConnectionStatus
+	var response interface{}
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -412,7 +412,7 @@ func (c *Client) PasswordAuth(
 	ctx context.Context,
 	request *vitalgo.PasswordAuthLink,
 	opts ...option.RequestOption,
-) (*vitalgo.ConnectionStatus, error) {
+) (interface{}, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -448,7 +448,7 @@ func (c *Client) PasswordAuth(
 		return apiError
 	}
 
-	var response *vitalgo.ConnectionStatus
+	var response interface{}
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -663,7 +663,7 @@ func (c *Client) ConnectEmailAuthProvider(
 	provider vitalgo.EmailProviders,
 	request *vitalgo.EmailProviderAuthLink,
 	opts ...option.RequestOption,
-) (*vitalgo.ConnectionStatus, error) {
+) (interface{}, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -699,7 +699,7 @@ func (c *Client) ConnectEmailAuthProvider(
 		return apiError
 	}
 
-	var response *vitalgo.ConnectionStatus
+	var response interface{}
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
