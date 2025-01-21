@@ -8371,8 +8371,8 @@ type ClientFacingWorkout struct {
 	WeightedAverageWatts *float64 `json:"weighted_average_watts,omitempty" url:"weighted_average_watts,omitempty"`
 	// Number of steps accumulated during this workout::count
 	Steps *int `json:"steps,omitempty" url:"steps,omitempty"`
-	// Map of workouts encoded as polyline
-	Map map[string]interface{} `json:"map,omitempty" url:"map,omitempty"`
+	// Map of the workout
+	Map *ClientFacingWorkoutMap `json:"map,omitempty" url:"map,omitempty"`
 	// Provider ID given for that specific workout
 	ProviderId string `json:"provider_id" url:"provider_id"`
 	// Source the data has come from.
@@ -8521,6 +8521,50 @@ func NewClientFacingWorkoutDurationSampleIntensityFromString(s string) (ClientFa
 
 func (c ClientFacingWorkoutDurationSampleIntensity) Ptr() *ClientFacingWorkoutDurationSampleIntensity {
 	return &c
+}
+
+type ClientFacingWorkoutMap struct {
+	// Polyline of the map
+	Polyline *string `json:"polyline,omitempty" url:"polyline,omitempty"`
+	// A lower resolution summary of the polyline
+	SummaryPolyline *string `json:"summary_polyline,omitempty" url:"summary_polyline,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutMap) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutMap) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingWorkoutMap
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutMap(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutMap) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 type ClientSleepCycleResponse struct {
@@ -18245,7 +18289,8 @@ const (
 	WorkoutColumnExprWorkoutPowerMaximum          WorkoutColumnExprWorkout = "power_maximum"
 	WorkoutColumnExprWorkoutPowerWeightedMean     WorkoutColumnExprWorkout = "power_weighted_mean"
 	WorkoutColumnExprWorkoutSteps                 WorkoutColumnExprWorkout = "steps"
-	WorkoutColumnExprWorkoutMap                   WorkoutColumnExprWorkout = "map"
+	WorkoutColumnExprWorkoutMapPolyline           WorkoutColumnExprWorkout = "map_polyline"
+	WorkoutColumnExprWorkoutMapSummaryPolyline    WorkoutColumnExprWorkout = "map_summary_polyline"
 	WorkoutColumnExprWorkoutSourceType            WorkoutColumnExprWorkout = "source_type"
 	WorkoutColumnExprWorkoutSourceProvider        WorkoutColumnExprWorkout = "source_provider"
 	WorkoutColumnExprWorkoutSourceAppId           WorkoutColumnExprWorkout = "source_app_id"
@@ -18307,8 +18352,10 @@ func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, 
 		return WorkoutColumnExprWorkoutPowerWeightedMean, nil
 	case "steps":
 		return WorkoutColumnExprWorkoutSteps, nil
-	case "map":
-		return WorkoutColumnExprWorkoutMap, nil
+	case "map_polyline":
+		return WorkoutColumnExprWorkoutMapPolyline, nil
+	case "map_summary_polyline":
+		return WorkoutColumnExprWorkoutMapSummaryPolyline, nil
 	case "source_type":
 		return WorkoutColumnExprWorkoutSourceType, nil
 	case "source_provider":
