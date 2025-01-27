@@ -16094,14 +16094,53 @@ type Region string
 const (
 	RegionUs Region = "us"
 	RegionEu Region = "eu"
-	RegionSg Region = "sg"
 	RegionDe Region = "de"
-	RegionAu Region = "au"
-	RegionBr Region = "br"
-	RegionNl Region = "nl"
 	RegionFr Region = "fr"
 	RegionCa Region = "ca"
+	RegionBr Region = "br"
+	RegionAr Region = "ar"
+	RegionCl Region = "cl"
+	RegionCo Region = "co"
+	RegionMx Region = "mx"
+	RegionGb Region = "gb"
+	RegionIe Region = "ie"
+	RegionAu Region = "au"
+	RegionNz Region = "nz"
+	RegionNl Region = "nl"
+	RegionAt Region = "at"
+	RegionBe Region = "be"
+	RegionBh Region = "bh"
+	RegionCh Region = "ch"
+	RegionCz Region = "cz"
+	RegionDk Region = "dk"
+	RegionEg Region = "eg"
+	RegionEs Region = "es"
+	RegionFi Region = "fi"
+	RegionGr Region = "gr"
+	RegionHr Region = "hr"
+	RegionIl Region = "il"
+	RegionIt Region = "it"
+	RegionJo Region = "jo"
+	RegionKw Region = "kw"
+	RegionLb Region = "lb"
+	RegionLu Region = "lu"
+	RegionNo Region = "no"
+	RegionOm Region = "om"
+	RegionPl Region = "pl"
+	RegionPt Region = "pt"
+	RegionQa Region = "qa"
+	RegionSa Region = "sa"
+	RegionSe Region = "se"
+	RegionSi Region = "si"
+	RegionSk Region = "sk"
+	RegionTr Region = "tr"
+	RegionZa Region = "za"
 	RegionIn Region = "in"
+	RegionSg Region = "sg"
+	RegionHk Region = "hk"
+	RegionKr Region = "kr"
+	RegionPh Region = "ph"
+	RegionTw Region = "tw"
 )
 
 func NewRegionFromString(s string) (Region, error) {
@@ -16110,22 +16149,100 @@ func NewRegionFromString(s string) (Region, error) {
 		return RegionUs, nil
 	case "eu":
 		return RegionEu, nil
-	case "sg":
-		return RegionSg, nil
 	case "de":
 		return RegionDe, nil
-	case "au":
-		return RegionAu, nil
-	case "br":
-		return RegionBr, nil
-	case "nl":
-		return RegionNl, nil
 	case "fr":
 		return RegionFr, nil
 	case "ca":
 		return RegionCa, nil
+	case "br":
+		return RegionBr, nil
+	case "ar":
+		return RegionAr, nil
+	case "cl":
+		return RegionCl, nil
+	case "co":
+		return RegionCo, nil
+	case "mx":
+		return RegionMx, nil
+	case "gb":
+		return RegionGb, nil
+	case "ie":
+		return RegionIe, nil
+	case "au":
+		return RegionAu, nil
+	case "nz":
+		return RegionNz, nil
+	case "nl":
+		return RegionNl, nil
+	case "at":
+		return RegionAt, nil
+	case "be":
+		return RegionBe, nil
+	case "bh":
+		return RegionBh, nil
+	case "ch":
+		return RegionCh, nil
+	case "cz":
+		return RegionCz, nil
+	case "dk":
+		return RegionDk, nil
+	case "eg":
+		return RegionEg, nil
+	case "es":
+		return RegionEs, nil
+	case "fi":
+		return RegionFi, nil
+	case "gr":
+		return RegionGr, nil
+	case "hr":
+		return RegionHr, nil
+	case "il":
+		return RegionIl, nil
+	case "it":
+		return RegionIt, nil
+	case "jo":
+		return RegionJo, nil
+	case "kw":
+		return RegionKw, nil
+	case "lb":
+		return RegionLb, nil
+	case "lu":
+		return RegionLu, nil
+	case "no":
+		return RegionNo, nil
+	case "om":
+		return RegionOm, nil
+	case "pl":
+		return RegionPl, nil
+	case "pt":
+		return RegionPt, nil
+	case "qa":
+		return RegionQa, nil
+	case "sa":
+		return RegionSa, nil
+	case "se":
+		return RegionSe, nil
+	case "si":
+		return RegionSi, nil
+	case "sk":
+		return RegionSk, nil
+	case "tr":
+		return RegionTr, nil
+	case "za":
+		return RegionZa, nil
 	case "in":
 		return RegionIn, nil
+	case "sg":
+		return RegionSg, nil
+	case "hk":
+		return RegionHk, nil
+	case "kr":
+		return RegionKr, nil
+	case "ph":
+		return RegionPh, nil
+	case "tw":
+		return RegionTw, nil
 	}
 	var t Region
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
