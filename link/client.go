@@ -35,6 +35,64 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+func (c *Client) BulkImport(
+	ctx context.Context,
+	request *vitalgo.BulkImportConnectionsBody,
+	opts ...option.RequestOption,
+) (*vitalgo.BulkImportConnectionsResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := baseURL + "/v2/link/bulk_import"
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.BulkImportConnectionsResponse
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 // Endpoint to generate a user link token, to be used throughout the vital
 // link process. The vital link token is a one time use token, that
 // expires after 10 minutes. If you would like vital-link widget to launch

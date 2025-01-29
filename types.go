@@ -1534,25 +1534,25 @@ func (b *BulkExportConnectionsResponse) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-type BulkImportConnectionsBody struct {
-	Provider    OAuthProviders      `json:"provider" url:"provider"`
-	Connections []*ConnectionRecipe `json:"connections,omitempty" url:"connections,omitempty"`
+type BulkImportConnectionsResponse struct {
+	UserIdsImported []string `json:"user_ids_imported,omitempty" url:"user_ids_imported,omitempty"`
+	UserIdsFailed   []string `json:"user_ids_failed,omitempty" url:"user_ids_failed,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
 }
 
-func (b *BulkImportConnectionsBody) GetExtraProperties() map[string]interface{} {
+func (b *BulkImportConnectionsResponse) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
-func (b *BulkImportConnectionsBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkImportConnectionsBody
+func (b *BulkImportConnectionsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkImportConnectionsResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BulkImportConnectionsBody(value)
+	*b = BulkImportConnectionsResponse(value)
 
 	extraProperties, err := core.ExtractExtraProperties(data, *b)
 	if err != nil {
@@ -1564,7 +1564,7 @@ func (b *BulkImportConnectionsBody) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *BulkImportConnectionsBody) String() string {
+func (b *BulkImportConnectionsResponse) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
@@ -8823,12 +8823,23 @@ func (c *ConnectedSourceClientFacing) String() string {
 }
 
 type ConnectionRecipe struct {
-	UserId       string   `json:"user_id" url:"user_id"`
-	AccessToken  string   `json:"access_token" url:"access_token"`
-	RefreshToken string   `json:"refresh_token" url:"refresh_token"`
-	ProviderId   string   `json:"provider_id" url:"provider_id"`
-	ExpiresAt    int      `json:"expires_at" url:"expires_at"`
-	OauthScopes  []string `json:"oauth_scopes,omitempty" url:"oauth_scopes,omitempty"`
+	// Vital User ID. The user must be created ahead of the bulk import operation.
+	UserId       string `json:"user_id" url:"user_id"`
+	AccessToken  string `json:"access_token" url:"access_token"`
+	RefreshToken string `json:"refresh_token" url:"refresh_token"`
+	// User ID of the data provider.
+	//
+	// - Fitbit: 6-character Fitbit User ID
+	// - Garmin: 36-character Garmin User ID
+	ProviderId string `json:"provider_id" url:"provider_id"`
+	// Access token expiry date, in terms of UNIX epoch seconds.
+	ExpiresAt int `json:"expires_at" url:"expires_at"`
+	// OAuth scopes of the data provider. Specify `null` if you do not
+	// have any scopes on record.
+	//
+	// - Fitbit: Has scopes
+	// - Garmin: No scope
+	OauthScopes []string `json:"oauth_scopes,omitempty" url:"oauth_scopes,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage

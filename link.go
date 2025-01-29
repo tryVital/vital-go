@@ -6,6 +6,11 @@ import (
 	time "time"
 )
 
+type BulkImportConnectionsBody struct {
+	Provider    OAuthProviders      `json:"provider" url:"-"`
+	Connections []*ConnectionRecipe `json:"connections,omitempty" url:"-"`
+}
+
 type LinkCodeCreateRequest struct {
 	UserId string `json:"-" url:"user_id"`
 	// When the link code should expire. Defaults to server time plus 1 hour.
