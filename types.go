@@ -596,7 +596,6 @@ func (a *AggregationResult) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-// Maps miles to meters
 type AllowedRadius string
 
 const (
@@ -1607,48 +1606,6 @@ func (b *BulkPauseConnectionsBody) UnmarshalJSON(data []byte) error {
 }
 
 func (b *BulkPauseConnectionsBody) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-type BulkTriggerHistoricalPullBody struct {
-	UserIds  []string       `json:"user_ids,omitempty" url:"user_ids,omitempty"`
-	Provider OAuthProviders `json:"provider" url:"provider"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (b *BulkTriggerHistoricalPullBody) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BulkTriggerHistoricalPullBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkTriggerHistoricalPullBody
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkTriggerHistoricalPullBody(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-
-	b._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkTriggerHistoricalPullBody) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value

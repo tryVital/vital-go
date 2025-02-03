@@ -11,6 +11,11 @@ type BulkImportConnectionsBody struct {
 	Connections []*ConnectionRecipe `json:"connections,omitempty" url:"-"`
 }
 
+type BulkTriggerHistoricalPullBody struct {
+	UserIds  []string       `json:"user_ids,omitempty" url:"-"`
+	Provider OAuthProviders `json:"provider" url:"-"`
+}
+
 type LinkCodeCreateRequest struct {
 	UserId string `json:"-" url:"user_id"`
 	// When the link code should expire. Defaults to server time plus 1 hour.

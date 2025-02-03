@@ -164,7 +164,7 @@ type LabTestsGetPscInfoRequest struct {
 	ZipCode string `json:"-" url:"zip_code"`
 	// Lab ID to check for PSCs
 	LabId int `json:"-" url:"lab_id"`
-	// Radius in which to search. (meters)
+	// Radius in which to search in miles
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 }
 
