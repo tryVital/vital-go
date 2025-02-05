@@ -98,7 +98,7 @@ func (c *Client) QueryOne(
 func (c *Client) GetResultTableForContinuousQuery(
 	ctx context.Context,
 	userId string,
-	queryId string,
+	queryIdOrSlug string,
 	opts ...option.RequestOption,
 ) (*vitalgo.AggregationResult, error) {
 	options := core.NewRequestOptions(opts...)
@@ -113,7 +113,7 @@ func (c *Client) GetResultTableForContinuousQuery(
 	endpointURL := core.EncodeURL(
 		baseURL+"/aggregate/v1/user/%v/continuous_query/%v/result_table",
 		userId,
-		queryId,
+		queryIdOrSlug,
 	)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
