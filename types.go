@@ -1449,48 +1449,6 @@ func (b *BodyV2InDb) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-type BulkExportConnectionsBody struct {
-	UserIds  []string       `json:"user_ids,omitempty" url:"user_ids,omitempty"`
-	Provider OAuthProviders `json:"provider" url:"provider"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (b *BulkExportConnectionsBody) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BulkExportConnectionsBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkExportConnectionsBody
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkExportConnectionsBody(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-
-	b._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkExportConnectionsBody) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
 type BulkExportConnectionsResponse struct {
 	Data      []*ConnectionRecipe `json:"data,omitempty" url:"data,omitempty"`
 	NextToken *string             `json:"next_token,omitempty" url:"next_token,omitempty"`
@@ -1564,48 +1522,6 @@ func (b *BulkImportConnectionsResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (b *BulkImportConnectionsResponse) String() string {
-	if len(b._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-type BulkPauseConnectionsBody struct {
-	UserIds  []string       `json:"user_ids,omitempty" url:"user_ids,omitempty"`
-	Provider OAuthProviders `json:"provider" url:"provider"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (b *BulkPauseConnectionsBody) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BulkPauseConnectionsBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler BulkPauseConnectionsBody
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BulkPauseConnectionsBody(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-
-	b._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BulkPauseConnectionsBody) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
@@ -13000,6 +12916,31 @@ func (l LabTestCollectionMethod) Ptr() *LabTestCollectionMethod {
 	return &l
 }
 
+type LabTestGenerationMethodFilter string
+
+const (
+	LabTestGenerationMethodFilterAuto   LabTestGenerationMethodFilter = "auto"
+	LabTestGenerationMethodFilterManual LabTestGenerationMethodFilter = "manual"
+	LabTestGenerationMethodFilterAll    LabTestGenerationMethodFilter = "all"
+)
+
+func NewLabTestGenerationMethodFilterFromString(s string) (LabTestGenerationMethodFilter, error) {
+	switch s {
+	case "auto":
+		return LabTestGenerationMethodFilterAuto, nil
+	case "manual":
+		return LabTestGenerationMethodFilterManual, nil
+	case "all":
+		return LabTestGenerationMethodFilterAll, nil
+	}
+	var t LabTestGenerationMethodFilter
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestGenerationMethodFilter) Ptr() *LabTestGenerationMethodFilter {
+	return &l
+}
+
 // The type of sample used to perform a lab test.
 type LabTestSampleType string
 
@@ -16277,6 +16218,47 @@ func (r *RelativeTimeframe) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RelativeTimeframe) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type ResendWebhookResponse struct {
+	OrderIds []string `json:"order_ids,omitempty" url:"order_ids,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *ResendWebhookResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ResendWebhookResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ResendWebhookResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ResendWebhookResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ResendWebhookResponse) String() string {
 	if len(r._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
 			return value

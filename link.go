@@ -6,9 +6,20 @@ import (
 	time "time"
 )
 
+type BulkExportConnectionsBody struct {
+	UserIds   []string       `json:"user_ids,omitempty" url:"-"`
+	Provider  OAuthProviders `json:"provider" url:"-"`
+	NextToken *string        `json:"next_token,omitempty" url:"-"`
+}
+
 type BulkImportConnectionsBody struct {
 	Provider    OAuthProviders      `json:"provider" url:"-"`
 	Connections []*ConnectionRecipe `json:"connections,omitempty" url:"-"`
+}
+
+type BulkPauseConnectionsBody struct {
+	UserIds  []string       `json:"user_ids,omitempty" url:"-"`
+	Provider OAuthProviders `json:"provider" url:"-"`
 }
 
 type BulkTriggerHistoricalPullBody struct {

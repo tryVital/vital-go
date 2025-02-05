@@ -47,6 +47,17 @@ type CreateOrderRequestCompatible struct {
 	PatientAddress *PatientAddressWithValidation `json:"patient_address,omitempty" url:"-"`
 }
 
+type LabTestsGetRequest struct {
+	// Filter on whether auto-generated lab tests created by Vital, manually created lab tests, or all lab tests should be returned.
+	GenerationMethod *LabTestGenerationMethodFilter `json:"-" url:"generation_method,omitempty"`
+	// Filter by the slug of the lab for these lab tests.
+	LabSlug *string `json:"-" url:"lab_slug,omitempty"`
+	// Filter by the collection method for these lab tests.
+	CollectionMethod *LabTestCollectionMethod `json:"-" url:"collection_method,omitempty"`
+	// Filter by the status of these lab tests.
+	Status *LabTestStatus `json:"-" url:"status,omitempty"`
+}
+
 type LabTestsGetAreaInfoRequest struct {
 	// Zip code of the area to check
 	ZipCode string `json:"-" url:"zip_code"`
@@ -224,4 +235,9 @@ func NewLabTestsGetOrdersRequestOrderKeyFromString(s string) (LabTestsGetOrdersR
 
 func (l LabTestsGetOrdersRequestOrderKey) Ptr() *LabTestsGetOrdersRequestOrderKey {
 	return &l
+}
+
+type UpdateLabTestRequest struct {
+	Name   *string `json:"name,omitempty" url:"-"`
+	Active *bool   `json:"active,omitempty" url:"-"`
 }
