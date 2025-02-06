@@ -56,6 +56,14 @@ type LabTestsGetRequest struct {
 	CollectionMethod *LabTestCollectionMethod `json:"-" url:"collection_method,omitempty"`
 	// Filter by the status of these lab tests.
 	Status *LabTestStatus `json:"-" url:"status,omitempty"`
+	// Filter to only include lab tests containing these marker IDs.
+	MarkerIds []*int `json:"-" url:"marker_ids,omitempty"`
+	// Filter to only include lab tests containing these provider IDs.
+	ProviderIds []*string `json:"-" url:"provider_ids,omitempty"`
+	// Filter by the name of the lab test (a case-insensitive substring search).
+	Name           *string                           `json:"-" url:"name,omitempty"`
+	OrderKey       *LabTestsGetRequestOrderKey       `json:"-" url:"order_key,omitempty"`
+	OrderDirection *LabTestsGetRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
 }
 
 type LabTestsGetAreaInfoRequest struct {
@@ -234,6 +242,53 @@ func NewLabTestsGetOrdersRequestOrderKeyFromString(s string) (LabTestsGetOrdersR
 }
 
 func (l LabTestsGetOrdersRequestOrderKey) Ptr() *LabTestsGetOrdersRequestOrderKey {
+	return &l
+}
+
+type LabTestsGetRequestOrderDirection string
+
+const (
+	LabTestsGetRequestOrderDirectionAsc  LabTestsGetRequestOrderDirection = "asc"
+	LabTestsGetRequestOrderDirectionDesc LabTestsGetRequestOrderDirection = "desc"
+)
+
+func NewLabTestsGetRequestOrderDirectionFromString(s string) (LabTestsGetRequestOrderDirection, error) {
+	switch s {
+	case "asc":
+		return LabTestsGetRequestOrderDirectionAsc, nil
+	case "desc":
+		return LabTestsGetRequestOrderDirectionDesc, nil
+	}
+	var t LabTestsGetRequestOrderDirection
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetRequestOrderDirection) Ptr() *LabTestsGetRequestOrderDirection {
+	return &l
+}
+
+type LabTestsGetRequestOrderKey string
+
+const (
+	LabTestsGetRequestOrderKeyPrice     LabTestsGetRequestOrderKey = "price"
+	LabTestsGetRequestOrderKeyCreatedAt LabTestsGetRequestOrderKey = "created_at"
+	LabTestsGetRequestOrderKeyUpdatedAt LabTestsGetRequestOrderKey = "updated_at"
+)
+
+func NewLabTestsGetRequestOrderKeyFromString(s string) (LabTestsGetRequestOrderKey, error) {
+	switch s {
+	case "price":
+		return LabTestsGetRequestOrderKeyPrice, nil
+	case "created_at":
+		return LabTestsGetRequestOrderKeyCreatedAt, nil
+	case "updated_at":
+		return LabTestsGetRequestOrderKeyUpdatedAt, nil
+	}
+	var t LabTestsGetRequestOrderKey
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetRequestOrderKey) Ptr() *LabTestsGetRequestOrderKey {
 	return &l
 }
 

@@ -117,6 +117,7 @@ func (c *Client) GetResultTableForContinuousQuery(
 	)
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+	headers.Add("accept", fmt.Sprintf("%v", "*/*"))
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
