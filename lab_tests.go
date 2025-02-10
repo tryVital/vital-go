@@ -146,6 +146,27 @@ type LabTestsGetOrdersRequest struct {
 	Size     *int      `json:"-" url:"size,omitempty"`
 }
 
+type LabTestsGetPaginatedRequest struct {
+	LabTestLimit *int    `json:"-" url:"lab_test_limit,omitempty"`
+	NextCursor   *string `json:"-" url:"next_cursor,omitempty"`
+	// Filter on whether auto-generated lab tests created by Vital, manually created lab tests, or all lab tests should be returned.
+	GenerationMethod *LabTestGenerationMethodFilter `json:"-" url:"generation_method,omitempty"`
+	// Filter by the slug of the lab for these lab tests.
+	LabSlug *string `json:"-" url:"lab_slug,omitempty"`
+	// Filter by the collection method for these lab tests.
+	CollectionMethod *LabTestCollectionMethod `json:"-" url:"collection_method,omitempty"`
+	// Filter by the status of these lab tests.
+	Status *LabTestStatus `json:"-" url:"status,omitempty"`
+	// Filter to only include lab tests containing these marker IDs.
+	MarkerIds []*int `json:"-" url:"marker_ids,omitempty"`
+	// Filter to only include lab tests containing these provider IDs.
+	ProviderIds []*string `json:"-" url:"provider_ids,omitempty"`
+	// Filter by the name of the lab test (a case-insensitive substring search).
+	Name           *string                                    `json:"-" url:"name,omitempty"`
+	OrderKey       *LabTestsGetPaginatedRequestOrderKey       `json:"-" url:"order_key,omitempty"`
+	OrderDirection *LabTestsGetPaginatedRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
+}
+
 type LabTestsGetPhlebotomyAppointmentAvailabilityRequest struct {
 	// Start date for appointment availability
 	StartDate *string    `json:"-" url:"start_date,omitempty"`
@@ -242,6 +263,53 @@ func NewLabTestsGetOrdersRequestOrderKeyFromString(s string) (LabTestsGetOrdersR
 }
 
 func (l LabTestsGetOrdersRequestOrderKey) Ptr() *LabTestsGetOrdersRequestOrderKey {
+	return &l
+}
+
+type LabTestsGetPaginatedRequestOrderDirection string
+
+const (
+	LabTestsGetPaginatedRequestOrderDirectionAsc  LabTestsGetPaginatedRequestOrderDirection = "asc"
+	LabTestsGetPaginatedRequestOrderDirectionDesc LabTestsGetPaginatedRequestOrderDirection = "desc"
+)
+
+func NewLabTestsGetPaginatedRequestOrderDirectionFromString(s string) (LabTestsGetPaginatedRequestOrderDirection, error) {
+	switch s {
+	case "asc":
+		return LabTestsGetPaginatedRequestOrderDirectionAsc, nil
+	case "desc":
+		return LabTestsGetPaginatedRequestOrderDirectionDesc, nil
+	}
+	var t LabTestsGetPaginatedRequestOrderDirection
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetPaginatedRequestOrderDirection) Ptr() *LabTestsGetPaginatedRequestOrderDirection {
+	return &l
+}
+
+type LabTestsGetPaginatedRequestOrderKey string
+
+const (
+	LabTestsGetPaginatedRequestOrderKeyPrice     LabTestsGetPaginatedRequestOrderKey = "price"
+	LabTestsGetPaginatedRequestOrderKeyCreatedAt LabTestsGetPaginatedRequestOrderKey = "created_at"
+	LabTestsGetPaginatedRequestOrderKeyUpdatedAt LabTestsGetPaginatedRequestOrderKey = "updated_at"
+)
+
+func NewLabTestsGetPaginatedRequestOrderKeyFromString(s string) (LabTestsGetPaginatedRequestOrderKey, error) {
+	switch s {
+	case "price":
+		return LabTestsGetPaginatedRequestOrderKeyPrice, nil
+	case "created_at":
+		return LabTestsGetPaginatedRequestOrderKeyCreatedAt, nil
+	case "updated_at":
+		return LabTestsGetPaginatedRequestOrderKeyUpdatedAt, nil
+	}
+	var t LabTestsGetPaginatedRequestOrderKey
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetPaginatedRequestOrderKey) Ptr() *LabTestsGetPaginatedRequestOrderKey {
 	return &l
 }
 

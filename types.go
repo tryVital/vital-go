@@ -12941,6 +12941,49 @@ func (l LabTestGenerationMethodFilter) Ptr() *LabTestGenerationMethodFilter {
 	return &l
 }
 
+type LabTestResourcesResponse struct {
+	Data []*ClientFacingLabTest `json:"data,omitempty" url:"data,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LabTestResourcesResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LabTestResourcesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabTestResourcesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabTestResourcesResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabTestResourcesResponse) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
 // The type of sample used to perform a lab test.
 type LabTestSampleType string
 
