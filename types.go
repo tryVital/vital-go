@@ -8697,8 +8697,12 @@ func (c *ConnectedSourceClientFacing) String() string {
 
 type ConnectionRecipe struct {
 	// Vital User ID. The user must be created ahead of the bulk import operation.
-	UserId       string `json:"user_id" url:"user_id"`
-	AccessToken  string `json:"access_token" url:"access_token"`
+	UserId string `json:"user_id" url:"user_id"`
+	// - OAuth 2.0 providers (Fitbit, etc): The latest Access Token.
+	// - OAuth 1.0 providers (Garmin): The Access Token.
+	AccessToken string `json:"access_token" url:"access_token"`
+	// - OAuth 2.0 providers (Fitbit, etc): The latest Refresh Token.
+	// - OAuth 1.0 providers (Garmin): The Token Secret.
 	RefreshToken string `json:"refresh_token" url:"refresh_token"`
 	// User ID of the data provider.
 	//
@@ -8706,6 +8710,9 @@ type ConnectionRecipe struct {
 	// - Garmin: 36-character Garmin User ID
 	ProviderId string `json:"provider_id" url:"provider_id"`
 	// Access token expiry date, in terms of UNIX epoch seconds.
+	//
+	// - OAuth 2.0 providers (Fitbit, etc): The latest expiry date on your record.
+	// - OAuth 1.0 providers (Garmin): Use the constant value `2147483647`.
 	ExpiresAt int `json:"expires_at" url:"expires_at"`
 	// OAuth scopes of the data provider. Specify `null` if you do not
 	// have any scopes on record.
