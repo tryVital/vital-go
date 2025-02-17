@@ -71,6 +71,8 @@ const (
 	ActivityColumnExprActivitySourceType               ActivityColumnExprActivity = "source_type"
 	ActivityColumnExprActivitySourceProvider           ActivityColumnExprActivity = "source_provider"
 	ActivityColumnExprActivitySourceAppId              ActivityColumnExprActivity = "source_app_id"
+	ActivityColumnExprActivityTimeZone                 ActivityColumnExprActivity = "time_zone"
+	ActivityColumnExprActivityTimeZoneOffset           ActivityColumnExprActivity = "time_zone_offset"
 )
 
 func NewActivityColumnExprActivityFromString(s string) (ActivityColumnExprActivity, error) {
@@ -111,6 +113,10 @@ func NewActivityColumnExprActivityFromString(s string) (ActivityColumnExprActivi
 		return ActivityColumnExprActivitySourceProvider, nil
 	case "source_app_id":
 		return ActivityColumnExprActivitySourceAppId, nil
+	case "time_zone":
+		return ActivityColumnExprActivityTimeZone, nil
+	case "time_zone_offset":
+		return ActivityColumnExprActivityTimeZoneOffset, nil
 	}
 	var t ActivityColumnExprActivity
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -1349,6 +1355,7 @@ const (
 	BodyColumnExprBodySourceType           BodyColumnExprBody = "source_type"
 	BodyColumnExprBodySourceProvider       BodyColumnExprBody = "source_provider"
 	BodyColumnExprBodySourceAppId          BodyColumnExprBody = "source_app_id"
+	BodyColumnExprBodyTimeZone             BodyColumnExprBody = "time_zone"
 )
 
 func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
@@ -1373,6 +1380,8 @@ func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
 		return BodyColumnExprBodySourceProvider, nil
 	case "source_app_id":
 		return BodyColumnExprBodySourceAppId, nil
+	case "time_zone":
+		return BodyColumnExprBodyTimeZone, nil
 	}
 	var t BodyColumnExprBody
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -13386,21 +13395,26 @@ func (m MarkerType) Ptr() *MarkerType {
 }
 
 type MealInDbBaseClientFacingSource struct {
-	Id          string                       `json:"id" url:"id"`
-	UserId      string                       `json:"user_id" url:"user_id"`
-	PriorityId  int                          `json:"priority_id" url:"priority_id"`
-	SourceId    int                          `json:"source_id" url:"source_id"`
-	ProviderId  string                       `json:"provider_id" url:"provider_id"`
-	Timestamp   string                       `json:"timestamp" url:"timestamp"`
-	Name        string                       `json:"name" url:"name"`
-	Energy      *Energy                      `json:"energy,omitempty" url:"energy,omitempty"`
-	Macros      *Macros                      `json:"macros,omitempty" url:"macros,omitempty"`
-	Micros      *Micros                      `json:"micros,omitempty" url:"micros,omitempty"`
-	Data        map[string]*ClientFacingFood `json:"data,omitempty" url:"data,omitempty"`
-	Source      *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
-	CreatedAt   string                       `json:"created_at" url:"created_at"`
-	UpdatedAt   string                       `json:"updated_at" url:"updated_at"`
-	SourceAppId *string                      `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	Id     string `json:"id" url:"id"`
+	UserId string `json:"user_id" url:"user_id"`
+	// This value has no meaning.
+	PriorityId int `json:"priority_id" url:"priority_id"`
+	// This value has no meaning.
+	SourceId int `json:"source_id" url:"source_id"`
+	// This value is identical to `id`.
+	ProviderId string                       `json:"provider_id" url:"provider_id"`
+	Timestamp  string                       `json:"timestamp" url:"timestamp"`
+	Name       string                       `json:"name" url:"name"`
+	Energy     *Energy                      `json:"energy,omitempty" url:"energy,omitempty"`
+	Macros     *Macros                      `json:"macros,omitempty" url:"macros,omitempty"`
+	Micros     *Micros                      `json:"micros,omitempty" url:"micros,omitempty"`
+	Data       map[string]*ClientFacingFood `json:"data,omitempty" url:"data,omitempty"`
+	Source     *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
+	// This value is identical to `timestamp`.
+	CreatedAt string `json:"created_at" url:"created_at"`
+	// This value is identical to `timestamp`.
+	UpdatedAt   string  `json:"updated_at" url:"updated_at"`
+	SourceAppId *string `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -16933,12 +16947,14 @@ const (
 	SleepColumnExprSleepEfficiency           SleepColumnExprSleep = "efficiency"
 	SleepColumnExprSleepHrvMeanRmssd         SleepColumnExprSleep = "hrv_mean_rmssd"
 	SleepColumnExprSleepHrvMeanSdnn          SleepColumnExprSleep = "hrv_mean_sdnn"
+	SleepColumnExprSleepSkinTemperature      SleepColumnExprSleep = "skin_temperature"
 	SleepColumnExprSleepSkinTemperatureDelta SleepColumnExprSleep = "skin_temperature_delta"
 	SleepColumnExprSleepRespiratoryRate      SleepColumnExprSleep = "respiratory_rate"
 	SleepColumnExprSleepScore                SleepColumnExprSleep = "score"
 	SleepColumnExprSleepSourceType           SleepColumnExprSleep = "source_type"
 	SleepColumnExprSleepSourceProvider       SleepColumnExprSleep = "source_provider"
 	SleepColumnExprSleepSourceAppId          SleepColumnExprSleep = "source_app_id"
+	SleepColumnExprSleepTimeZone             SleepColumnExprSleep = "time_zone"
 )
 
 func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
@@ -16981,6 +16997,8 @@ func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 		return SleepColumnExprSleepHrvMeanRmssd, nil
 	case "hrv_mean_sdnn":
 		return SleepColumnExprSleepHrvMeanSdnn, nil
+	case "skin_temperature":
+		return SleepColumnExprSleepSkinTemperature, nil
 	case "skin_temperature_delta":
 		return SleepColumnExprSleepSkinTemperatureDelta, nil
 	case "respiratory_rate":
@@ -16993,6 +17011,8 @@ func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 		return SleepColumnExprSleepSourceProvider, nil
 	case "source_app_id":
 		return SleepColumnExprSleepSourceAppId, nil
+	case "time_zone":
+		return SleepColumnExprSleepTimeZone, nil
 	}
 	var t SleepColumnExprSleep
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -18411,6 +18431,8 @@ const (
 	WorkoutColumnExprWorkoutSourceType            WorkoutColumnExprWorkout = "source_type"
 	WorkoutColumnExprWorkoutSourceProvider        WorkoutColumnExprWorkout = "source_provider"
 	WorkoutColumnExprWorkoutSourceAppId           WorkoutColumnExprWorkout = "source_app_id"
+	WorkoutColumnExprWorkoutSourceWorkoutId       WorkoutColumnExprWorkout = "source_workout_id"
+	WorkoutColumnExprWorkoutTimeZone              WorkoutColumnExprWorkout = "time_zone"
 )
 
 func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, error) {
@@ -18479,6 +18501,10 @@ func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, 
 		return WorkoutColumnExprWorkoutSourceProvider, nil
 	case "source_app_id":
 		return WorkoutColumnExprWorkoutSourceAppId, nil
+	case "source_workout_id":
+		return WorkoutColumnExprWorkoutSourceWorkoutId, nil
+	case "time_zone":
+		return WorkoutColumnExprWorkoutTimeZone, nil
 	}
 	var t WorkoutColumnExprWorkout
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
