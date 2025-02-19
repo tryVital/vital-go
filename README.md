@@ -24,12 +24,12 @@ This module requires Go version >= 1.19.
 
 ```go
 import (
-	"context"
-	"fmt"
+  "context"
+  "fmt"
 
-	vital "github.com/tryVital/vital-go"
-	vitalclient "github.com/tryVital/vital-go/client"
-	"github.com/tryVital/vital-go/option"
+  vital "github.com/tryVital/vital-go"
+  vitalclient "github.com/tryVital/vital-go/client"
+  "github.com/tryVital/vital-go/option"
 )
 
 client := vitalclient.NewClient(
@@ -108,9 +108,9 @@ for an example on how ot change the environment.
 import (
   "context"
 
-	vital "github.com/tryVital/vital-go"
-	vitalclient "github.com/tryVital/vital-go/client"
-	"github.com/tryVital/vital-go/option"
+  vital "github.com/tryVital/vital-go"
+  vitalclient "github.com/tryVital/vital-go/client"
+  "github.com/tryVital/vital-go/option"
 )
 
 client := vitalclient.NewClient(
