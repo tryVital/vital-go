@@ -29,17 +29,26 @@ import (
 
   vital "github.com/tryVital/vital-go"
   vitalclient "github.com/tryVital/vital-go/client"
+  "github.com/tryVital/vital-go/option"
 )
 
 client := vitalclient.NewClient(
-  vitalclient.WithApiKey("<YOUR_API_KEY>"),
+  option.WithBaseURL(vital.Environments.Sandbox),
+  option.WithApiKey("<YOUR_API_KEY>"),
 )
 
-response, err := client.LabTests.Get(context.TODO(), "OrderId")
-if err != nil {
-  return err
+provider := vital.ProvidersOura
+request := &vital.LinkTokenExchange{
+  UserId:   "<user_id>",
+  Provider: &provider,
 }
-fmt.Printf("Received lab test %s\n", response)
+response, err := client.Link.Token(context.TODO(), request)
+
+if err != nil {
+  panic(err)
+}
+
+fmt.Printf("Link token generated %s", response)
 ```
 
 ## Client Options
@@ -47,8 +56,9 @@ A variety of client options are included to adapt the behavior of the library, w
 
 ```go
 client := vitalclient.NewClient(
-  vitalclient.WithApiKey("<YOUR_API_KEY>"),
-  vitalclient.WithHttpClient(
+  option.WithBaseURL(vital.Environments.Sandbox),
+  option.WithApiKey("<YOUR_API_KEY>"),
+  option.WithHTTPClient(
     &http.Client{
       Timeout: 5 * time.Second,
     },
@@ -66,13 +76,15 @@ Structured error types are returned from API calls that return non-success statu
 you can check if the error was due to a bad request (i.e. status code 400) with the following:
 
 ```go
-response, err := client.LabTests.Get(
+response, err := client.LabTests.GetOrder(
   context.TODO(),
-  "OrderId",
+  "<order_id>",
 )
+
 if err != nil {
   if apiErr, ok := err.(*core.APIError); ok && apiErr.StatusCode == http.StatusBadRequest {
     // Do something with the bad request ...
+    fmt.Printf("Bad request %s", apiErr.Error())
   }
   return err
 }
@@ -98,11 +110,12 @@ import (
 
   vital "github.com/tryVital/vital-go"
   vitalclient "github.com/tryVital/vital-go/client"
+  "github.com/tryVital/vital-go/option"
 )
 
 client := vitalclient.NewClient(
-  vitalclient.WithApiKey("<YOUR_API_KEY>"),
-  vitalclient.WithBaseURL(vital.Environments.Sandbox)
+  option.WithApiKey("<YOUR_API_KEY>"),
+  option.WithBaseURL(vital.Environments.Sandbox)
 )
 ```
 
