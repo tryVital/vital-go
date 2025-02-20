@@ -39,7 +39,7 @@ func (c *Client) HeartRateAlertGrouped(
 	userId string,
 	request *vitalgo.VitalsHeartRateAlertGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingHeartRateAlertSample, error) {
+) (*vitalgo.GroupedHeartRateAlertResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -80,7 +80,7 @@ func (c *Client) HeartRateAlertGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingHeartRateAlertSample
+	var response *vitalgo.GroupedHeartRateAlertResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -105,7 +105,7 @@ func (c *Client) AfibBurdenGrouped(
 	userId string,
 	request *vitalgo.VitalsAfibBurdenGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingAFibBurdenSample, error) {
+) (*vitalgo.GroupedAFibBurdenResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -146,7 +146,7 @@ func (c *Client) AfibBurdenGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingAFibBurdenSample
+	var response *vitalgo.GroupedAFibBurdenResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -171,7 +171,7 @@ func (c *Client) WorkoutDurationGrouped(
 	userId string,
 	request *vitalgo.VitalsWorkoutDurationGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingWorkoutDurationSample, error) {
+) (*vitalgo.GroupedWorkoutDurationResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -212,7 +212,7 @@ func (c *Client) WorkoutDurationGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingWorkoutDurationSample
+	var response *vitalgo.GroupedWorkoutDurationResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -963,7 +963,7 @@ func (c *Client) NoteGrouped(
 	userId string,
 	request *vitalgo.VitalsNoteGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingNoteSample, error) {
+) (*vitalgo.GroupedNoteResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -1004,7 +1004,7 @@ func (c *Client) NoteGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingNoteSample
+	var response *vitalgo.GroupedNoteResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -1029,7 +1029,7 @@ func (c *Client) InsulinInjectionGrouped(
 	userId string,
 	request *vitalgo.VitalsInsulinInjectionGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingInsulinInjectionSample, error) {
+) (*vitalgo.GroupedInsulinInjectionResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -1070,7 +1070,7 @@ func (c *Client) InsulinInjectionGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingInsulinInjectionSample
+	var response *vitalgo.GroupedInsulinInjectionResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -1557,7 +1557,7 @@ func (c *Client) CarbohydratesGrouped(
 	userId string,
 	request *vitalgo.VitalsCarbohydratesGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingCarbohydratesSample, error) {
+) (*vitalgo.GroupedCarbohydratesResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -1598,7 +1598,7 @@ func (c *Client) CarbohydratesGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingCarbohydratesSample
+	var response *vitalgo.GroupedCarbohydratesResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -1623,7 +1623,7 @@ func (c *Client) BodyTemperatureDeltaGrouped(
 	userId string,
 	request *vitalgo.VitalsBodyTemperatureDeltaGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample, error) {
+) (*vitalgo.GroupedBodyTemperatureDeltaResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -1664,7 +1664,7 @@ func (c *Client) BodyTemperatureDeltaGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureDeltaSample
+	var response *vitalgo.GroupedBodyTemperatureDeltaResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -1689,7 +1689,7 @@ func (c *Client) BodyTemperatureGrouped(
 	userId string,
 	request *vitalgo.VitalsBodyTemperatureGroupedRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample, error) {
+) (*vitalgo.GroupedBodyTemperatureResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.tryvital.io"
@@ -1730,7 +1730,7 @@ func (c *Client) BodyTemperatureGrouped(
 		return apiError
 	}
 
-	var response *vitalgo.ClientFacingGroupedTimeseriesResponseClientFacingBodyTemperatureSample
+	var response *vitalgo.GroupedBodyTemperatureResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
