@@ -51,6 +51,10 @@ if err != nil {
 fmt.Printf("Link token generated %s", response)
 ```
 
+> **Please note**: To ensure future compatibility, we ask that you avoid exhaustive matching on enum values such as an order’s status. We may introduce new statuses (and other enum values) over time, and code that assumes all current values are exhaustive could break or fail to compile with SDK upgrades.
+>
+> To stay compatible and benefit from future enhancements, treat unknown values gracefully—for example, by using default cases or limiting checks to only the values your integration depends on.
+
 ## Client Options
 A variety of client options are included to adapt the behavior of the library, which includes configuring authorization tokens to be sent on every request, or providing your own instrumented *http.Client. Both of these options are shown below:
 
