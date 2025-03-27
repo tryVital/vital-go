@@ -10,9 +10,9 @@ type UserCreateBody struct {
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty" url:"-"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	FallbackBirthDate *string `json:"fallback_birth_date,omitempty" url:"-"`
-	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	// Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
 	IngestionStart *string `json:"ingestion_start,omitempty" url:"-"`
-	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
+	// Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
 	IngestionEnd *string `json:"ingestion_end,omitempty" url:"-"`
 }
 
@@ -36,9 +36,9 @@ type UserPatchBody struct {
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty" url:"-"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	FallbackBirthDate *string `json:"fallback_birth_date,omitempty" url:"-"`
-	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	// Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
 	IngestionStart *string `json:"ingestion_start,omitempty" url:"-"`
-	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
+	// Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
 	IngestionEnd *string `json:"ingestion_end,omitempty" url:"-"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	ClientUserId *string `json:"client_user_id,omitempty" url:"-"`

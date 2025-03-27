@@ -208,6 +208,17 @@ type LabTestsGetPscInfoRequest struct {
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 }
 
+type ImportOrderBody struct {
+	UserId           string                        `json:"user_id" url:"-"`
+	BillingType      Billing                       `json:"billing_type" url:"-"`
+	OrderSet         *OrderSetRequest              `json:"order_set,omitempty" url:"-"`
+	CollectionMethod LabTestCollectionMethod       `json:"collection_method" url:"-"`
+	Physician        *PhysicianCreateRequest       `json:"physician,omitempty" url:"-"`
+	PatientDetails   *PatientDetailsWithValidation `json:"patient_details,omitempty" url:"-"`
+	PatientAddress   *PatientAddress               `json:"patient_address,omitempty" url:"-"`
+	SampleId         string                        `json:"sample_id" url:"-"`
+}
+
 type RequestAppointmentRequest struct {
 	// At-home phlebotomy appointment address.
 	Address  *UsAddress          `json:"address,omitempty" url:"-"`

@@ -68,6 +68,9 @@ const (
 	ActivityColumnExprActivityHeartRateMinimum         ActivityColumnExprActivity = "heart_rate_minimum"
 	ActivityColumnExprActivityHeartRateMaximum         ActivityColumnExprActivity = "heart_rate_maximum"
 	ActivityColumnExprActivityHeartRateResting         ActivityColumnExprActivity = "heart_rate_resting"
+	ActivityColumnExprActivityHeartRateMeanWalking     ActivityColumnExprActivity = "heart_rate_mean_walking"
+	ActivityColumnExprActivityWheelchairUse            ActivityColumnExprActivity = "wheelchair_use"
+	ActivityColumnExprActivityWheelchairPush           ActivityColumnExprActivity = "wheelchair_push"
 	ActivityColumnExprActivitySourceType               ActivityColumnExprActivity = "source_type"
 	ActivityColumnExprActivitySourceProvider           ActivityColumnExprActivity = "source_provider"
 	ActivityColumnExprActivitySourceAppId              ActivityColumnExprActivity = "source_app_id"
@@ -107,6 +110,12 @@ func NewActivityColumnExprActivityFromString(s string) (ActivityColumnExprActivi
 		return ActivityColumnExprActivityHeartRateMaximum, nil
 	case "heart_rate_resting":
 		return ActivityColumnExprActivityHeartRateResting, nil
+	case "heart_rate_mean_walking":
+		return ActivityColumnExprActivityHeartRateMeanWalking, nil
+	case "wheelchair_use":
+		return ActivityColumnExprActivityWheelchairUse, nil
+	case "wheelchair_push":
+		return ActivityColumnExprActivityWheelchairPush, nil
 	case "source_type":
 		return ActivityColumnExprActivitySourceType, nil
 	case "source_provider":
@@ -872,10 +881,11 @@ func (a AppointmentEventStatus) Ptr() *AppointmentEventStatus {
 }
 
 type AppointmentLocation struct {
-	Location *LngLat    `json:"location,omitempty" url:"location,omitempty"`
-	Address  *UsAddress `json:"address,omitempty" url:"address,omitempty"`
-	Code     string     `json:"code" url:"code"`
-	Name     string     `json:"name" url:"name"`
+	Location     *LngLat    `json:"location,omitempty" url:"location,omitempty"`
+	Address      *UsAddress `json:"address,omitempty" url:"address,omitempty"`
+	Code         string     `json:"code" url:"code"`
+	Name         string     `json:"name" url:"name"`
+	IanaTimezone *string    `json:"iana_timezone,omitempty" url:"iana_timezone,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1363,17 +1373,20 @@ func (b *BodyColumnExpr) String() string {
 type BodyColumnExprBody string
 
 const (
-	BodyColumnExprBodyMeasuredAt           BodyColumnExprBody = "measured_at"
-	BodyColumnExprBodyWeightKilogram       BodyColumnExprBody = "weight_kilogram"
-	BodyColumnExprBodyFatMassPercentage    BodyColumnExprBody = "fat_mass_percentage"
-	BodyColumnExprBodyWaterPercentage      BodyColumnExprBody = "water_percentage"
-	BodyColumnExprBodyMuscleMassPercentage BodyColumnExprBody = "muscle_mass_percentage"
-	BodyColumnExprBodyVisceralFatIndex     BodyColumnExprBody = "visceral_fat_index"
-	BodyColumnExprBodyBoneMassPercentage   BodyColumnExprBody = "bone_mass_percentage"
-	BodyColumnExprBodySourceType           BodyColumnExprBody = "source_type"
-	BodyColumnExprBodySourceProvider       BodyColumnExprBody = "source_provider"
-	BodyColumnExprBodySourceAppId          BodyColumnExprBody = "source_app_id"
-	BodyColumnExprBodyTimeZone             BodyColumnExprBody = "time_zone"
+	BodyColumnExprBodyMeasuredAt                   BodyColumnExprBody = "measured_at"
+	BodyColumnExprBodyWeightKilogram               BodyColumnExprBody = "weight_kilogram"
+	BodyColumnExprBodyFatMassPercentage            BodyColumnExprBody = "fat_mass_percentage"
+	BodyColumnExprBodyWaterPercentage              BodyColumnExprBody = "water_percentage"
+	BodyColumnExprBodyMuscleMassPercentage         BodyColumnExprBody = "muscle_mass_percentage"
+	BodyColumnExprBodyVisceralFatIndex             BodyColumnExprBody = "visceral_fat_index"
+	BodyColumnExprBodyBoneMassPercentage           BodyColumnExprBody = "bone_mass_percentage"
+	BodyColumnExprBodyBodyMassIndex                BodyColumnExprBody = "body_mass_index"
+	BodyColumnExprBodyLeanBodyMassKilogram         BodyColumnExprBody = "lean_body_mass_kilogram"
+	BodyColumnExprBodyWaistCircumferenceCentimeter BodyColumnExprBody = "waist_circumference_centimeter"
+	BodyColumnExprBodySourceType                   BodyColumnExprBody = "source_type"
+	BodyColumnExprBodySourceProvider               BodyColumnExprBody = "source_provider"
+	BodyColumnExprBodySourceAppId                  BodyColumnExprBody = "source_app_id"
+	BodyColumnExprBodyTimeZone                     BodyColumnExprBody = "time_zone"
 )
 
 func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
@@ -1392,6 +1405,12 @@ func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
 		return BodyColumnExprBodyVisceralFatIndex, nil
 	case "bone_mass_percentage":
 		return BodyColumnExprBodyBoneMassPercentage, nil
+	case "body_mass_index":
+		return BodyColumnExprBodyBodyMassIndex, nil
+	case "lean_body_mass_kilogram":
+		return BodyColumnExprBodyLeanBodyMassKilogram, nil
+	case "waist_circumference_centimeter":
+		return BodyColumnExprBodyWaistCircumferenceCentimeter, nil
 	case "source_type":
 		return BodyColumnExprBodySourceType, nil
 	case "source_provider":
@@ -1908,7 +1927,9 @@ type ClientFacingActivity struct {
 	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// Heart rate daily summary.
-	HeartRate *ClientFacingHeartRate `json:"heart_rate,omitempty" url:"heart_rate,omitempty"`
+	HeartRate      *ClientFacingHeartRate `json:"heart_rate,omitempty" url:"heart_rate,omitempty"`
+	WheelchairUse  *bool                  `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
+	WheelchairPush *int                   `json:"wheelchair_push,omitempty" url:"wheelchair_push,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -2431,6 +2452,73 @@ func (c *ClientFacingAppointmentCancellationReason) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingAppointmentChanged struct {
+	EventType    ClientFacingAppointmentChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                  `json:"user_id" url:"user_id"`
+	ClientUserId string                                  `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                  `json:"team_id" url:"team_id"`
+	Data         *ClientFacingAppointment                `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingAppointmentChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingAppointmentChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingAppointmentChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingAppointmentChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingAppointmentChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingAppointmentChangedEventType string
+
+const (
+	ClientFacingAppointmentChangedEventTypeLabtestAppointmentCreated ClientFacingAppointmentChangedEventType = "labtest.appointment.created"
+	ClientFacingAppointmentChangedEventTypeLabtestAppointmentUpdated ClientFacingAppointmentChangedEventType = "labtest.appointment.updated"
+)
+
+func NewClientFacingAppointmentChangedEventTypeFromString(s string) (ClientFacingAppointmentChangedEventType, error) {
+	switch s {
+	case "labtest.appointment.created":
+		return ClientFacingAppointmentChangedEventTypeLabtestAppointmentCreated, nil
+	case "labtest.appointment.updated":
+		return ClientFacingAppointmentChangedEventTypeLabtestAppointmentUpdated, nil
+	}
+	var t ClientFacingAppointmentChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingAppointmentChangedEventType) Ptr() *ClientFacingAppointmentChangedEventType {
+	return &c
+}
+
 type ClientFacingAppointmentEvent struct {
 	CreatedAt time.Time              `json:"created_at" url:"created_at"`
 	Status    AppointmentEventStatus `json:"status" url:"status"`
@@ -2592,6 +2680,236 @@ func (c *ClientFacingAtHomePhlebotomyOrderDetails) UnmarshalJSON(data []byte) er
 }
 
 func (c *ClientFacingAtHomePhlebotomyOrderDetails) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBasalBodyTemperatureChanged struct {
+	EventType    ClientFacingBasalBodyTemperatureChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                           `json:"user_id" url:"user_id"`
+	ClientUserId string                                           `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                           `json:"team_id" url:"team_id"`
+	Data         *GroupedBasalBodyTemperature                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingBasalBodyTemperatureChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingBasalBodyTemperatureChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingBasalBodyTemperatureChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingBasalBodyTemperatureChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBasalBodyTemperatureChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBasalBodyTemperatureChangedEventType string
+
+const (
+	ClientFacingBasalBodyTemperatureChangedEventTypeDailyDataBasalBodyTemperatureCreated ClientFacingBasalBodyTemperatureChangedEventType = "daily.data.basal_body_temperature.created"
+	ClientFacingBasalBodyTemperatureChangedEventTypeDailyDataBasalBodyTemperatureUpdated ClientFacingBasalBodyTemperatureChangedEventType = "daily.data.basal_body_temperature.updated"
+)
+
+func NewClientFacingBasalBodyTemperatureChangedEventTypeFromString(s string) (ClientFacingBasalBodyTemperatureChangedEventType, error) {
+	switch s {
+	case "daily.data.basal_body_temperature.created":
+		return ClientFacingBasalBodyTemperatureChangedEventTypeDailyDataBasalBodyTemperatureCreated, nil
+	case "daily.data.basal_body_temperature.updated":
+		return ClientFacingBasalBodyTemperatureChangedEventTypeDailyDataBasalBodyTemperatureUpdated, nil
+	}
+	var t ClientFacingBasalBodyTemperatureChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingBasalBodyTemperatureChangedEventType) Ptr() *ClientFacingBasalBodyTemperatureChangedEventType {
+	return &c
+}
+
+type ClientFacingBasalBodyTemperatureHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingBasalBodyTemperatureHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingBasalBodyTemperatureHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingBasalBodyTemperatureHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingBasalBodyTemperatureHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingBasalBodyTemperatureHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.basal_body_temperature.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.basal_body_temperature.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBasalBodyTemperatureHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingBasalBodyTemperatureHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.basal_body_temperature.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingBasalBodyTemperatureHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBasalBodyTemperatureSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingBasalBodyTemperatureSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingBasalBodyTemperatureSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingBasalBodyTemperatureSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingBasalBodyTemperatureSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingBasalBodyTemperatureSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "°C" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "°C", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBasalBodyTemperatureSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingBasalBodyTemperatureSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "°C",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingBasalBodyTemperatureSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -3037,8 +3355,11 @@ type ClientFacingBody struct {
 	// Visceral fat index::scalar
 	VisceralFatIndex *float64 `json:"visceral_fat_index,omitempty" url:"visceral_fat_index,omitempty"`
 	// Bone mass percentage in the body::perc
-	BoneMassPercentage *float64            `json:"bone_mass_percentage,omitempty" url:"bone_mass_percentage,omitempty"`
-	Source             *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	BoneMassPercentage           *float64            `json:"bone_mass_percentage,omitempty" url:"bone_mass_percentage,omitempty"`
+	BodyMassIndex                *float64            `json:"body_mass_index,omitempty" url:"body_mass_index,omitempty"`
+	LeanBodyMassKilogram         *float64            `json:"lean_body_mass_kilogram,omitempty" url:"lean_body_mass_kilogram,omitempty"`
+	WaistCircumferenceCentimeter *float64            `json:"waist_circumference_centimeter,omitempty" url:"waist_circumference_centimeter,omitempty"`
+	Source                       *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -5209,73 +5530,6 @@ func (c *ClientFacingContinuousQueryResultTableChanged) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-type ClientFacingCreatedChanged struct {
-	EventType    ClientFacingCreatedChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                              `json:"user_id" url:"user_id"`
-	ClientUserId string                              `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                              `json:"team_id" url:"team_id"`
-	Data         *ClientFacingAppointment            `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (c *ClientFacingCreatedChanged) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
-}
-
-func (c *ClientFacingCreatedChanged) UnmarshalJSON(data []byte) error {
-	type unmarshaler ClientFacingCreatedChanged
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ClientFacingCreatedChanged(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-
-	c._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ClientFacingCreatedChanged) String() string {
-	if len(c._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type ClientFacingCreatedChangedEventType string
-
-const (
-	ClientFacingCreatedChangedEventTypeLabtestAppointmentCreated ClientFacingCreatedChangedEventType = "labtest.appointment.created"
-	ClientFacingCreatedChangedEventTypeLabtestAppointmentUpdated ClientFacingCreatedChangedEventType = "labtest.appointment.updated"
-)
-
-func NewClientFacingCreatedChangedEventTypeFromString(s string) (ClientFacingCreatedChangedEventType, error) {
-	switch s {
-	case "labtest.appointment.created":
-		return ClientFacingCreatedChangedEventTypeLabtestAppointmentCreated, nil
-	case "labtest.appointment.updated":
-		return ClientFacingCreatedChangedEventTypeLabtestAppointmentUpdated, nil
-	}
-	var t ClientFacingCreatedChangedEventType
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (c ClientFacingCreatedChangedEventType) Ptr() *ClientFacingCreatedChangedEventType {
-	return &c
-}
-
 type ClientFacingCriticalResult struct {
 	// The Vital Order ID
 	OrderId string `json:"order_id" url:"order_id"`
@@ -5412,6 +5666,236 @@ func (c *ClientFacingCriticalResultIdentified) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientFacingCriticalResultIdentified) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingDaylightExposureChanged struct {
+	EventType    ClientFacingDaylightExposureChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                       `json:"user_id" url:"user_id"`
+	ClientUserId string                                       `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                       `json:"team_id" url:"team_id"`
+	Data         *GroupedDaylightExposure                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingDaylightExposureChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingDaylightExposureChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingDaylightExposureChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingDaylightExposureChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingDaylightExposureChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingDaylightExposureChangedEventType string
+
+const (
+	ClientFacingDaylightExposureChangedEventTypeDailyDataDaylightExposureCreated ClientFacingDaylightExposureChangedEventType = "daily.data.daylight_exposure.created"
+	ClientFacingDaylightExposureChangedEventTypeDailyDataDaylightExposureUpdated ClientFacingDaylightExposureChangedEventType = "daily.data.daylight_exposure.updated"
+)
+
+func NewClientFacingDaylightExposureChangedEventTypeFromString(s string) (ClientFacingDaylightExposureChangedEventType, error) {
+	switch s {
+	case "daily.data.daylight_exposure.created":
+		return ClientFacingDaylightExposureChangedEventTypeDailyDataDaylightExposureCreated, nil
+	case "daily.data.daylight_exposure.updated":
+		return ClientFacingDaylightExposureChangedEventTypeDailyDataDaylightExposureUpdated, nil
+	}
+	var t ClientFacingDaylightExposureChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingDaylightExposureChangedEventType) Ptr() *ClientFacingDaylightExposureChangedEventType {
+	return &c
+}
+
+type ClientFacingDaylightExposureHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingDaylightExposureHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingDaylightExposureHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingDaylightExposureHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingDaylightExposureHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingDaylightExposureHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.daylight_exposure.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.daylight_exposure.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingDaylightExposureHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingDaylightExposureHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.daylight_exposure.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingDaylightExposureHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingDaylightExposureSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingDaylightExposureSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingDaylightExposureSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingDaylightExposureSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingDaylightExposureSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingDaylightExposureSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "min" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "min", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingDaylightExposureSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingDaylightExposureSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "min",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingDaylightExposureSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -6319,6 +6803,236 @@ func (c *ClientFacingElectrocardiogramVoltageTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingFallChanged struct {
+	EventType    ClientFacingFallChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                           `json:"user_id" url:"user_id"`
+	ClientUserId string                           `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                           `json:"team_id" url:"team_id"`
+	Data         *GroupedFall                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingFallChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingFallChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingFallChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingFallChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingFallChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingFallChangedEventType string
+
+const (
+	ClientFacingFallChangedEventTypeDailyDataFallCreated ClientFacingFallChangedEventType = "daily.data.fall.created"
+	ClientFacingFallChangedEventTypeDailyDataFallUpdated ClientFacingFallChangedEventType = "daily.data.fall.updated"
+)
+
+func NewClientFacingFallChangedEventTypeFromString(s string) (ClientFacingFallChangedEventType, error) {
+	switch s {
+	case "daily.data.fall.created":
+		return ClientFacingFallChangedEventTypeDailyDataFallCreated, nil
+	case "daily.data.fall.updated":
+		return ClientFacingFallChangedEventTypeDailyDataFallUpdated, nil
+	}
+	var t ClientFacingFallChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingFallChangedEventType) Ptr() *ClientFacingFallChangedEventType {
+	return &c
+}
+
+type ClientFacingFallHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingFallHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingFallHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingFallHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingFallHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingFallHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.fall.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.fall.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingFallHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingFallHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.fall.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingFallHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingFallSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingFallSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingFallSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingFallSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingFallSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingFallSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingFallSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingFallSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingFallSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingFatChanged struct {
 	EventType    ClientFacingFatChangedEventType `json:"event_type" url:"event_type"`
 	UserId       string                          `json:"user_id" url:"user_id"`
@@ -6718,6 +7432,466 @@ func (c *ClientFacingFood) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingForcedExpiratoryVolume1Changed struct {
+	EventType    ClientFacingForcedExpiratoryVolume1ChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                              `json:"user_id" url:"user_id"`
+	ClientUserId string                                              `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                              `json:"team_id" url:"team_id"`
+	Data         *GroupedForcedExpiratoryVolume1                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Changed) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Changed) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingForcedExpiratoryVolume1Changed
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingForcedExpiratoryVolume1Changed(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Changed) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingForcedExpiratoryVolume1ChangedEventType string
+
+const (
+	ClientFacingForcedExpiratoryVolume1ChangedEventTypeDailyDataForcedExpiratoryVolume1Created ClientFacingForcedExpiratoryVolume1ChangedEventType = "daily.data.forced_expiratory_volume_1.created"
+	ClientFacingForcedExpiratoryVolume1ChangedEventTypeDailyDataForcedExpiratoryVolume1Updated ClientFacingForcedExpiratoryVolume1ChangedEventType = "daily.data.forced_expiratory_volume_1.updated"
+)
+
+func NewClientFacingForcedExpiratoryVolume1ChangedEventTypeFromString(s string) (ClientFacingForcedExpiratoryVolume1ChangedEventType, error) {
+	switch s {
+	case "daily.data.forced_expiratory_volume_1.created":
+		return ClientFacingForcedExpiratoryVolume1ChangedEventTypeDailyDataForcedExpiratoryVolume1Created, nil
+	case "daily.data.forced_expiratory_volume_1.updated":
+		return ClientFacingForcedExpiratoryVolume1ChangedEventTypeDailyDataForcedExpiratoryVolume1Updated, nil
+	}
+	var t ClientFacingForcedExpiratoryVolume1ChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingForcedExpiratoryVolume1ChangedEventType) Ptr() *ClientFacingForcedExpiratoryVolume1ChangedEventType {
+	return &c
+}
+
+type ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.forced_expiratory_volume_1.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.forced_expiratory_volume_1.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.forced_expiratory_volume_1.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingForcedExpiratoryVolume1Sample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Sample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Sample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Sample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingForcedExpiratoryVolume1Sample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingForcedExpiratoryVolume1Sample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "L" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "L", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Sample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingForcedExpiratoryVolume1Sample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "L",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingForcedExpiratoryVolume1Sample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingForcedVitalCapacityChanged struct {
+	EventType    ClientFacingForcedVitalCapacityChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                          `json:"user_id" url:"user_id"`
+	ClientUserId string                                          `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                          `json:"team_id" url:"team_id"`
+	Data         *GroupedForcedVitalCapacity                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingForcedVitalCapacityChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingForcedVitalCapacityChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingForcedVitalCapacityChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingForcedVitalCapacityChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingForcedVitalCapacityChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingForcedVitalCapacityChangedEventType string
+
+const (
+	ClientFacingForcedVitalCapacityChangedEventTypeDailyDataForcedVitalCapacityCreated ClientFacingForcedVitalCapacityChangedEventType = "daily.data.forced_vital_capacity.created"
+	ClientFacingForcedVitalCapacityChangedEventTypeDailyDataForcedVitalCapacityUpdated ClientFacingForcedVitalCapacityChangedEventType = "daily.data.forced_vital_capacity.updated"
+)
+
+func NewClientFacingForcedVitalCapacityChangedEventTypeFromString(s string) (ClientFacingForcedVitalCapacityChangedEventType, error) {
+	switch s {
+	case "daily.data.forced_vital_capacity.created":
+		return ClientFacingForcedVitalCapacityChangedEventTypeDailyDataForcedVitalCapacityCreated, nil
+	case "daily.data.forced_vital_capacity.updated":
+		return ClientFacingForcedVitalCapacityChangedEventTypeDailyDataForcedVitalCapacityUpdated, nil
+	}
+	var t ClientFacingForcedVitalCapacityChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingForcedVitalCapacityChangedEventType) Ptr() *ClientFacingForcedVitalCapacityChangedEventType {
+	return &c
+}
+
+type ClientFacingForcedVitalCapacityHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingForcedVitalCapacityHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingForcedVitalCapacityHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingForcedVitalCapacityHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingForcedVitalCapacityHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingForcedVitalCapacityHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.forced_vital_capacity.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.forced_vital_capacity.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingForcedVitalCapacityHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingForcedVitalCapacityHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.forced_vital_capacity.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingForcedVitalCapacityHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingForcedVitalCapacitySample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingForcedVitalCapacitySample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingForcedVitalCapacitySample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingForcedVitalCapacitySample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingForcedVitalCapacitySample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingForcedVitalCapacitySample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "L" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "L", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingForcedVitalCapacitySample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingForcedVitalCapacitySample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "L",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingForcedVitalCapacitySample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingGlucoseChanged struct {
 	EventType    ClientFacingGlucoseChangedEventType `json:"event_type" url:"event_type"`
 	UserId       string                              `json:"user_id" url:"user_id"`
@@ -6926,6 +8100,236 @@ func (c *ClientFacingGlucoseTimeseries) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingHandwashingChanged struct {
+	EventType    ClientFacingHandwashingChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                  `json:"user_id" url:"user_id"`
+	ClientUserId string                                  `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                  `json:"team_id" url:"team_id"`
+	Data         *GroupedHandwashing                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingHandwashingChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingHandwashingChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingHandwashingChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingHandwashingChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingHandwashingChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingHandwashingChangedEventType string
+
+const (
+	ClientFacingHandwashingChangedEventTypeDailyDataHandwashingCreated ClientFacingHandwashingChangedEventType = "daily.data.handwashing.created"
+	ClientFacingHandwashingChangedEventTypeDailyDataHandwashingUpdated ClientFacingHandwashingChangedEventType = "daily.data.handwashing.updated"
+)
+
+func NewClientFacingHandwashingChangedEventTypeFromString(s string) (ClientFacingHandwashingChangedEventType, error) {
+	switch s {
+	case "daily.data.handwashing.created":
+		return ClientFacingHandwashingChangedEventTypeDailyDataHandwashingCreated, nil
+	case "daily.data.handwashing.updated":
+		return ClientFacingHandwashingChangedEventTypeDailyDataHandwashingUpdated, nil
+	}
+	var t ClientFacingHandwashingChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingHandwashingChangedEventType) Ptr() *ClientFacingHandwashingChangedEventType {
+	return &c
+}
+
+type ClientFacingHandwashingHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingHandwashingHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingHandwashingHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingHandwashingHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingHandwashingHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingHandwashingHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.handwashing.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.handwashing.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingHandwashingHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingHandwashingHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.handwashing.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingHandwashingHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingHandwashingSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingHandwashingSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingHandwashingSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingHandwashingSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingHandwashingSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingHandwashingSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingHandwashingSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingHandwashingSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingHandwashingSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingHeartRate struct {
 	// Average heart rate::bpm
 	AvgBpm *float64 `json:"avg_bpm,omitempty" url:"avg_bpm,omitempty"`
@@ -6934,7 +8338,8 @@ type ClientFacingHeartRate struct {
 	// Maximum heart rate::bpm
 	MaxBpm *float64 `json:"max_bpm,omitempty" url:"max_bpm,omitempty"`
 	// Resting heart rate::bpm
-	RestingBpm *float64 `json:"resting_bpm,omitempty" url:"resting_bpm,omitempty"`
+	RestingBpm    *float64 `json:"resting_bpm,omitempty" url:"resting_bpm,omitempty"`
+	AvgWalkingBpm *float64 `json:"avg_walking_bpm,omitempty" url:"avg_walking_bpm,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -8131,6 +9536,236 @@ func (c *ClientFacingIggTimeseries) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientFacingIggTimeseries) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingInhalerUsageChanged struct {
+	EventType    ClientFacingInhalerUsageChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                   `json:"user_id" url:"user_id"`
+	ClientUserId string                                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                   `json:"team_id" url:"team_id"`
+	Data         *GroupedInhalerUsage                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingInhalerUsageChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingInhalerUsageChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingInhalerUsageChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingInhalerUsageChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingInhalerUsageChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingInhalerUsageChangedEventType string
+
+const (
+	ClientFacingInhalerUsageChangedEventTypeDailyDataInhalerUsageCreated ClientFacingInhalerUsageChangedEventType = "daily.data.inhaler_usage.created"
+	ClientFacingInhalerUsageChangedEventTypeDailyDataInhalerUsageUpdated ClientFacingInhalerUsageChangedEventType = "daily.data.inhaler_usage.updated"
+)
+
+func NewClientFacingInhalerUsageChangedEventTypeFromString(s string) (ClientFacingInhalerUsageChangedEventType, error) {
+	switch s {
+	case "daily.data.inhaler_usage.created":
+		return ClientFacingInhalerUsageChangedEventTypeDailyDataInhalerUsageCreated, nil
+	case "daily.data.inhaler_usage.updated":
+		return ClientFacingInhalerUsageChangedEventTypeDailyDataInhalerUsageUpdated, nil
+	}
+	var t ClientFacingInhalerUsageChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingInhalerUsageChangedEventType) Ptr() *ClientFacingInhalerUsageChangedEventType {
+	return &c
+}
+
+type ClientFacingInhalerUsageHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingInhalerUsageHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingInhalerUsageHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingInhalerUsageHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingInhalerUsageHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingInhalerUsageHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.inhaler_usage.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.inhaler_usage.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingInhalerUsageHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingInhalerUsageHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.inhaler_usage.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingInhalerUsageHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingInhalerUsageSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingInhalerUsageSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingInhalerUsageSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingInhalerUsageSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingInhalerUsageSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingInhalerUsageSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingInhalerUsageSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingInhalerUsageSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingInhalerUsageSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -9816,6 +11451,73 @@ func (c *ClientFacingOrder) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingOrderChanged struct {
+	EventType    ClientFacingOrderChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                            `json:"user_id" url:"user_id"`
+	ClientUserId string                            `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                            `json:"team_id" url:"team_id"`
+	Data         *ClientFacingOrder                `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingOrderChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingOrderChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingOrderChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingOrderChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingOrderChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingOrderChangedEventType string
+
+const (
+	ClientFacingOrderChangedEventTypeLabtestOrderCreated ClientFacingOrderChangedEventType = "labtest.order.created"
+	ClientFacingOrderChangedEventTypeLabtestOrderUpdated ClientFacingOrderChangedEventType = "labtest.order.updated"
+)
+
+func NewClientFacingOrderChangedEventTypeFromString(s string) (ClientFacingOrderChangedEventType, error) {
+	switch s {
+	case "labtest.order.created":
+		return ClientFacingOrderChangedEventTypeLabtestOrderCreated, nil
+	case "labtest.order.updated":
+		return ClientFacingOrderChangedEventTypeLabtestOrderUpdated, nil
+	}
+	var t ClientFacingOrderChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingOrderChangedEventType) Ptr() *ClientFacingOrderChangedEventType {
+	return &c
+}
+
 type ClientFacingOrderDetails struct {
 	Type             string
 	WalkInTest       *ClientFacingWalkInOrderDetails
@@ -10122,6 +11824,236 @@ func (c *ClientFacingPayorSearchResponseDeprecated) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingPeakExpiratoryFlowRateChanged struct {
+	EventType    ClientFacingPeakExpiratoryFlowRateChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                             `json:"user_id" url:"user_id"`
+	ClientUserId string                                             `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                             `json:"team_id" url:"team_id"`
+	Data         *GroupedPeakExpiratoryFlowRate                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingPeakExpiratoryFlowRateChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingPeakExpiratoryFlowRateChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingPeakExpiratoryFlowRateChangedEventType string
+
+const (
+	ClientFacingPeakExpiratoryFlowRateChangedEventTypeDailyDataPeakExpiratoryFlowRateCreated ClientFacingPeakExpiratoryFlowRateChangedEventType = "daily.data.peak_expiratory_flow_rate.created"
+	ClientFacingPeakExpiratoryFlowRateChangedEventTypeDailyDataPeakExpiratoryFlowRateUpdated ClientFacingPeakExpiratoryFlowRateChangedEventType = "daily.data.peak_expiratory_flow_rate.updated"
+)
+
+func NewClientFacingPeakExpiratoryFlowRateChangedEventTypeFromString(s string) (ClientFacingPeakExpiratoryFlowRateChangedEventType, error) {
+	switch s {
+	case "daily.data.peak_expiratory_flow_rate.created":
+		return ClientFacingPeakExpiratoryFlowRateChangedEventTypeDailyDataPeakExpiratoryFlowRateCreated, nil
+	case "daily.data.peak_expiratory_flow_rate.updated":
+		return ClientFacingPeakExpiratoryFlowRateChangedEventTypeDailyDataPeakExpiratoryFlowRateUpdated, nil
+	}
+	var t ClientFacingPeakExpiratoryFlowRateChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingPeakExpiratoryFlowRateChangedEventType) Ptr() *ClientFacingPeakExpiratoryFlowRateChangedEventType {
+	return &c
+}
+
+type ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.peak_expiratory_flow_rate.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.peak_expiratory_flow_rate.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.peak_expiratory_flow_rate.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingPeakExpiratoryFlowRateSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingPeakExpiratoryFlowRateSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingPeakExpiratoryFlowRateSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "L/min" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "L/min", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingPeakExpiratoryFlowRateSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "L/min",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingPeakExpiratoryFlowRateSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingPhysician struct {
 	FirstName string `json:"first_name" url:"first_name"`
 	LastName  string `json:"last_name" url:"last_name"`
@@ -10167,10 +12099,12 @@ func (c *ClientFacingPhysician) String() string {
 
 type ClientFacingProfile struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
-	UserId string              `json:"user_id" url:"user_id"`
-	Id     string              `json:"id" url:"id"`
-	Height *int                `json:"height,omitempty" url:"height,omitempty"`
-	Source *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	UserId        string              `json:"user_id" url:"user_id"`
+	Id            string              `json:"id" url:"id"`
+	Height        *int                `json:"height,omitempty" url:"height,omitempty"`
+	BirthDate     *string             `json:"birth_date,omitempty" url:"birth_date,omitempty"`
+	WheelchairUse *bool               `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
+	Source        *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -10657,53 +12591,67 @@ func (c *ClientFacingProviderWithStatus) String() string {
 type ClientFacingResource string
 
 const (
-	ClientFacingResourceProfile                  ClientFacingResource = "profile"
-	ClientFacingResourceActivity                 ClientFacingResource = "activity"
-	ClientFacingResourceSleep                    ClientFacingResource = "sleep"
-	ClientFacingResourceBody                     ClientFacingResource = "body"
-	ClientFacingResourceWorkouts                 ClientFacingResource = "workouts"
-	ClientFacingResourceWorkoutStream            ClientFacingResource = "workout_stream"
-	ClientFacingResourceConnection               ClientFacingResource = "connection"
-	ClientFacingResourceOrder                    ClientFacingResource = "order"
-	ClientFacingResourceResult                   ClientFacingResource = "result"
-	ClientFacingResourceAppointment              ClientFacingResource = "appointment"
-	ClientFacingResourceGlucose                  ClientFacingResource = "glucose"
-	ClientFacingResourceHeartrate                ClientFacingResource = "heartrate"
-	ClientFacingResourceHrv                      ClientFacingResource = "hrv"
-	ClientFacingResourceIge                      ClientFacingResource = "ige"
-	ClientFacingResourceIgg                      ClientFacingResource = "igg"
-	ClientFacingResourceBloodOxygen              ClientFacingResource = "blood_oxygen"
-	ClientFacingResourceBloodPressure            ClientFacingResource = "blood_pressure"
-	ClientFacingResourceCholesterol              ClientFacingResource = "cholesterol"
-	ClientFacingResourceDevice                   ClientFacingResource = "device"
-	ClientFacingResourceWeight                   ClientFacingResource = "weight"
-	ClientFacingResourceFat                      ClientFacingResource = "fat"
-	ClientFacingResourceBodyTemperature          ClientFacingResource = "body_temperature"
-	ClientFacingResourceBodyTemperatureDelta     ClientFacingResource = "body_temperature_delta"
-	ClientFacingResourceMeal                     ClientFacingResource = "meal"
-	ClientFacingResourceWater                    ClientFacingResource = "water"
-	ClientFacingResourceCaffeine                 ClientFacingResource = "caffeine"
-	ClientFacingResourceMindfulnessMinutes       ClientFacingResource = "mindfulness_minutes"
-	ClientFacingResourceSteps                    ClientFacingResource = "steps"
-	ClientFacingResourceCaloriesActive           ClientFacingResource = "calories_active"
-	ClientFacingResourceDistance                 ClientFacingResource = "distance"
-	ClientFacingResourceFloorsClimbed            ClientFacingResource = "floors_climbed"
-	ClientFacingResourceRespiratoryRate          ClientFacingResource = "respiratory_rate"
-	ClientFacingResourceVo2Max                   ClientFacingResource = "vo2_max"
-	ClientFacingResourceCaloriesBasal            ClientFacingResource = "calories_basal"
-	ClientFacingResourceStressLevel              ClientFacingResource = "stress_level"
-	ClientFacingResourceMenstrualCycle           ClientFacingResource = "menstrual_cycle"
-	ClientFacingResourceSleepCycle               ClientFacingResource = "sleep_cycle"
-	ClientFacingResourceElectrocardiogram        ClientFacingResource = "electrocardiogram"
-	ClientFacingResourceElectrocardiogramVoltage ClientFacingResource = "electrocardiogram_voltage"
-	ClientFacingResourceAfibBurden               ClientFacingResource = "afib_burden"
-	ClientFacingResourceHeartRateAlert           ClientFacingResource = "heart_rate_alert"
-	ClientFacingResourceWorkoutDuration          ClientFacingResource = "workout_duration"
-	ClientFacingResourceInsulinInjection         ClientFacingResource = "insulin_injection"
-	ClientFacingResourceCarbohydrates            ClientFacingResource = "carbohydrates"
-	ClientFacingResourceNote                     ClientFacingResource = "note"
-	ClientFacingResourceSleepStream              ClientFacingResource = "sleep_stream"
-	ClientFacingResourceHypnogram                ClientFacingResource = "hypnogram"
+	ClientFacingResourceProfile                   ClientFacingResource = "profile"
+	ClientFacingResourceActivity                  ClientFacingResource = "activity"
+	ClientFacingResourceSleep                     ClientFacingResource = "sleep"
+	ClientFacingResourceBody                      ClientFacingResource = "body"
+	ClientFacingResourceWorkouts                  ClientFacingResource = "workouts"
+	ClientFacingResourceWorkoutStream             ClientFacingResource = "workout_stream"
+	ClientFacingResourceConnection                ClientFacingResource = "connection"
+	ClientFacingResourceOrder                     ClientFacingResource = "order"
+	ClientFacingResourceResult                    ClientFacingResource = "result"
+	ClientFacingResourceAppointment               ClientFacingResource = "appointment"
+	ClientFacingResourceGlucose                   ClientFacingResource = "glucose"
+	ClientFacingResourceHeartrate                 ClientFacingResource = "heartrate"
+	ClientFacingResourceHrv                       ClientFacingResource = "hrv"
+	ClientFacingResourceIge                       ClientFacingResource = "ige"
+	ClientFacingResourceIgg                       ClientFacingResource = "igg"
+	ClientFacingResourceBloodOxygen               ClientFacingResource = "blood_oxygen"
+	ClientFacingResourceBloodPressure             ClientFacingResource = "blood_pressure"
+	ClientFacingResourceCholesterol               ClientFacingResource = "cholesterol"
+	ClientFacingResourceDevice                    ClientFacingResource = "device"
+	ClientFacingResourceWeight                    ClientFacingResource = "weight"
+	ClientFacingResourceFat                       ClientFacingResource = "fat"
+	ClientFacingResourceBodyTemperature           ClientFacingResource = "body_temperature"
+	ClientFacingResourceBodyTemperatureDelta      ClientFacingResource = "body_temperature_delta"
+	ClientFacingResourceMeal                      ClientFacingResource = "meal"
+	ClientFacingResourceWater                     ClientFacingResource = "water"
+	ClientFacingResourceCaffeine                  ClientFacingResource = "caffeine"
+	ClientFacingResourceMindfulnessMinutes        ClientFacingResource = "mindfulness_minutes"
+	ClientFacingResourceSteps                     ClientFacingResource = "steps"
+	ClientFacingResourceCaloriesActive            ClientFacingResource = "calories_active"
+	ClientFacingResourceDistance                  ClientFacingResource = "distance"
+	ClientFacingResourceFloorsClimbed             ClientFacingResource = "floors_climbed"
+	ClientFacingResourceRespiratoryRate           ClientFacingResource = "respiratory_rate"
+	ClientFacingResourceVo2Max                    ClientFacingResource = "vo2_max"
+	ClientFacingResourceCaloriesBasal             ClientFacingResource = "calories_basal"
+	ClientFacingResourceStressLevel               ClientFacingResource = "stress_level"
+	ClientFacingResourceMenstrualCycle            ClientFacingResource = "menstrual_cycle"
+	ClientFacingResourceSleepCycle                ClientFacingResource = "sleep_cycle"
+	ClientFacingResourceElectrocardiogram         ClientFacingResource = "electrocardiogram"
+	ClientFacingResourceElectrocardiogramVoltage  ClientFacingResource = "electrocardiogram_voltage"
+	ClientFacingResourceAfibBurden                ClientFacingResource = "afib_burden"
+	ClientFacingResourceHeartRateAlert            ClientFacingResource = "heart_rate_alert"
+	ClientFacingResourceStandHour                 ClientFacingResource = "stand_hour"
+	ClientFacingResourceStandDuration             ClientFacingResource = "stand_duration"
+	ClientFacingResourceSleepApneaAlert           ClientFacingResource = "sleep_apnea_alert"
+	ClientFacingResourceSleepBreathingDisturbance ClientFacingResource = "sleep_breathing_disturbance"
+	ClientFacingResourceWheelchairPush            ClientFacingResource = "wheelchair_push"
+	ClientFacingResourceForcedExpiratoryVolume1   ClientFacingResource = "forced_expiratory_volume_1"
+	ClientFacingResourceForcedVitalCapacity       ClientFacingResource = "forced_vital_capacity"
+	ClientFacingResourcePeakExpiratoryFlowRate    ClientFacingResource = "peak_expiratory_flow_rate"
+	ClientFacingResourceInhalerUsage              ClientFacingResource = "inhaler_usage"
+	ClientFacingResourceFall                      ClientFacingResource = "fall"
+	ClientFacingResourceUvExposure                ClientFacingResource = "uv_exposure"
+	ClientFacingResourceDaylightExposure          ClientFacingResource = "daylight_exposure"
+	ClientFacingResourceHandwashing               ClientFacingResource = "handwashing"
+	ClientFacingResourceBasalBodyTemperature      ClientFacingResource = "basal_body_temperature"
+	ClientFacingResourceWorkoutDuration           ClientFacingResource = "workout_duration"
+	ClientFacingResourceInsulinInjection          ClientFacingResource = "insulin_injection"
+	ClientFacingResourceCarbohydrates             ClientFacingResource = "carbohydrates"
+	ClientFacingResourceNote                      ClientFacingResource = "note"
+	ClientFacingResourceSleepStream               ClientFacingResource = "sleep_stream"
+	ClientFacingResourceHypnogram                 ClientFacingResource = "hypnogram"
 )
 
 func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
@@ -10790,6 +12738,34 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceAfibBurden, nil
 	case "heart_rate_alert":
 		return ClientFacingResourceHeartRateAlert, nil
+	case "stand_hour":
+		return ClientFacingResourceStandHour, nil
+	case "stand_duration":
+		return ClientFacingResourceStandDuration, nil
+	case "sleep_apnea_alert":
+		return ClientFacingResourceSleepApneaAlert, nil
+	case "sleep_breathing_disturbance":
+		return ClientFacingResourceSleepBreathingDisturbance, nil
+	case "wheelchair_push":
+		return ClientFacingResourceWheelchairPush, nil
+	case "forced_expiratory_volume_1":
+		return ClientFacingResourceForcedExpiratoryVolume1, nil
+	case "forced_vital_capacity":
+		return ClientFacingResourceForcedVitalCapacity, nil
+	case "peak_expiratory_flow_rate":
+		return ClientFacingResourcePeakExpiratoryFlowRate, nil
+	case "inhaler_usage":
+		return ClientFacingResourceInhalerUsage, nil
+	case "fall":
+		return ClientFacingResourceFall, nil
+	case "uv_exposure":
+		return ClientFacingResourceUvExposure, nil
+	case "daylight_exposure":
+		return ClientFacingResourceDaylightExposure, nil
+	case "handwashing":
+		return ClientFacingResourceHandwashing, nil
+	case "basal_body_temperature":
+		return ClientFacingResourceBasalBodyTemperature, nil
 	case "workout_duration":
 		return ClientFacingResourceWorkoutDuration, nil
 	case "insulin_injection":
@@ -11213,6 +13189,8 @@ type ClientFacingSleep struct {
 	HrLowest *int `json:"hr_lowest,omitempty" url:"hr_lowest,omitempty"`
 	// The average heart rate registered during the sleep period::beats per minute
 	HrAverage *int `json:"hr_average,omitempty" url:"hr_average,omitempty"`
+	// Resting heart rate recorded during a sleep session::bpm
+	HrResting *int `json:"hr_resting,omitempty" url:"hr_resting,omitempty"`
 	// Sleep efficiency is the percentage of the sleep period spent asleep (100% \* sleep.total / sleep.duration)::perc
 	Efficiency *float64 `json:"efficiency,omitempty" url:"efficiency,omitempty"`
 	// Detected latency from bedtime_start to the beginning of the first five minutes of persistent sleep::seconds
@@ -11295,6 +13273,487 @@ func (c *ClientFacingSleep) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepApneaAlertChanged struct {
+	EventType    ClientFacingSleepApneaAlertChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                      `json:"user_id" url:"user_id"`
+	ClientUserId string                                      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                      `json:"team_id" url:"team_id"`
+	Data         *GroupedSleepApneaAlert                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSleepApneaAlertChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSleepApneaAlertChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingSleepApneaAlertChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingSleepApneaAlertChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSleepApneaAlertChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepApneaAlertChangedEventType string
+
+const (
+	ClientFacingSleepApneaAlertChangedEventTypeDailyDataSleepApneaAlertCreated ClientFacingSleepApneaAlertChangedEventType = "daily.data.sleep_apnea_alert.created"
+	ClientFacingSleepApneaAlertChangedEventTypeDailyDataSleepApneaAlertUpdated ClientFacingSleepApneaAlertChangedEventType = "daily.data.sleep_apnea_alert.updated"
+)
+
+func NewClientFacingSleepApneaAlertChangedEventTypeFromString(s string) (ClientFacingSleepApneaAlertChangedEventType, error) {
+	switch s {
+	case "daily.data.sleep_apnea_alert.created":
+		return ClientFacingSleepApneaAlertChangedEventTypeDailyDataSleepApneaAlertCreated, nil
+	case "daily.data.sleep_apnea_alert.updated":
+		return ClientFacingSleepApneaAlertChangedEventTypeDailyDataSleepApneaAlertUpdated, nil
+	}
+	var t ClientFacingSleepApneaAlertChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingSleepApneaAlertChangedEventType) Ptr() *ClientFacingSleepApneaAlertChangedEventType {
+	return &c
+}
+
+type ClientFacingSleepApneaAlertHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSleepApneaAlertHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSleepApneaAlertHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingSleepApneaAlertHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingSleepApneaAlertHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingSleepApneaAlertHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.sleep_apnea_alert.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.sleep_apnea_alert.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSleepApneaAlertHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingSleepApneaAlertHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.sleep_apnea_alert.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingSleepApneaAlertHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepApneaAlertSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSleepApneaAlertSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSleepApneaAlertSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingSleepApneaAlertSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingSleepApneaAlertSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingSleepApneaAlertSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSleepApneaAlertSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingSleepApneaAlertSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingSleepApneaAlertSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepBreathingDisturbanceChanged struct {
+	EventType    ClientFacingSleepBreathingDisturbanceChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                                `json:"user_id" url:"user_id"`
+	ClientUserId string                                                `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                `json:"team_id" url:"team_id"`
+	Data         *GroupedSleepBreathingDisturbance                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingSleepBreathingDisturbanceChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingSleepBreathingDisturbanceChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepBreathingDisturbanceChangedEventType string
+
+const (
+	ClientFacingSleepBreathingDisturbanceChangedEventTypeDailyDataSleepBreathingDisturbanceCreated ClientFacingSleepBreathingDisturbanceChangedEventType = "daily.data.sleep_breathing_disturbance.created"
+	ClientFacingSleepBreathingDisturbanceChangedEventTypeDailyDataSleepBreathingDisturbanceUpdated ClientFacingSleepBreathingDisturbanceChangedEventType = "daily.data.sleep_breathing_disturbance.updated"
+)
+
+func NewClientFacingSleepBreathingDisturbanceChangedEventTypeFromString(s string) (ClientFacingSleepBreathingDisturbanceChangedEventType, error) {
+	switch s {
+	case "daily.data.sleep_breathing_disturbance.created":
+		return ClientFacingSleepBreathingDisturbanceChangedEventTypeDailyDataSleepBreathingDisturbanceCreated, nil
+	case "daily.data.sleep_breathing_disturbance.updated":
+		return ClientFacingSleepBreathingDisturbanceChangedEventTypeDailyDataSleepBreathingDisturbanceUpdated, nil
+	}
+	var t ClientFacingSleepBreathingDisturbanceChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingSleepBreathingDisturbanceChangedEventType) Ptr() *ClientFacingSleepBreathingDisturbanceChangedEventType {
+	return &c
+}
+
+type ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.sleep_breathing_disturbance.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.sleep_breathing_disturbance.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.sleep_breathing_disturbance.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepBreathingDisturbanceSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int                                            `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	Type           ClientFacingSleepBreathingDisturbanceSampleType `json:"type" url:"type"`
+	Grouping       *ClientFacingSampleGroupingKeys                 `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingSleepBreathingDisturbanceSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingSleepBreathingDisturbanceSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingSleepBreathingDisturbanceSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingSleepBreathingDisturbanceSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepBreathingDisturbanceSampleType string
+
+const (
+	ClientFacingSleepBreathingDisturbanceSampleTypeElevated    ClientFacingSleepBreathingDisturbanceSampleType = "elevated"
+	ClientFacingSleepBreathingDisturbanceSampleTypeNotElevated ClientFacingSleepBreathingDisturbanceSampleType = "not_elevated"
+)
+
+func NewClientFacingSleepBreathingDisturbanceSampleTypeFromString(s string) (ClientFacingSleepBreathingDisturbanceSampleType, error) {
+	switch s {
+	case "elevated":
+		return ClientFacingSleepBreathingDisturbanceSampleTypeElevated, nil
+	case "not_elevated":
+		return ClientFacingSleepBreathingDisturbanceSampleTypeNotElevated, nil
+	}
+	var t ClientFacingSleepBreathingDisturbanceSampleType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingSleepBreathingDisturbanceSampleType) Ptr() *ClientFacingSleepBreathingDisturbanceSampleType {
+	return &c
 }
 
 type ClientFacingSleepChanged struct {
@@ -11813,6 +14272,16 @@ type ClientFacingSource struct {
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// The identifier of the app which recorded this summary. This is only applicable to multi-source providers like Apple Health and Android Health Connect.
 	AppId *string `json:"app_id,omitempty" url:"app_id,omitempty"`
+	// For workout stream timeseries, this is the standard sport slug of the workout with which the timeseries data are associated.
+	//
+	// For the `distance` timeseries, this is `wheelchair_pushing` if the user is a wheelchair user, or `null` otherwise.
+	//
+	// For all summary types and non-workout timeseries, this is always `null`.
+	Sport *string `json:"sport,omitempty" url:"sport,omitempty"`
+	// For workout stream timeseries, this is the workout ID with which the timeseries data are associated.
+	//
+	// For all other types, this is always `null`.
+	WorkoutId *string `json:"workout_id,omitempty" url:"workout_id,omitempty"`
 	// Deprecated. Subject to removal after 1 Jan 2024.
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// Deprecated. Use `provider` instead. Subject to removal after 1 Jan 2024.
@@ -11893,6 +14362,466 @@ func (c *ClientFacingSport) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingSport) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStandDurationChanged struct {
+	EventType    ClientFacingStandDurationChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                    `json:"user_id" url:"user_id"`
+	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                    `json:"team_id" url:"team_id"`
+	Data         *GroupedStandDuration                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingStandDurationChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingStandDurationChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingStandDurationChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingStandDurationChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStandDurationChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStandDurationChangedEventType string
+
+const (
+	ClientFacingStandDurationChangedEventTypeDailyDataStandDurationCreated ClientFacingStandDurationChangedEventType = "daily.data.stand_duration.created"
+	ClientFacingStandDurationChangedEventTypeDailyDataStandDurationUpdated ClientFacingStandDurationChangedEventType = "daily.data.stand_duration.updated"
+)
+
+func NewClientFacingStandDurationChangedEventTypeFromString(s string) (ClientFacingStandDurationChangedEventType, error) {
+	switch s {
+	case "daily.data.stand_duration.created":
+		return ClientFacingStandDurationChangedEventTypeDailyDataStandDurationCreated, nil
+	case "daily.data.stand_duration.updated":
+		return ClientFacingStandDurationChangedEventTypeDailyDataStandDurationUpdated, nil
+	}
+	var t ClientFacingStandDurationChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingStandDurationChangedEventType) Ptr() *ClientFacingStandDurationChangedEventType {
+	return &c
+}
+
+type ClientFacingStandDurationHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingStandDurationHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingStandDurationHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingStandDurationHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingStandDurationHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingStandDurationHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.stand_duration.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.stand_duration.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStandDurationHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingStandDurationHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.stand_duration.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingStandDurationHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStandDurationSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingStandDurationSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingStandDurationSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingStandDurationSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingStandDurationSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingStandDurationSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "min" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "min", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStandDurationSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingStandDurationSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "min",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingStandDurationSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStandHourChanged struct {
+	EventType    ClientFacingStandHourChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                `json:"user_id" url:"user_id"`
+	ClientUserId string                                `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                `json:"team_id" url:"team_id"`
+	Data         *GroupedStandHour                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingStandHourChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingStandHourChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingStandHourChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingStandHourChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStandHourChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStandHourChangedEventType string
+
+const (
+	ClientFacingStandHourChangedEventTypeDailyDataStandHourCreated ClientFacingStandHourChangedEventType = "daily.data.stand_hour.created"
+	ClientFacingStandHourChangedEventTypeDailyDataStandHourUpdated ClientFacingStandHourChangedEventType = "daily.data.stand_hour.updated"
+)
+
+func NewClientFacingStandHourChangedEventTypeFromString(s string) (ClientFacingStandHourChangedEventType, error) {
+	switch s {
+	case "daily.data.stand_hour.created":
+		return ClientFacingStandHourChangedEventTypeDailyDataStandHourCreated, nil
+	case "daily.data.stand_hour.updated":
+		return ClientFacingStandHourChangedEventTypeDailyDataStandHourUpdated, nil
+	}
+	var t ClientFacingStandHourChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingStandHourChangedEventType) Ptr() *ClientFacingStandHourChangedEventType {
+	return &c
+}
+
+type ClientFacingStandHourHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingStandHourHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingStandHourHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingStandHourHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingStandHourHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingStandHourHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.stand_hour.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.stand_hour.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStandHourHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingStandHourHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.stand_hour.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingStandHourHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStandHourSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingStandHourSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingStandHourSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingStandHourSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingStandHourSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingStandHourSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStandHourSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingStandHourSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingStandHourSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -13124,9 +16053,9 @@ type ClientFacingUser struct {
 	FallbackTimeZone *FallbackTimeZone `json:"fallback_time_zone,omitempty" url:"fallback_time_zone,omitempty"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	FallbackBirthDate *FallbackBirthDate `json:"fallback_birth_date,omitempty" url:"fallback_birth_date,omitempty"`
-	// Starting bound for user data ingestion. Data older than this date will not be ingested.
+	// Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
 	IngestionStart *string `json:"ingestion_start,omitempty" url:"ingestion_start,omitempty"`
-	// Ending bound for user data ingestion. Data from this date or later will not be ingested and the connection will be deregistered.
+	// Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
 	IngestionEnd *string `json:"ingestion_end,omitempty" url:"ingestion_end,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -13218,6 +16147,236 @@ func (c *ClientFacingUserKey) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ClientFacingUserKey) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingUvExposureChanged struct {
+	EventType    ClientFacingUvExposureChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                 `json:"team_id" url:"team_id"`
+	Data         *GroupedUvExposure                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingUvExposureChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingUvExposureChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingUvExposureChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingUvExposureChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingUvExposureChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingUvExposureChangedEventType string
+
+const (
+	ClientFacingUvExposureChangedEventTypeDailyDataUvExposureCreated ClientFacingUvExposureChangedEventType = "daily.data.uv_exposure.created"
+	ClientFacingUvExposureChangedEventTypeDailyDataUvExposureUpdated ClientFacingUvExposureChangedEventType = "daily.data.uv_exposure.updated"
+)
+
+func NewClientFacingUvExposureChangedEventTypeFromString(s string) (ClientFacingUvExposureChangedEventType, error) {
+	switch s {
+	case "daily.data.uv_exposure.created":
+		return ClientFacingUvExposureChangedEventTypeDailyDataUvExposureCreated, nil
+	case "daily.data.uv_exposure.updated":
+		return ClientFacingUvExposureChangedEventTypeDailyDataUvExposureUpdated, nil
+	}
+	var t ClientFacingUvExposureChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingUvExposureChangedEventType) Ptr() *ClientFacingUvExposureChangedEventType {
+	return &c
+}
+
+type ClientFacingUvExposureHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingUvExposureHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingUvExposureHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingUvExposureHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingUvExposureHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingUvExposureHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.uv_exposure.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.uv_exposure.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingUvExposureHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingUvExposureHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.uv_exposure.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingUvExposureHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingUvExposureSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingUvExposureSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingUvExposureSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingUvExposureSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingUvExposureSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingUvExposureSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "index" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "index", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingUvExposureSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingUvExposureSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "index",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingUvExposureSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -13894,6 +17053,236 @@ func (c *ClientFacingWeightHistoricalPullCompleted) MarshalJSON() ([]byte, error
 }
 
 func (c *ClientFacingWeightHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWheelchairPushChanged struct {
+	EventType    ClientFacingWheelchairPushChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                     `json:"user_id" url:"user_id"`
+	ClientUserId string                                     `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                     `json:"team_id" url:"team_id"`
+	Data         *GroupedWheelchairPush                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWheelchairPushChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWheelchairPushChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingWheelchairPushChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingWheelchairPushChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWheelchairPushChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWheelchairPushChangedEventType string
+
+const (
+	ClientFacingWheelchairPushChangedEventTypeDailyDataWheelchairPushCreated ClientFacingWheelchairPushChangedEventType = "daily.data.wheelchair_push.created"
+	ClientFacingWheelchairPushChangedEventTypeDailyDataWheelchairPushUpdated ClientFacingWheelchairPushChangedEventType = "daily.data.wheelchair_push.updated"
+)
+
+func NewClientFacingWheelchairPushChangedEventTypeFromString(s string) (ClientFacingWheelchairPushChangedEventType, error) {
+	switch s {
+	case "daily.data.wheelchair_push.created":
+		return ClientFacingWheelchairPushChangedEventTypeDailyDataWheelchairPushCreated, nil
+	case "daily.data.wheelchair_push.updated":
+		return ClientFacingWheelchairPushChangedEventTypeDailyDataWheelchairPushUpdated, nil
+	}
+	var t ClientFacingWheelchairPushChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingWheelchairPushChangedEventType) Ptr() *ClientFacingWheelchairPushChangedEventType {
+	return &c
+}
+
+type ClientFacingWheelchairPushHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWheelchairPushHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWheelchairPushHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingWheelchairPushHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWheelchairPushHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWheelchairPushHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.wheelchair_push.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.wheelchair_push.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWheelchairPushHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWheelchairPushHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.wheelchair_push.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWheelchairPushHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWheelchairPushSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWheelchairPushSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWheelchairPushSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingWheelchairPushSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWheelchairPushSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWheelchairPushSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWheelchairPushSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWheelchairPushSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWheelchairPushSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -14739,6 +18128,47 @@ func (c *ClientUserIdConflict) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientUserIdConflictResponse struct {
+	Detail *ClientUserIdConflict `json:"detail,omitempty" url:"detail,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientUserIdConflictResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientUserIdConflictResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientUserIdConflictResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientUserIdConflictResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientUserIdConflictResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientWorkoutResponse struct {
 	Workouts []*ClientFacingWorkout `json:"workouts,omitempty" url:"workouts,omitempty"`
 
@@ -15046,8 +18476,9 @@ func (c ConsentType) Ptr() *ConsentType {
 }
 
 type ContinuousQueryResultTableChanges struct {
-	QueryId string                   `json:"query_id" url:"query_id"`
-	Data    map[string][]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	QueryId   string                   `json:"query_id" url:"query_id"`
+	QuerySlug string                   `json:"query_slug" url:"query_slug"`
+	Data      map[string][]interface{} `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -16344,6 +19775,94 @@ func (g *GroupedAFibBurdenResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBasalBodyTemperature struct {
+	Source *ClientFacingSource                       `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBasalBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBasalBodyTemperature) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBasalBodyTemperature) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBasalBodyTemperature
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBasalBodyTemperature(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBasalBodyTemperature) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBasalBodyTemperatureResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedBasalBodyTemperature `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBasalBodyTemperatureResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBasalBodyTemperatureResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBasalBodyTemperatureResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBasalBodyTemperatureResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBasalBodyTemperatureResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBloodOxygen struct {
 	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingBloodOxygenTimeseries `json:"data,omitempty" url:"data,omitempty"`
@@ -17312,6 +20831,94 @@ func (g *GroupedCholesterolResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedDaylightExposure struct {
+	Source *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingDaylightExposureSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedDaylightExposure) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedDaylightExposure) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedDaylightExposure
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedDaylightExposure(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedDaylightExposure) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedDaylightExposureResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedDaylightExposure `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedDaylightExposureResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedDaylightExposureResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedDaylightExposureResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedDaylightExposureResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedDaylightExposureResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedDistance struct {
 	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingDistanceTimeseries `json:"data,omitempty" url:"data,omitempty"`
@@ -17488,6 +21095,94 @@ func (g *GroupedElectrocardiogramVoltageResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedFall struct {
+	Source *ClientFacingSource       `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingFallSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedFall) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedFall) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedFall
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedFall(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedFall) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedFallResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedFall `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedFallResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedFallResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedFallResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedFallResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedFallResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedFloorsClimbed struct {
 	Source *ClientFacingSource                    `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingFloorsClimbedTimeseries `json:"data,omitempty" url:"data,omitempty"`
@@ -17576,6 +21271,182 @@ func (g *GroupedFloorsClimbedResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedForcedExpiratoryVolume1 struct {
+	Source *ClientFacingSource                          `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingForcedExpiratoryVolume1Sample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedForcedExpiratoryVolume1) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedForcedExpiratoryVolume1) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedForcedExpiratoryVolume1
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedForcedExpiratoryVolume1(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedForcedExpiratoryVolume1) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedForcedExpiratoryVolume1Response struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedForcedExpiratoryVolume1 `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedForcedExpiratoryVolume1Response) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedForcedExpiratoryVolume1Response) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedForcedExpiratoryVolume1Response
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedForcedExpiratoryVolume1Response(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedForcedExpiratoryVolume1Response) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedForcedVitalCapacity struct {
+	Source *ClientFacingSource                      `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingForcedVitalCapacitySample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedForcedVitalCapacity) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedForcedVitalCapacity) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedForcedVitalCapacity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedForcedVitalCapacity(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedForcedVitalCapacity) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedForcedVitalCapacityResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedForcedVitalCapacity `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedForcedVitalCapacityResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedForcedVitalCapacityResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedForcedVitalCapacityResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedForcedVitalCapacityResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedForcedVitalCapacityResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedGlucose struct {
 	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingGlucoseTimeseries `json:"data,omitempty" url:"data,omitempty"`
@@ -17653,6 +21524,94 @@ func (g *GroupedGlucoseResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GroupedGlucoseResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHandwashing struct {
+	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingHandwashingSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHandwashing) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHandwashing) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHandwashing
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHandwashing(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHandwashing) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHandwashingResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedHandwashing `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHandwashingResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHandwashingResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHandwashingResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHandwashingResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHandwashingResponse) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
@@ -18192,6 +22151,94 @@ func (g *GroupedIggResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedInhalerUsage struct {
+	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingInhalerUsageSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedInhalerUsage) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedInhalerUsage) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedInhalerUsage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedInhalerUsage(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedInhalerUsage) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedInhalerUsageResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedInhalerUsage `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedInhalerUsageResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedInhalerUsageResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedInhalerUsageResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedInhalerUsageResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedInhalerUsageResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedInsulinInjection struct {
 	Source *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingInsulinInjectionSample `json:"data,omitempty" url:"data,omitempty"`
@@ -18456,6 +22503,94 @@ func (g *GroupedNoteResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedPeakExpiratoryFlowRate struct {
+	Source *ClientFacingSource                         `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingPeakExpiratoryFlowRateSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedPeakExpiratoryFlowRate) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedPeakExpiratoryFlowRate) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedPeakExpiratoryFlowRate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedPeakExpiratoryFlowRate(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedPeakExpiratoryFlowRate) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedPeakExpiratoryFlowRateResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedPeakExpiratoryFlowRate `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedPeakExpiratoryFlowRateResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedPeakExpiratoryFlowRateResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedPeakExpiratoryFlowRateResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedPeakExpiratoryFlowRateResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedPeakExpiratoryFlowRateResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedRespiratoryRate struct {
 	Source *ClientFacingSource                      `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingRespiratoryRateTimeseries `json:"data,omitempty" url:"data,omitempty"`
@@ -18533,6 +22668,358 @@ func (g *GroupedRespiratoryRateResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GroupedRespiratoryRateResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedSleepApneaAlert struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingSleepApneaAlertSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedSleepApneaAlert) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedSleepApneaAlert) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSleepApneaAlert
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSleepApneaAlert(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSleepApneaAlert) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedSleepApneaAlertResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedSleepApneaAlert `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedSleepApneaAlertResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedSleepApneaAlertResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSleepApneaAlertResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSleepApneaAlertResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSleepApneaAlertResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedSleepBreathingDisturbance struct {
+	Source *ClientFacingSource                            `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingSleepBreathingDisturbanceSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedSleepBreathingDisturbance) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedSleepBreathingDisturbance) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSleepBreathingDisturbance
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSleepBreathingDisturbance(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSleepBreathingDisturbance) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedSleepBreathingDisturbanceResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedSleepBreathingDisturbance `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedSleepBreathingDisturbanceResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedSleepBreathingDisturbanceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSleepBreathingDisturbanceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSleepBreathingDisturbanceResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSleepBreathingDisturbanceResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedStandDuration struct {
+	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingStandDurationSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedStandDuration) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedStandDuration) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStandDuration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStandDuration(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStandDuration) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedStandDurationResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedStandDuration `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedStandDurationResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedStandDurationResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStandDurationResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStandDurationResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStandDurationResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedStandHour struct {
+	Source *ClientFacingSource            `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingStandHourSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedStandHour) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedStandHour) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStandHour
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStandHour(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStandHour) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedStandHourResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedStandHour `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedStandHourResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedStandHourResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStandHourResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStandHourResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStandHourResponse) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
@@ -18720,6 +23207,94 @@ func (g *GroupedStressLevelResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedUvExposure struct {
+	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingUvExposureSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedUvExposure) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedUvExposure) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedUvExposure
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedUvExposure(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedUvExposure) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedUvExposureResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedUvExposure `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedUvExposureResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedUvExposureResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedUvExposureResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedUvExposureResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedUvExposureResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedVo2Max struct {
 	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingVo2MaxTimeseries `json:"data,omitempty" url:"data,omitempty"`
@@ -18885,6 +23460,94 @@ func (g *GroupedWaterResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GroupedWaterResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWheelchairPush struct {
+	Source *ClientFacingSource                 `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWheelchairPushSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWheelchairPush) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWheelchairPush) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWheelchairPush
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWheelchairPush(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWheelchairPush) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWheelchairPushResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedWheelchairPush `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWheelchairPushResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWheelchairPushResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWheelchairPushResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWheelchairPushResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWheelchairPushResponse) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
@@ -19322,6 +23985,7 @@ const (
 	HistoricalPullStatusFailure    HistoricalPullStatus = "failure"
 	HistoricalPullStatusInProgress HistoricalPullStatus = "in_progress"
 	HistoricalPullStatusScheduled  HistoricalPullStatus = "scheduled"
+	HistoricalPullStatusRetrying   HistoricalPullStatus = "retrying"
 )
 
 func NewHistoricalPullStatusFromString(s string) (HistoricalPullStatus, error) {
@@ -19334,6 +23998,8 @@ func NewHistoricalPullStatusFromString(s string) (HistoricalPullStatus, error) {
 		return HistoricalPullStatusInProgress, nil
 	case "scheduled":
 		return HistoricalPullStatusScheduled, nil
+	case "retrying":
+		return HistoricalPullStatusRetrying, nil
 	}
 	var t HistoricalPullStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -20960,6 +25626,7 @@ type OrderStatus string
 const (
 	OrderStatusReceivedWalkInTestOrdered                            OrderStatus = "received.walk_in_test.ordered"
 	OrderStatusReceivedWalkInTestRequisitionCreated                 OrderStatus = "received.walk_in_test.requisition_created"
+	OrderStatusReceivedWalkInTestRequisitionBypassed                OrderStatus = "received.walk_in_test.requisition_bypassed"
 	OrderStatusCompletedWalkInTestCompleted                         OrderStatus = "completed.walk_in_test.completed"
 	OrderStatusSampleWithLabWalkInTestPartialResults                OrderStatus = "sample_with_lab.walk_in_test.partial_results"
 	OrderStatusFailedWalkInTestSampleError                          OrderStatus = "failed.walk_in_test.sample_error"
@@ -20969,6 +25636,7 @@ const (
 	OrderStatusCollectingSampleWalkInTestAppointmentCancelled       OrderStatus = "collecting_sample.walk_in_test.appointment_cancelled"
 	OrderStatusReceivedAtHomePhlebotomyOrdered                      OrderStatus = "received.at_home_phlebotomy.ordered"
 	OrderStatusReceivedAtHomePhlebotomyRequisitionCreated           OrderStatus = "received.at_home_phlebotomy.requisition_created"
+	OrderStatusReceivedAtHomePhlebotomyRequisitionBypassed          OrderStatus = "received.at_home_phlebotomy.requisition_bypassed"
 	OrderStatusCollectingSampleAtHomePhlebotomyAppointmentPending   OrderStatus = "collecting_sample.at_home_phlebotomy.appointment_pending"
 	OrderStatusCollectingSampleAtHomePhlebotomyAppointmentScheduled OrderStatus = "collecting_sample.at_home_phlebotomy.appointment_scheduled"
 	OrderStatusCollectingSampleAtHomePhlebotomyDrawCompleted        OrderStatus = "collecting_sample.at_home_phlebotomy.draw_completed"
@@ -20980,6 +25648,7 @@ const (
 	OrderStatusReceivedTestkitOrdered                               OrderStatus = "received.testkit.ordered"
 	OrderStatusReceivedTestkitAwaitingRegistration                  OrderStatus = "received.testkit.awaiting_registration"
 	OrderStatusReceivedTestkitRequisitionCreated                    OrderStatus = "received.testkit.requisition_created"
+	OrderStatusReceivedTestkitRequisitionBypassed                   OrderStatus = "received.testkit.requisition_bypassed"
 	OrderStatusReceivedTestkitRegistered                            OrderStatus = "received.testkit.registered"
 	OrderStatusCollectingSampleTestkitTransitCustomer               OrderStatus = "collecting_sample.testkit.transit_customer"
 	OrderStatusCollectingSampleTestkitOutForDelivery                OrderStatus = "collecting_sample.testkit.out_for_delivery"
@@ -20993,6 +25662,8 @@ const (
 	OrderStatusFailedTestkitLost                                    OrderStatus = "failed.testkit.lost"
 	OrderStatusCancelledTestkitCancelled                            OrderStatus = "cancelled.testkit.cancelled"
 	OrderStatusCancelledTestkitDoNotProcess                         OrderStatus = "cancelled.testkit.do_not_process"
+	OrderStatusCollectingSampleTestkitProblemInTransitCustomer      OrderStatus = "collecting_sample.testkit.problem_in_transit_customer"
+	OrderStatusCollectingSampleTestkitProblemInTransitLab           OrderStatus = "collecting_sample.testkit.problem_in_transit_lab"
 )
 
 func NewOrderStatusFromString(s string) (OrderStatus, error) {
@@ -21001,6 +25672,8 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusReceivedWalkInTestOrdered, nil
 	case "received.walk_in_test.requisition_created":
 		return OrderStatusReceivedWalkInTestRequisitionCreated, nil
+	case "received.walk_in_test.requisition_bypassed":
+		return OrderStatusReceivedWalkInTestRequisitionBypassed, nil
 	case "completed.walk_in_test.completed":
 		return OrderStatusCompletedWalkInTestCompleted, nil
 	case "sample_with_lab.walk_in_test.partial_results":
@@ -21019,6 +25692,8 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusReceivedAtHomePhlebotomyOrdered, nil
 	case "received.at_home_phlebotomy.requisition_created":
 		return OrderStatusReceivedAtHomePhlebotomyRequisitionCreated, nil
+	case "received.at_home_phlebotomy.requisition_bypassed":
+		return OrderStatusReceivedAtHomePhlebotomyRequisitionBypassed, nil
 	case "collecting_sample.at_home_phlebotomy.appointment_pending":
 		return OrderStatusCollectingSampleAtHomePhlebotomyAppointmentPending, nil
 	case "collecting_sample.at_home_phlebotomy.appointment_scheduled":
@@ -21041,6 +25716,8 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusReceivedTestkitAwaitingRegistration, nil
 	case "received.testkit.requisition_created":
 		return OrderStatusReceivedTestkitRequisitionCreated, nil
+	case "received.testkit.requisition_bypassed":
+		return OrderStatusReceivedTestkitRequisitionBypassed, nil
 	case "received.testkit.registered":
 		return OrderStatusReceivedTestkitRegistered, nil
 	case "collecting_sample.testkit.transit_customer":
@@ -21067,6 +25744,10 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusCancelledTestkitCancelled, nil
 	case "cancelled.testkit.do_not_process":
 		return OrderStatusCancelledTestkitDoNotProcess, nil
+	case "collecting_sample.testkit.problem_in_transit_customer":
+		return OrderStatusCollectingSampleTestkitProblemInTransitCustomer, nil
+	case "collecting_sample.testkit.problem_in_transit_lab":
+		return OrderStatusCollectingSampleTestkitProblemInTransitLab, nil
 	}
 	var t OrderStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -21318,6 +25999,53 @@ func NewPasswordProvidersFromString(s string) (PasswordProviders, error) {
 
 func (p PasswordProviders) Ptr() *PasswordProviders {
 	return &p
+}
+
+type PatientAddress struct {
+	ReceiverName string  `json:"receiver_name" url:"receiver_name"`
+	FirstLine    string  `json:"first_line" url:"first_line"`
+	SecondLine   *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	City         string  `json:"city" url:"city"`
+	State        string  `json:"state" url:"state"`
+	Zip          string  `json:"zip" url:"zip"`
+	Country      string  `json:"country" url:"country"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PatientAddress) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PatientAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatientAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PatientAddress(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PatientAddress) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
 }
 
 type PatientAddressCompatible struct {
@@ -24132,6 +28860,7 @@ const (
 	SleepColumnExprSleepHeartRateMean        SleepColumnExprSleep = "heart_rate_mean"
 	SleepColumnExprSleepHeartRateMaximum     SleepColumnExprSleep = "heart_rate_maximum"
 	SleepColumnExprSleepHeartRateDip         SleepColumnExprSleep = "heart_rate_dip"
+	SleepColumnExprSleepHeartRateResting     SleepColumnExprSleep = "heart_rate_resting"
 	SleepColumnExprSleepEfficiency           SleepColumnExprSleep = "efficiency"
 	SleepColumnExprSleepHrvMeanRmssd         SleepColumnExprSleep = "hrv_mean_rmssd"
 	SleepColumnExprSleepHrvMeanSdnn          SleepColumnExprSleep = "hrv_mean_sdnn"
@@ -24179,6 +28908,8 @@ func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 		return SleepColumnExprSleepHeartRateMaximum, nil
 	case "heart_rate_dip":
 		return SleepColumnExprSleepHeartRateDip, nil
+	case "heart_rate_resting":
+		return SleepColumnExprSleepHeartRateResting, nil
 	case "efficiency":
 		return SleepColumnExprSleepEfficiency, nil
 	case "hrv_mean_rmssd":
@@ -24748,41 +29479,55 @@ func (t *TimeseriesMetricPoint) String() string {
 type TimeseriesResource string
 
 const (
-	TimeseriesResourceCaloriesActive           TimeseriesResource = "calories_active"
-	TimeseriesResourceCaloriesBasal            TimeseriesResource = "calories_basal"
-	TimeseriesResourceDistance                 TimeseriesResource = "distance"
-	TimeseriesResourceBloodOxygen              TimeseriesResource = "blood_oxygen"
-	TimeseriesResourceBloodPressure            TimeseriesResource = "blood_pressure"
-	TimeseriesResourceBodyFat                  TimeseriesResource = "body_fat"
-	TimeseriesResourceBodyWeight               TimeseriesResource = "body_weight"
-	TimeseriesResourceBodyTemperature          TimeseriesResource = "body_temperature"
-	TimeseriesResourceBodyTemperatureDelta     TimeseriesResource = "body_temperature_delta"
-	TimeseriesResourceCholesterol              TimeseriesResource = "cholesterol"
-	TimeseriesResourceCholesterolLdl           TimeseriesResource = "cholesterol/ldl"
-	TimeseriesResourceCholesterolHdl           TimeseriesResource = "cholesterol/hdl"
-	TimeseriesResourceCholesterolTotal         TimeseriesResource = "cholesterol/total"
-	TimeseriesResourceCholesterolTriglycerides TimeseriesResource = "cholesterol/triglycerides"
-	TimeseriesResourceElectrocardiogramVoltage TimeseriesResource = "electrocardiogram_voltage"
-	TimeseriesResourceFloorsClimbed            TimeseriesResource = "floors_climbed"
-	TimeseriesResourceGlucose                  TimeseriesResource = "glucose"
-	TimeseriesResourceHeartrate                TimeseriesResource = "heartrate"
-	TimeseriesResourceHrv                      TimeseriesResource = "hrv"
-	TimeseriesResourceHypnogram                TimeseriesResource = "hypnogram"
-	TimeseriesResourceIge                      TimeseriesResource = "ige"
-	TimeseriesResourceIgg                      TimeseriesResource = "igg"
-	TimeseriesResourceRespiratoryRate          TimeseriesResource = "respiratory_rate"
-	TimeseriesResourceSteps                    TimeseriesResource = "steps"
-	TimeseriesResourceStressLevel              TimeseriesResource = "stress_level"
-	TimeseriesResourceVo2Max                   TimeseriesResource = "vo2_max"
-	TimeseriesResourceWater                    TimeseriesResource = "water"
-	TimeseriesResourceCaffeine                 TimeseriesResource = "caffeine"
-	TimeseriesResourceMindfulnessMinutes       TimeseriesResource = "mindfulness_minutes"
-	TimeseriesResourceAfibBurden               TimeseriesResource = "afib_burden"
-	TimeseriesResourceHeartRateAlert           TimeseriesResource = "heart_rate_alert"
-	TimeseriesResourceWorkoutDuration          TimeseriesResource = "workout_duration"
-	TimeseriesResourceInsulinInjection         TimeseriesResource = "insulin_injection"
-	TimeseriesResourceCarbohydrates            TimeseriesResource = "carbohydrates"
-	TimeseriesResourceNote                     TimeseriesResource = "note"
+	TimeseriesResourceCaloriesActive            TimeseriesResource = "calories_active"
+	TimeseriesResourceCaloriesBasal             TimeseriesResource = "calories_basal"
+	TimeseriesResourceDistance                  TimeseriesResource = "distance"
+	TimeseriesResourceBloodOxygen               TimeseriesResource = "blood_oxygen"
+	TimeseriesResourceBloodPressure             TimeseriesResource = "blood_pressure"
+	TimeseriesResourceBodyFat                   TimeseriesResource = "body_fat"
+	TimeseriesResourceBodyWeight                TimeseriesResource = "body_weight"
+	TimeseriesResourceBodyTemperature           TimeseriesResource = "body_temperature"
+	TimeseriesResourceBodyTemperatureDelta      TimeseriesResource = "body_temperature_delta"
+	TimeseriesResourceCholesterol               TimeseriesResource = "cholesterol"
+	TimeseriesResourceCholesterolLdl            TimeseriesResource = "cholesterol/ldl"
+	TimeseriesResourceCholesterolHdl            TimeseriesResource = "cholesterol/hdl"
+	TimeseriesResourceCholesterolTotal          TimeseriesResource = "cholesterol/total"
+	TimeseriesResourceCholesterolTriglycerides  TimeseriesResource = "cholesterol/triglycerides"
+	TimeseriesResourceElectrocardiogramVoltage  TimeseriesResource = "electrocardiogram_voltage"
+	TimeseriesResourceFloorsClimbed             TimeseriesResource = "floors_climbed"
+	TimeseriesResourceGlucose                   TimeseriesResource = "glucose"
+	TimeseriesResourceHeartrate                 TimeseriesResource = "heartrate"
+	TimeseriesResourceHrv                       TimeseriesResource = "hrv"
+	TimeseriesResourceHypnogram                 TimeseriesResource = "hypnogram"
+	TimeseriesResourceIge                       TimeseriesResource = "ige"
+	TimeseriesResourceIgg                       TimeseriesResource = "igg"
+	TimeseriesResourceRespiratoryRate           TimeseriesResource = "respiratory_rate"
+	TimeseriesResourceSteps                     TimeseriesResource = "steps"
+	TimeseriesResourceStressLevel               TimeseriesResource = "stress_level"
+	TimeseriesResourceVo2Max                    TimeseriesResource = "vo2_max"
+	TimeseriesResourceWater                     TimeseriesResource = "water"
+	TimeseriesResourceCaffeine                  TimeseriesResource = "caffeine"
+	TimeseriesResourceMindfulnessMinutes        TimeseriesResource = "mindfulness_minutes"
+	TimeseriesResourceAfibBurden                TimeseriesResource = "afib_burden"
+	TimeseriesResourceHeartRateAlert            TimeseriesResource = "heart_rate_alert"
+	TimeseriesResourceStandHour                 TimeseriesResource = "stand_hour"
+	TimeseriesResourceStandDuration             TimeseriesResource = "stand_duration"
+	TimeseriesResourceSleepApneaAlert           TimeseriesResource = "sleep_apnea_alert"
+	TimeseriesResourceSleepBreathingDisturbance TimeseriesResource = "sleep_breathing_disturbance"
+	TimeseriesResourceWheelchairPush            TimeseriesResource = "wheelchair_push"
+	TimeseriesResourceForcedExpiratoryVolume1   TimeseriesResource = "forced_expiratory_volume_1"
+	TimeseriesResourceForcedVitalCapacity       TimeseriesResource = "forced_vital_capacity"
+	TimeseriesResourcePeakExpiratoryFlowRate    TimeseriesResource = "peak_expiratory_flow_rate"
+	TimeseriesResourceInhalerUsage              TimeseriesResource = "inhaler_usage"
+	TimeseriesResourceFall                      TimeseriesResource = "fall"
+	TimeseriesResourceUvExposure                TimeseriesResource = "uv_exposure"
+	TimeseriesResourceDaylightExposure          TimeseriesResource = "daylight_exposure"
+	TimeseriesResourceHandwashing               TimeseriesResource = "handwashing"
+	TimeseriesResourceBasalBodyTemperature      TimeseriesResource = "basal_body_temperature"
+	TimeseriesResourceWorkoutDuration           TimeseriesResource = "workout_duration"
+	TimeseriesResourceInsulinInjection          TimeseriesResource = "insulin_injection"
+	TimeseriesResourceCarbohydrates             TimeseriesResource = "carbohydrates"
+	TimeseriesResourceNote                      TimeseriesResource = "note"
 )
 
 func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
@@ -24849,6 +29594,34 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceAfibBurden, nil
 	case "heart_rate_alert":
 		return TimeseriesResourceHeartRateAlert, nil
+	case "stand_hour":
+		return TimeseriesResourceStandHour, nil
+	case "stand_duration":
+		return TimeseriesResourceStandDuration, nil
+	case "sleep_apnea_alert":
+		return TimeseriesResourceSleepApneaAlert, nil
+	case "sleep_breathing_disturbance":
+		return TimeseriesResourceSleepBreathingDisturbance, nil
+	case "wheelchair_push":
+		return TimeseriesResourceWheelchairPush, nil
+	case "forced_expiratory_volume_1":
+		return TimeseriesResourceForcedExpiratoryVolume1, nil
+	case "forced_vital_capacity":
+		return TimeseriesResourceForcedVitalCapacity, nil
+	case "peak_expiratory_flow_rate":
+		return TimeseriesResourcePeakExpiratoryFlowRate, nil
+	case "inhaler_usage":
+		return TimeseriesResourceInhalerUsage, nil
+	case "fall":
+		return TimeseriesResourceFall, nil
+	case "uv_exposure":
+		return TimeseriesResourceUvExposure, nil
+	case "daylight_exposure":
+		return TimeseriesResourceDaylightExposure, nil
+	case "handwashing":
+		return TimeseriesResourceHandwashing, nil
+	case "basal_body_temperature":
+		return TimeseriesResourceBasalBodyTemperature, nil
 	case "workout_duration":
 		return TimeseriesResourceWorkoutDuration, nil
 	case "insulin_injection":
