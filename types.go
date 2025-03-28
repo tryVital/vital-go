@@ -3625,6 +3625,236 @@ func (c *ClientFacingBodyHistoricalPullCompleted) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingBodyMassIndexChanged struct {
+	EventType    ClientFacingBodyMassIndexChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                    `json:"user_id" url:"user_id"`
+	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                    `json:"team_id" url:"team_id"`
+	Data         *GroupedBodyMassIndex                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingBodyMassIndexChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingBodyMassIndexChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingBodyMassIndexChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingBodyMassIndexChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBodyMassIndexChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBodyMassIndexChangedEventType string
+
+const (
+	ClientFacingBodyMassIndexChangedEventTypeDailyDataBodyMassIndexCreated ClientFacingBodyMassIndexChangedEventType = "daily.data.body_mass_index.created"
+	ClientFacingBodyMassIndexChangedEventTypeDailyDataBodyMassIndexUpdated ClientFacingBodyMassIndexChangedEventType = "daily.data.body_mass_index.updated"
+)
+
+func NewClientFacingBodyMassIndexChangedEventTypeFromString(s string) (ClientFacingBodyMassIndexChangedEventType, error) {
+	switch s {
+	case "daily.data.body_mass_index.created":
+		return ClientFacingBodyMassIndexChangedEventTypeDailyDataBodyMassIndexCreated, nil
+	case "daily.data.body_mass_index.updated":
+		return ClientFacingBodyMassIndexChangedEventTypeDailyDataBodyMassIndexUpdated, nil
+	}
+	var t ClientFacingBodyMassIndexChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingBodyMassIndexChangedEventType) Ptr() *ClientFacingBodyMassIndexChangedEventType {
+	return &c
+}
+
+type ClientFacingBodyMassIndexHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingBodyMassIndexHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingBodyMassIndexHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingBodyMassIndexHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingBodyMassIndexHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingBodyMassIndexHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.body_mass_index.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.body_mass_index.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBodyMassIndexHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingBodyMassIndexHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.body_mass_index.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingBodyMassIndexHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBodyMassIndexSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingBodyMassIndexSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingBodyMassIndexSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingBodyMassIndexSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingBodyMassIndexSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingBodyMassIndexSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "index" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "index", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBodyMassIndexSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingBodyMassIndexSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "index",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingBodyMassIndexSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingBodyTemperatureChanged struct {
 	EventType    ClientFacingBodyTemperatureChangedEventType `json:"event_type" url:"event_type"`
 	UserId       string                                      `json:"user_id" url:"user_id"`
@@ -10252,6 +10482,236 @@ func (c ClientFacingLabs) Ptr() *ClientFacingLabs {
 	return &c
 }
 
+type ClientFacingLeanBodyMassChanged struct {
+	EventType    ClientFacingLeanBodyMassChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                   `json:"user_id" url:"user_id"`
+	ClientUserId string                                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                   `json:"team_id" url:"team_id"`
+	Data         *GroupedLeanBodyMass                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingLeanBodyMassChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingLeanBodyMassChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingLeanBodyMassChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingLeanBodyMassChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLeanBodyMassChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingLeanBodyMassChangedEventType string
+
+const (
+	ClientFacingLeanBodyMassChangedEventTypeDailyDataLeanBodyMassCreated ClientFacingLeanBodyMassChangedEventType = "daily.data.lean_body_mass.created"
+	ClientFacingLeanBodyMassChangedEventTypeDailyDataLeanBodyMassUpdated ClientFacingLeanBodyMassChangedEventType = "daily.data.lean_body_mass.updated"
+)
+
+func NewClientFacingLeanBodyMassChangedEventTypeFromString(s string) (ClientFacingLeanBodyMassChangedEventType, error) {
+	switch s {
+	case "daily.data.lean_body_mass.created":
+		return ClientFacingLeanBodyMassChangedEventTypeDailyDataLeanBodyMassCreated, nil
+	case "daily.data.lean_body_mass.updated":
+		return ClientFacingLeanBodyMassChangedEventTypeDailyDataLeanBodyMassUpdated, nil
+	}
+	var t ClientFacingLeanBodyMassChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingLeanBodyMassChangedEventType) Ptr() *ClientFacingLeanBodyMassChangedEventType {
+	return &c
+}
+
+type ClientFacingLeanBodyMassHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingLeanBodyMassHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingLeanBodyMassHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingLeanBodyMassHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingLeanBodyMassHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingLeanBodyMassHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.lean_body_mass.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.lean_body_mass.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLeanBodyMassHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingLeanBodyMassHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.lean_body_mass.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingLeanBodyMassHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingLeanBodyMassSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingLeanBodyMassSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingLeanBodyMassSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingLeanBodyMassSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingLeanBodyMassSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingLeanBodyMassSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "kg" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "kg", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLeanBodyMassSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingLeanBodyMassSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "kg",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingLeanBodyMassSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingLoinc struct {
 	Id   int     `json:"id" url:"id"`
 	Name string  `json:"name" url:"name"`
@@ -12646,6 +13106,9 @@ const (
 	ClientFacingResourceDaylightExposure          ClientFacingResource = "daylight_exposure"
 	ClientFacingResourceHandwashing               ClientFacingResource = "handwashing"
 	ClientFacingResourceBasalBodyTemperature      ClientFacingResource = "basal_body_temperature"
+	ClientFacingResourceBodyMassIndex             ClientFacingResource = "body_mass_index"
+	ClientFacingResourceLeanBodyMass              ClientFacingResource = "lean_body_mass"
+	ClientFacingResourceWaistCircumference        ClientFacingResource = "waist_circumference"
 	ClientFacingResourceWorkoutDuration           ClientFacingResource = "workout_duration"
 	ClientFacingResourceInsulinInjection          ClientFacingResource = "insulin_injection"
 	ClientFacingResourceCarbohydrates             ClientFacingResource = "carbohydrates"
@@ -12766,6 +13229,12 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceHandwashing, nil
 	case "basal_body_temperature":
 		return ClientFacingResourceBasalBodyTemperature, nil
+	case "body_mass_index":
+		return ClientFacingResourceBodyMassIndex, nil
+	case "lean_body_mass":
+		return ClientFacingResourceLeanBodyMass, nil
+	case "waist_circumference":
+		return ClientFacingResourceWaistCircumference, nil
 	case "workout_duration":
 		return ClientFacingResourceWorkoutDuration, nil
 	case "insulin_injection":
@@ -13646,9 +14115,9 @@ type ClientFacingSleepBreathingDisturbanceSample struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int                                            `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	Type           ClientFacingSleepBreathingDisturbanceSampleType `json:"type" url:"type"`
-	Grouping       *ClientFacingSampleGroupingKeys                 `json:"grouping,omitempty" url:"grouping,omitempty"`
+	TimezoneOffset *int                                             `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	Type           *ClientFacingSleepBreathingDisturbanceSampleType `json:"type,omitempty" url:"type,omitempty"`
+	Grouping       *ClientFacingSampleGroupingKeys                  `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -14744,10 +15213,9 @@ type ClientFacingStandHourSample struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	TimezoneOffset *int                            `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	Type           ClientFacingStandHourSampleType `json:"type" url:"type"`
+	Grouping       *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -14831,6 +15299,28 @@ func (c *ClientFacingStandHourSample) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStandHourSampleType string
+
+const (
+	ClientFacingStandHourSampleTypeStood ClientFacingStandHourSampleType = "stood"
+	ClientFacingStandHourSampleTypeIdle  ClientFacingStandHourSampleType = "idle"
+)
+
+func NewClientFacingStandHourSampleTypeFromString(s string) (ClientFacingStandHourSampleType, error) {
+	switch s {
+	case "stood":
+		return ClientFacingStandHourSampleTypeStood, nil
+	case "idle":
+		return ClientFacingStandHourSampleTypeIdle, nil
+	}
+	var t ClientFacingStandHourSampleType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingStandHourSampleType) Ptr() *ClientFacingStandHourSampleType {
+	return &c
 }
 
 type ClientFacingStepsChanged struct {
@@ -16597,6 +17087,236 @@ func (c *ClientFacingVo2MaxTimeseries) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientFacingVo2MaxTimeseries) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWaistCircumferenceChanged struct {
+	EventType    ClientFacingWaistCircumferenceChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                         `json:"user_id" url:"user_id"`
+	ClientUserId string                                         `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                         `json:"team_id" url:"team_id"`
+	Data         *GroupedWaistCircumference                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWaistCircumferenceChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWaistCircumferenceChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingWaistCircumferenceChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingWaistCircumferenceChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWaistCircumferenceChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWaistCircumferenceChangedEventType string
+
+const (
+	ClientFacingWaistCircumferenceChangedEventTypeDailyDataWaistCircumferenceCreated ClientFacingWaistCircumferenceChangedEventType = "daily.data.waist_circumference.created"
+	ClientFacingWaistCircumferenceChangedEventTypeDailyDataWaistCircumferenceUpdated ClientFacingWaistCircumferenceChangedEventType = "daily.data.waist_circumference.updated"
+)
+
+func NewClientFacingWaistCircumferenceChangedEventTypeFromString(s string) (ClientFacingWaistCircumferenceChangedEventType, error) {
+	switch s {
+	case "daily.data.waist_circumference.created":
+		return ClientFacingWaistCircumferenceChangedEventTypeDailyDataWaistCircumferenceCreated, nil
+	case "daily.data.waist_circumference.updated":
+		return ClientFacingWaistCircumferenceChangedEventTypeDailyDataWaistCircumferenceUpdated, nil
+	}
+	var t ClientFacingWaistCircumferenceChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingWaistCircumferenceChangedEventType) Ptr() *ClientFacingWaistCircumferenceChangedEventType {
+	return &c
+}
+
+type ClientFacingWaistCircumferenceHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWaistCircumferenceHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWaistCircumferenceHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingWaistCircumferenceHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWaistCircumferenceHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWaistCircumferenceHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.waist_circumference.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.waist_circumference.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWaistCircumferenceHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWaistCircumferenceHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.waist_circumference.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWaistCircumferenceHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWaistCircumferenceSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
+	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWaistCircumferenceSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWaistCircumferenceSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingWaistCircumferenceSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWaistCircumferenceSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWaistCircumferenceSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "cm" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "cm", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWaistCircumferenceSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWaistCircumferenceSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "cm",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWaistCircumferenceSample) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -20127,6 +20847,94 @@ func (g *GroupedBodyFatResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBodyMassIndex struct {
+	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBodyMassIndexSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBodyMassIndex) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBodyMassIndex) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyMassIndex
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyMassIndex(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyMassIndex) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBodyMassIndexResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedBodyMassIndex `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBodyMassIndexResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBodyMassIndexResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyMassIndexResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyMassIndexResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyMassIndexResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBodyTemperature struct {
 	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
@@ -22327,6 +23135,94 @@ func (g *GroupedInsulinInjectionResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedLeanBodyMass struct {
+	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingLeanBodyMassSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedLeanBodyMass) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedLeanBodyMass) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedLeanBodyMass
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedLeanBodyMass(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedLeanBodyMass) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedLeanBodyMassResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedLeanBodyMass `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedLeanBodyMassResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedLeanBodyMassResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedLeanBodyMassResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedLeanBodyMassResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedLeanBodyMassResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedMindfulnessMinutes struct {
 	Source *ClientFacingSource                         `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingMindfulnessMinutesTimeseries `json:"data,omitempty" url:"data,omitempty"`
@@ -23372,6 +24268,94 @@ func (g *GroupedVo2MaxResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GroupedVo2MaxResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWaistCircumference struct {
+	Source *ClientFacingSource                     `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWaistCircumferenceSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWaistCircumference) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWaistCircumference) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWaistCircumference
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWaistCircumference(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWaistCircumference) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWaistCircumferenceResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedWaistCircumference `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWaistCircumferenceResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWaistCircumferenceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWaistCircumferenceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWaistCircumferenceResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWaistCircumferenceResponse) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
@@ -29524,6 +30508,9 @@ const (
 	TimeseriesResourceDaylightExposure          TimeseriesResource = "daylight_exposure"
 	TimeseriesResourceHandwashing               TimeseriesResource = "handwashing"
 	TimeseriesResourceBasalBodyTemperature      TimeseriesResource = "basal_body_temperature"
+	TimeseriesResourceBodyMassIndex             TimeseriesResource = "body_mass_index"
+	TimeseriesResourceLeanBodyMass              TimeseriesResource = "lean_body_mass"
+	TimeseriesResourceWaistCircumference        TimeseriesResource = "waist_circumference"
 	TimeseriesResourceWorkoutDuration           TimeseriesResource = "workout_duration"
 	TimeseriesResourceInsulinInjection          TimeseriesResource = "insulin_injection"
 	TimeseriesResourceCarbohydrates             TimeseriesResource = "carbohydrates"
@@ -29622,6 +30609,12 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceHandwashing, nil
 	case "basal_body_temperature":
 		return TimeseriesResourceBasalBodyTemperature, nil
+	case "body_mass_index":
+		return TimeseriesResourceBodyMassIndex, nil
+	case "lean_body_mass":
+		return TimeseriesResourceLeanBodyMass, nil
+	case "waist_circumference":
+		return TimeseriesResourceWaistCircumference, nil
 	case "workout_duration":
 		return TimeseriesResourceWorkoutDuration, nil
 	case "insulin_injection":
