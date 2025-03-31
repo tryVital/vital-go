@@ -1807,8 +1807,7 @@ type ClientFacingAFibBurdenSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -2834,8 +2833,7 @@ type ClientFacingBasalBodyTemperatureSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -3066,8 +3064,7 @@ type ClientFacingBloodOxygenTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in percentage (spo2).
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -3492,8 +3489,7 @@ type ClientFacingBodyFatTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in percentage (0-100).
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -3768,8 +3764,7 @@ type ClientFacingBodyMassIndexSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -4065,8 +4060,7 @@ type ClientFacingBodyTemperatureDeltaSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -4282,8 +4276,7 @@ type ClientFacingBodyTemperatureSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -4431,8 +4424,7 @@ type ClientFacingBodyWeightTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in kilograms (kg).
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -4639,8 +4631,7 @@ type ClientFacingCaffeineTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in grams.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -4859,7 +4850,6 @@ type ClientFacingCaloriesActiveTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in kilocalories (kcal)
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -5090,7 +5080,6 @@ type ClientFacingCaloriesBasalTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in kilocalories (kcal)
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// Basal Metabolic Rate at the time or interval::kilocalories
@@ -5309,8 +5298,7 @@ type ClientFacingCarbohydratesSample struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in grams.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -5529,8 +5517,7 @@ type ClientFacingCholesterolTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in mmol/L.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -6050,8 +6037,7 @@ type ClientFacingDaylightExposureSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -6326,7 +6312,6 @@ type ClientFacingDistanceTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in meters (m)
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -6968,10 +6953,9 @@ type ClientFacingElectrocardiogramVoltageTimeseries struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The lead of the measurement.
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	Type string `json:"type" url:"type"`
 	// Measured in mV.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -7176,8 +7160,7 @@ type ClientFacingFallSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -7545,7 +7528,6 @@ type ClientFacingFloorsClimbedTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in counts
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// Number of floors climbed at the time or interval::count
@@ -7805,8 +7787,7 @@ type ClientFacingForcedExpiratoryVolume1Sample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -8035,8 +8016,7 @@ type ClientFacingForcedVitalCapacitySample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -8267,8 +8247,7 @@ type ClientFacingGlucoseTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in mmol/L.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -8473,8 +8452,7 @@ type ClientFacingHandwashingSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -8752,7 +8730,6 @@ type ClientFacingHeartRateAlertSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int                                 `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	Type           ClientFacingHeartRateAlertSampleType `json:"type" url:"type"`
-	Grouping       *ClientFacingSampleGroupingKeys      `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -8870,8 +8847,7 @@ type ClientFacingHeartRateTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in bpm.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// Heart rate in bpm
@@ -9215,8 +9191,7 @@ type ClientFacingHrvTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in rmssd.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// HRV calculated using rmssd during sleep
@@ -9286,8 +9261,7 @@ type ClientFacingHypnogramTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// enum: 1: deep, 2: light, 3: rem, 4: awake, -1: missing_data.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -9506,8 +9480,7 @@ type ClientFacingIgeTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in FSU.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -9714,8 +9687,7 @@ type ClientFacingIggTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in FSU.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The value of the measurement.
@@ -9920,8 +9892,7 @@ type ClientFacingInhalerUsageSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -10150,8 +10121,7 @@ type ClientFacingInsulinInjectionSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// Insulin type: rapid vs long acting
-	Type     ClientFacingInsulinInjectionSampleType `json:"type" url:"type"`
-	Grouping *ClientFacingSampleGroupingKeys        `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type ClientFacingInsulinInjectionSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -10625,8 +10595,7 @@ type ClientFacingLeanBodyMassSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -11487,8 +11456,7 @@ type ClientFacingMindfulnessMinutesTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in minutes.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -11707,8 +11675,7 @@ type ClientFacingNoteSample struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// User notes as text.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -12427,8 +12394,7 @@ type ClientFacingPeakExpiratoryFlowRateSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -13401,8 +13367,7 @@ type ClientFacingRespiratoryRateTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in bpm.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// Average respiratory rate::breaths per minute
@@ -13887,8 +13852,7 @@ type ClientFacingSleepApneaAlertSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -14117,7 +14081,6 @@ type ClientFacingSleepBreathingDisturbanceSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int                                             `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	Type           *ClientFacingSleepBreathingDisturbanceSampleType `json:"type,omitempty" url:"type,omitempty"`
-	Grouping       *ClientFacingSampleGroupingKeys                  `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -14985,8 +14948,7 @@ type ClientFacingStandDurationSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -15215,7 +15177,6 @@ type ClientFacingStandHourSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int                            `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	Type           ClientFacingStandHourSampleType `json:"type" url:"type"`
-	Grouping       *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -15468,7 +15429,6 @@ type ClientFacingStepsTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in counts
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -16291,8 +16251,7 @@ type ClientFacingStressLevelTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in percentage (0-100).
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	Value     float64   `json:"value" url:"value"`
@@ -16791,8 +16750,7 @@ type ClientFacingUvExposureSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -17023,8 +16981,7 @@ type ClientFacingVo2MaxTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in mL/kg/min.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -17241,8 +17198,7 @@ type ClientFacingWaistCircumferenceSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -17584,8 +17540,7 @@ type ClientFacingWaterTimeseries struct {
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in milliters.
-	Unit     string                          `json:"unit" url:"unit"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// Quantity of water drank during the time period.
@@ -17927,8 +17882,7 @@ type ClientFacingWheelchairPushSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -18272,8 +18226,7 @@ type ClientFacingWorkoutDurationSample struct {
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
 	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type     *string                         `json:"type,omitempty" url:"type,omitempty"`
-	Grouping *ClientFacingSampleGroupingKeys `json:"grouping,omitempty" url:"grouping,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
