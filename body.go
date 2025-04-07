@@ -2,6 +2,13 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type BodyGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
@@ -18,4 +25,234 @@ type BodyGetRawRequest struct {
 	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
 	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
+type BodyV2InDb struct {
+	Timestamp  time.Time              `json:"timestamp" url:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	ProviderId string                 `json:"provider_id" url:"provider_id"`
+	UserId     string                 `json:"user_id" url:"user_id"`
+	SourceId   int                    `json:"source_id" url:"source_id"`
+	PriorityId *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
+	Id         string                 `json:"id" url:"id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
+	Priority   *int                   `json:"priority,omitempty" url:"priority,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BodyV2InDb) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BodyV2InDb) UnmarshalJSON(data []byte) error {
+	type embed BodyV2InDb
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BodyV2InDb(unmarshaler.embed)
+	b.Timestamp = unmarshaler.Timestamp.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BodyV2InDb) MarshalJSON() ([]byte, error) {
+	type embed BodyV2InDb
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed:     embed(*b),
+		Timestamp: core.NewDateTime(b.Timestamp),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BodyV2InDb) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type ClientBodyResponse struct {
+	Body []*ClientFacingBody `json:"body,omitempty" url:"body,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientBodyResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientBodyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientBodyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientBodyResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientBodyResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingBody struct {
+	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
+	UserId string `json:"user_id" url:"user_id"`
+	Id     string `json:"id" url:"id"`
+	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
+	Date time.Time `json:"date" url:"date"`
+	// Date of the summary in the YYYY-mm-dd format.
+	CalendarDate string `json:"calendar_date" url:"calendar_date"`
+	// Weight in kg::kg
+	Weight *float64 `json:"weight,omitempty" url:"weight,omitempty"`
+	// Total body fat percentage::perc
+	Fat *float64 `json:"fat,omitempty" url:"fat,omitempty"`
+	// Water percentage in the body::perc
+	WaterPercentage *float64 `json:"water_percentage,omitempty" url:"water_percentage,omitempty"`
+	// Muscle mass percentage in the body::perc
+	MuscleMassPercentage *float64 `json:"muscle_mass_percentage,omitempty" url:"muscle_mass_percentage,omitempty"`
+	// Visceral fat index::scalar
+	VisceralFatIndex *float64 `json:"visceral_fat_index,omitempty" url:"visceral_fat_index,omitempty"`
+	// Bone mass percentage in the body::perc
+	BoneMassPercentage           *float64            `json:"bone_mass_percentage,omitempty" url:"bone_mass_percentage,omitempty"`
+	BodyMassIndex                *float64            `json:"body_mass_index,omitempty" url:"body_mass_index,omitempty"`
+	LeanBodyMassKilogram         *float64            `json:"lean_body_mass_kilogram,omitempty" url:"lean_body_mass_kilogram,omitempty"`
+	WaistCircumferenceCentimeter *float64            `json:"waist_circumference_centimeter,omitempty" url:"waist_circumference_centimeter,omitempty"`
+	Source                       *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingBody) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingBody) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingBody
+	var unmarshaler = struct {
+		embed
+		Date *core.DateTime `json:"date"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingBody(unmarshaler.embed)
+	c.Date = unmarshaler.Date.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingBody) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingBody
+	var marshaler = struct {
+		embed
+		Date *core.DateTime `json:"date"`
+	}{
+		embed: embed(*c),
+		Date:  core.NewDateTime(c.Date),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingBody) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type RawBody struct {
+	Body []*BodyV2InDb `json:"body,omitempty" url:"body,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *RawBody) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawBody(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawBody) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }

@@ -3,6 +3,9 @@
 package api
 
 import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
 	time "time"
 )
 
@@ -111,4 +114,937 @@ type LinkTokenExchange struct {
 
 type LinkTokenStateRequest struct {
 	VitalLinkToken *string `json:"-" url:"-"`
+}
+
+type AuthType string
+
+const (
+	AuthTypePassword AuthType = "password"
+	AuthTypeOauth    AuthType = "oauth"
+	AuthTypeEmail    AuthType = "email"
+)
+
+func NewAuthTypeFromString(s string) (AuthType, error) {
+	switch s {
+	case "password":
+		return AuthTypePassword, nil
+	case "oauth":
+		return AuthTypeOauth, nil
+	case "email":
+		return AuthTypeEmail, nil
+	}
+	var t AuthType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AuthType) Ptr() *AuthType {
+	return &a
+}
+
+type BulkExportConnectionsResponse struct {
+	Data      []*ConnectionRecipe `json:"data,omitempty" url:"data,omitempty"`
+	NextToken *string             `json:"next_token,omitempty" url:"next_token,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkExportConnectionsResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkExportConnectionsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkExportConnectionsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkExportConnectionsResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkExportConnectionsResponse) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkImportConnectionsResponse struct {
+	UserIdsImported []string `json:"user_ids_imported,omitempty" url:"user_ids_imported,omitempty"`
+	UserIdsFailed   []string `json:"user_ids_failed,omitempty" url:"user_ids_failed,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkImportConnectionsResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkImportConnectionsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkImportConnectionsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkImportConnectionsResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkImportConnectionsResponse) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type ConnectionRecipe struct {
+	// Vital User ID. The user must be created ahead of the bulk import operation.
+	UserId string `json:"user_id" url:"user_id"`
+	// * OAuth 2.0 providers (Fitbit, etc): The latest Access Token.
+	// * OAuth 1.0 providers (Garmin): The Access Token.
+	AccessToken string `json:"access_token" url:"access_token"`
+	// * OAuth 2.0 providers (Fitbit, etc): The latest Refresh Token.
+	// * OAuth 1.0 providers (Garmin): The Token Secret.
+	RefreshToken string `json:"refresh_token" url:"refresh_token"`
+	// User ID of the data provider.
+	//
+	// * Fitbit: 6-character Fitbit User ID
+	// * Garmin: 36-character Garmin User ID
+	ProviderId string `json:"provider_id" url:"provider_id"`
+	// Access token expiry date, in terms of UNIX epoch seconds.
+	//
+	// * OAuth 2.0 providers (Fitbit, etc): The latest expiry date on your record.
+	// * OAuth 1.0 providers (Garmin): Use the constant value `2147483647`.
+	ExpiresAt int `json:"expires_at" url:"expires_at"`
+	// OAuth scopes of the data provider. Specify `null` if you do not
+	// have any scopes on record.
+	//
+	// * Fitbit: Has scopes
+	// * Garmin: No scope
+	OauthScopes []string `json:"oauth_scopes,omitempty" url:"oauth_scopes,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ConnectionRecipe) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConnectionRecipe) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConnectionRecipe
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConnectionRecipe(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConnectionRecipe) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type DemoConnectionStatus struct {
+	Success bool   `json:"success" url:"success"`
+	Detail  string `json:"detail" url:"detail"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (d *DemoConnectionStatus) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DemoConnectionStatus) UnmarshalJSON(data []byte) error {
+	type unmarshaler DemoConnectionStatus
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DemoConnectionStatus(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+
+	d._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DemoConnectionStatus) String() string {
+	if len(d._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(d._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type DemoProviders string
+
+const (
+	DemoProvidersAppleHealthKit DemoProviders = "apple_health_kit"
+	DemoProvidersFitbit         DemoProviders = "fitbit"
+	DemoProvidersFreestyleLibre DemoProviders = "freestyle_libre"
+	DemoProvidersOura           DemoProviders = "oura"
+)
+
+func NewDemoProvidersFromString(s string) (DemoProviders, error) {
+	switch s {
+	case "apple_health_kit":
+		return DemoProvidersAppleHealthKit, nil
+	case "fitbit":
+		return DemoProvidersFitbit, nil
+	case "freestyle_libre":
+		return DemoProvidersFreestyleLibre, nil
+	case "oura":
+		return DemoProvidersOura, nil
+	}
+	var t DemoProviders
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DemoProviders) Ptr() *DemoProviders {
+	return &d
+}
+
+type EmailProviders = string
+
+type LinkTokenExchangeResponse struct {
+	// A short-lived Vital Link token for your Custom Link Widget to communicate with the Vital API.
+	LinkToken string `json:"link_token" url:"link_token"`
+	// The web browser link to launch the default Vital Link experience. If you requested the token for one specific provider, the link would redirect directly to the provider authentication flow. Otherwise, the user would be presented with a list of providers based on your team and token configurations.
+	LinkWebUrl string `json:"link_web_url" url:"link_web_url"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LinkTokenExchangeResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LinkTokenExchangeResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler LinkTokenExchangeResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LinkTokenExchangeResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LinkTokenExchangeResponse) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type ManualProviders string
+
+const (
+	ManualProvidersBeurerBle         ManualProviders = "beurer_ble"
+	ManualProvidersOmronBle          ManualProviders = "omron_ble"
+	ManualProvidersAccuchekBle       ManualProviders = "accuchek_ble"
+	ManualProvidersContourBle        ManualProviders = "contour_ble"
+	ManualProvidersFreestyleLibreBle ManualProviders = "freestyle_libre_ble"
+	ManualProvidersOnetouchBle       ManualProviders = "onetouch_ble"
+	ManualProvidersAppleHealthKit    ManualProviders = "apple_health_kit"
+	ManualProvidersManual            ManualProviders = "manual"
+	ManualProvidersHealthConnect     ManualProviders = "health_connect"
+)
+
+func NewManualProvidersFromString(s string) (ManualProviders, error) {
+	switch s {
+	case "beurer_ble":
+		return ManualProvidersBeurerBle, nil
+	case "omron_ble":
+		return ManualProvidersOmronBle, nil
+	case "accuchek_ble":
+		return ManualProvidersAccuchekBle, nil
+	case "contour_ble":
+		return ManualProvidersContourBle, nil
+	case "freestyle_libre_ble":
+		return ManualProvidersFreestyleLibreBle, nil
+	case "onetouch_ble":
+		return ManualProvidersOnetouchBle, nil
+	case "apple_health_kit":
+		return ManualProvidersAppleHealthKit, nil
+	case "manual":
+		return ManualProvidersManual, nil
+	case "health_connect":
+		return ManualProvidersHealthConnect, nil
+	}
+	var t ManualProviders
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m ManualProviders) Ptr() *ManualProviders {
+	return &m
+}
+
+type OAuthProviders string
+
+const (
+	OAuthProvidersOura           OAuthProviders = "oura"
+	OAuthProvidersFitbit         OAuthProviders = "fitbit"
+	OAuthProvidersGarmin         OAuthProviders = "garmin"
+	OAuthProvidersStrava         OAuthProviders = "strava"
+	OAuthProvidersWahoo          OAuthProviders = "wahoo"
+	OAuthProvidersIhealth        OAuthProviders = "ihealth"
+	OAuthProvidersWithings       OAuthProviders = "withings"
+	OAuthProvidersGoogleFit      OAuthProviders = "google_fit"
+	OAuthProvidersDexcomV3       OAuthProviders = "dexcom_v3"
+	OAuthProvidersPolar          OAuthProviders = "polar"
+	OAuthProvidersCronometer     OAuthProviders = "cronometer"
+	OAuthProvidersOmron          OAuthProviders = "omron"
+	OAuthProvidersWhoopV2        OAuthProviders = "whoop_v2"
+	OAuthProvidersMyFitnessPalV2 OAuthProviders = "my_fitness_pal_v2"
+	OAuthProvidersUltrahuman     OAuthProviders = "ultrahuman"
+)
+
+func NewOAuthProvidersFromString(s string) (OAuthProviders, error) {
+	switch s {
+	case "oura":
+		return OAuthProvidersOura, nil
+	case "fitbit":
+		return OAuthProvidersFitbit, nil
+	case "garmin":
+		return OAuthProvidersGarmin, nil
+	case "strava":
+		return OAuthProvidersStrava, nil
+	case "wahoo":
+		return OAuthProvidersWahoo, nil
+	case "ihealth":
+		return OAuthProvidersIhealth, nil
+	case "withings":
+		return OAuthProvidersWithings, nil
+	case "google_fit":
+		return OAuthProvidersGoogleFit, nil
+	case "dexcom_v3":
+		return OAuthProvidersDexcomV3, nil
+	case "polar":
+		return OAuthProvidersPolar, nil
+	case "cronometer":
+		return OAuthProvidersCronometer, nil
+	case "omron":
+		return OAuthProvidersOmron, nil
+	case "whoop_v2":
+		return OAuthProvidersWhoopV2, nil
+	case "my_fitness_pal_v2":
+		return OAuthProvidersMyFitnessPalV2, nil
+	case "ultrahuman":
+		return OAuthProvidersUltrahuman, nil
+	}
+	var t OAuthProviders
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OAuthProviders) Ptr() *OAuthProviders {
+	return &o
+}
+
+type PasswordProviders string
+
+const (
+	PasswordProvidersWhoop           PasswordProviders = "whoop"
+	PasswordProvidersRenpho          PasswordProviders = "renpho"
+	PasswordProvidersPeloton         PasswordProviders = "peloton"
+	PasswordProvidersZwift           PasswordProviders = "zwift"
+	PasswordProvidersEightSleep      PasswordProviders = "eight_sleep"
+	PasswordProvidersBeurerApi       PasswordProviders = "beurer_api"
+	PasswordProvidersDexcom          PasswordProviders = "dexcom"
+	PasswordProvidersHammerhead      PasswordProviders = "hammerhead"
+	PasswordProvidersMyFitnessPal    PasswordProviders = "my_fitness_pal"
+	PasswordProvidersKardia          PasswordProviders = "kardia"
+	PasswordProvidersAbbottLibreview PasswordProviders = "abbott_libreview"
+)
+
+func NewPasswordProvidersFromString(s string) (PasswordProviders, error) {
+	switch s {
+	case "whoop":
+		return PasswordProvidersWhoop, nil
+	case "renpho":
+		return PasswordProvidersRenpho, nil
+	case "peloton":
+		return PasswordProvidersPeloton, nil
+	case "zwift":
+		return PasswordProvidersZwift, nil
+	case "eight_sleep":
+		return PasswordProvidersEightSleep, nil
+	case "beurer_api":
+		return PasswordProvidersBeurerApi, nil
+	case "dexcom":
+		return PasswordProvidersDexcom, nil
+	case "hammerhead":
+		return PasswordProvidersHammerhead, nil
+	case "my_fitness_pal":
+		return PasswordProvidersMyFitnessPal, nil
+	case "kardia":
+		return PasswordProvidersKardia, nil
+	case "abbott_libreview":
+		return PasswordProvidersAbbottLibreview, nil
+	}
+	var t PasswordProviders
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PasswordProviders) Ptr() *PasswordProviders {
+	return &p
+}
+
+type ProviderLinkResponse struct {
+	State       ProviderLinkResponseState `json:"state" url:"state"`
+	RedirectUrl *string                   `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
+	ErrorType   *string                   `json:"error_type,omitempty" url:"error_type,omitempty"`
+	Error       *string                   `json:"error,omitempty" url:"error,omitempty"`
+	ProviderMfa *ProviderMfaRequest       `json:"provider_mfa,omitempty" url:"provider_mfa,omitempty"`
+	Provider    PasswordProviders         `json:"provider" url:"provider"`
+	Connected   bool                      `json:"connected" url:"connected"`
+	ProviderId  *string                   `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *ProviderLinkResponse) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ProviderLinkResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ProviderLinkResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ProviderLinkResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProviderLinkResponse) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type ProviderLinkResponseState string
+
+const (
+	ProviderLinkResponseStateSuccess            ProviderLinkResponseState = "success"
+	ProviderLinkResponseStateError              ProviderLinkResponseState = "error"
+	ProviderLinkResponseStatePendingProviderMfa ProviderLinkResponseState = "pending_provider_mfa"
+)
+
+func NewProviderLinkResponseStateFromString(s string) (ProviderLinkResponseState, error) {
+	switch s {
+	case "success":
+		return ProviderLinkResponseStateSuccess, nil
+	case "error":
+		return ProviderLinkResponseStateError, nil
+	case "pending_provider_mfa":
+		return ProviderLinkResponseStatePendingProviderMfa, nil
+	}
+	var t ProviderLinkResponseState
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ProviderLinkResponseState) Ptr() *ProviderLinkResponseState {
+	return &p
+}
+
+type ProviderMfaRequest struct {
+	Method ProviderMfaRequestMethod `json:"method" url:"method"`
+	Hint   string                   `json:"hint" url:"hint"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *ProviderMfaRequest) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ProviderMfaRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler ProviderMfaRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ProviderMfaRequest(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProviderMfaRequest) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type ProviderMfaRequestMethod string
+
+const (
+	ProviderMfaRequestMethodSms   ProviderMfaRequestMethod = "sms"
+	ProviderMfaRequestMethodEmail ProviderMfaRequestMethod = "email"
+)
+
+func NewProviderMfaRequestMethodFromString(s string) (ProviderMfaRequestMethod, error) {
+	switch s {
+	case "sms":
+		return ProviderMfaRequestMethodSms, nil
+	case "email":
+		return ProviderMfaRequestMethodEmail, nil
+	}
+	var t ProviderMfaRequestMethod
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ProviderMfaRequestMethod) Ptr() *ProviderMfaRequestMethod {
+	return &p
+}
+
+type Region string
+
+const (
+	RegionUs Region = "us"
+	RegionEu Region = "eu"
+	RegionDe Region = "de"
+	RegionFr Region = "fr"
+	RegionCa Region = "ca"
+	RegionBr Region = "br"
+	RegionAr Region = "ar"
+	RegionCl Region = "cl"
+	RegionCo Region = "co"
+	RegionMx Region = "mx"
+	RegionGb Region = "gb"
+	RegionIe Region = "ie"
+	RegionAu Region = "au"
+	RegionNz Region = "nz"
+	RegionNl Region = "nl"
+	RegionAt Region = "at"
+	RegionBe Region = "be"
+	RegionBh Region = "bh"
+	RegionCh Region = "ch"
+	RegionCz Region = "cz"
+	RegionDk Region = "dk"
+	RegionEg Region = "eg"
+	RegionEs Region = "es"
+	RegionFi Region = "fi"
+	RegionGr Region = "gr"
+	RegionHr Region = "hr"
+	RegionIl Region = "il"
+	RegionIt Region = "it"
+	RegionJo Region = "jo"
+	RegionKw Region = "kw"
+	RegionLb Region = "lb"
+	RegionLu Region = "lu"
+	RegionNo Region = "no"
+	RegionOm Region = "om"
+	RegionPl Region = "pl"
+	RegionPt Region = "pt"
+	RegionQa Region = "qa"
+	RegionSa Region = "sa"
+	RegionSe Region = "se"
+	RegionSi Region = "si"
+	RegionSk Region = "sk"
+	RegionTr Region = "tr"
+	RegionZa Region = "za"
+	RegionIn Region = "in"
+	RegionSg Region = "sg"
+	RegionHk Region = "hk"
+	RegionKr Region = "kr"
+	RegionPh Region = "ph"
+	RegionTw Region = "tw"
+)
+
+func NewRegionFromString(s string) (Region, error) {
+	switch s {
+	case "us":
+		return RegionUs, nil
+	case "eu":
+		return RegionEu, nil
+	case "de":
+		return RegionDe, nil
+	case "fr":
+		return RegionFr, nil
+	case "ca":
+		return RegionCa, nil
+	case "br":
+		return RegionBr, nil
+	case "ar":
+		return RegionAr, nil
+	case "cl":
+		return RegionCl, nil
+	case "co":
+		return RegionCo, nil
+	case "mx":
+		return RegionMx, nil
+	case "gb":
+		return RegionGb, nil
+	case "ie":
+		return RegionIe, nil
+	case "au":
+		return RegionAu, nil
+	case "nz":
+		return RegionNz, nil
+	case "nl":
+		return RegionNl, nil
+	case "at":
+		return RegionAt, nil
+	case "be":
+		return RegionBe, nil
+	case "bh":
+		return RegionBh, nil
+	case "ch":
+		return RegionCh, nil
+	case "cz":
+		return RegionCz, nil
+	case "dk":
+		return RegionDk, nil
+	case "eg":
+		return RegionEg, nil
+	case "es":
+		return RegionEs, nil
+	case "fi":
+		return RegionFi, nil
+	case "gr":
+		return RegionGr, nil
+	case "hr":
+		return RegionHr, nil
+	case "il":
+		return RegionIl, nil
+	case "it":
+		return RegionIt, nil
+	case "jo":
+		return RegionJo, nil
+	case "kw":
+		return RegionKw, nil
+	case "lb":
+		return RegionLb, nil
+	case "lu":
+		return RegionLu, nil
+	case "no":
+		return RegionNo, nil
+	case "om":
+		return RegionOm, nil
+	case "pl":
+		return RegionPl, nil
+	case "pt":
+		return RegionPt, nil
+	case "qa":
+		return RegionQa, nil
+	case "sa":
+		return RegionSa, nil
+	case "se":
+		return RegionSe, nil
+	case "si":
+		return RegionSi, nil
+	case "sk":
+		return RegionSk, nil
+	case "tr":
+		return RegionTr, nil
+	case "za":
+		return RegionZa, nil
+	case "in":
+		return RegionIn, nil
+	case "sg":
+		return RegionSg, nil
+	case "hk":
+		return RegionHk, nil
+	case "kr":
+		return RegionKr, nil
+	case "ph":
+		return RegionPh, nil
+	case "tw":
+		return RegionTw, nil
+	}
+	var t Region
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r Region) Ptr() *Region {
+	return &r
+}
+
+type Source struct {
+	Name            string          `json:"name" url:"name"`
+	Slug            string          `json:"slug" url:"slug"`
+	Description     string          `json:"description" url:"description"`
+	Logo            string          `json:"logo" url:"logo"`
+	Group           *string         `json:"group,omitempty" url:"group,omitempty"`
+	OauthUrl        *string         `json:"oauth_url,omitempty" url:"oauth_url,omitempty"`
+	AuthType        *SourceAuthType `json:"auth_type,omitempty" url:"auth_type,omitempty"`
+	SourceType      *SourceType     `json:"source_type,omitempty" url:"source_type,omitempty"`
+	IsActive        *bool           `json:"is_active,omitempty" url:"is_active,omitempty"`
+	BackfillNumDays *int            `json:"backfill_num_days,omitempty" url:"backfill_num_days,omitempty"`
+	Id              int             `json:"id" url:"id"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *Source) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *Source) UnmarshalJSON(data []byte) error {
+	type unmarshaler Source
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = Source(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Source) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SourceLink struct {
+	Id             int                    `json:"id" url:"id"`
+	Name           string                 `json:"name" url:"name"`
+	Slug           string                 `json:"slug" url:"slug"`
+	Description    string                 `json:"description" url:"description"`
+	Logo           string                 `json:"logo" url:"logo"`
+	OauthUrl       *string                `json:"oauth_url,omitempty" url:"oauth_url,omitempty"`
+	AuthType       *SourceAuthType        `json:"auth_type,omitempty" url:"auth_type,omitempty"`
+	FormComponents map[string]interface{} `json:"form_components,omitempty" url:"form_components,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SourceLink) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SourceLink) UnmarshalJSON(data []byte) error {
+	type unmarshaler SourceLink
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SourceLink(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SourceLink) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SourceType string
+
+const (
+	SourceTypeApp      SourceType = "app"
+	SourceTypeBle      SourceType = "ble"
+	SourceTypeDevice   SourceType = "device"
+	SourceTypeLab      SourceType = "lab"
+	SourceTypeProvider SourceType = "provider"
+)
+
+func NewSourceTypeFromString(s string) (SourceType, error) {
+	switch s {
+	case "app":
+		return SourceTypeApp, nil
+	case "ble":
+		return SourceTypeBle, nil
+	case "device":
+		return SourceTypeDevice, nil
+	case "lab":
+		return SourceTypeLab, nil
+	case "provider":
+		return SourceTypeProvider, nil
+	}
+	var t SourceType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SourceType) Ptr() *SourceType {
+	return &s
+}
+
+type VitalTokenCreatedResponse struct {
+	Code        string    `json:"code" url:"code"`
+	ExchangeUrl string    `json:"exchange_url" url:"exchange_url"`
+	ExpiresAt   time.Time `json:"expires_at" url:"expires_at"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (v *VitalTokenCreatedResponse) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VitalTokenCreatedResponse) UnmarshalJSON(data []byte) error {
+	type embed VitalTokenCreatedResponse
+	var unmarshaler = struct {
+		embed
+		ExpiresAt *core.DateTime `json:"expires_at"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = VitalTokenCreatedResponse(unmarshaler.embed)
+	v.ExpiresAt = unmarshaler.ExpiresAt.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalTokenCreatedResponse) MarshalJSON() ([]byte, error) {
+	type embed VitalTokenCreatedResponse
+	var marshaler = struct {
+		embed
+		ExpiresAt *core.DateTime `json:"expires_at"`
+	}{
+		embed:     embed(*v),
+		ExpiresAt: core.NewDateTime(v.ExpiresAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *VitalTokenCreatedResponse) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }

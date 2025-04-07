@@ -2,6 +2,12 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+)
+
 type InsuranceSearchDiagnosisRequest struct {
 	DiagnosisQuery string `json:"-" url:"diagnosis_query"`
 }
@@ -16,4 +22,166 @@ type PayorSearchRequest struct {
 	InsuranceName *string                    `json:"insurance_name,omitempty" url:"-"`
 	Provider      *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`
 	ProviderId    *string                    `json:"provider_id,omitempty" url:"-"`
+}
+
+type ClientFacingDiagnosisInformation struct {
+	// Diagnosis code for insurance information.
+	DiagnosisCode string `json:"diagnosis_code" url:"diagnosis_code"`
+	// Diagnosis description insurance information.
+	Description string `json:"description" url:"description"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingDiagnosisInformation) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingDiagnosisInformation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingDiagnosisInformation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingDiagnosisInformation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingDiagnosisInformation) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingPayorSearchResponse struct {
+	// Payor code returned for the insurance information.
+	PayorCode string `json:"payor_code" url:"payor_code"`
+	// Insurance name returned for the insurance information.
+	Name string `json:"name" url:"name"`
+	// Insurance name aliases returned for the insurance information.
+	Aliases []string `json:"aliases,omitempty" url:"aliases,omitempty"`
+	// Insurance business address returned for the insurance information.
+	OrgAddress *Address `json:"org_address,omitempty" url:"org_address,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingPayorSearchResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingPayorSearchResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingPayorSearchResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingPayorSearchResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingPayorSearchResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingPayorSearchResponseDeprecated struct {
+	// Payor code returned for the insurance information.
+	Code string `json:"code" url:"code"`
+	// Insurance name returned for the insurance information.
+	Name string `json:"name" url:"name"`
+	// Insurance name aliases returned for the insurance information.
+	Aliases []string `json:"aliases,omitempty" url:"aliases,omitempty"`
+	// Insurance business address returned for the insurance information.
+	OrgAddress *Address `json:"org_address,omitempty" url:"org_address,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingPayorSearchResponseDeprecated) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingPayorSearchResponseDeprecated) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingPayorSearchResponseDeprecated
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingPayorSearchResponseDeprecated(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingPayorSearchResponseDeprecated) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type PayorCodeExternalProvider string
+
+const (
+	PayorCodeExternalProviderChangeHealthcare PayorCodeExternalProvider = "change_healthcare"
+	PayorCodeExternalProviderAvaility         PayorCodeExternalProvider = "availity"
+)
+
+func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider, error) {
+	switch s {
+	case "change_healthcare":
+		return PayorCodeExternalProviderChangeHealthcare, nil
+	case "availity":
+		return PayorCodeExternalProviderAvaility, nil
+	}
+	var t PayorCodeExternalProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PayorCodeExternalProvider) Ptr() *PayorCodeExternalProvider {
+	return &p
 }

@@ -2,6 +2,13 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type IntrospectGetUserHistoricalPullsRequest struct {
 	UserId    *string    `json:"-" url:"user_id,omitempty"`
 	Provider  *Providers `json:"-" url:"provider,omitempty"`
@@ -18,4 +25,535 @@ type IntrospectGetUserResourcesRequest struct {
 	Cursor    *string    `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+}
+
+type AttemptStatus string
+
+const (
+	AttemptStatusSuccess AttemptStatus = "success"
+	AttemptStatusFailure AttemptStatus = "failure"
+)
+
+func NewAttemptStatusFromString(s string) (AttemptStatus, error) {
+	switch s {
+	case "success":
+		return AttemptStatusSuccess, nil
+	case "failure":
+		return AttemptStatusFailure, nil
+	}
+	var t AttemptStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AttemptStatus) Ptr() *AttemptStatus {
+	return &a
+}
+
+type HistoricalPullStatus string
+
+const (
+	HistoricalPullStatusSuccess    HistoricalPullStatus = "success"
+	HistoricalPullStatusFailure    HistoricalPullStatus = "failure"
+	HistoricalPullStatusInProgress HistoricalPullStatus = "in_progress"
+	HistoricalPullStatusScheduled  HistoricalPullStatus = "scheduled"
+	HistoricalPullStatusRetrying   HistoricalPullStatus = "retrying"
+)
+
+func NewHistoricalPullStatusFromString(s string) (HistoricalPullStatus, error) {
+	switch s {
+	case "success":
+		return HistoricalPullStatusSuccess, nil
+	case "failure":
+		return HistoricalPullStatusFailure, nil
+	case "in_progress":
+		return HistoricalPullStatusInProgress, nil
+	case "scheduled":
+		return HistoricalPullStatusScheduled, nil
+	case "retrying":
+		return HistoricalPullStatusRetrying, nil
+	}
+	var t HistoricalPullStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HistoricalPullStatus) Ptr() *HistoricalPullStatus {
+	return &h
+}
+
+type HistoricalPullTimeline struct {
+	ScheduledAt time.Time  `json:"scheduled_at" url:"scheduled_at"`
+	StartedAt   *time.Time `json:"started_at,omitempty" url:"started_at,omitempty"`
+	EndedAt     *time.Time `json:"ended_at,omitempty" url:"ended_at,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (h *HistoricalPullTimeline) GetExtraProperties() map[string]interface{} {
+	return h.extraProperties
+}
+
+func (h *HistoricalPullTimeline) UnmarshalJSON(data []byte) error {
+	type embed HistoricalPullTimeline
+	var unmarshaler = struct {
+		embed
+		ScheduledAt *core.DateTime `json:"scheduled_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		EndedAt     *core.DateTime `json:"ended_at,omitempty"`
+	}{
+		embed: embed(*h),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*h = HistoricalPullTimeline(unmarshaler.embed)
+	h.ScheduledAt = unmarshaler.ScheduledAt.Time()
+	h.StartedAt = unmarshaler.StartedAt.TimePtr()
+	h.EndedAt = unmarshaler.EndedAt.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+
+	h._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HistoricalPullTimeline) MarshalJSON() ([]byte, error) {
+	type embed HistoricalPullTimeline
+	var marshaler = struct {
+		embed
+		ScheduledAt *core.DateTime `json:"scheduled_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		EndedAt     *core.DateTime `json:"ended_at,omitempty"`
+	}{
+		embed:       embed(*h),
+		ScheduledAt: core.NewDateTime(h.ScheduledAt),
+		StartedAt:   core.NewOptionalDateTime(h.StartedAt),
+		EndedAt:     core.NewOptionalDateTime(h.EndedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (h *HistoricalPullTimeline) String() string {
+	if len(h._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(h._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+type LastAttempt struct {
+	Timestamp time.Time     `json:"timestamp" url:"timestamp"`
+	Status    AttemptStatus `json:"status" url:"status"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LastAttempt) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LastAttempt) UnmarshalJSON(data []byte) error {
+	type embed LastAttempt
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*l = LastAttempt(unmarshaler.embed)
+	l.Timestamp = unmarshaler.Timestamp.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LastAttempt) MarshalJSON() ([]byte, error) {
+	type embed LastAttempt
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed:     embed(*l),
+		Timestamp: core.NewDateTime(l.Timestamp),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (l *LastAttempt) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type SingleHistoricalPullStatistics struct {
+	Status       HistoricalPullStatus    `json:"status" url:"status"`
+	RangeStart   *time.Time              `json:"range_start,omitempty" url:"range_start,omitempty"`
+	RangeEnd     *time.Time              `json:"range_end,omitempty" url:"range_end,omitempty"`
+	Timeline     *HistoricalPullTimeline `json:"timeline,omitempty" url:"timeline,omitempty"`
+	DaysWithData *int                    `json:"days_with_data,omitempty" url:"days_with_data,omitempty"`
+	Release      string                  `json:"release" url:"release"`
+	TraceId      *string                 `json:"trace_id,omitempty" url:"trace_id,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SingleHistoricalPullStatistics) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SingleHistoricalPullStatistics) UnmarshalJSON(data []byte) error {
+	type embed SingleHistoricalPullStatistics
+	var unmarshaler = struct {
+		embed
+		RangeStart *core.DateTime `json:"range_start,omitempty"`
+		RangeEnd   *core.DateTime `json:"range_end,omitempty"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SingleHistoricalPullStatistics(unmarshaler.embed)
+	s.RangeStart = unmarshaler.RangeStart.TimePtr()
+	s.RangeEnd = unmarshaler.RangeEnd.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleHistoricalPullStatistics) MarshalJSON() ([]byte, error) {
+	type embed SingleHistoricalPullStatistics
+	var marshaler = struct {
+		embed
+		RangeStart *core.DateTime `json:"range_start,omitempty"`
+		RangeEnd   *core.DateTime `json:"range_end,omitempty"`
+	}{
+		embed:      embed(*s),
+		RangeStart: core.NewOptionalDateTime(s.RangeStart),
+		RangeEnd:   core.NewOptionalDateTime(s.RangeEnd),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *SingleHistoricalPullStatistics) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SingleProviderHistoricalPullResponse struct {
+	Pulled    map[string]*SingleHistoricalPullStatistics `json:"pulled,omitempty" url:"pulled,omitempty"`
+	NotPulled []ClientFacingResource                     `json:"not_pulled,omitempty" url:"not_pulled,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SingleProviderHistoricalPullResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SingleProviderHistoricalPullResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleProviderHistoricalPullResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleProviderHistoricalPullResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleProviderHistoricalPullResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SingleResourceStatistics struct {
+	LastAttempt *LastAttempt `json:"last_attempt,omitempty" url:"last_attempt,omitempty"`
+	OldestData  *time.Time   `json:"oldest_data,omitempty" url:"oldest_data,omitempty"`
+	NewestData  *time.Time   `json:"newest_data,omitempty" url:"newest_data,omitempty"`
+	SentCount   *int         `json:"sent_count,omitempty" url:"sent_count,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SingleResourceStatistics) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SingleResourceStatistics) UnmarshalJSON(data []byte) error {
+	type embed SingleResourceStatistics
+	var unmarshaler = struct {
+		embed
+		OldestData *core.DateTime `json:"oldest_data,omitempty"`
+		NewestData *core.DateTime `json:"newest_data,omitempty"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SingleResourceStatistics(unmarshaler.embed)
+	s.OldestData = unmarshaler.OldestData.TimePtr()
+	s.NewestData = unmarshaler.NewestData.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleResourceStatistics) MarshalJSON() ([]byte, error) {
+	type embed SingleResourceStatistics
+	var marshaler = struct {
+		embed
+		OldestData *core.DateTime `json:"oldest_data,omitempty"`
+		NewestData *core.DateTime `json:"newest_data,omitempty"`
+	}{
+		embed:      embed(*s),
+		OldestData: core.NewOptionalDateTime(s.OldestData),
+		NewestData: core.NewOptionalDateTime(s.NewestData),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *SingleResourceStatistics) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SingleUserHistoricalPullResponse struct {
+	UserId   string                                           `json:"user_id" url:"user_id"`
+	Provider map[string]*SingleProviderHistoricalPullResponse `json:"provider,omitempty" url:"provider,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SingleUserHistoricalPullResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SingleUserHistoricalPullResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleUserHistoricalPullResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleUserHistoricalPullResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleUserHistoricalPullResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SingleUserResourceResponse struct {
+	UserId   string                                          `json:"user_id" url:"user_id"`
+	Provider map[string]map[string]*SingleResourceStatistics `json:"provider,omitempty" url:"provider,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SingleUserResourceResponse) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SingleUserResourceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler SingleUserResourceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SingleUserResourceResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SingleUserResourceResponse) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type UserHistoricalPullsResponse struct {
+	Data []*SingleUserHistoricalPullResponse `json:"data,omitempty" url:"data,omitempty"`
+	Next *string                             `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (u *UserHistoricalPullsResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UserHistoricalPullsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserHistoricalPullsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserHistoricalPullsResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserHistoricalPullsResponse) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UserResourcesResponse struct {
+	Data []*SingleUserResourceResponse `json:"data,omitempty" url:"data,omitempty"`
+	Next *string                       `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (u *UserResourcesResponse) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UserResourcesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserResourcesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserResourcesResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserResourcesResponse) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
 }

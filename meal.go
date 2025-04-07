@@ -2,6 +2,13 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type MealGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
@@ -9,4 +16,395 @@ type MealGetRequest struct {
 	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
 	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
+type ClientFacingFood struct {
+	Energy *Energy `json:"energy,omitempty" url:"energy,omitempty"`
+	Macros *Macros `json:"macros,omitempty" url:"macros,omitempty"`
+	Micros *Micros `json:"micros,omitempty" url:"micros,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingFood) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingFood) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingFood
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingFood(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingFood) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingMealResponse struct {
+	Meals []*MealInDbBaseClientFacingSource `json:"meals,omitempty" url:"meals,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingMealResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingMealResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingMealResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingMealResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingMealResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type Energy struct {
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (e *Energy) GetExtraProperties() map[string]interface{} {
+	return e.extraProperties
+}
+
+func (e *Energy) Unit() string {
+	return e.unit
+}
+
+func (e *Energy) UnmarshalJSON(data []byte) error {
+	type embed Energy
+	var unmarshaler = struct {
+		embed
+		Unit string `json:"unit"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = Energy(unmarshaler.embed)
+	if unmarshaler.Unit != "kcal" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "kcal", unmarshaler.Unit)
+	}
+	e.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *e, "unit")
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *Energy) MarshalJSON() ([]byte, error) {
+	type embed Energy
+	var marshaler = struct {
+		embed
+		Unit string `json:"unit"`
+	}{
+		embed: embed(*e),
+		Unit:  "kcal",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (e *Energy) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type Fats struct {
+	// Amount of saturated fats in grams (g)
+	Saturated *float64 `json:"saturated,omitempty" url:"saturated,omitempty"`
+	// Amount of monounsaturated fats in grams (g)
+	Monounsaturated *float64 `json:"monounsaturated,omitempty" url:"monounsaturated,omitempty"`
+	// Amount of polyunsaturated fats in grams (g)
+	Polyunsaturated *float64 `json:"polyunsaturated,omitempty" url:"polyunsaturated,omitempty"`
+	// Amount of Omega-3 fatty acids in grams (g)
+	Omega3 *float64 `json:"omega3,omitempty" url:"omega3,omitempty"`
+	// Amount of Omega-6 fatty acids in grams (g)
+	Omega6 *float64 `json:"omega6,omitempty" url:"omega6,omitempty"`
+	// Total amount of fats in grams (g)
+	Total *float64 `json:"total,omitempty" url:"total,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (f *Fats) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
+}
+
+func (f *Fats) UnmarshalJSON(data []byte) error {
+	type unmarshaler Fats
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*f = Fats(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *f)
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+
+	f._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *Fats) String() string {
+	if len(f._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(f._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
+}
+
+type Macros struct {
+	// Amount of carbohydrates in grams (g)
+	Carbs *float64 `json:"carbs,omitempty" url:"carbs,omitempty"`
+	// Amount of protein in grams (g)
+	Protein *float64 `json:"protein,omitempty" url:"protein,omitempty"`
+	// Details of fat content
+	Fats *Fats `json:"fats,omitempty" url:"fats,omitempty"`
+	// Amount of alcohol in grams (g)
+	Alcohol *float64 `json:"alcohol,omitempty" url:"alcohol,omitempty"`
+	// Amount of water in grams (g)
+	Water *float64 `json:"water,omitempty" url:"water,omitempty"`
+	// Amount of dietary fiber in grams (g)
+	Fibre *float64 `json:"fibre,omitempty" url:"fibre,omitempty"`
+	// Amount of sugar in grams (g)
+	Sugar *float64 `json:"sugar,omitempty" url:"sugar,omitempty"`
+	// Amount of cholesterol in grams (g)
+	Cholesterol *float64 `json:"cholesterol,omitempty" url:"cholesterol,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (m *Macros) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *Macros) UnmarshalJSON(data []byte) error {
+	type unmarshaler Macros
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = Macros(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *Macros) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type MealInDbBaseClientFacingSource struct {
+	Id     string `json:"id" url:"id"`
+	UserId string `json:"user_id" url:"user_id"`
+	// This value has no meaning.
+	PriorityId int `json:"priority_id" url:"priority_id"`
+	// This value has no meaning.
+	SourceId int `json:"source_id" url:"source_id"`
+	// This value is identical to `id`.
+	ProviderId string                       `json:"provider_id" url:"provider_id"`
+	Timestamp  time.Time                    `json:"timestamp" url:"timestamp"`
+	Name       string                       `json:"name" url:"name"`
+	Energy     *Energy                      `json:"energy,omitempty" url:"energy,omitempty"`
+	Macros     *Macros                      `json:"macros,omitempty" url:"macros,omitempty"`
+	Micros     *Micros                      `json:"micros,omitempty" url:"micros,omitempty"`
+	Data       map[string]*ClientFacingFood `json:"data,omitempty" url:"data,omitempty"`
+	Source     *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
+	// This value is identical to `timestamp`.
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	// This value is identical to `timestamp`.
+	UpdatedAt   time.Time `json:"updated_at" url:"updated_at"`
+	SourceAppId *string   `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (m *MealInDbBaseClientFacingSource) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MealInDbBaseClientFacingSource) UnmarshalJSON(data []byte) error {
+	type embed MealInDbBaseClientFacingSource
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = MealInDbBaseClientFacingSource(unmarshaler.embed)
+	m.Timestamp = unmarshaler.Timestamp.Time()
+	m.CreatedAt = unmarshaler.CreatedAt.Time()
+	m.UpdatedAt = unmarshaler.UpdatedAt.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MealInDbBaseClientFacingSource) MarshalJSON() ([]byte, error) {
+	type embed MealInDbBaseClientFacingSource
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
+	}{
+		embed:     embed(*m),
+		Timestamp: core.NewDateTime(m.Timestamp),
+		CreatedAt: core.NewDateTime(m.CreatedAt),
+		UpdatedAt: core.NewDateTime(m.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (m *MealInDbBaseClientFacingSource) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type Micros struct {
+	// Amount of each mineral in grams (g)
+	Minerals map[string]*float64 `json:"minerals,omitempty" url:"minerals,omitempty"`
+	// Amount of each trace element in grams (g)
+	TraceElements map[string]*float64 `json:"trace_elements,omitempty" url:"trace_elements,omitempty"`
+	// Amount of each vitamin in grams (g)
+	Vitamins map[string]*float64 `json:"vitamins,omitempty" url:"vitamins,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (m *Micros) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *Micros) UnmarshalJSON(data []byte) error {
+	type unmarshaler Micros
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = Micros(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *Micros) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
 }

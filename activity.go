@@ -2,6 +2,13 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type ActivityGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
@@ -18,4 +25,294 @@ type ActivityGetRawRequest struct {
 	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
 	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
+type ActivityV2InDb struct {
+	Timestamp  time.Time              `json:"timestamp" url:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	ProviderId string                 `json:"provider_id" url:"provider_id"`
+	UserId     string                 `json:"user_id" url:"user_id"`
+	SourceId   int                    `json:"source_id" url:"source_id"`
+	PriorityId int                    `json:"priority_id" url:"priority_id"`
+	Id         string                 `json:"id" url:"id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *ActivityV2InDb) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *ActivityV2InDb) UnmarshalJSON(data []byte) error {
+	type embed ActivityV2InDb
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*a = ActivityV2InDb(unmarshaler.embed)
+	a.Timestamp = unmarshaler.Timestamp.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivityV2InDb) MarshalJSON() ([]byte, error) {
+	type embed ActivityV2InDb
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed:     embed(*a),
+		Timestamp: core.NewDateTime(a.Timestamp),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (a *ActivityV2InDb) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ClientActivityResponse struct {
+	Activity []*ClientFacingActivity `json:"activity,omitempty" url:"activity,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientActivityResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientActivityResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientActivityResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientActivityResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientActivityResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingActivity struct {
+	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
+	UserId string `json:"user_id" url:"user_id"`
+	Id     string `json:"id" url:"id"`
+	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
+	Date time.Time `json:"date" url:"date"`
+	// Date of the summary in the YYYY-mm-dd format.
+	CalendarDate string `json:"calendar_date" url:"calendar_date"`
+	// Total energy consumption during the day including Basal Metabolic Rate in kilocalories::kilocalories
+	CaloriesTotal *float64 `json:"calories_total,omitempty" url:"calories_total,omitempty"`
+	// Energy consumption caused by the physical activity of the day in kilocalories::kilocalories
+	CaloriesActive *float64 `json:"calories_active,omitempty" url:"calories_active,omitempty"`
+	// Total number of steps registered during the day::steps
+	Steps *int `json:"steps,omitempty" url:"steps,omitempty"`
+	// Deprecated. Daily physical activity as equal meters i.e. amount of walking needed to get the same amount of activity::meters
+	DailyMovement *float64 `json:"daily_movement,omitempty" url:"daily_movement,omitempty"`
+	// Distance traveled during activities throughout the day::meters
+	Distance *float64 `json:"distance,omitempty" url:"distance,omitempty"`
+	// Number of minutes during the day with low intensity activity (e.g. household work)::minutes
+	Low *float64 `json:"low,omitempty" url:"low,omitempty"`
+	// Number of minutes during the day with medium intensity activity (e.g. walking)::minutes
+	Medium *float64 `json:"medium,omitempty" url:"medium,omitempty"`
+	// Number of minutes during the day with high intensity activity (e.g. running)::minutes
+	High *float64 `json:"high,omitempty" url:"high,omitempty"`
+	// Source the data has come from.
+	Source *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	// Number of floors climbed by the user::count
+	FloorsClimbed *int `json:"floors_climbed,omitempty" url:"floors_climbed,omitempty"`
+	// [DEPRECATED] The time zone full identifier for the data. Example: 'Europe/London'.
+	TimeZone *string `json:"time_zone,omitempty" url:"time_zone,omitempty"`
+	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// Heart rate daily summary.
+	HeartRate      *ClientFacingHeartRate `json:"heart_rate,omitempty" url:"heart_rate,omitempty"`
+	WheelchairUse  *bool                  `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
+	WheelchairPush *int                   `json:"wheelchair_push,omitempty" url:"wheelchair_push,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingActivity) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingActivity) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingActivity
+	var unmarshaler = struct {
+		embed
+		Date *core.DateTime `json:"date"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingActivity(unmarshaler.embed)
+	c.Date = unmarshaler.Date.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingActivity) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingActivity
+	var marshaler = struct {
+		embed
+		Date *core.DateTime `json:"date"`
+	}{
+		embed: embed(*c),
+		Date:  core.NewDateTime(c.Date),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingActivity) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingHeartRate struct {
+	// Average heart rate::bpm
+	AvgBpm *float64 `json:"avg_bpm,omitempty" url:"avg_bpm,omitempty"`
+	// Minimum heart rate::bpm
+	MinBpm *float64 `json:"min_bpm,omitempty" url:"min_bpm,omitempty"`
+	// Maximum heart rate::bpm
+	MaxBpm *float64 `json:"max_bpm,omitempty" url:"max_bpm,omitempty"`
+	// Resting heart rate::bpm
+	RestingBpm    *float64 `json:"resting_bpm,omitempty" url:"resting_bpm,omitempty"`
+	AvgWalkingBpm *float64 `json:"avg_walking_bpm,omitempty" url:"avg_walking_bpm,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingHeartRate) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingHeartRate) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingHeartRate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingHeartRate(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingHeartRate) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type RawActivity struct {
+	Activity []*ActivityV2InDb `json:"activity,omitempty" url:"activity,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *RawActivity) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawActivity) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawActivity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawActivity(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawActivity) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }

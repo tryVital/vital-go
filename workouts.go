@@ -2,6 +2,13 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type WorkoutsGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
@@ -18,4 +25,951 @@ type WorkoutsGetRawRequest struct {
 	StartDate string `json:"-" url:"start_date"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
 	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
+type ClientFacingSport struct {
+	// This ID is unstable across environments. Use the slug instead.
+	Id int `json:"id" url:"id"`
+	// Sport's name
+	Name string `json:"name" url:"name"`
+	// Slug for designated sport
+	Slug string `json:"slug" url:"slug"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSport) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSport) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingSport
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingSport(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSport) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingStream struct {
+	// RPM for cycling, Steps per minute for running
+	Cadence *ClientFacingStreamCadence `json:"cadence,omitempty" url:"cadence,omitempty"`
+	// Corresponding time stamp in unix time for datapoint
+	Time []int `json:"time,omitempty" url:"time,omitempty"`
+	// Data points for altitude
+	Altitude *ClientFacingStreamAltitude `json:"altitude,omitempty" url:"altitude,omitempty"`
+	// Velocity in m/s
+	VelocitySmooth *ClientFacingStreamVelocitySmooth `json:"velocity_smooth,omitempty" url:"velocity_smooth,omitempty"`
+	// Heart rate in bpm
+	Heartrate *ClientFacingStreamHeartrate `json:"heartrate,omitempty" url:"heartrate,omitempty"`
+	// Latitude for data point
+	Lat *ClientFacingStreamLat `json:"lat,omitempty" url:"lat,omitempty"`
+	// Longitude for data point
+	Lng *ClientFacingStreamLng `json:"lng,omitempty" url:"lng,omitempty"`
+	// Cumulated distance for exercise
+	Distance *ClientFacingStreamDistance `json:"distance,omitempty" url:"distance,omitempty"`
+	// Power in watts
+	Power *ClientFacingStreamPower `json:"power,omitempty" url:"power,omitempty"`
+	// Resistance on bike
+	Resistance *ClientFacingStreamResistance `json:"resistance,omitempty" url:"resistance,omitempty"`
+	// Temperature stream measured by device in Celsius
+	Temperature *ClientFacingStreamTemperature `json:"temperature,omitempty" url:"temperature,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingStream) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingStream) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingStream
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingStream(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingStream) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Data points for altitude
+type ClientFacingStreamAltitude struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamAltitudeFromDoubleOptionalList(value []*float64) *ClientFacingStreamAltitude {
+	return &ClientFacingStreamAltitude{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamAltitudeFromDoubleList(value []float64) *ClientFacingStreamAltitude {
+	return &ClientFacingStreamAltitude{DoubleList: value}
+}
+
+func (c *ClientFacingStreamAltitude) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamAltitude) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamAltitudeVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamAltitude) Accept(visitor ClientFacingStreamAltitudeVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// RPM for cycling, Steps per minute for running
+type ClientFacingStreamCadence struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamCadenceFromDoubleOptionalList(value []*float64) *ClientFacingStreamCadence {
+	return &ClientFacingStreamCadence{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamCadenceFromDoubleList(value []float64) *ClientFacingStreamCadence {
+	return &ClientFacingStreamCadence{DoubleList: value}
+}
+
+func (c *ClientFacingStreamCadence) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamCadence) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamCadenceVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamCadence) Accept(visitor ClientFacingStreamCadenceVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Cumulated distance for exercise
+type ClientFacingStreamDistance struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamDistanceFromDoubleOptionalList(value []*float64) *ClientFacingStreamDistance {
+	return &ClientFacingStreamDistance{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamDistanceFromDoubleList(value []float64) *ClientFacingStreamDistance {
+	return &ClientFacingStreamDistance{DoubleList: value}
+}
+
+func (c *ClientFacingStreamDistance) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamDistance) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamDistanceVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamDistance) Accept(visitor ClientFacingStreamDistanceVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Heart rate in bpm
+type ClientFacingStreamHeartrate struct {
+	IntegerOptionalList []*int
+	IntegerList         []int
+}
+
+func NewClientFacingStreamHeartrateFromIntegerOptionalList(value []*int) *ClientFacingStreamHeartrate {
+	return &ClientFacingStreamHeartrate{IntegerOptionalList: value}
+}
+
+func NewClientFacingStreamHeartrateFromIntegerList(value []int) *ClientFacingStreamHeartrate {
+	return &ClientFacingStreamHeartrate{IntegerList: value}
+}
+
+func (c *ClientFacingStreamHeartrate) UnmarshalJSON(data []byte) error {
+	var valueIntegerOptionalList []*int
+	if err := json.Unmarshal(data, &valueIntegerOptionalList); err == nil {
+		c.IntegerOptionalList = valueIntegerOptionalList
+		return nil
+	}
+	var valueIntegerList []int
+	if err := json.Unmarshal(data, &valueIntegerList); err == nil {
+		c.IntegerList = valueIntegerList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamHeartrate) MarshalJSON() ([]byte, error) {
+	if c.IntegerOptionalList != nil {
+		return json.Marshal(c.IntegerOptionalList)
+	}
+	if c.IntegerList != nil {
+		return json.Marshal(c.IntegerList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamHeartrateVisitor interface {
+	VisitIntegerOptionalList([]*int) error
+	VisitIntegerList([]int) error
+}
+
+func (c *ClientFacingStreamHeartrate) Accept(visitor ClientFacingStreamHeartrateVisitor) error {
+	if c.IntegerOptionalList != nil {
+		return visitor.VisitIntegerOptionalList(c.IntegerOptionalList)
+	}
+	if c.IntegerList != nil {
+		return visitor.VisitIntegerList(c.IntegerList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Latitude for data point
+type ClientFacingStreamLat struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamLatFromDoubleOptionalList(value []*float64) *ClientFacingStreamLat {
+	return &ClientFacingStreamLat{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamLatFromDoubleList(value []float64) *ClientFacingStreamLat {
+	return &ClientFacingStreamLat{DoubleList: value}
+}
+
+func (c *ClientFacingStreamLat) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamLat) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamLatVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamLat) Accept(visitor ClientFacingStreamLatVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Longitude for data point
+type ClientFacingStreamLng struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamLngFromDoubleOptionalList(value []*float64) *ClientFacingStreamLng {
+	return &ClientFacingStreamLng{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamLngFromDoubleList(value []float64) *ClientFacingStreamLng {
+	return &ClientFacingStreamLng{DoubleList: value}
+}
+
+func (c *ClientFacingStreamLng) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamLng) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamLngVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamLng) Accept(visitor ClientFacingStreamLngVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Power in watts
+type ClientFacingStreamPower struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamPowerFromDoubleOptionalList(value []*float64) *ClientFacingStreamPower {
+	return &ClientFacingStreamPower{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamPowerFromDoubleList(value []float64) *ClientFacingStreamPower {
+	return &ClientFacingStreamPower{DoubleList: value}
+}
+
+func (c *ClientFacingStreamPower) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamPower) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamPowerVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamPower) Accept(visitor ClientFacingStreamPowerVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Resistance on bike
+type ClientFacingStreamResistance struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamResistanceFromDoubleOptionalList(value []*float64) *ClientFacingStreamResistance {
+	return &ClientFacingStreamResistance{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamResistanceFromDoubleList(value []float64) *ClientFacingStreamResistance {
+	return &ClientFacingStreamResistance{DoubleList: value}
+}
+
+func (c *ClientFacingStreamResistance) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamResistance) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamResistanceVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamResistance) Accept(visitor ClientFacingStreamResistanceVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Temperature stream measured by device in Celsius
+type ClientFacingStreamTemperature struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamTemperatureFromDoubleOptionalList(value []*float64) *ClientFacingStreamTemperature {
+	return &ClientFacingStreamTemperature{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamTemperatureFromDoubleList(value []float64) *ClientFacingStreamTemperature {
+	return &ClientFacingStreamTemperature{DoubleList: value}
+}
+
+func (c *ClientFacingStreamTemperature) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamTemperature) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamTemperatureVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamTemperature) Accept(visitor ClientFacingStreamTemperatureVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// Velocity in m/s
+type ClientFacingStreamVelocitySmooth struct {
+	DoubleOptionalList []*float64
+	DoubleList         []float64
+}
+
+func NewClientFacingStreamVelocitySmoothFromDoubleOptionalList(value []*float64) *ClientFacingStreamVelocitySmooth {
+	return &ClientFacingStreamVelocitySmooth{DoubleOptionalList: value}
+}
+
+func NewClientFacingStreamVelocitySmoothFromDoubleList(value []float64) *ClientFacingStreamVelocitySmooth {
+	return &ClientFacingStreamVelocitySmooth{DoubleList: value}
+}
+
+func (c *ClientFacingStreamVelocitySmooth) UnmarshalJSON(data []byte) error {
+	var valueDoubleOptionalList []*float64
+	if err := json.Unmarshal(data, &valueDoubleOptionalList); err == nil {
+		c.DoubleOptionalList = valueDoubleOptionalList
+		return nil
+	}
+	var valueDoubleList []float64
+	if err := json.Unmarshal(data, &valueDoubleList); err == nil {
+		c.DoubleList = valueDoubleList
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingStreamVelocitySmooth) MarshalJSON() ([]byte, error) {
+	if c.DoubleOptionalList != nil {
+		return json.Marshal(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return json.Marshal(c.DoubleList)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingStreamVelocitySmoothVisitor interface {
+	VisitDoubleOptionalList([]*float64) error
+	VisitDoubleList([]float64) error
+}
+
+func (c *ClientFacingStreamVelocitySmooth) Accept(visitor ClientFacingStreamVelocitySmoothVisitor) error {
+	if c.DoubleOptionalList != nil {
+		return visitor.VisitDoubleOptionalList(c.DoubleOptionalList)
+	}
+	if c.DoubleList != nil {
+		return visitor.VisitDoubleList(c.DoubleList)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingWorkout struct {
+	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
+	UserId string `json:"user_id" url:"user_id"`
+	Id     string `json:"id" url:"id"`
+	// Title given for the workout
+	Title *string `json:"title,omitempty" url:"title,omitempty"`
+	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// Average heart rate during workout::bpm
+	AverageHr *int `json:"average_hr,omitempty" url:"average_hr,omitempty"`
+	// Max heart rate during workout::bpm
+	MaxHr *int `json:"max_hr,omitempty" url:"max_hr,omitempty"`
+	// Distance travelled during workout::meters
+	Distance *float64 `json:"distance,omitempty" url:"distance,omitempty"`
+	// Date of the workout summary in the YYYY-mm-dd format. This generally matches the workout start date.
+	CalendarDate string `json:"calendar_date" url:"calendar_date"`
+	// Start time of the workout::time
+	TimeStart time.Time `json:"time_start" url:"time_start"`
+	// End time of the workout::time
+	TimeEnd time.Time `json:"time_end" url:"time_end"`
+	// Calories burned during the workout::kCal
+	Calories *float64 `json:"calories,omitempty" url:"calories,omitempty"`
+	// Sport's name
+	Sport *ClientFacingSport `json:"sport,omitempty" url:"sport,omitempty"`
+	// Time in seconds spent in different heart rate zones <50%, 50-60%, 60-70%, 70-80%, 80-90%, 90%+. Due to rounding errors, it's possible that summing all values is different than the total time of the workout. Not available for all providers::seconds
+	HrZones []int `json:"hr_zones,omitempty" url:"hr_zones,omitempty"`
+	// Time spent active during the workout::seconds
+	MovingTime *int `json:"moving_time,omitempty" url:"moving_time,omitempty"`
+	// Elevation gain during the workout::meters
+	TotalElevationGain *float64 `json:"total_elevation_gain,omitempty" url:"total_elevation_gain,omitempty"`
+	// Highest point of elevation::meters
+	ElevHigh *float64 `json:"elev_high,omitempty" url:"elev_high,omitempty"`
+	// Lowest point of elevation::meters
+	ElevLow *float64 `json:"elev_low,omitempty" url:"elev_low,omitempty"`
+	// Average speed during workout in m/s::meters/sec
+	AverageSpeed *float64 `json:"average_speed,omitempty" url:"average_speed,omitempty"`
+	// Max speed during workout in m/s::meters/sec
+	MaxSpeed *float64 `json:"max_speed,omitempty" url:"max_speed,omitempty"`
+	// Average watts burned during exercise::watts
+	AverageWatts *float64 `json:"average_watts,omitempty" url:"average_watts,omitempty"`
+	// Watts burned during exercise::watts
+	DeviceWatts *float64 `json:"device_watts,omitempty" url:"device_watts,omitempty"`
+	// Max watts burned during exercise::watts
+	MaxWatts *float64 `json:"max_watts,omitempty" url:"max_watts,omitempty"`
+	// Weighted average watts burned during exercise::watts
+	WeightedAverageWatts *float64 `json:"weighted_average_watts,omitempty" url:"weighted_average_watts,omitempty"`
+	// Number of steps accumulated during this workout::count
+	Steps *int `json:"steps,omitempty" url:"steps,omitempty"`
+	// Map of the workout
+	Map *ClientFacingWorkoutMap `json:"map,omitempty" url:"map,omitempty"`
+	// Provider ID given for that specific workout
+	ProviderId string `json:"provider_id" url:"provider_id"`
+	// Source the data has come from.
+	Source *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkout) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkout) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWorkout
+	var unmarshaler = struct {
+		embed
+		TimeStart *core.DateTime `json:"time_start"`
+		TimeEnd   *core.DateTime `json:"time_end"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkout(unmarshaler.embed)
+	c.TimeStart = unmarshaler.TimeStart.Time()
+	c.TimeEnd = unmarshaler.TimeEnd.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkout) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWorkout
+	var marshaler = struct {
+		embed
+		TimeStart *core.DateTime `json:"time_start"`
+		TimeEnd   *core.DateTime `json:"time_end"`
+	}{
+		embed:     embed(*c),
+		TimeStart: core.NewDateTime(c.TimeStart),
+		TimeEnd:   core.NewDateTime(c.TimeEnd),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWorkout) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWorkoutMap struct {
+	// Polyline of the map
+	Polyline *string `json:"polyline,omitempty" url:"polyline,omitempty"`
+	// A lower resolution summary of the polyline
+	SummaryPolyline *string `json:"summary_polyline,omitempty" url:"summary_polyline,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutMap) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutMap) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingWorkoutMap
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutMap(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutMap) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientWorkoutResponse struct {
+	Workouts []*ClientFacingWorkout `json:"workouts,omitempty" url:"workouts,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientWorkoutResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientWorkoutResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientWorkoutResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientWorkoutResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientWorkoutResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type RawWorkout struct {
+	Workouts []*WorkoutV2InDb `json:"workouts,omitempty" url:"workouts,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *RawWorkout) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawWorkout) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawWorkout
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawWorkout(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawWorkout) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type WorkoutV2InDb struct {
+	Timestamp  time.Time              `json:"timestamp" url:"timestamp"`
+	Data       map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	ProviderId string                 `json:"provider_id" url:"provider_id"`
+	UserId     string                 `json:"user_id" url:"user_id"`
+	SourceId   int                    `json:"source_id" url:"source_id"`
+	PriorityId *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
+	Id         string                 `json:"id" url:"id"`
+	SportId    int                    `json:"sport_id" url:"sport_id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
+	Sport      *ClientFacingSport     `json:"sport,omitempty" url:"sport,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (w *WorkoutV2InDb) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WorkoutV2InDb) UnmarshalJSON(data []byte) error {
+	type embed WorkoutV2InDb
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed: embed(*w),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*w = WorkoutV2InDb(unmarshaler.embed)
+	w.Timestamp = unmarshaler.Timestamp.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+
+	w._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WorkoutV2InDb) MarshalJSON() ([]byte, error) {
+	type embed WorkoutV2InDb
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed:     embed(*w),
+		Timestamp: core.NewDateTime(w.Timestamp),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (w *WorkoutV2InDb) String() string {
+	if len(w._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
 }

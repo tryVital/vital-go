@@ -1050,9 +1050,8 @@ func (c *Client) GetPhlebotomyAppointment(
 // GET information about an area with respect to lab-testing.
 //
 // Information returned:
-//
-// - Whether a given zip code is served by our Phlebotomy network.
-// - List of Lab locations in the area.
+// * Whether a given zip code is served by our Phlebotomy network.
+// * List of Lab locations in the area.
 func (c *Client) GetAreaInfo(
 	ctx context.Context,
 	request *vitalgo.LabTestsGetAreaInfoRequest,

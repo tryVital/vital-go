@@ -2,9 +2,248 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type SleepCycleGetRequest struct {
 	StartDate string  `json:"-" url:"start_date"`
 	EndDate   *string `json:"-" url:"end_date,omitempty"`
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 }
+
+type ClientFacingSleepCycle struct {
+	Id                     string    `json:"id" url:"id"`
+	SleepId                string    `json:"sleep_id" url:"sleep_id"`
+	SessionStart           time.Time `json:"session_start" url:"session_start"`
+	SessionEnd             time.Time `json:"session_end" url:"session_end"`
+	StageStartOffsetSecond []int     `json:"stage_start_offset_second,omitempty" url:"stage_start_offset_second,omitempty"`
+	StageEndOffsetSecond   []int     `json:"stage_end_offset_second,omitempty" url:"stage_end_offset_second,omitempty"`
+	// Sleep stage classification:
+	// `-1`: Unknown or unclassified sleep stage;
+	// `1`: Deep sleep;
+	// `2`: Light/non-REM sleep;
+	// `3`: Rapid Eye Movement sleep;
+	// `4`: Awake period;
+	// `5`: Manually classified stage.
+	StageType      []VitalSleepStage                     `json:"stage_type,omitempty" url:"stage_type,omitempty"`
+	TimeZone       *string                               `json:"time_zone,omitempty" url:"time_zone,omitempty"`
+	SourceProvider *ClientFacingSleepCycleSourceProvider `json:"source_provider,omitempty" url:"source_provider,omitempty"`
+	SourceType     ClientFacingSleepCycleSourceType      `json:"source_type" url:"source_type"`
+	SourceAppId    *string                               `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	UserId         string                                `json:"user_id" url:"user_id"`
+	Source         *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingSleepCycle) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingSleepCycle) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingSleepCycle
+	var unmarshaler = struct {
+		embed
+		SessionStart *core.DateTime `json:"session_start"`
+		SessionEnd   *core.DateTime `json:"session_end"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingSleepCycle(unmarshaler.embed)
+	c.SessionStart = unmarshaler.SessionStart.Time()
+	c.SessionEnd = unmarshaler.SessionEnd.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingSleepCycle) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingSleepCycle
+	var marshaler = struct {
+		embed
+		SessionStart *core.DateTime `json:"session_start"`
+		SessionEnd   *core.DateTime `json:"session_end"`
+	}{
+		embed:        embed(*c),
+		SessionStart: core.NewDateTime(c.SessionStart),
+		SessionEnd:   core.NewDateTime(c.SessionEnd),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingSleepCycle) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingSleepCycleSourceProvider struct {
+	Providers Providers
+	Labs      Labs
+}
+
+func NewClientFacingSleepCycleSourceProviderFromProviders(value Providers) *ClientFacingSleepCycleSourceProvider {
+	return &ClientFacingSleepCycleSourceProvider{Providers: value}
+}
+
+func NewClientFacingSleepCycleSourceProviderFromLabs(value Labs) *ClientFacingSleepCycleSourceProvider {
+	return &ClientFacingSleepCycleSourceProvider{Labs: value}
+}
+
+func (c *ClientFacingSleepCycleSourceProvider) UnmarshalJSON(data []byte) error {
+	var valueProviders Providers
+	if err := json.Unmarshal(data, &valueProviders); err == nil {
+		c.Providers = valueProviders
+		return nil
+	}
+	var valueLabs Labs
+	if err := json.Unmarshal(data, &valueLabs); err == nil {
+		c.Labs = valueLabs
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingSleepCycleSourceProvider) MarshalJSON() ([]byte, error) {
+	if c.Providers != "" {
+		return json.Marshal(c.Providers)
+	}
+	if c.Labs != "" {
+		return json.Marshal(c.Labs)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingSleepCycleSourceProviderVisitor interface {
+	VisitProviders(Providers) error
+	VisitLabs(Labs) error
+}
+
+func (c *ClientFacingSleepCycleSourceProvider) Accept(visitor ClientFacingSleepCycleSourceProviderVisitor) error {
+	if c.Providers != "" {
+		return visitor.VisitProviders(c.Providers)
+	}
+	if c.Labs != "" {
+		return visitor.VisitLabs(c.Labs)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingSleepCycleSourceType string
+
+const (
+	ClientFacingSleepCycleSourceTypeUnknown         ClientFacingSleepCycleSourceType = "unknown"
+	ClientFacingSleepCycleSourceTypePhone           ClientFacingSleepCycleSourceType = "phone"
+	ClientFacingSleepCycleSourceTypeWatch           ClientFacingSleepCycleSourceType = "watch"
+	ClientFacingSleepCycleSourceTypeApp             ClientFacingSleepCycleSourceType = "app"
+	ClientFacingSleepCycleSourceTypeMultipleSources ClientFacingSleepCycleSourceType = "multiple_sources"
+	ClientFacingSleepCycleSourceTypeFingerprick     ClientFacingSleepCycleSourceType = "fingerprick"
+	ClientFacingSleepCycleSourceTypeCuff            ClientFacingSleepCycleSourceType = "cuff"
+	ClientFacingSleepCycleSourceTypeManualScan      ClientFacingSleepCycleSourceType = "manual_scan"
+	ClientFacingSleepCycleSourceTypeAutomatic       ClientFacingSleepCycleSourceType = "automatic"
+	ClientFacingSleepCycleSourceTypeScale           ClientFacingSleepCycleSourceType = "scale"
+	ClientFacingSleepCycleSourceTypeChestStrap      ClientFacingSleepCycleSourceType = "chest_strap"
+	ClientFacingSleepCycleSourceTypeRing            ClientFacingSleepCycleSourceType = "ring"
+	ClientFacingSleepCycleSourceTypeLab             ClientFacingSleepCycleSourceType = "lab"
+)
+
+func NewClientFacingSleepCycleSourceTypeFromString(s string) (ClientFacingSleepCycleSourceType, error) {
+	switch s {
+	case "unknown":
+		return ClientFacingSleepCycleSourceTypeUnknown, nil
+	case "phone":
+		return ClientFacingSleepCycleSourceTypePhone, nil
+	case "watch":
+		return ClientFacingSleepCycleSourceTypeWatch, nil
+	case "app":
+		return ClientFacingSleepCycleSourceTypeApp, nil
+	case "multiple_sources":
+		return ClientFacingSleepCycleSourceTypeMultipleSources, nil
+	case "fingerprick":
+		return ClientFacingSleepCycleSourceTypeFingerprick, nil
+	case "cuff":
+		return ClientFacingSleepCycleSourceTypeCuff, nil
+	case "manual_scan":
+		return ClientFacingSleepCycleSourceTypeManualScan, nil
+	case "automatic":
+		return ClientFacingSleepCycleSourceTypeAutomatic, nil
+	case "scale":
+		return ClientFacingSleepCycleSourceTypeScale, nil
+	case "chest_strap":
+		return ClientFacingSleepCycleSourceTypeChestStrap, nil
+	case "ring":
+		return ClientFacingSleepCycleSourceTypeRing, nil
+	case "lab":
+		return ClientFacingSleepCycleSourceTypeLab, nil
+	}
+	var t ClientFacingSleepCycleSourceType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingSleepCycleSourceType) Ptr() *ClientFacingSleepCycleSourceType {
+	return &c
+}
+
+type ClientSleepCycleResponse struct {
+	SleepCycle []*ClientFacingSleepCycle `json:"sleep_cycle,omitempty" url:"sleep_cycle,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientSleepCycleResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientSleepCycleResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientSleepCycleResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientSleepCycleResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientSleepCycleResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type VitalSleepStage = int

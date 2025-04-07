@@ -2,6 +2,12 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+)
+
 type CreateRegistrableTestkitOrderRequest struct {
 	UserId          string                         `json:"user_id" url:"-"`
 	LabTestId       string                         `json:"lab_test_id" url:"-"`
@@ -18,4 +24,97 @@ type RegisterTestkitRequest struct {
 	Physician       *PhysicianCreateRequestBase   `json:"physician,omitempty" url:"-"`
 	HealthInsurance *HealthInsuranceCreateRequest `json:"health_insurance,omitempty" url:"-"`
 	Consents        []*Consent                    `json:"consents,omitempty" url:"-"`
+}
+
+type PhysicianCreateRequestBase struct {
+	FirstName      string   `json:"first_name" url:"first_name"`
+	LastName       string   `json:"last_name" url:"last_name"`
+	Email          *string  `json:"email,omitempty" url:"email,omitempty"`
+	Npi            string   `json:"npi" url:"npi"`
+	LicensedStates []string `json:"licensed_states,omitempty" url:"licensed_states,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PhysicianCreateRequestBase) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PhysicianCreateRequestBase) UnmarshalJSON(data []byte) error {
+	type unmarshaler PhysicianCreateRequestBase
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PhysicianCreateRequestBase(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PhysicianCreateRequestBase) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type ShippingAddressWithValidation struct {
+	ReceiverName string  `json:"receiver_name" url:"receiver_name"`
+	FirstLine    string  `json:"first_line" url:"first_line"`
+	SecondLine   *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	City         string  `json:"city" url:"city"`
+	State        string  `json:"state" url:"state"`
+	Zip          string  `json:"zip" url:"zip"`
+	Country      string  `json:"country" url:"country"`
+	PhoneNumber  string  `json:"phone_number" url:"phone_number"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *ShippingAddressWithValidation) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *ShippingAddressWithValidation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ShippingAddressWithValidation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ShippingAddressWithValidation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ShippingAddressWithValidation) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }

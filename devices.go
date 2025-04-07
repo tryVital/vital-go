@@ -2,7 +2,100 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+)
+
 type DevicesGetRawRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
+}
+
+type DeviceV2InDb struct {
+	Data       map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	ProviderId string                 `json:"provider_id" url:"provider_id"`
+	UserId     string                 `json:"user_id" url:"user_id"`
+	SourceId   int                    `json:"source_id" url:"source_id"`
+	Id         string                 `json:"id" url:"id"`
+	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (d *DeviceV2InDb) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DeviceV2InDb) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeviceV2InDb
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeviceV2InDb(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+
+	d._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeviceV2InDb) String() string {
+	if len(d._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(d._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type RawDevices struct {
+	Devices []*DeviceV2InDb `json:"devices,omitempty" url:"devices,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *RawDevices) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawDevices) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawDevices
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawDevices(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawDevices) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }

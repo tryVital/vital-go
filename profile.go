@@ -2,6 +2,13 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type ProfileGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
@@ -10,4 +17,157 @@ type ProfileGetRequest struct {
 type ProfileGetRawRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
+}
+
+type ClientFacingProfile struct {
+	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
+	UserId        string              `json:"user_id" url:"user_id"`
+	Id            string              `json:"id" url:"id"`
+	Height        *int                `json:"height,omitempty" url:"height,omitempty"`
+	BirthDate     *string             `json:"birth_date,omitempty" url:"birth_date,omitempty"`
+	WheelchairUse *bool               `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
+	Source        *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingProfile) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingProfile) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingProfile
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingProfile(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingProfile) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ProfileInDb struct {
+	Data       string                `json:"data" url:"data"`
+	UserId     string                `json:"user_id" url:"user_id"`
+	SourceId   int                   `json:"source_id" url:"source_id"`
+	PriorityId *int                  `json:"priority_id,omitempty" url:"priority_id,omitempty"`
+	Id         string                `json:"id" url:"id"`
+	Source     *ClientFacingProvider `json:"source,omitempty" url:"source,omitempty"`
+	UpdatedAt  *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *ProfileInDb) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ProfileInDb) UnmarshalJSON(data []byte) error {
+	type embed ProfileInDb
+	var unmarshaler = struct {
+		embed
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*p = ProfileInDb(unmarshaler.embed)
+	p.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProfileInDb) MarshalJSON() ([]byte, error) {
+	type embed ProfileInDb
+	var marshaler = struct {
+		embed
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*p),
+		UpdatedAt: core.NewOptionalDateTime(p.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (p *ProfileInDb) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type RawProfile struct {
+	Profile *ProfileInDb `json:"profile,omitempty" url:"profile,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *RawProfile) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawProfile) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawProfile
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawProfile(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawProfile) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }

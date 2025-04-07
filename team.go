@@ -2,6 +2,13 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type TeamGetLinkConfigRequest struct {
 	VitalLinkToken *string `json:"-" url:"-"`
 }
@@ -12,4 +19,347 @@ type TeamGetSourcePrioritiesRequest struct {
 
 type TeamGetUserByIdRequest struct {
 	QueryId *string `json:"-" url:"query_id,omitempty"`
+}
+
+type ClientFacingApiKey struct {
+	Label     string     `json:"label" url:"label"`
+	Value     string     `json:"value" url:"value"`
+	TeamId    *string    `json:"team_id,omitempty" url:"team_id,omitempty"`
+	Id        string     `json:"id" url:"id"`
+	CreatedAt time.Time  `json:"created_at" url:"created_at"`
+	DeletedAt *time.Time `json:"deleted_at,omitempty" url:"deleted_at,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingApiKey) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingApiKey) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingApiKey
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+		DeletedAt *core.DateTime `json:"deleted_at,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingApiKey(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.DeletedAt = unmarshaler.DeletedAt.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingApiKey) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingApiKey
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+		DeletedAt *core.DateTime `json:"deleted_at,omitempty"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: core.NewDateTime(c.CreatedAt),
+		DeletedAt: core.NewOptionalDateTime(c.DeletedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingApiKey) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// [Deprecated] GET /v2/team is in the process of being removed.
+// Neither customers nor Dashboard should retrieve team settings and metadata directly.
+//
+// All must migrate to the Team endpoints of the Org Management API.
+type ClientFacingTeam struct {
+	Id                                       string                `json:"id" url:"id"`
+	OrgId                                    string                `json:"org_id" url:"org_id"`
+	Name                                     string                `json:"name" url:"name"`
+	SvixAppId                                *string               `json:"svix_app_id,omitempty" url:"svix_app_id,omitempty"`
+	ClientId                                 *string               `json:"client_id,omitempty" url:"client_id,omitempty"`
+	ClientSecret                             *string               `json:"client_secret,omitempty" url:"client_secret,omitempty"`
+	AirtableApiKey                           *string               `json:"airtable_api_key,omitempty" url:"airtable_api_key,omitempty"`
+	AirtableBaseId                           *string               `json:"airtable_base_id,omitempty" url:"airtable_base_id,omitempty"`
+	WebhookSecret                            *string               `json:"webhook_secret,omitempty" url:"webhook_secret,omitempty"`
+	ApiKey                                   *string               `json:"api_key,omitempty" url:"api_key,omitempty"`
+	ApiKeys                                  []*ClientFacingApiKey `json:"api_keys,omitempty" url:"api_keys,omitempty"`
+	Configuration                            *TeamConfig           `json:"configuration,omitempty" url:"configuration,omitempty"`
+	TestkitsTextsEnabled                     bool                  `json:"testkits_texts_enabled" url:"testkits_texts_enabled"`
+	LabTestsPatientCommunicationEnabled      bool                  `json:"lab_tests_patient_communication_enabled" url:"lab_tests_patient_communication_enabled"`
+	LabTestsPatientSmsCommunicationEnabled   bool                  `json:"lab_tests_patient_sms_communication_enabled" url:"lab_tests_patient_sms_communication_enabled"`
+	LabTestsPatientEmailCommunicationEnabled bool                  `json:"lab_tests_patient_email_communication_enabled" url:"lab_tests_patient_email_communication_enabled"`
+	LogoUrl                                  *string               `json:"logo_url,omitempty" url:"logo_url,omitempty"`
+	DelegatedFlow                            DelegatedFlowType     `json:"delegated_flow" url:"delegated_flow"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingTeam) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingTeam) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingTeam
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingTeam(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingTeam) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type DelegatedFlowType string
+
+const (
+	DelegatedFlowTypeOrderAndResultsWithCustomerPhysicianNetwork DelegatedFlowType = "order_and_results_with_customer_physician_network"
+	DelegatedFlowTypeOrderWithVitalPhysicianNetwork              DelegatedFlowType = "order_with_vital_physician_network"
+	DelegatedFlowTypeOrderAndResultsWithVitalPhysicianNetwork    DelegatedFlowType = "order_and_results_with_vital_physician_network"
+)
+
+func NewDelegatedFlowTypeFromString(s string) (DelegatedFlowType, error) {
+	switch s {
+	case "order_and_results_with_customer_physician_network":
+		return DelegatedFlowTypeOrderAndResultsWithCustomerPhysicianNetwork, nil
+	case "order_with_vital_physician_network":
+		return DelegatedFlowTypeOrderWithVitalPhysicianNetwork, nil
+	case "order_and_results_with_vital_physician_network":
+		return DelegatedFlowTypeOrderAndResultsWithVitalPhysicianNetwork, nil
+	}
+	var t DelegatedFlowType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DelegatedFlowType) Ptr() *DelegatedFlowType {
+	return &d
+}
+
+type EventDestinationPreferences struct {
+	Preferred EventDestinationPreferencesPreferred     `json:"preferred" url:"preferred"`
+	Enabled   []EventDestinationPreferencesEnabledItem `json:"enabled,omitempty" url:"enabled,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (e *EventDestinationPreferences) GetExtraProperties() map[string]interface{} {
+	return e.extraProperties
+}
+
+func (e *EventDestinationPreferences) UnmarshalJSON(data []byte) error {
+	type unmarshaler EventDestinationPreferences
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EventDestinationPreferences(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+
+	e._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EventDestinationPreferences) String() string {
+	if len(e._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(e._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type EventDestinationPreferencesEnabledItem string
+
+const (
+	EventDestinationPreferencesEnabledItemCloudPubsub EventDestinationPreferencesEnabledItem = "cloud_pubsub"
+	EventDestinationPreferencesEnabledItemRabbitmq    EventDestinationPreferencesEnabledItem = "rabbitmq"
+	EventDestinationPreferencesEnabledItemSvix        EventDestinationPreferencesEnabledItem = "svix"
+	EventDestinationPreferencesEnabledItemAzureAmqp   EventDestinationPreferencesEnabledItem = "azure_amqp"
+)
+
+func NewEventDestinationPreferencesEnabledItemFromString(s string) (EventDestinationPreferencesEnabledItem, error) {
+	switch s {
+	case "cloud_pubsub":
+		return EventDestinationPreferencesEnabledItemCloudPubsub, nil
+	case "rabbitmq":
+		return EventDestinationPreferencesEnabledItemRabbitmq, nil
+	case "svix":
+		return EventDestinationPreferencesEnabledItemSvix, nil
+	case "azure_amqp":
+		return EventDestinationPreferencesEnabledItemAzureAmqp, nil
+	}
+	var t EventDestinationPreferencesEnabledItem
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e EventDestinationPreferencesEnabledItem) Ptr() *EventDestinationPreferencesEnabledItem {
+	return &e
+}
+
+type EventDestinationPreferencesPreferred string
+
+const (
+	EventDestinationPreferencesPreferredCloudPubsub EventDestinationPreferencesPreferred = "cloud_pubsub"
+	EventDestinationPreferencesPreferredRabbitmq    EventDestinationPreferencesPreferred = "rabbitmq"
+	EventDestinationPreferencesPreferredSvix        EventDestinationPreferencesPreferred = "svix"
+	EventDestinationPreferencesPreferredAzureAmqp   EventDestinationPreferencesPreferred = "azure_amqp"
+)
+
+func NewEventDestinationPreferencesPreferredFromString(s string) (EventDestinationPreferencesPreferred, error) {
+	switch s {
+	case "cloud_pubsub":
+		return EventDestinationPreferencesPreferredCloudPubsub, nil
+	case "rabbitmq":
+		return EventDestinationPreferencesPreferredRabbitmq, nil
+	case "svix":
+		return EventDestinationPreferencesPreferredSvix, nil
+	case "azure_amqp":
+		return EventDestinationPreferencesPreferredAzureAmqp, nil
+	}
+	var t EventDestinationPreferencesPreferred
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e EventDestinationPreferencesPreferred) Ptr() *EventDestinationPreferencesPreferred {
+	return &e
+}
+
+type LibreConfig struct {
+	PracticeId map[string]interface{} `json:"practice_id,omitempty" url:"practice_id,omitempty"`
+	StripTz    *bool                  `json:"strip_tz,omitempty" url:"strip_tz,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LibreConfig) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LibreConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler LibreConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LibreConfig(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LibreConfig) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type TeamConfig struct {
+	Libreview                      *LibreConfig                 `json:"libreview,omitempty" url:"libreview,omitempty"`
+	TextsEnabled                   *bool                        `json:"texts_enabled,omitempty" url:"texts_enabled,omitempty"`
+	PushHistoricalData             *bool                        `json:"push_historical_data,omitempty" url:"push_historical_data,omitempty"`
+	ProviderRawData                *bool                        `json:"provider_raw_data,omitempty" url:"provider_raw_data,omitempty"`
+	RejectDuplicateConnection      *bool                        `json:"reject_duplicate_connection,omitempty" url:"reject_duplicate_connection,omitempty"`
+	SdkPerDeviceActivityTimeseries *bool                        `json:"sdk_per_device_activity_timeseries,omitempty" url:"sdk_per_device_activity_timeseries,omitempty"`
+	EdsPreferences                 *EventDestinationPreferences `json:"eds_preferences,omitempty" url:"eds_preferences,omitempty"`
+	EventTypePrefixes              []string                     `json:"event_type_prefixes,omitempty" url:"event_type_prefixes,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (t *TeamConfig) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TeamConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler TeamConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TeamConfig(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TeamConfig) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
 }

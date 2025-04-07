@@ -4,6 +4,7 @@ package api
 
 import (
 	json "encoding/json"
+	fmt "fmt"
 	core "github.com/tryVital/vital-go/core"
 	time "time"
 )
@@ -36,4 +37,45 @@ func (r *ResendWebhookBody) MarshalJSON() ([]byte, error) {
 		EndAt:   core.NewOptionalDateTime(r.EndAt),
 	}
 	return json.Marshal(marshaler)
+}
+
+type ResendWebhookResponse struct {
+	OrderIds []string `json:"order_ids,omitempty" url:"order_ids,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *ResendWebhookResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *ResendWebhookResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ResendWebhookResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ResendWebhookResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ResendWebhookResponse) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }

@@ -5,6 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
 	time "time"
 )
 
@@ -228,6 +229,2069 @@ type RequestAppointmentRequest struct {
 type LabTestsSimulateOrderProcessRequest struct {
 	FinalStatus *OrderStatus `json:"-" url:"final_status,omitempty"`
 	Delay       *int         `json:"-" url:"delay,omitempty"`
+}
+
+type AddOnOrder struct {
+	MarkerIds   []int    `json:"marker_ids,omitempty" url:"marker_ids,omitempty"`
+	ProviderIds []string `json:"provider_ids,omitempty" url:"provider_ids,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AddOnOrder) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AddOnOrder) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddOnOrder
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AddOnOrder(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AddOnOrder) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AllowedRadius string
+
+const (
+	AllowedRadiusTen        AllowedRadius = "10"
+	AllowedRadiusTwenty     AllowedRadius = "20"
+	AllowedRadiusTwentyFive AllowedRadius = "25"
+	AllowedRadiusFifty      AllowedRadius = "50"
+)
+
+func NewAllowedRadiusFromString(s string) (AllowedRadius, error) {
+	switch s {
+	case "10":
+		return AllowedRadiusTen, nil
+	case "20":
+		return AllowedRadiusTwenty, nil
+	case "25":
+		return AllowedRadiusTwentyFive, nil
+	case "50":
+		return AllowedRadiusFifty, nil
+	}
+	var t AllowedRadius
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AllowedRadius) Ptr() *AllowedRadius {
+	return &a
+}
+
+type AoEAnswer struct {
+	MarkerId   int    `json:"marker_id" url:"marker_id"`
+	QuestionId int    `json:"question_id" url:"question_id"`
+	Answer     string `json:"answer" url:"answer"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AoEAnswer) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AoEAnswer) UnmarshalJSON(data []byte) error {
+	type unmarshaler AoEAnswer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AoEAnswer(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AoEAnswer) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AppointmentAvailabilitySlots struct {
+	Slots    []*DaySlots `json:"slots,omitempty" url:"slots,omitempty"`
+	Timezone *string     `json:"timezone,omitempty" url:"timezone,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AppointmentAvailabilitySlots) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AppointmentAvailabilitySlots) UnmarshalJSON(data []byte) error {
+	type unmarshaler AppointmentAvailabilitySlots
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AppointmentAvailabilitySlots(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AppointmentAvailabilitySlots) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AppointmentBookingRequest struct {
+	BookingKey string `json:"booking_key" url:"booking_key"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AppointmentBookingRequest) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AppointmentBookingRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler AppointmentBookingRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AppointmentBookingRequest(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AppointmentBookingRequest) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AppointmentEventStatus string
+
+const (
+	AppointmentEventStatusPending    AppointmentEventStatus = "pending"
+	AppointmentEventStatusScheduled  AppointmentEventStatus = "scheduled"
+	AppointmentEventStatusCompleted  AppointmentEventStatus = "completed"
+	AppointmentEventStatusCancelled  AppointmentEventStatus = "cancelled"
+	AppointmentEventStatusInProgress AppointmentEventStatus = "in_progress"
+)
+
+func NewAppointmentEventStatusFromString(s string) (AppointmentEventStatus, error) {
+	switch s {
+	case "pending":
+		return AppointmentEventStatusPending, nil
+	case "scheduled":
+		return AppointmentEventStatusScheduled, nil
+	case "completed":
+		return AppointmentEventStatusCompleted, nil
+	case "cancelled":
+		return AppointmentEventStatusCancelled, nil
+	case "in_progress":
+		return AppointmentEventStatusInProgress, nil
+	}
+	var t AppointmentEventStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AppointmentEventStatus) Ptr() *AppointmentEventStatus {
+	return &a
+}
+
+type AppointmentLocation struct {
+	Location     *LngLat    `json:"location,omitempty" url:"location,omitempty"`
+	Address      *UsAddress `json:"address,omitempty" url:"address,omitempty"`
+	Code         string     `json:"code" url:"code"`
+	Name         string     `json:"name" url:"name"`
+	IanaTimezone *string    `json:"iana_timezone,omitempty" url:"iana_timezone,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AppointmentLocation) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AppointmentLocation) UnmarshalJSON(data []byte) error {
+	type unmarshaler AppointmentLocation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AppointmentLocation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AppointmentLocation) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AppointmentProvider string
+
+const (
+	AppointmentProviderGetlabs      AppointmentProvider = "getlabs"
+	AppointmentProviderAxlehealth   AppointmentProvider = "axlehealth"
+	AppointmentProviderPhlebfinders AppointmentProvider = "phlebfinders"
+	AppointmentProviderQuest        AppointmentProvider = "quest"
+)
+
+func NewAppointmentProviderFromString(s string) (AppointmentProvider, error) {
+	switch s {
+	case "getlabs":
+		return AppointmentProviderGetlabs, nil
+	case "axlehealth":
+		return AppointmentProviderAxlehealth, nil
+	case "phlebfinders":
+		return AppointmentProviderPhlebfinders, nil
+	case "quest":
+		return AppointmentProviderQuest, nil
+	}
+	var t AppointmentProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AppointmentProvider) Ptr() *AppointmentProvider {
+	return &a
+}
+
+type AppointmentPscLabs = string
+
+type AppointmentRescheduleRequest struct {
+	BookingKey string `json:"booking_key" url:"booking_key"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AppointmentRescheduleRequest) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AppointmentRescheduleRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler AppointmentRescheduleRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AppointmentRescheduleRequest(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AppointmentRescheduleRequest) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AppointmentServiceType string
+
+const (
+	AppointmentServiceTypeAppointmentReady   AppointmentServiceType = "appointment-ready"
+	AppointmentServiceTypeAppointmentRequest AppointmentServiceType = "appointment-request"
+)
+
+func NewAppointmentServiceTypeFromString(s string) (AppointmentServiceType, error) {
+	switch s {
+	case "appointment-ready":
+		return AppointmentServiceTypeAppointmentReady, nil
+	case "appointment-request":
+		return AppointmentServiceTypeAppointmentRequest, nil
+	}
+	var t AppointmentServiceType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AppointmentServiceType) Ptr() *AppointmentServiceType {
+	return &a
+}
+
+type AppointmentStatus string
+
+const (
+	AppointmentStatusConfirmed  AppointmentStatus = "confirmed"
+	AppointmentStatusPending    AppointmentStatus = "pending"
+	AppointmentStatusInProgress AppointmentStatus = "in_progress"
+	AppointmentStatusCompleted  AppointmentStatus = "completed"
+	AppointmentStatusCancelled  AppointmentStatus = "cancelled"
+)
+
+func NewAppointmentStatusFromString(s string) (AppointmentStatus, error) {
+	switch s {
+	case "confirmed":
+		return AppointmentStatusConfirmed, nil
+	case "pending":
+		return AppointmentStatusPending, nil
+	case "in_progress":
+		return AppointmentStatusInProgress, nil
+	case "completed":
+		return AppointmentStatusCompleted, nil
+	case "cancelled":
+		return AppointmentStatusCancelled, nil
+	}
+	var t AppointmentStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AppointmentStatus) Ptr() *AppointmentStatus {
+	return &a
+}
+
+type AppointmentType string
+
+const (
+	AppointmentTypePhlebotomy           AppointmentType = "phlebotomy"
+	AppointmentTypePatientServiceCenter AppointmentType = "patient_service_center"
+)
+
+func NewAppointmentTypeFromString(s string) (AppointmentType, error) {
+	switch s {
+	case "phlebotomy":
+		return AppointmentTypePhlebotomy, nil
+	case "patient_service_center":
+		return AppointmentTypePatientServiceCenter, nil
+	}
+	var t AppointmentType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AppointmentType) Ptr() *AppointmentType {
+	return &a
+}
+
+type AreaInfo struct {
+	ZipCode     string                  `json:"zip_code" url:"zip_code"`
+	Phlebotomy  *PhlebotomyAreaInfo     `json:"phlebotomy,omitempty" url:"phlebotomy,omitempty"`
+	CentralLabs map[string]*PscAreaInfo `json:"central_labs,omitempty" url:"central_labs,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AreaInfo) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AreaInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler AreaInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AreaInfo(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AreaInfo) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Represent the schema for an individual biomarker result.
+type BiomarkerResult struct {
+	Name            string                 `json:"name" url:"name"`
+	Slug            *string                `json:"slug,omitempty" url:"slug,omitempty"`
+	Value           float64                `json:"value" url:"value"`
+	Result          string                 `json:"result" url:"result"`
+	Type            ResultType             `json:"type" url:"type"`
+	Unit            *string                `json:"unit,omitempty" url:"unit,omitempty"`
+	Timestamp       *time.Time             `json:"timestamp,omitempty" url:"timestamp,omitempty"`
+	Notes           *string                `json:"notes,omitempty" url:"notes,omitempty"`
+	MinRangeValue   *float64               `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
+	MaxRangeValue   *float64               `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
+	IsAboveMaxRange *bool                  `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
+	IsBelowMinRange *bool                  `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
+	Interpretation  *string                `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	Loinc           *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
+	LoincSlug       *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
+	ProviderId      *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	SourceMarkers   []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BiomarkerResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BiomarkerResult) UnmarshalJSON(data []byte) error {
+	type embed BiomarkerResult
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BiomarkerResult(unmarshaler.embed)
+	b.Timestamp = unmarshaler.Timestamp.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BiomarkerResult) MarshalJSON() ([]byte, error) {
+	type embed BiomarkerResult
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp,omitempty"`
+	}{
+		embed:     embed(*b),
+		Timestamp: core.NewOptionalDateTime(b.Timestamp),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BiomarkerResult) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type ClientFacingAppointment struct {
+	Id       string     `json:"id" url:"id"`
+	UserId   string     `json:"user_id" url:"user_id"`
+	OrderId  string     `json:"order_id" url:"order_id"`
+	Address  *UsAddress `json:"address,omitempty" url:"address,omitempty"`
+	Location *LngLat    `json:"location,omitempty" url:"location,omitempty"`
+	// Time is in UTC
+	StartAt *time.Time `json:"start_at,omitempty" url:"start_at,omitempty"`
+	// Time is in UTC
+	EndAt         *time.Time                      `json:"end_at,omitempty" url:"end_at,omitempty"`
+	IanaTimezone  *string                         `json:"iana_timezone,omitempty" url:"iana_timezone,omitempty"`
+	Type          AppointmentType                 `json:"type" url:"type"`
+	Provider      AppointmentProvider             `json:"provider" url:"provider"`
+	Status        AppointmentStatus               `json:"status" url:"status"`
+	ProviderId    string                          `json:"provider_id" url:"provider_id"`
+	CanReschedule bool                            `json:"can_reschedule" url:"can_reschedule"`
+	EventStatus   AppointmentEventStatus          `json:"event_status" url:"event_status"`
+	EventData     map[string]interface{}          `json:"event_data,omitempty" url:"event_data,omitempty"`
+	Events        []*ClientFacingAppointmentEvent `json:"events,omitempty" url:"events,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingAppointment) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingAppointment) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingAppointment
+	var unmarshaler = struct {
+		embed
+		StartAt *core.DateTime `json:"start_at,omitempty"`
+		EndAt   *core.DateTime `json:"end_at,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingAppointment(unmarshaler.embed)
+	c.StartAt = unmarshaler.StartAt.TimePtr()
+	c.EndAt = unmarshaler.EndAt.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingAppointment) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingAppointment
+	var marshaler = struct {
+		embed
+		StartAt *core.DateTime `json:"start_at,omitempty"`
+		EndAt   *core.DateTime `json:"end_at,omitempty"`
+	}{
+		embed:   embed(*c),
+		StartAt: core.NewOptionalDateTime(c.StartAt),
+		EndAt:   core.NewOptionalDateTime(c.EndAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingAppointment) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingAppointmentCancellationReason struct {
+	Id           string `json:"id" url:"id"`
+	Name         string `json:"name" url:"name"`
+	IsRefundable bool   `json:"is_refundable" url:"is_refundable"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingAppointmentCancellationReason) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingAppointmentCancellationReason) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingAppointmentCancellationReason
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingAppointmentCancellationReason(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingAppointmentCancellationReason) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingAppointmentEvent struct {
+	CreatedAt time.Time              `json:"created_at" url:"created_at"`
+	Status    AppointmentEventStatus `json:"status" url:"status"`
+	Data      map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingAppointmentEvent) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingAppointmentEvent) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingAppointmentEvent
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingAppointmentEvent(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingAppointmentEvent) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingAppointmentEvent
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: core.NewDateTime(c.CreatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingAppointmentEvent) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingLabLocation struct {
+	Metadata           *LabLocationMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Distance           int                  `json:"distance" url:"distance"`
+	SiteCode           string               `json:"site_code" url:"site_code"`
+	SupportedBillTypes []Billing            `json:"supported_bill_types,omitempty" url:"supported_bill_types,omitempty"`
+	Location           *LngLat              `json:"location,omitempty" url:"location,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingLabLocation) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingLabLocation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingLabLocation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingLabLocation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLabLocation) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingLabs string
+
+const (
+	ClientFacingLabsQuest        ClientFacingLabs = "quest"
+	ClientFacingLabsLabcorp      ClientFacingLabs = "labcorp"
+	ClientFacingLabsBioreference ClientFacingLabs = "bioreference"
+)
+
+func NewClientFacingLabsFromString(s string) (ClientFacingLabs, error) {
+	switch s {
+	case "quest":
+		return ClientFacingLabsQuest, nil
+	case "labcorp":
+		return ClientFacingLabsLabcorp, nil
+	case "bioreference":
+		return ClientFacingLabsBioreference, nil
+	}
+	var t ClientFacingLabs
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingLabs) Ptr() *ClientFacingLabs {
+	return &c
+}
+
+type ClientFacingLoinc struct {
+	Id   int     `json:"id" url:"id"`
+	Name string  `json:"name" url:"name"`
+	Slug string  `json:"slug" url:"slug"`
+	Code string  `json:"code" url:"code"`
+	Unit *string `json:"unit,omitempty" url:"unit,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingLoinc) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingLoinc) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingLoinc
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingLoinc(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLoinc) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingMarkerComplete struct {
+	Id              int                   `json:"id" url:"id"`
+	Name            string                `json:"name" url:"name"`
+	Slug            string                `json:"slug" url:"slug"`
+	Description     *string               `json:"description,omitempty" url:"description,omitempty"`
+	LabId           *int                  `json:"lab_id,omitempty" url:"lab_id,omitempty"`
+	ProviderId      *string               `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	Type            *MarkerType           `json:"type,omitempty" url:"type,omitempty"`
+	Unit            *string               `json:"unit,omitempty" url:"unit,omitempty"`
+	Price           *string               `json:"price,omitempty" url:"price,omitempty"`
+	Aoe             *AoE                  `json:"aoe,omitempty" url:"aoe,omitempty"`
+	ALaCarteEnabled *bool                 `json:"a_la_carte_enabled,omitempty" url:"a_la_carte_enabled,omitempty"`
+	ExpectedResults []*ClientFacingResult `json:"expected_results,omitempty" url:"expected_results,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingMarkerComplete) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingMarkerComplete) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingMarkerComplete
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingMarkerComplete(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingMarkerComplete) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingResult struct {
+	Id         int                `json:"id" url:"id"`
+	Name       string             `json:"name" url:"name"`
+	Slug       string             `json:"slug" url:"slug"`
+	LabId      *int               `json:"lab_id,omitempty" url:"lab_id,omitempty"`
+	ProviderId *string            `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	Required   bool               `json:"required" url:"required"`
+	Loinc      *ClientFacingLoinc `json:"loinc,omitempty" url:"loinc,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingResult) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingResult(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingResult) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type DaySlots struct {
+	Location *AppointmentLocation `json:"location,omitempty" url:"location,omitempty"`
+	Date     string               `json:"date" url:"date"`
+	Slots    []*TimeSlot          `json:"slots,omitempty" url:"slots,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (d *DaySlots) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DaySlots) UnmarshalJSON(data []byte) error {
+	type unmarshaler DaySlots
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DaySlots(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+
+	d._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DaySlots) String() string {
+	if len(d._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(d._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type FailureType string
+
+const (
+	FailureTypeQuantityNotSufficientFailure FailureType = "quantity_not_sufficient_failure"
+	FailureTypeCollectionProcessFailure     FailureType = "collection_process_failure"
+	FailureTypeDropOffFailure               FailureType = "drop_off_failure"
+	FailureTypeInternalLabFailure           FailureType = "internal_lab_failure"
+	FailureTypeOrderEntryFailure            FailureType = "order_entry_failure"
+	FailureTypeNonFailure                   FailureType = "non_failure"
+	FailureTypeUnknownFailure               FailureType = "unknown_failure"
+	FailureTypePatientConditionFailure      FailureType = "patient_condition_failure"
+	FailureTypeMissingResultCalcFailure     FailureType = "missing_result_calc_failure"
+	FailureTypeMissingDemoAoeCalcFailure    FailureType = "missing_demo_aoe_calc_failure"
+	FailureTypeInsufficientVolume           FailureType = "insufficient_volume"
+)
+
+func NewFailureTypeFromString(s string) (FailureType, error) {
+	switch s {
+	case "quantity_not_sufficient_failure":
+		return FailureTypeQuantityNotSufficientFailure, nil
+	case "collection_process_failure":
+		return FailureTypeCollectionProcessFailure, nil
+	case "drop_off_failure":
+		return FailureTypeDropOffFailure, nil
+	case "internal_lab_failure":
+		return FailureTypeInternalLabFailure, nil
+	case "order_entry_failure":
+		return FailureTypeOrderEntryFailure, nil
+	case "non_failure":
+		return FailureTypeNonFailure, nil
+	case "unknown_failure":
+		return FailureTypeUnknownFailure, nil
+	case "patient_condition_failure":
+		return FailureTypePatientConditionFailure, nil
+	case "missing_result_calc_failure":
+		return FailureTypeMissingResultCalcFailure, nil
+	case "missing_demo_aoe_calc_failure":
+		return FailureTypeMissingDemoAoeCalcFailure, nil
+	case "insufficient_volume":
+		return FailureTypeInsufficientVolume, nil
+	}
+	var t FailureType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f FailureType) Ptr() *FailureType {
+	return &f
+}
+
+type GetMarkersResponse struct {
+	Markers []*ClientFacingMarkerComplete `json:"markers,omitempty" url:"markers,omitempty"`
+	Total   *int                          `json:"total,omitempty" url:"total,omitempty"`
+	Page    *int                          `json:"page,omitempty" url:"page,omitempty"`
+	Size    *int                          `json:"size,omitempty" url:"size,omitempty"`
+	Pages   *int                          `json:"pages,omitempty" url:"pages,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GetMarkersResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMarkersResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetMarkersResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetMarkersResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMarkersResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetOrdersResponse struct {
+	Orders []*ClientFacingOrder `json:"orders,omitempty" url:"orders,omitempty"`
+	Total  *int                 `json:"total,omitempty" url:"total,omitempty"`
+	Page   *int                 `json:"page,omitempty" url:"page,omitempty"`
+	Size   *int                 `json:"size,omitempty" url:"size,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GetOrdersResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetOrdersResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetOrdersResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetOrdersResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetOrdersResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type LabLocationMetadata struct {
+	Name        string                 `json:"name" url:"name"`
+	State       string                 `json:"state" url:"state"`
+	City        string                 `json:"city" url:"city"`
+	ZipCode     string                 `json:"zip_code" url:"zip_code"`
+	FirstLine   string                 `json:"first_line" url:"first_line"`
+	SecondLine  *string                `json:"second_line,omitempty" url:"second_line,omitempty"`
+	PhoneNumber *string                `json:"phone_number,omitempty" url:"phone_number,omitempty"`
+	FaxNumber   *string                `json:"fax_number,omitempty" url:"fax_number,omitempty"`
+	Hours       map[string]interface{} `json:"hours,omitempty" url:"hours,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LabLocationMetadata) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LabLocationMetadata) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabLocationMetadata
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabLocationMetadata(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabLocationMetadata) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type LabResultsMetadata struct {
+	Age            string  `json:"age" url:"age"`
+	Dob            string  `json:"dob" url:"dob"`
+	Clia           *string `json:"clia_#,omitempty" url:"clia_#,omitempty"`
+	Patient        string  `json:"patient" url:"patient"`
+	Provider       *string `json:"provider,omitempty" url:"provider,omitempty"`
+	Laboratory     *string `json:"laboratory,omitempty" url:"laboratory,omitempty"`
+	DateReported   string  `json:"date_reported" url:"date_reported"`
+	DateCollected  *string `json:"date_collected,omitempty" url:"date_collected,omitempty"`
+	SpecimenNumber string  `json:"specimen_number" url:"specimen_number"`
+	DateReceived   *string `json:"date_received,omitempty" url:"date_received,omitempty"`
+	Status         *string `json:"status,omitempty" url:"status,omitempty"`
+	Interpretation *string `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LabResultsMetadata) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LabResultsMetadata) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabResultsMetadata
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabResultsMetadata(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabResultsMetadata) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type LabResultsRaw struct {
+	Metadata       *LabResultsMetadata       `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Results        *LabResultsRawResults     `json:"results,omitempty" url:"results,omitempty"`
+	MissingResults []*MissingBiomarkerResult `json:"missing_results,omitempty" url:"missing_results,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LabResultsRaw) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LabResultsRaw) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabResultsRaw
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabResultsRaw(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabResultsRaw) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type LabResultsRawResults struct {
+	BiomarkerResultList []*BiomarkerResult
+	StringUnknownMap    map[string]interface{}
+}
+
+func NewLabResultsRawResultsFromBiomarkerResultList(value []*BiomarkerResult) *LabResultsRawResults {
+	return &LabResultsRawResults{BiomarkerResultList: value}
+}
+
+func NewLabResultsRawResultsFromStringUnknownMap(value map[string]interface{}) *LabResultsRawResults {
+	return &LabResultsRawResults{StringUnknownMap: value}
+}
+
+func (l *LabResultsRawResults) UnmarshalJSON(data []byte) error {
+	var valueBiomarkerResultList []*BiomarkerResult
+	if err := json.Unmarshal(data, &valueBiomarkerResultList); err == nil {
+		l.BiomarkerResultList = valueBiomarkerResultList
+		return nil
+	}
+	var valueStringUnknownMap map[string]interface{}
+	if err := json.Unmarshal(data, &valueStringUnknownMap); err == nil {
+		l.StringUnknownMap = valueStringUnknownMap
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, l)
+}
+
+func (l LabResultsRawResults) MarshalJSON() ([]byte, error) {
+	if l.BiomarkerResultList != nil {
+		return json.Marshal(l.BiomarkerResultList)
+	}
+	if l.StringUnknownMap != nil {
+		return json.Marshal(l.StringUnknownMap)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+type LabResultsRawResultsVisitor interface {
+	VisitBiomarkerResultList([]*BiomarkerResult) error
+	VisitStringUnknownMap(map[string]interface{}) error
+}
+
+func (l *LabResultsRawResults) Accept(visitor LabResultsRawResultsVisitor) error {
+	if l.BiomarkerResultList != nil {
+		return visitor.VisitBiomarkerResultList(l.BiomarkerResultList)
+	}
+	if l.StringUnknownMap != nil {
+		return visitor.VisitStringUnknownMap(l.StringUnknownMap)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+type LabTestGenerationMethodFilter string
+
+const (
+	LabTestGenerationMethodFilterAuto   LabTestGenerationMethodFilter = "auto"
+	LabTestGenerationMethodFilterManual LabTestGenerationMethodFilter = "manual"
+	LabTestGenerationMethodFilterAll    LabTestGenerationMethodFilter = "all"
+)
+
+func NewLabTestGenerationMethodFilterFromString(s string) (LabTestGenerationMethodFilter, error) {
+	switch s {
+	case "auto":
+		return LabTestGenerationMethodFilterAuto, nil
+	case "manual":
+		return LabTestGenerationMethodFilterManual, nil
+	case "all":
+		return LabTestGenerationMethodFilterAll, nil
+	}
+	var t LabTestGenerationMethodFilter
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestGenerationMethodFilter) Ptr() *LabTestGenerationMethodFilter {
+	return &l
+}
+
+type LabTestResourcesResponse struct {
+	Data []*ClientFacingLabTest `json:"data,omitempty" url:"data,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LabTestResourcesResponse) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LabTestResourcesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabTestResourcesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabTestResourcesResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabTestResourcesResponse) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type LngLat struct {
+	Lng float64 `json:"lng" url:"lng"`
+	Lat float64 `json:"lat" url:"lat"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (l *LngLat) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LngLat) UnmarshalJSON(data []byte) error {
+	type unmarshaler LngLat
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LngLat(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+
+	l._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LngLat) String() string {
+	if len(l._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(l._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type MissingBiomarkerResult struct {
+	Name                string                 `json:"name" url:"name"`
+	Slug                string                 `json:"slug" url:"slug"`
+	InferredFailureType FailureType            `json:"inferred_failure_type" url:"inferred_failure_type"`
+	Note                *string                `json:"note,omitempty" url:"note,omitempty"`
+	Loinc               *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
+	LoincSlug           *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
+	ProviderId          *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	SourceMarkers       []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (m *MissingBiomarkerResult) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MissingBiomarkerResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler MissingBiomarkerResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MissingBiomarkerResult(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MissingBiomarkerResult) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type OrderSetRequest struct {
+	LabTestIds []string    `json:"lab_test_ids,omitempty" url:"lab_test_ids,omitempty"`
+	AddOn      *AddOnOrder `json:"add_on,omitempty" url:"add_on,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (o *OrderSetRequest) GetExtraProperties() map[string]interface{} {
+	return o.extraProperties
+}
+
+func (o *OrderSetRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler OrderSetRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OrderSetRequest(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+
+	o._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OrderSetRequest) String() string {
+	if len(o._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(o._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
+}
+
+type ParentBiomarkerData struct {
+	MarkerId   int     `json:"marker_id" url:"marker_id"`
+	Name       string  `json:"name" url:"name"`
+	Slug       string  `json:"slug" url:"slug"`
+	ProviderId *string `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *ParentBiomarkerData) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ParentBiomarkerData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ParentBiomarkerData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ParentBiomarkerData(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ParentBiomarkerData) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PatientAddress struct {
+	ReceiverName string  `json:"receiver_name" url:"receiver_name"`
+	FirstLine    string  `json:"first_line" url:"first_line"`
+	SecondLine   *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	City         string  `json:"city" url:"city"`
+	State        string  `json:"state" url:"state"`
+	Zip          string  `json:"zip" url:"zip"`
+	Country      string  `json:"country" url:"country"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PatientAddress) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PatientAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatientAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PatientAddress(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PatientAddress) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PhlebotomyAreaInfo struct {
+	IsServed  bool                      `json:"is_served" url:"is_served"`
+	Providers []*PhlebotomyProviderInfo `json:"providers,omitempty" url:"providers,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PhlebotomyAreaInfo) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PhlebotomyAreaInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler PhlebotomyAreaInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PhlebotomyAreaInfo(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PhlebotomyAreaInfo) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PhlebotomyProviderInfo struct {
+	Name         AppointmentProvider      `json:"name" url:"name"`
+	ServiceTypes []AppointmentServiceType `json:"service_types,omitempty" url:"service_types,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PhlebotomyProviderInfo) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PhlebotomyProviderInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler PhlebotomyProviderInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PhlebotomyProviderInfo(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PhlebotomyProviderInfo) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PhysicianCreateRequest struct {
+	FirstName      string   `json:"first_name" url:"first_name"`
+	LastName       string   `json:"last_name" url:"last_name"`
+	Email          *string  `json:"email,omitempty" url:"email,omitempty"`
+	Npi            string   `json:"npi" url:"npi"`
+	LicensedStates []string `json:"licensed_states,omitempty" url:"licensed_states,omitempty"`
+	// An image of the physician signature for health insurance billing
+	SignatureImage *PhysicianCreateRequestSignatureImage `json:"signature_image,omitempty" url:"signature_image,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PhysicianCreateRequest) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PhysicianCreateRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PhysicianCreateRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PhysicianCreateRequest(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PhysicianCreateRequest) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// An image of the physician signature for health insurance billing
+type PhysicianCreateRequestSignatureImage struct {
+	Jpeg *Jpeg
+	Png  *Png
+}
+
+func NewPhysicianCreateRequestSignatureImageFromJpeg(value *Jpeg) *PhysicianCreateRequestSignatureImage {
+	return &PhysicianCreateRequestSignatureImage{Jpeg: value}
+}
+
+func NewPhysicianCreateRequestSignatureImageFromPng(value *Png) *PhysicianCreateRequestSignatureImage {
+	return &PhysicianCreateRequestSignatureImage{Png: value}
+}
+
+func (p *PhysicianCreateRequestSignatureImage) UnmarshalJSON(data []byte) error {
+	valueJpeg := new(Jpeg)
+	if err := json.Unmarshal(data, &valueJpeg); err == nil {
+		p.Jpeg = valueJpeg
+		return nil
+	}
+	valuePng := new(Png)
+	if err := json.Unmarshal(data, &valuePng); err == nil {
+		p.Png = valuePng
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
+}
+
+func (p PhysicianCreateRequestSignatureImage) MarshalJSON() ([]byte, error) {
+	if p.Jpeg != nil {
+		return json.Marshal(p.Jpeg)
+	}
+	if p.Png != nil {
+		return json.Marshal(p.Png)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", p)
+}
+
+type PhysicianCreateRequestSignatureImageVisitor interface {
+	VisitJpeg(*Jpeg) error
+	VisitPng(*Png) error
+}
+
+func (p *PhysicianCreateRequestSignatureImage) Accept(visitor PhysicianCreateRequestSignatureImageVisitor) error {
+	if p.Jpeg != nil {
+		return visitor.VisitJpeg(p.Jpeg)
+	}
+	if p.Png != nil {
+		return visitor.VisitPng(p.Png)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", p)
+}
+
+type PscAreaInfo struct {
+	PatientServiceCenters *PscAreaInfoDetails `json:"patient_service_centers,omitempty" url:"patient_service_centers,omitempty"`
+	SupportedBillTypes    []Billing           `json:"supported_bill_types,omitempty" url:"supported_bill_types,omitempty"`
+	LabId                 int                 `json:"lab_id" url:"lab_id"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PscAreaInfo) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PscAreaInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler PscAreaInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PscAreaInfo(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PscAreaInfo) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PscAreaInfoDetails struct {
+	AppointmentWithVital bool   `json:"appointment_with_vital" url:"appointment_with_vital"`
+	WithinRadius         int    `json:"within_radius" url:"within_radius"`
+	Radius               string `json:"radius" url:"radius"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PscAreaInfoDetails) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PscAreaInfoDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler PscAreaInfoDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PscAreaInfoDetails(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PscAreaInfoDetails) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PscInfo struct {
+	LabId                 int                        `json:"lab_id" url:"lab_id"`
+	Slug                  Labs                       `json:"slug" url:"slug"`
+	PatientServiceCenters []*ClientFacingLabLocation `json:"patient_service_centers,omitempty" url:"patient_service_centers,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PscInfo) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PscInfo) UnmarshalJSON(data []byte) error {
+	type unmarshaler PscInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PscInfo(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PscInfo) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type ResultType string
+
+const (
+	ResultTypeNumeric ResultType = "numeric"
+	ResultTypeRange   ResultType = "range"
+	ResultTypeComment ResultType = "comment"
+)
+
+func NewResultTypeFromString(s string) (ResultType, error) {
+	switch s {
+	case "numeric":
+		return ResultTypeNumeric, nil
+	case "range":
+		return ResultTypeRange, nil
+	case "comment":
+		return ResultTypeComment, nil
+	}
+	var t ResultType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r ResultType) Ptr() *ResultType {
+	return &r
+}
+
+type TimeSlot struct {
+	BookingKey *string `json:"booking_key,omitempty" url:"booking_key,omitempty"`
+	// Time is in UTC
+	Start time.Time `json:"start" url:"start"`
+	// Time is in UTC
+	End                      time.Time  `json:"end" url:"end"`
+	ExpiresAt                *time.Time `json:"expires_at,omitempty" url:"expires_at,omitempty"`
+	Price                    float64    `json:"price" url:"price"`
+	IsPriority               bool       `json:"is_priority" url:"is_priority"`
+	NumAppointmentsAvailable int        `json:"num_appointments_available" url:"num_appointments_available"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (t *TimeSlot) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TimeSlot) UnmarshalJSON(data []byte) error {
+	type embed TimeSlot
+	var unmarshaler = struct {
+		embed
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		ExpiresAt *core.DateTime `json:"expires_at,omitempty"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TimeSlot(unmarshaler.embed)
+	t.Start = unmarshaler.Start.Time()
+	t.End = unmarshaler.End.Time()
+	t.ExpiresAt = unmarshaler.ExpiresAt.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TimeSlot) MarshalJSON() ([]byte, error) {
+	type embed TimeSlot
+	var marshaler = struct {
+		embed
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		ExpiresAt *core.DateTime `json:"expires_at,omitempty"`
+	}{
+		embed:     embed(*t),
+		Start:     core.NewDateTime(t.Start),
+		End:       core.NewDateTime(t.End),
+		ExpiresAt: core.NewOptionalDateTime(t.ExpiresAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TimeSlot) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type UsAddress struct {
+	FirstLine  string  `json:"first_line" url:"first_line"`
+	SecondLine *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	City       string  `json:"city" url:"city"`
+	State      string  `json:"state" url:"state"`
+	ZipCode    string  `json:"zip_code" url:"zip_code"`
+	// Deprecated. Use `second_line` instead to provide the unit number. Subject to removal after 20 Nov 2023.
+	Unit *string `json:"unit,omitempty" url:"unit,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (u *UsAddress) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UsAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler UsAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UsAddress(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UsAddress) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
 }
 
 type LabTestsGetOrdersRequestOrderDirection string

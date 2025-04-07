@@ -5,6 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
 )
 
 type QueryBatch struct {
@@ -39,6 +40,2004 @@ func (q *QueryBatch) MarshalJSON() ([]byte, error) {
 		Accept: "*/*",
 	}
 	return json.Marshal(marshaler)
+}
+
+type ActivityColumnExpr struct {
+	Activity ActivityColumnExprActivity `json:"activity" url:"activity"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *ActivityColumnExpr) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *ActivityColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler ActivityColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ActivityColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ActivityColumnExpr) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ActivityColumnExprActivity string
+
+const (
+	ActivityColumnExprActivityDate                     ActivityColumnExprActivity = "date"
+	ActivityColumnExprActivityCaloriesTotal            ActivityColumnExprActivity = "calories_total"
+	ActivityColumnExprActivityCaloriesActive           ActivityColumnExprActivity = "calories_active"
+	ActivityColumnExprActivitySteps                    ActivityColumnExprActivity = "steps"
+	ActivityColumnExprActivityDistanceMeter            ActivityColumnExprActivity = "distance_meter"
+	ActivityColumnExprActivityFloorsClimbed            ActivityColumnExprActivity = "floors_climbed"
+	ActivityColumnExprActivityDurationActiveSecond     ActivityColumnExprActivity = "duration_active_second"
+	ActivityColumnExprActivityIntensitySedentarySecond ActivityColumnExprActivity = "intensity_sedentary_second"
+	ActivityColumnExprActivityIntensityLowSecond       ActivityColumnExprActivity = "intensity_low_second"
+	ActivityColumnExprActivityIntensityMediumSecond    ActivityColumnExprActivity = "intensity_medium_second"
+	ActivityColumnExprActivityIntensityHighSecond      ActivityColumnExprActivity = "intensity_high_second"
+	ActivityColumnExprActivityHeartRateMean            ActivityColumnExprActivity = "heart_rate_mean"
+	ActivityColumnExprActivityHeartRateMinimum         ActivityColumnExprActivity = "heart_rate_minimum"
+	ActivityColumnExprActivityHeartRateMaximum         ActivityColumnExprActivity = "heart_rate_maximum"
+	ActivityColumnExprActivityHeartRateResting         ActivityColumnExprActivity = "heart_rate_resting"
+	ActivityColumnExprActivityHeartRateMeanWalking     ActivityColumnExprActivity = "heart_rate_mean_walking"
+	ActivityColumnExprActivityWheelchairUse            ActivityColumnExprActivity = "wheelchair_use"
+	ActivityColumnExprActivityWheelchairPush           ActivityColumnExprActivity = "wheelchair_push"
+	ActivityColumnExprActivitySourceType               ActivityColumnExprActivity = "source_type"
+	ActivityColumnExprActivitySourceProvider           ActivityColumnExprActivity = "source_provider"
+	ActivityColumnExprActivitySourceAppId              ActivityColumnExprActivity = "source_app_id"
+	ActivityColumnExprActivityTimeZone                 ActivityColumnExprActivity = "time_zone"
+	ActivityColumnExprActivityTimeZoneOffset           ActivityColumnExprActivity = "time_zone_offset"
+)
+
+func NewActivityColumnExprActivityFromString(s string) (ActivityColumnExprActivity, error) {
+	switch s {
+	case "date":
+		return ActivityColumnExprActivityDate, nil
+	case "calories_total":
+		return ActivityColumnExprActivityCaloriesTotal, nil
+	case "calories_active":
+		return ActivityColumnExprActivityCaloriesActive, nil
+	case "steps":
+		return ActivityColumnExprActivitySteps, nil
+	case "distance_meter":
+		return ActivityColumnExprActivityDistanceMeter, nil
+	case "floors_climbed":
+		return ActivityColumnExprActivityFloorsClimbed, nil
+	case "duration_active_second":
+		return ActivityColumnExprActivityDurationActiveSecond, nil
+	case "intensity_sedentary_second":
+		return ActivityColumnExprActivityIntensitySedentarySecond, nil
+	case "intensity_low_second":
+		return ActivityColumnExprActivityIntensityLowSecond, nil
+	case "intensity_medium_second":
+		return ActivityColumnExprActivityIntensityMediumSecond, nil
+	case "intensity_high_second":
+		return ActivityColumnExprActivityIntensityHighSecond, nil
+	case "heart_rate_mean":
+		return ActivityColumnExprActivityHeartRateMean, nil
+	case "heart_rate_minimum":
+		return ActivityColumnExprActivityHeartRateMinimum, nil
+	case "heart_rate_maximum":
+		return ActivityColumnExprActivityHeartRateMaximum, nil
+	case "heart_rate_resting":
+		return ActivityColumnExprActivityHeartRateResting, nil
+	case "heart_rate_mean_walking":
+		return ActivityColumnExprActivityHeartRateMeanWalking, nil
+	case "wheelchair_use":
+		return ActivityColumnExprActivityWheelchairUse, nil
+	case "wheelchair_push":
+		return ActivityColumnExprActivityWheelchairPush, nil
+	case "source_type":
+		return ActivityColumnExprActivitySourceType, nil
+	case "source_provider":
+		return ActivityColumnExprActivitySourceProvider, nil
+	case "source_app_id":
+		return ActivityColumnExprActivitySourceAppId, nil
+	case "time_zone":
+		return ActivityColumnExprActivityTimeZone, nil
+	case "time_zone_offset":
+		return ActivityColumnExprActivityTimeZoneOffset, nil
+	}
+	var t ActivityColumnExprActivity
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a ActivityColumnExprActivity) Ptr() *ActivityColumnExprActivity {
+	return &a
+}
+
+type AggregateExpr struct {
+	Arg  *AggregateExprArg `json:"arg,omitempty" url:"arg,omitempty"`
+	Func AggregateExprFunc `json:"func" url:"func"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AggregateExpr) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AggregateExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler AggregateExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AggregateExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AggregateExpr) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AggregateExprArg struct {
+	SleepColumnExpr            *SleepColumnExpr
+	ActivityColumnExpr         *ActivityColumnExpr
+	WorkoutColumnExpr          *WorkoutColumnExpr
+	BodyColumnExpr             *BodyColumnExpr
+	IndexColumnExpr            *IndexColumnExpr
+	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr   *ChronotypeValueMacroExpr
+	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
+}
+
+func NewAggregateExprArgFromSleepColumnExpr(value *SleepColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{SleepColumnExpr: value}
+}
+
+func NewAggregateExprArgFromActivityColumnExpr(value *ActivityColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{ActivityColumnExpr: value}
+}
+
+func NewAggregateExprArgFromWorkoutColumnExpr(value *WorkoutColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{WorkoutColumnExpr: value}
+}
+
+func NewAggregateExprArgFromBodyColumnExpr(value *BodyColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{BodyColumnExpr: value}
+}
+
+func NewAggregateExprArgFromIndexColumnExpr(value *IndexColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{IndexColumnExpr: value}
+}
+
+func NewAggregateExprArgFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *AggregateExprArg {
+	return &AggregateExprArg{SleepScoreValueMacroExpr: value}
+}
+
+func NewAggregateExprArgFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *AggregateExprArg {
+	return &AggregateExprArg{ChronotypeValueMacroExpr: value}
+}
+
+func NewAggregateExprArgFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *AggregateExprArg {
+	return &AggregateExprArg{UnrecognizedValueMacroExpr: value}
+}
+
+func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
+	valueSleepColumnExpr := new(SleepColumnExpr)
+	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
+		a.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueActivityColumnExpr := new(ActivityColumnExpr)
+	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
+		a.ActivityColumnExpr = valueActivityColumnExpr
+		return nil
+	}
+	valueWorkoutColumnExpr := new(WorkoutColumnExpr)
+	if err := json.Unmarshal(data, &valueWorkoutColumnExpr); err == nil {
+		a.WorkoutColumnExpr = valueWorkoutColumnExpr
+		return nil
+	}
+	valueBodyColumnExpr := new(BodyColumnExpr)
+	if err := json.Unmarshal(data, &valueBodyColumnExpr); err == nil {
+		a.BodyColumnExpr = valueBodyColumnExpr
+		return nil
+	}
+	valueIndexColumnExpr := new(IndexColumnExpr)
+	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
+		a.IndexColumnExpr = valueIndexColumnExpr
+		return nil
+	}
+	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
+	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
+		a.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
+		return nil
+	}
+	valueChronotypeValueMacroExpr := new(ChronotypeValueMacroExpr)
+	if err := json.Unmarshal(data, &valueChronotypeValueMacroExpr); err == nil {
+		a.ChronotypeValueMacroExpr = valueChronotypeValueMacroExpr
+		return nil
+	}
+	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
+	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
+		a.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
+}
+
+func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
+	if a.SleepColumnExpr != nil {
+		return json.Marshal(a.SleepColumnExpr)
+	}
+	if a.ActivityColumnExpr != nil {
+		return json.Marshal(a.ActivityColumnExpr)
+	}
+	if a.WorkoutColumnExpr != nil {
+		return json.Marshal(a.WorkoutColumnExpr)
+	}
+	if a.BodyColumnExpr != nil {
+		return json.Marshal(a.BodyColumnExpr)
+	}
+	if a.IndexColumnExpr != nil {
+		return json.Marshal(a.IndexColumnExpr)
+	}
+	if a.SleepScoreValueMacroExpr != nil {
+		return json.Marshal(a.SleepScoreValueMacroExpr)
+	}
+	if a.ChronotypeValueMacroExpr != nil {
+		return json.Marshal(a.ChronotypeValueMacroExpr)
+	}
+	if a.UnrecognizedValueMacroExpr != nil {
+		return json.Marshal(a.UnrecognizedValueMacroExpr)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type AggregateExprArgVisitor interface {
+	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitActivityColumnExpr(*ActivityColumnExpr) error
+	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
+	VisitBodyColumnExpr(*BodyColumnExpr) error
+	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
+	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
+	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
+}
+
+func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
+	if a.SleepColumnExpr != nil {
+		return visitor.VisitSleepColumnExpr(a.SleepColumnExpr)
+	}
+	if a.ActivityColumnExpr != nil {
+		return visitor.VisitActivityColumnExpr(a.ActivityColumnExpr)
+	}
+	if a.WorkoutColumnExpr != nil {
+		return visitor.VisitWorkoutColumnExpr(a.WorkoutColumnExpr)
+	}
+	if a.BodyColumnExpr != nil {
+		return visitor.VisitBodyColumnExpr(a.BodyColumnExpr)
+	}
+	if a.IndexColumnExpr != nil {
+		return visitor.VisitIndexColumnExpr(a.IndexColumnExpr)
+	}
+	if a.SleepScoreValueMacroExpr != nil {
+		return visitor.VisitSleepScoreValueMacroExpr(a.SleepScoreValueMacroExpr)
+	}
+	if a.ChronotypeValueMacroExpr != nil {
+		return visitor.VisitChronotypeValueMacroExpr(a.ChronotypeValueMacroExpr)
+	}
+	if a.UnrecognizedValueMacroExpr != nil {
+		return visitor.VisitUnrecognizedValueMacroExpr(a.UnrecognizedValueMacroExpr)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type AggregateExprFunc string
+
+const (
+	AggregateExprFuncMean   AggregateExprFunc = "mean"
+	AggregateExprFuncMin    AggregateExprFunc = "min"
+	AggregateExprFuncMax    AggregateExprFunc = "max"
+	AggregateExprFuncSum    AggregateExprFunc = "sum"
+	AggregateExprFuncCount  AggregateExprFunc = "count"
+	AggregateExprFuncMedian AggregateExprFunc = "median"
+	AggregateExprFuncStddev AggregateExprFunc = "stddev"
+	AggregateExprFuncOldest AggregateExprFunc = "oldest"
+	AggregateExprFuncNewest AggregateExprFunc = "newest"
+)
+
+func NewAggregateExprFuncFromString(s string) (AggregateExprFunc, error) {
+	switch s {
+	case "mean":
+		return AggregateExprFuncMean, nil
+	case "min":
+		return AggregateExprFuncMin, nil
+	case "max":
+		return AggregateExprFuncMax, nil
+	case "sum":
+		return AggregateExprFuncSum, nil
+	case "count":
+		return AggregateExprFuncCount, nil
+	case "median":
+		return AggregateExprFuncMedian, nil
+	case "stddev":
+		return AggregateExprFuncStddev, nil
+	case "oldest":
+		return AggregateExprFuncOldest, nil
+	case "newest":
+		return AggregateExprFuncNewest, nil
+	}
+	var t AggregateExprFunc
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AggregateExprFunc) Ptr() *AggregateExprFunc {
+	return &a
+}
+
+type AggregationResponse struct {
+	Results []*AggregationResult `json:"results,omitempty" url:"results,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AggregationResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AggregationResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AggregationResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AggregationResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AggregationResponse) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AggregationResult struct {
+	// The result table of the query, organized in a column oriented format.
+	Table map[string][]interface{} `json:"table,omitempty" url:"table,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AggregationResult) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AggregationResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler AggregationResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AggregationResult(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AggregationResult) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type BodyColumnExpr struct {
+	Body BodyColumnExprBody `json:"body" url:"body"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BodyColumnExpr) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BodyColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler BodyColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BodyColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BodyColumnExpr) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BodyColumnExprBody string
+
+const (
+	BodyColumnExprBodyMeasuredAt                   BodyColumnExprBody = "measured_at"
+	BodyColumnExprBodyWeightKilogram               BodyColumnExprBody = "weight_kilogram"
+	BodyColumnExprBodyFatMassPercentage            BodyColumnExprBody = "fat_mass_percentage"
+	BodyColumnExprBodyWaterPercentage              BodyColumnExprBody = "water_percentage"
+	BodyColumnExprBodyMuscleMassPercentage         BodyColumnExprBody = "muscle_mass_percentage"
+	BodyColumnExprBodyVisceralFatIndex             BodyColumnExprBody = "visceral_fat_index"
+	BodyColumnExprBodyBoneMassPercentage           BodyColumnExprBody = "bone_mass_percentage"
+	BodyColumnExprBodyBodyMassIndex                BodyColumnExprBody = "body_mass_index"
+	BodyColumnExprBodyLeanBodyMassKilogram         BodyColumnExprBody = "lean_body_mass_kilogram"
+	BodyColumnExprBodyWaistCircumferenceCentimeter BodyColumnExprBody = "waist_circumference_centimeter"
+	BodyColumnExprBodySourceType                   BodyColumnExprBody = "source_type"
+	BodyColumnExprBodySourceProvider               BodyColumnExprBody = "source_provider"
+	BodyColumnExprBodySourceAppId                  BodyColumnExprBody = "source_app_id"
+	BodyColumnExprBodyTimeZone                     BodyColumnExprBody = "time_zone"
+)
+
+func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
+	switch s {
+	case "measured_at":
+		return BodyColumnExprBodyMeasuredAt, nil
+	case "weight_kilogram":
+		return BodyColumnExprBodyWeightKilogram, nil
+	case "fat_mass_percentage":
+		return BodyColumnExprBodyFatMassPercentage, nil
+	case "water_percentage":
+		return BodyColumnExprBodyWaterPercentage, nil
+	case "muscle_mass_percentage":
+		return BodyColumnExprBodyMuscleMassPercentage, nil
+	case "visceral_fat_index":
+		return BodyColumnExprBodyVisceralFatIndex, nil
+	case "bone_mass_percentage":
+		return BodyColumnExprBodyBoneMassPercentage, nil
+	case "body_mass_index":
+		return BodyColumnExprBodyBodyMassIndex, nil
+	case "lean_body_mass_kilogram":
+		return BodyColumnExprBodyLeanBodyMassKilogram, nil
+	case "waist_circumference_centimeter":
+		return BodyColumnExprBodyWaistCircumferenceCentimeter, nil
+	case "source_type":
+		return BodyColumnExprBodySourceType, nil
+	case "source_provider":
+		return BodyColumnExprBodySourceProvider, nil
+	case "source_app_id":
+		return BodyColumnExprBodySourceAppId, nil
+	case "time_zone":
+		return BodyColumnExprBodyTimeZone, nil
+	}
+	var t BodyColumnExprBody
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BodyColumnExprBody) Ptr() *BodyColumnExprBody {
+	return &b
+}
+
+type ChronotypeValueMacroExpr struct {
+	Version    *string `json:"version,omitempty" url:"version,omitempty"`
+	valueMacro string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ChronotypeValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ChronotypeValueMacroExpr) ValueMacro() string {
+	return c.valueMacro
+}
+
+func (c *ChronotypeValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type embed ChronotypeValueMacroExpr
+	var unmarshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ChronotypeValueMacroExpr(unmarshaler.embed)
+	if unmarshaler.ValueMacro != "chronotype" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "chronotype", unmarshaler.ValueMacro)
+	}
+	c.valueMacro = unmarshaler.ValueMacro
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "value_macro")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ChronotypeValueMacroExpr) MarshalJSON() ([]byte, error) {
+	type embed ChronotypeValueMacroExpr
+	var marshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed:      embed(*c),
+		ValueMacro: "chronotype",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ChronotypeValueMacroExpr) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type DatePartExpr struct {
+	Arg      *DatePartExprArg     `json:"arg,omitempty" url:"arg,omitempty"`
+	DatePart DatePartExprDatePart `json:"date_part" url:"date_part"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (d *DatePartExpr) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DatePartExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler DatePartExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DatePartExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+
+	d._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DatePartExpr) String() string {
+	if len(d._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(d._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type DatePartExprArg struct {
+	IndexColumnExpr *IndexColumnExpr
+	Placeholder     *Placeholder
+}
+
+func NewDatePartExprArgFromIndexColumnExpr(value *IndexColumnExpr) *DatePartExprArg {
+	return &DatePartExprArg{IndexColumnExpr: value}
+}
+
+func NewDatePartExprArgFromPlaceholder(value *Placeholder) *DatePartExprArg {
+	return &DatePartExprArg{Placeholder: value}
+}
+
+func (d *DatePartExprArg) UnmarshalJSON(data []byte) error {
+	valueIndexColumnExpr := new(IndexColumnExpr)
+	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
+		d.IndexColumnExpr = valueIndexColumnExpr
+		return nil
+	}
+	valuePlaceholder := new(Placeholder)
+	if err := json.Unmarshal(data, &valuePlaceholder); err == nil {
+		d.Placeholder = valuePlaceholder
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, d)
+}
+
+func (d DatePartExprArg) MarshalJSON() ([]byte, error) {
+	if d.IndexColumnExpr != nil {
+		return json.Marshal(d.IndexColumnExpr)
+	}
+	if d.Placeholder != nil {
+		return json.Marshal(d.Placeholder)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", d)
+}
+
+type DatePartExprArgVisitor interface {
+	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitPlaceholder(*Placeholder) error
+}
+
+func (d *DatePartExprArg) Accept(visitor DatePartExprArgVisitor) error {
+	if d.IndexColumnExpr != nil {
+		return visitor.VisitIndexColumnExpr(d.IndexColumnExpr)
+	}
+	if d.Placeholder != nil {
+		return visitor.VisitPlaceholder(d.Placeholder)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", d)
+}
+
+type DatePartExprDatePart string
+
+const (
+	DatePartExprDatePartMinute     DatePartExprDatePart = "minute"
+	DatePartExprDatePartHour       DatePartExprDatePart = "hour"
+	DatePartExprDatePartDay        DatePartExprDatePart = "day"
+	DatePartExprDatePartWeek       DatePartExprDatePart = "week"
+	DatePartExprDatePartMonth      DatePartExprDatePart = "month"
+	DatePartExprDatePartYear       DatePartExprDatePart = "year"
+	DatePartExprDatePartWeekday    DatePartExprDatePart = "weekday"
+	DatePartExprDatePartWeekOfYear DatePartExprDatePart = "week_of_year"
+	DatePartExprDatePartDayOfYear  DatePartExprDatePart = "day_of_year"
+)
+
+func NewDatePartExprDatePartFromString(s string) (DatePartExprDatePart, error) {
+	switch s {
+	case "minute":
+		return DatePartExprDatePartMinute, nil
+	case "hour":
+		return DatePartExprDatePartHour, nil
+	case "day":
+		return DatePartExprDatePartDay, nil
+	case "week":
+		return DatePartExprDatePartWeek, nil
+	case "month":
+		return DatePartExprDatePartMonth, nil
+	case "year":
+		return DatePartExprDatePartYear, nil
+	case "weekday":
+		return DatePartExprDatePartWeekday, nil
+	case "week_of_year":
+		return DatePartExprDatePartWeekOfYear, nil
+	case "day_of_year":
+		return DatePartExprDatePartDayOfYear, nil
+	}
+	var t DatePartExprDatePart
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DatePartExprDatePart) Ptr() *DatePartExprDatePart {
+	return &d
+}
+
+type DateTruncExpr struct {
+	DateTrunc *Period           `json:"date_trunc,omitempty" url:"date_trunc,omitempty"`
+	Arg       *DateTruncExprArg `json:"arg,omitempty" url:"arg,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (d *DateTruncExpr) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DateTruncExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler DateTruncExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DateTruncExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+
+	d._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DateTruncExpr) String() string {
+	if len(d._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(d._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type DateTruncExprArg struct {
+	IndexColumnExpr *IndexColumnExpr
+	Placeholder     *Placeholder
+}
+
+func NewDateTruncExprArgFromIndexColumnExpr(value *IndexColumnExpr) *DateTruncExprArg {
+	return &DateTruncExprArg{IndexColumnExpr: value}
+}
+
+func NewDateTruncExprArgFromPlaceholder(value *Placeholder) *DateTruncExprArg {
+	return &DateTruncExprArg{Placeholder: value}
+}
+
+func (d *DateTruncExprArg) UnmarshalJSON(data []byte) error {
+	valueIndexColumnExpr := new(IndexColumnExpr)
+	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
+		d.IndexColumnExpr = valueIndexColumnExpr
+		return nil
+	}
+	valuePlaceholder := new(Placeholder)
+	if err := json.Unmarshal(data, &valuePlaceholder); err == nil {
+		d.Placeholder = valuePlaceholder
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, d)
+}
+
+func (d DateTruncExprArg) MarshalJSON() ([]byte, error) {
+	if d.IndexColumnExpr != nil {
+		return json.Marshal(d.IndexColumnExpr)
+	}
+	if d.Placeholder != nil {
+		return json.Marshal(d.Placeholder)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", d)
+}
+
+type DateTruncExprArgVisitor interface {
+	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitPlaceholder(*Placeholder) error
+}
+
+func (d *DateTruncExprArg) Accept(visitor DateTruncExprArgVisitor) error {
+	if d.IndexColumnExpr != nil {
+		return visitor.VisitIndexColumnExpr(d.IndexColumnExpr)
+	}
+	if d.Placeholder != nil {
+		return visitor.VisitPlaceholder(d.Placeholder)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", d)
+}
+
+type GroupKeyColumnExpr struct {
+	GroupKey *GroupKeyColumnExprGroupKey `json:"group_key,omitempty" url:"group_key,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupKeyColumnExpr) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupKeyColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupKeyColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupKeyColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupKeyColumnExpr) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupKeyColumnExprGroupKey struct {
+	Integer int
+	Select  Select
+}
+
+func NewGroupKeyColumnExprGroupKeyFromInteger(value int) *GroupKeyColumnExprGroupKey {
+	return &GroupKeyColumnExprGroupKey{Integer: value}
+}
+
+func NewGroupKeyColumnExprGroupKeyFromSelect(value Select) *GroupKeyColumnExprGroupKey {
+	return &GroupKeyColumnExprGroupKey{Select: value}
+}
+
+func (g *GroupKeyColumnExprGroupKey) UnmarshalJSON(data []byte) error {
+	var valueInteger int
+	if err := json.Unmarshal(data, &valueInteger); err == nil {
+		g.Integer = valueInteger
+		return nil
+	}
+	var valueSelect Select
+	if err := json.Unmarshal(data, &valueSelect); err == nil {
+		g.Select = valueSelect
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, g)
+}
+
+func (g GroupKeyColumnExprGroupKey) MarshalJSON() ([]byte, error) {
+	if g.Integer != 0 {
+		return json.Marshal(g.Integer)
+	}
+	if g.Select != "" {
+		return json.Marshal(g.Select)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", g)
+}
+
+type GroupKeyColumnExprGroupKeyVisitor interface {
+	VisitInteger(int) error
+	VisitSelect(Select) error
+}
+
+func (g *GroupKeyColumnExprGroupKey) Accept(visitor GroupKeyColumnExprGroupKeyVisitor) error {
+	if g.Integer != 0 {
+		return visitor.VisitInteger(g.Integer)
+	}
+	if g.Select != "" {
+		return visitor.VisitSelect(g.Select)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", g)
+}
+
+type IndexColumnExpr struct {
+	Index IndexColumnExprIndex `json:"index" url:"index"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (i *IndexColumnExpr) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *IndexColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler IndexColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IndexColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IndexColumnExpr) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type IndexColumnExprIndex string
+
+const (
+	IndexColumnExprIndexSleep    IndexColumnExprIndex = "sleep"
+	IndexColumnExprIndexActivity IndexColumnExprIndex = "activity"
+	IndexColumnExprIndexWorkout  IndexColumnExprIndex = "workout"
+	IndexColumnExprIndexBody     IndexColumnExprIndex = "body"
+	IndexColumnExprIndexMeal     IndexColumnExprIndex = "meal"
+)
+
+func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
+	switch s {
+	case "sleep":
+		return IndexColumnExprIndexSleep, nil
+	case "activity":
+		return IndexColumnExprIndexActivity, nil
+	case "workout":
+		return IndexColumnExprIndexWorkout, nil
+	case "body":
+		return IndexColumnExprIndexBody, nil
+	case "meal":
+		return IndexColumnExprIndexMeal, nil
+	}
+	var t IndexColumnExprIndex
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i IndexColumnExprIndex) Ptr() *IndexColumnExprIndex {
+	return &i
+}
+
+type Period struct {
+	Value *int       `json:"value,omitempty" url:"value,omitempty"`
+	Unit  PeriodUnit `json:"unit" url:"unit"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *Period) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *Period) UnmarshalJSON(data []byte) error {
+	type unmarshaler Period
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Period(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Period) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PeriodUnit string
+
+const (
+	PeriodUnitMinute PeriodUnit = "minute"
+	PeriodUnitHour   PeriodUnit = "hour"
+	PeriodUnitDay    PeriodUnit = "day"
+	PeriodUnitWeek   PeriodUnit = "week"
+	PeriodUnitMonth  PeriodUnit = "month"
+	PeriodUnitYear   PeriodUnit = "year"
+)
+
+func NewPeriodUnitFromString(s string) (PeriodUnit, error) {
+	switch s {
+	case "minute":
+		return PeriodUnitMinute, nil
+	case "hour":
+		return PeriodUnitHour, nil
+	case "day":
+		return PeriodUnitDay, nil
+	case "week":
+		return PeriodUnitWeek, nil
+	case "month":
+		return PeriodUnitMonth, nil
+	case "year":
+		return PeriodUnitYear, nil
+	}
+	var t PeriodUnit
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PeriodUnit) Ptr() *PeriodUnit {
+	return &p
+}
+
+type Placeholder struct {
+	Placeholder bool `json:"placeholder" url:"placeholder"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *Placeholder) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *Placeholder) UnmarshalJSON(data []byte) error {
+	type unmarshaler Placeholder
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Placeholder(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Placeholder) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type Query struct {
+	Select        []*QuerySelectItem  `json:"select,omitempty" url:"select,omitempty"`
+	GroupBy       []*QueryGroupByItem `json:"group_by,omitempty" url:"group_by,omitempty"`
+	SplitBySource *bool               `json:"split_by_source,omitempty" url:"split_by_source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (q *Query) GetExtraProperties() map[string]interface{} {
+	return q.extraProperties
+}
+
+func (q *Query) UnmarshalJSON(data []byte) error {
+	type unmarshaler Query
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = Query(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *Query) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+type QueryConfig struct {
+	ProviderPriorityOverrides []*QueryConfigProviderPriorityOverridesItem `json:"provider_priority_overrides,omitempty" url:"provider_priority_overrides,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (q *QueryConfig) GetExtraProperties() map[string]interface{} {
+	return q.extraProperties
+}
+
+func (q *QueryConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QueryConfig(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+
+	q._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryConfig) String() string {
+	if len(q._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(q._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+type QueryConfigProviderPriorityOverridesItem struct {
+	Providers Providers
+	Labs      Labs
+}
+
+func NewQueryConfigProviderPriorityOverridesItemFromProviders(value Providers) *QueryConfigProviderPriorityOverridesItem {
+	return &QueryConfigProviderPriorityOverridesItem{Providers: value}
+}
+
+func NewQueryConfigProviderPriorityOverridesItemFromLabs(value Labs) *QueryConfigProviderPriorityOverridesItem {
+	return &QueryConfigProviderPriorityOverridesItem{Labs: value}
+}
+
+func (q *QueryConfigProviderPriorityOverridesItem) UnmarshalJSON(data []byte) error {
+	var valueProviders Providers
+	if err := json.Unmarshal(data, &valueProviders); err == nil {
+		q.Providers = valueProviders
+		return nil
+	}
+	var valueLabs Labs
+	if err := json.Unmarshal(data, &valueLabs); err == nil {
+		q.Labs = valueLabs
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QueryConfigProviderPriorityOverridesItem) MarshalJSON() ([]byte, error) {
+	if q.Providers != "" {
+		return json.Marshal(q.Providers)
+	}
+	if q.Labs != "" {
+		return json.Marshal(q.Labs)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type QueryConfigProviderPriorityOverridesItemVisitor interface {
+	VisitProviders(Providers) error
+	VisitLabs(Labs) error
+}
+
+func (q *QueryConfigProviderPriorityOverridesItem) Accept(visitor QueryConfigProviderPriorityOverridesItemVisitor) error {
+	if q.Providers != "" {
+		return visitor.VisitProviders(q.Providers)
+	}
+	if q.Labs != "" {
+		return visitor.VisitLabs(q.Labs)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type QueryGroupByItem struct {
+	DateTruncExpr *DateTruncExpr
+	DatePartExpr  *DatePartExpr
+}
+
+func NewQueryGroupByItemFromDateTruncExpr(value *DateTruncExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{DateTruncExpr: value}
+}
+
+func NewQueryGroupByItemFromDatePartExpr(value *DatePartExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{DatePartExpr: value}
+}
+
+func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
+	valueDateTruncExpr := new(DateTruncExpr)
+	if err := json.Unmarshal(data, &valueDateTruncExpr); err == nil {
+		q.DateTruncExpr = valueDateTruncExpr
+		return nil
+	}
+	valueDatePartExpr := new(DatePartExpr)
+	if err := json.Unmarshal(data, &valueDatePartExpr); err == nil {
+		q.DatePartExpr = valueDatePartExpr
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
+	if q.DateTruncExpr != nil {
+		return json.Marshal(q.DateTruncExpr)
+	}
+	if q.DatePartExpr != nil {
+		return json.Marshal(q.DatePartExpr)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type QueryGroupByItemVisitor interface {
+	VisitDateTruncExpr(*DateTruncExpr) error
+	VisitDatePartExpr(*DatePartExpr) error
+}
+
+func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
+	if q.DateTruncExpr != nil {
+		return visitor.VisitDateTruncExpr(q.DateTruncExpr)
+	}
+	if q.DatePartExpr != nil {
+		return visitor.VisitDatePartExpr(q.DatePartExpr)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type QuerySelectItem struct {
+	AggregateExpr              *AggregateExpr
+	GroupKeyColumnExpr         *GroupKeyColumnExpr
+	SleepColumnExpr            *SleepColumnExpr
+	ActivityColumnExpr         *ActivityColumnExpr
+	WorkoutColumnExpr          *WorkoutColumnExpr
+	BodyColumnExpr             *BodyColumnExpr
+	IndexColumnExpr            *IndexColumnExpr
+	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr   *ChronotypeValueMacroExpr
+	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
+}
+
+func NewQuerySelectItemFromAggregateExpr(value *AggregateExpr) *QuerySelectItem {
+	return &QuerySelectItem{AggregateExpr: value}
+}
+
+func NewQuerySelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{GroupKeyColumnExpr: value}
+}
+
+func NewQuerySelectItemFromSleepColumnExpr(value *SleepColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{SleepColumnExpr: value}
+}
+
+func NewQuerySelectItemFromActivityColumnExpr(value *ActivityColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{ActivityColumnExpr: value}
+}
+
+func NewQuerySelectItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{WorkoutColumnExpr: value}
+}
+
+func NewQuerySelectItemFromBodyColumnExpr(value *BodyColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{BodyColumnExpr: value}
+}
+
+func NewQuerySelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{IndexColumnExpr: value}
+}
+
+func NewQuerySelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{SleepScoreValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{ChronotypeValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{UnrecognizedValueMacroExpr: value}
+}
+
+func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
+	valueAggregateExpr := new(AggregateExpr)
+	if err := json.Unmarshal(data, &valueAggregateExpr); err == nil {
+		q.AggregateExpr = valueAggregateExpr
+		return nil
+	}
+	valueGroupKeyColumnExpr := new(GroupKeyColumnExpr)
+	if err := json.Unmarshal(data, &valueGroupKeyColumnExpr); err == nil {
+		q.GroupKeyColumnExpr = valueGroupKeyColumnExpr
+		return nil
+	}
+	valueSleepColumnExpr := new(SleepColumnExpr)
+	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
+		q.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueActivityColumnExpr := new(ActivityColumnExpr)
+	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
+		q.ActivityColumnExpr = valueActivityColumnExpr
+		return nil
+	}
+	valueWorkoutColumnExpr := new(WorkoutColumnExpr)
+	if err := json.Unmarshal(data, &valueWorkoutColumnExpr); err == nil {
+		q.WorkoutColumnExpr = valueWorkoutColumnExpr
+		return nil
+	}
+	valueBodyColumnExpr := new(BodyColumnExpr)
+	if err := json.Unmarshal(data, &valueBodyColumnExpr); err == nil {
+		q.BodyColumnExpr = valueBodyColumnExpr
+		return nil
+	}
+	valueIndexColumnExpr := new(IndexColumnExpr)
+	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
+		q.IndexColumnExpr = valueIndexColumnExpr
+		return nil
+	}
+	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
+	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
+		q.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
+		return nil
+	}
+	valueChronotypeValueMacroExpr := new(ChronotypeValueMacroExpr)
+	if err := json.Unmarshal(data, &valueChronotypeValueMacroExpr); err == nil {
+		q.ChronotypeValueMacroExpr = valueChronotypeValueMacroExpr
+		return nil
+	}
+	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
+	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
+		q.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
+	if q.AggregateExpr != nil {
+		return json.Marshal(q.AggregateExpr)
+	}
+	if q.GroupKeyColumnExpr != nil {
+		return json.Marshal(q.GroupKeyColumnExpr)
+	}
+	if q.SleepColumnExpr != nil {
+		return json.Marshal(q.SleepColumnExpr)
+	}
+	if q.ActivityColumnExpr != nil {
+		return json.Marshal(q.ActivityColumnExpr)
+	}
+	if q.WorkoutColumnExpr != nil {
+		return json.Marshal(q.WorkoutColumnExpr)
+	}
+	if q.BodyColumnExpr != nil {
+		return json.Marshal(q.BodyColumnExpr)
+	}
+	if q.IndexColumnExpr != nil {
+		return json.Marshal(q.IndexColumnExpr)
+	}
+	if q.SleepScoreValueMacroExpr != nil {
+		return json.Marshal(q.SleepScoreValueMacroExpr)
+	}
+	if q.ChronotypeValueMacroExpr != nil {
+		return json.Marshal(q.ChronotypeValueMacroExpr)
+	}
+	if q.UnrecognizedValueMacroExpr != nil {
+		return json.Marshal(q.UnrecognizedValueMacroExpr)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type QuerySelectItemVisitor interface {
+	VisitAggregateExpr(*AggregateExpr) error
+	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
+	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitActivityColumnExpr(*ActivityColumnExpr) error
+	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
+	VisitBodyColumnExpr(*BodyColumnExpr) error
+	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
+	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
+	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
+}
+
+func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
+	if q.AggregateExpr != nil {
+		return visitor.VisitAggregateExpr(q.AggregateExpr)
+	}
+	if q.GroupKeyColumnExpr != nil {
+		return visitor.VisitGroupKeyColumnExpr(q.GroupKeyColumnExpr)
+	}
+	if q.SleepColumnExpr != nil {
+		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
+	}
+	if q.ActivityColumnExpr != nil {
+		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
+	}
+	if q.WorkoutColumnExpr != nil {
+		return visitor.VisitWorkoutColumnExpr(q.WorkoutColumnExpr)
+	}
+	if q.BodyColumnExpr != nil {
+		return visitor.VisitBodyColumnExpr(q.BodyColumnExpr)
+	}
+	if q.IndexColumnExpr != nil {
+		return visitor.VisitIndexColumnExpr(q.IndexColumnExpr)
+	}
+	if q.SleepScoreValueMacroExpr != nil {
+		return visitor.VisitSleepScoreValueMacroExpr(q.SleepScoreValueMacroExpr)
+	}
+	if q.ChronotypeValueMacroExpr != nil {
+		return visitor.VisitChronotypeValueMacroExpr(q.ChronotypeValueMacroExpr)
+	}
+	if q.UnrecognizedValueMacroExpr != nil {
+		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type RelativeTimeframe struct {
+	Anchor string  `json:"anchor" url:"anchor"`
+	Past   *Period `json:"past,omitempty" url:"past,omitempty"`
+	type_  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (r *RelativeTimeframe) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RelativeTimeframe) Type() string {
+	return r.type_
+}
+
+func (r *RelativeTimeframe) UnmarshalJSON(data []byte) error {
+	type embed RelativeTimeframe
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*r = RelativeTimeframe(unmarshaler.embed)
+	if unmarshaler.Type != "relative" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "relative", unmarshaler.Type)
+	}
+	r.type_ = unmarshaler.Type
+
+	extraProperties, err := core.ExtractExtraProperties(data, *r, "type")
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+
+	r._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RelativeTimeframe) MarshalJSON() ([]byte, error) {
+	type embed RelativeTimeframe
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*r),
+		Type:  "relative",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (r *RelativeTimeframe) String() string {
+	if len(r._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(r._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+type Select string
+
+const (
+	SelectSelectAll Select = "*"
+)
+
+func NewSelectFromString(s string) (Select, error) {
+	switch s {
+	case "*":
+		return SelectSelectAll, nil
+	}
+	var t Select
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s Select) Ptr() *Select {
+	return &s
+}
+
+type SleepColumnExpr struct {
+	Sleep SleepColumnExprSleep `json:"sleep" url:"sleep"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SleepColumnExpr) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SleepColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler SleepColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SleepColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SleepColumnExpr) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SleepColumnExprSleep string
+
+const (
+	SleepColumnExprSleepSessionStart         SleepColumnExprSleep = "session_start"
+	SleepColumnExprSleepSessionEnd           SleepColumnExprSleep = "session_end"
+	SleepColumnExprSleepState                SleepColumnExprSleep = "state"
+	SleepColumnExprSleepType                 SleepColumnExprSleep = "type"
+	SleepColumnExprSleepDurationSecond       SleepColumnExprSleep = "duration_second"
+	SleepColumnExprSleepStageAsleepSecond    SleepColumnExprSleep = "stage_asleep_second"
+	SleepColumnExprSleepStageAwakeSecond     SleepColumnExprSleep = "stage_awake_second"
+	SleepColumnExprSleepStageLightSecond     SleepColumnExprSleep = "stage_light_second"
+	SleepColumnExprSleepStageRemSecond       SleepColumnExprSleep = "stage_rem_second"
+	SleepColumnExprSleepStageDeepSecond      SleepColumnExprSleep = "stage_deep_second"
+	SleepColumnExprSleepStageUnknownSecond   SleepColumnExprSleep = "stage_unknown_second"
+	SleepColumnExprSleepLatencySecond        SleepColumnExprSleep = "latency_second"
+	SleepColumnExprSleepHeartRateMinimum     SleepColumnExprSleep = "heart_rate_minimum"
+	SleepColumnExprSleepHeartRateMean        SleepColumnExprSleep = "heart_rate_mean"
+	SleepColumnExprSleepHeartRateMaximum     SleepColumnExprSleep = "heart_rate_maximum"
+	SleepColumnExprSleepHeartRateDip         SleepColumnExprSleep = "heart_rate_dip"
+	SleepColumnExprSleepHeartRateResting     SleepColumnExprSleep = "heart_rate_resting"
+	SleepColumnExprSleepEfficiency           SleepColumnExprSleep = "efficiency"
+	SleepColumnExprSleepHrvMeanRmssd         SleepColumnExprSleep = "hrv_mean_rmssd"
+	SleepColumnExprSleepHrvMeanSdnn          SleepColumnExprSleep = "hrv_mean_sdnn"
+	SleepColumnExprSleepSkinTemperature      SleepColumnExprSleep = "skin_temperature"
+	SleepColumnExprSleepSkinTemperatureDelta SleepColumnExprSleep = "skin_temperature_delta"
+	SleepColumnExprSleepRespiratoryRate      SleepColumnExprSleep = "respiratory_rate"
+	SleepColumnExprSleepScore                SleepColumnExprSleep = "score"
+	SleepColumnExprSleepSourceType           SleepColumnExprSleep = "source_type"
+	SleepColumnExprSleepSourceProvider       SleepColumnExprSleep = "source_provider"
+	SleepColumnExprSleepSourceAppId          SleepColumnExprSleep = "source_app_id"
+	SleepColumnExprSleepTimeZone             SleepColumnExprSleep = "time_zone"
+)
+
+func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
+	switch s {
+	case "session_start":
+		return SleepColumnExprSleepSessionStart, nil
+	case "session_end":
+		return SleepColumnExprSleepSessionEnd, nil
+	case "state":
+		return SleepColumnExprSleepState, nil
+	case "type":
+		return SleepColumnExprSleepType, nil
+	case "duration_second":
+		return SleepColumnExprSleepDurationSecond, nil
+	case "stage_asleep_second":
+		return SleepColumnExprSleepStageAsleepSecond, nil
+	case "stage_awake_second":
+		return SleepColumnExprSleepStageAwakeSecond, nil
+	case "stage_light_second":
+		return SleepColumnExprSleepStageLightSecond, nil
+	case "stage_rem_second":
+		return SleepColumnExprSleepStageRemSecond, nil
+	case "stage_deep_second":
+		return SleepColumnExprSleepStageDeepSecond, nil
+	case "stage_unknown_second":
+		return SleepColumnExprSleepStageUnknownSecond, nil
+	case "latency_second":
+		return SleepColumnExprSleepLatencySecond, nil
+	case "heart_rate_minimum":
+		return SleepColumnExprSleepHeartRateMinimum, nil
+	case "heart_rate_mean":
+		return SleepColumnExprSleepHeartRateMean, nil
+	case "heart_rate_maximum":
+		return SleepColumnExprSleepHeartRateMaximum, nil
+	case "heart_rate_dip":
+		return SleepColumnExprSleepHeartRateDip, nil
+	case "heart_rate_resting":
+		return SleepColumnExprSleepHeartRateResting, nil
+	case "efficiency":
+		return SleepColumnExprSleepEfficiency, nil
+	case "hrv_mean_rmssd":
+		return SleepColumnExprSleepHrvMeanRmssd, nil
+	case "hrv_mean_sdnn":
+		return SleepColumnExprSleepHrvMeanSdnn, nil
+	case "skin_temperature":
+		return SleepColumnExprSleepSkinTemperature, nil
+	case "skin_temperature_delta":
+		return SleepColumnExprSleepSkinTemperatureDelta, nil
+	case "respiratory_rate":
+		return SleepColumnExprSleepRespiratoryRate, nil
+	case "score":
+		return SleepColumnExprSleepScore, nil
+	case "source_type":
+		return SleepColumnExprSleepSourceType, nil
+	case "source_provider":
+		return SleepColumnExprSleepSourceProvider, nil
+	case "source_app_id":
+		return SleepColumnExprSleepSourceAppId, nil
+	case "time_zone":
+		return SleepColumnExprSleepTimeZone, nil
+	}
+	var t SleepColumnExprSleep
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SleepColumnExprSleep) Ptr() *SleepColumnExprSleep {
+	return &s
+}
+
+type SleepScoreValueMacroExpr struct {
+	Version    *string `json:"version,omitempty" url:"version,omitempty"`
+	valueMacro string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SleepScoreValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SleepScoreValueMacroExpr) ValueMacro() string {
+	return s.valueMacro
+}
+
+func (s *SleepScoreValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type embed SleepScoreValueMacroExpr
+	var unmarshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SleepScoreValueMacroExpr(unmarshaler.embed)
+	if unmarshaler.ValueMacro != "sleep_score" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", s, "sleep_score", unmarshaler.ValueMacro)
+	}
+	s.valueMacro = unmarshaler.ValueMacro
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s, "value_macro")
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SleepScoreValueMacroExpr) MarshalJSON() ([]byte, error) {
+	type embed SleepScoreValueMacroExpr
+	var marshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed:      embed(*s),
+		ValueMacro: "sleep_score",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *SleepScoreValueMacroExpr) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type UnrecognizedValueMacroExpr struct {
+	ValueMacro string `json:"value_macro" url:"value_macro"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (u *UnrecognizedValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UnrecognizedValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler UnrecognizedValueMacroExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UnrecognizedValueMacroExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UnrecognizedValueMacroExpr) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type WorkoutColumnExpr struct {
+	Workout WorkoutColumnExprWorkout `json:"workout" url:"workout"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (w *WorkoutColumnExpr) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WorkoutColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler WorkoutColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WorkoutColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+
+	w._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WorkoutColumnExpr) String() string {
+	if len(w._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+type WorkoutColumnExprWorkout string
+
+const (
+	WorkoutColumnExprWorkoutSessionStart          WorkoutColumnExprWorkout = "session_start"
+	WorkoutColumnExprWorkoutSessionEnd            WorkoutColumnExprWorkout = "session_end"
+	WorkoutColumnExprWorkoutTitle                 WorkoutColumnExprWorkout = "title"
+	WorkoutColumnExprWorkoutSportName             WorkoutColumnExprWorkout = "sport_name"
+	WorkoutColumnExprWorkoutSportSlug             WorkoutColumnExprWorkout = "sport_slug"
+	WorkoutColumnExprWorkoutDurationActiveSecond  WorkoutColumnExprWorkout = "duration_active_second"
+	WorkoutColumnExprWorkoutHeartRateMean         WorkoutColumnExprWorkout = "heart_rate_mean"
+	WorkoutColumnExprWorkoutHeartRateMinimum      WorkoutColumnExprWorkout = "heart_rate_minimum"
+	WorkoutColumnExprWorkoutHeartRateMaximum      WorkoutColumnExprWorkout = "heart_rate_maximum"
+	WorkoutColumnExprWorkoutHeartRateZone1        WorkoutColumnExprWorkout = "heart_rate_zone_1"
+	WorkoutColumnExprWorkoutHeartRateZone2        WorkoutColumnExprWorkout = "heart_rate_zone_2"
+	WorkoutColumnExprWorkoutHeartRateZone3        WorkoutColumnExprWorkout = "heart_rate_zone_3"
+	WorkoutColumnExprWorkoutHeartRateZone4        WorkoutColumnExprWorkout = "heart_rate_zone_4"
+	WorkoutColumnExprWorkoutHeartRateZone5        WorkoutColumnExprWorkout = "heart_rate_zone_5"
+	WorkoutColumnExprWorkoutHeartRateZone6        WorkoutColumnExprWorkout = "heart_rate_zone_6"
+	WorkoutColumnExprWorkoutDistanceMeter         WorkoutColumnExprWorkout = "distance_meter"
+	WorkoutColumnExprWorkoutCalories              WorkoutColumnExprWorkout = "calories"
+	WorkoutColumnExprWorkoutElevationGainMeter    WorkoutColumnExprWorkout = "elevation_gain_meter"
+	WorkoutColumnExprWorkoutElevationMaximumMeter WorkoutColumnExprWorkout = "elevation_maximum_meter"
+	WorkoutColumnExprWorkoutElevationMinimumMeter WorkoutColumnExprWorkout = "elevation_minimum_meter"
+	WorkoutColumnExprWorkoutSpeedMean             WorkoutColumnExprWorkout = "speed_mean"
+	WorkoutColumnExprWorkoutSpeedMaximum          WorkoutColumnExprWorkout = "speed_maximum"
+	WorkoutColumnExprWorkoutPowerSource           WorkoutColumnExprWorkout = "power_source"
+	WorkoutColumnExprWorkoutPowerMean             WorkoutColumnExprWorkout = "power_mean"
+	WorkoutColumnExprWorkoutPowerMaximum          WorkoutColumnExprWorkout = "power_maximum"
+	WorkoutColumnExprWorkoutPowerWeightedMean     WorkoutColumnExprWorkout = "power_weighted_mean"
+	WorkoutColumnExprWorkoutSteps                 WorkoutColumnExprWorkout = "steps"
+	WorkoutColumnExprWorkoutMapPolyline           WorkoutColumnExprWorkout = "map_polyline"
+	WorkoutColumnExprWorkoutMapSummaryPolyline    WorkoutColumnExprWorkout = "map_summary_polyline"
+	WorkoutColumnExprWorkoutSourceType            WorkoutColumnExprWorkout = "source_type"
+	WorkoutColumnExprWorkoutSourceProvider        WorkoutColumnExprWorkout = "source_provider"
+	WorkoutColumnExprWorkoutSourceAppId           WorkoutColumnExprWorkout = "source_app_id"
+	WorkoutColumnExprWorkoutSourceWorkoutId       WorkoutColumnExprWorkout = "source_workout_id"
+	WorkoutColumnExprWorkoutTimeZone              WorkoutColumnExprWorkout = "time_zone"
+)
+
+func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, error) {
+	switch s {
+	case "session_start":
+		return WorkoutColumnExprWorkoutSessionStart, nil
+	case "session_end":
+		return WorkoutColumnExprWorkoutSessionEnd, nil
+	case "title":
+		return WorkoutColumnExprWorkoutTitle, nil
+	case "sport_name":
+		return WorkoutColumnExprWorkoutSportName, nil
+	case "sport_slug":
+		return WorkoutColumnExprWorkoutSportSlug, nil
+	case "duration_active_second":
+		return WorkoutColumnExprWorkoutDurationActiveSecond, nil
+	case "heart_rate_mean":
+		return WorkoutColumnExprWorkoutHeartRateMean, nil
+	case "heart_rate_minimum":
+		return WorkoutColumnExprWorkoutHeartRateMinimum, nil
+	case "heart_rate_maximum":
+		return WorkoutColumnExprWorkoutHeartRateMaximum, nil
+	case "heart_rate_zone_1":
+		return WorkoutColumnExprWorkoutHeartRateZone1, nil
+	case "heart_rate_zone_2":
+		return WorkoutColumnExprWorkoutHeartRateZone2, nil
+	case "heart_rate_zone_3":
+		return WorkoutColumnExprWorkoutHeartRateZone3, nil
+	case "heart_rate_zone_4":
+		return WorkoutColumnExprWorkoutHeartRateZone4, nil
+	case "heart_rate_zone_5":
+		return WorkoutColumnExprWorkoutHeartRateZone5, nil
+	case "heart_rate_zone_6":
+		return WorkoutColumnExprWorkoutHeartRateZone6, nil
+	case "distance_meter":
+		return WorkoutColumnExprWorkoutDistanceMeter, nil
+	case "calories":
+		return WorkoutColumnExprWorkoutCalories, nil
+	case "elevation_gain_meter":
+		return WorkoutColumnExprWorkoutElevationGainMeter, nil
+	case "elevation_maximum_meter":
+		return WorkoutColumnExprWorkoutElevationMaximumMeter, nil
+	case "elevation_minimum_meter":
+		return WorkoutColumnExprWorkoutElevationMinimumMeter, nil
+	case "speed_mean":
+		return WorkoutColumnExprWorkoutSpeedMean, nil
+	case "speed_maximum":
+		return WorkoutColumnExprWorkoutSpeedMaximum, nil
+	case "power_source":
+		return WorkoutColumnExprWorkoutPowerSource, nil
+	case "power_mean":
+		return WorkoutColumnExprWorkoutPowerMean, nil
+	case "power_maximum":
+		return WorkoutColumnExprWorkoutPowerMaximum, nil
+	case "power_weighted_mean":
+		return WorkoutColumnExprWorkoutPowerWeightedMean, nil
+	case "steps":
+		return WorkoutColumnExprWorkoutSteps, nil
+	case "map_polyline":
+		return WorkoutColumnExprWorkoutMapPolyline, nil
+	case "map_summary_polyline":
+		return WorkoutColumnExprWorkoutMapSummaryPolyline, nil
+	case "source_type":
+		return WorkoutColumnExprWorkoutSourceType, nil
+	case "source_provider":
+		return WorkoutColumnExprWorkoutSourceProvider, nil
+	case "source_app_id":
+		return WorkoutColumnExprWorkoutSourceAppId, nil
+	case "source_workout_id":
+		return WorkoutColumnExprWorkoutSourceWorkoutId, nil
+	case "time_zone":
+		return WorkoutColumnExprWorkoutTimeZone, nil
+	}
+	var t WorkoutColumnExprWorkout
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (w WorkoutColumnExprWorkout) Ptr() *WorkoutColumnExprWorkout {
+	return &w
 }
 
 type QueryBatchTimeframe struct {

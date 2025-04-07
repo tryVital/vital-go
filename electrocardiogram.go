@@ -2,9 +2,292 @@
 
 package api
 
+import (
+	json "encoding/json"
+	fmt "fmt"
+	core "github.com/tryVital/vital-go/core"
+	time "time"
+)
+
 type ElectrocardiogramGetRequest struct {
 	StartDate string  `json:"-" url:"start_date"`
 	EndDate   *string `json:"-" url:"end_date,omitempty"`
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
+}
+
+type ClientFacingElectrocardiogram struct {
+	Id                  string                                          `json:"id" url:"id"`
+	SessionStart        time.Time                                       `json:"session_start" url:"session_start"`
+	SessionEnd          time.Time                                       `json:"session_end" url:"session_end"`
+	VoltageSampleCount  int                                             `json:"voltage_sample_count" url:"voltage_sample_count"`
+	HeartRateMean       *int                                            `json:"heart_rate_mean,omitempty" url:"heart_rate_mean,omitempty"`
+	SamplingFrequencyHz *float64                                        `json:"sampling_frequency_hz,omitempty" url:"sampling_frequency_hz,omitempty"`
+	Classification      *ClientFacingElectrocardiogramClassification    `json:"classification,omitempty" url:"classification,omitempty"`
+	InconclusiveCause   *ClientFacingElectrocardiogramInconclusiveCause `json:"inconclusive_cause,omitempty" url:"inconclusive_cause,omitempty"`
+	AlgorithmVersion    *string                                         `json:"algorithm_version,omitempty" url:"algorithm_version,omitempty"`
+	TimeZone            *string                                         `json:"time_zone,omitempty" url:"time_zone,omitempty"`
+	SourceProvider      *ClientFacingElectrocardiogramSourceProvider    `json:"source_provider,omitempty" url:"source_provider,omitempty"`
+	SourceType          ClientFacingElectrocardiogramSourceType         `json:"source_type" url:"source_type"`
+	SourceAppId         *string                                         `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	SourceDeviceModel   *string                                         `json:"source_device_model,omitempty" url:"source_device_model,omitempty"`
+	UserId              string                                          `json:"user_id" url:"user_id"`
+	Source              *ClientFacingSource                             `json:"source,omitempty" url:"source,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingElectrocardiogram) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingElectrocardiogram) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingElectrocardiogram
+	var unmarshaler = struct {
+		embed
+		SessionStart *core.DateTime `json:"session_start"`
+		SessionEnd   *core.DateTime `json:"session_end"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingElectrocardiogram(unmarshaler.embed)
+	c.SessionStart = unmarshaler.SessionStart.Time()
+	c.SessionEnd = unmarshaler.SessionEnd.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingElectrocardiogram) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingElectrocardiogram
+	var marshaler = struct {
+		embed
+		SessionStart *core.DateTime `json:"session_start"`
+		SessionEnd   *core.DateTime `json:"session_end"`
+	}{
+		embed:        embed(*c),
+		SessionStart: core.NewDateTime(c.SessionStart),
+		SessionEnd:   core.NewDateTime(c.SessionEnd),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingElectrocardiogram) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingElectrocardiogramClassification string
+
+const (
+	ClientFacingElectrocardiogramClassificationSinusRhythm        ClientFacingElectrocardiogramClassification = "sinus_rhythm"
+	ClientFacingElectrocardiogramClassificationAtrialFibrillation ClientFacingElectrocardiogramClassification = "atrial_fibrillation"
+	ClientFacingElectrocardiogramClassificationInconclusive       ClientFacingElectrocardiogramClassification = "inconclusive"
+)
+
+func NewClientFacingElectrocardiogramClassificationFromString(s string) (ClientFacingElectrocardiogramClassification, error) {
+	switch s {
+	case "sinus_rhythm":
+		return ClientFacingElectrocardiogramClassificationSinusRhythm, nil
+	case "atrial_fibrillation":
+		return ClientFacingElectrocardiogramClassificationAtrialFibrillation, nil
+	case "inconclusive":
+		return ClientFacingElectrocardiogramClassificationInconclusive, nil
+	}
+	var t ClientFacingElectrocardiogramClassification
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingElectrocardiogramClassification) Ptr() *ClientFacingElectrocardiogramClassification {
+	return &c
+}
+
+type ClientFacingElectrocardiogramInconclusiveCause string
+
+const (
+	ClientFacingElectrocardiogramInconclusiveCauseHighHeartRate ClientFacingElectrocardiogramInconclusiveCause = "high_heart_rate"
+	ClientFacingElectrocardiogramInconclusiveCauseLowHeartRate  ClientFacingElectrocardiogramInconclusiveCause = "low_heart_rate"
+	ClientFacingElectrocardiogramInconclusiveCausePoorReading   ClientFacingElectrocardiogramInconclusiveCause = "poor_reading"
+)
+
+func NewClientFacingElectrocardiogramInconclusiveCauseFromString(s string) (ClientFacingElectrocardiogramInconclusiveCause, error) {
+	switch s {
+	case "high_heart_rate":
+		return ClientFacingElectrocardiogramInconclusiveCauseHighHeartRate, nil
+	case "low_heart_rate":
+		return ClientFacingElectrocardiogramInconclusiveCauseLowHeartRate, nil
+	case "poor_reading":
+		return ClientFacingElectrocardiogramInconclusiveCausePoorReading, nil
+	}
+	var t ClientFacingElectrocardiogramInconclusiveCause
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingElectrocardiogramInconclusiveCause) Ptr() *ClientFacingElectrocardiogramInconclusiveCause {
+	return &c
+}
+
+type ClientFacingElectrocardiogramResponse struct {
+	Electrocardiogram []*ClientFacingElectrocardiogram `json:"electrocardiogram,omitempty" url:"electrocardiogram,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingElectrocardiogramResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingElectrocardiogramResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingElectrocardiogramResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingElectrocardiogramResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingElectrocardiogramResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingElectrocardiogramSourceProvider struct {
+	Providers Providers
+	Labs      Labs
+}
+
+func NewClientFacingElectrocardiogramSourceProviderFromProviders(value Providers) *ClientFacingElectrocardiogramSourceProvider {
+	return &ClientFacingElectrocardiogramSourceProvider{Providers: value}
+}
+
+func NewClientFacingElectrocardiogramSourceProviderFromLabs(value Labs) *ClientFacingElectrocardiogramSourceProvider {
+	return &ClientFacingElectrocardiogramSourceProvider{Labs: value}
+}
+
+func (c *ClientFacingElectrocardiogramSourceProvider) UnmarshalJSON(data []byte) error {
+	var valueProviders Providers
+	if err := json.Unmarshal(data, &valueProviders); err == nil {
+		c.Providers = valueProviders
+		return nil
+	}
+	var valueLabs Labs
+	if err := json.Unmarshal(data, &valueLabs); err == nil {
+		c.Labs = valueLabs
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ClientFacingElectrocardiogramSourceProvider) MarshalJSON() ([]byte, error) {
+	if c.Providers != "" {
+		return json.Marshal(c.Providers)
+	}
+	if c.Labs != "" {
+		return json.Marshal(c.Labs)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingElectrocardiogramSourceProviderVisitor interface {
+	VisitProviders(Providers) error
+	VisitLabs(Labs) error
+}
+
+func (c *ClientFacingElectrocardiogramSourceProvider) Accept(visitor ClientFacingElectrocardiogramSourceProviderVisitor) error {
+	if c.Providers != "" {
+		return visitor.VisitProviders(c.Providers)
+	}
+	if c.Labs != "" {
+		return visitor.VisitLabs(c.Labs)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ClientFacingElectrocardiogramSourceType string
+
+const (
+	ClientFacingElectrocardiogramSourceTypeUnknown         ClientFacingElectrocardiogramSourceType = "unknown"
+	ClientFacingElectrocardiogramSourceTypePhone           ClientFacingElectrocardiogramSourceType = "phone"
+	ClientFacingElectrocardiogramSourceTypeWatch           ClientFacingElectrocardiogramSourceType = "watch"
+	ClientFacingElectrocardiogramSourceTypeApp             ClientFacingElectrocardiogramSourceType = "app"
+	ClientFacingElectrocardiogramSourceTypeMultipleSources ClientFacingElectrocardiogramSourceType = "multiple_sources"
+	ClientFacingElectrocardiogramSourceTypeFingerprick     ClientFacingElectrocardiogramSourceType = "fingerprick"
+	ClientFacingElectrocardiogramSourceTypeCuff            ClientFacingElectrocardiogramSourceType = "cuff"
+	ClientFacingElectrocardiogramSourceTypeManualScan      ClientFacingElectrocardiogramSourceType = "manual_scan"
+	ClientFacingElectrocardiogramSourceTypeAutomatic       ClientFacingElectrocardiogramSourceType = "automatic"
+	ClientFacingElectrocardiogramSourceTypeScale           ClientFacingElectrocardiogramSourceType = "scale"
+	ClientFacingElectrocardiogramSourceTypeChestStrap      ClientFacingElectrocardiogramSourceType = "chest_strap"
+	ClientFacingElectrocardiogramSourceTypeRing            ClientFacingElectrocardiogramSourceType = "ring"
+	ClientFacingElectrocardiogramSourceTypeLab             ClientFacingElectrocardiogramSourceType = "lab"
+)
+
+func NewClientFacingElectrocardiogramSourceTypeFromString(s string) (ClientFacingElectrocardiogramSourceType, error) {
+	switch s {
+	case "unknown":
+		return ClientFacingElectrocardiogramSourceTypeUnknown, nil
+	case "phone":
+		return ClientFacingElectrocardiogramSourceTypePhone, nil
+	case "watch":
+		return ClientFacingElectrocardiogramSourceTypeWatch, nil
+	case "app":
+		return ClientFacingElectrocardiogramSourceTypeApp, nil
+	case "multiple_sources":
+		return ClientFacingElectrocardiogramSourceTypeMultipleSources, nil
+	case "fingerprick":
+		return ClientFacingElectrocardiogramSourceTypeFingerprick, nil
+	case "cuff":
+		return ClientFacingElectrocardiogramSourceTypeCuff, nil
+	case "manual_scan":
+		return ClientFacingElectrocardiogramSourceTypeManualScan, nil
+	case "automatic":
+		return ClientFacingElectrocardiogramSourceTypeAutomatic, nil
+	case "scale":
+		return ClientFacingElectrocardiogramSourceTypeScale, nil
+	case "chest_strap":
+		return ClientFacingElectrocardiogramSourceTypeChestStrap, nil
+	case "ring":
+		return ClientFacingElectrocardiogramSourceTypeRing, nil
+	case "lab":
+		return ClientFacingElectrocardiogramSourceTypeLab, nil
+	}
+	var t ClientFacingElectrocardiogramSourceType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingElectrocardiogramSourceType) Ptr() *ClientFacingElectrocardiogramSourceType {
+	return &c
 }
