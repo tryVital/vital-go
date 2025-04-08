@@ -89,6 +89,10 @@ type LinkTokenValidationRequest struct {
 	Token string `json:"token" url:"-"`
 }
 
+type LinkListBulkOpsRequest struct {
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+}
+
 type PasswordAuthLink struct {
 	VitalLinkToken *string   `json:"-" url:"-"`
 	Username       string    `json:"username" url:"-"`
@@ -214,6 +218,167 @@ func (b *BulkImportConnectionsResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (b *BulkImportConnectionsResponse) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkOp struct {
+	Type      BulkOpType   `json:"type" url:"type"`
+	Status    BulkOpStatus `json:"status" url:"status"`
+	Provider  Providers    `json:"provider" url:"provider"`
+	Pending   int          `json:"pending" url:"pending"`
+	Processed int          `json:"processed" url:"processed"`
+	StartedAt time.Time    `json:"started_at" url:"started_at"`
+	EndedAt   *time.Time   `json:"ended_at,omitempty" url:"ended_at,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkOp) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkOp) UnmarshalJSON(data []byte) error {
+	type embed BulkOp
+	var unmarshaler = struct {
+		embed
+		StartedAt *core.DateTime `json:"started_at"`
+		EndedAt   *core.DateTime `json:"ended_at,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BulkOp(unmarshaler.embed)
+	b.StartedAt = unmarshaler.StartedAt.Time()
+	b.EndedAt = unmarshaler.EndedAt.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkOp) MarshalJSON() ([]byte, error) {
+	type embed BulkOp
+	var marshaler = struct {
+		embed
+		StartedAt *core.DateTime `json:"started_at"`
+		EndedAt   *core.DateTime `json:"ended_at,omitempty"`
+	}{
+		embed:     embed(*b),
+		StartedAt: core.NewDateTime(b.StartedAt),
+		EndedAt:   core.NewOptionalDateTime(b.EndedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BulkOp) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BulkOpStatus string
+
+const (
+	BulkOpStatusInProgress BulkOpStatus = "in_progress"
+	BulkOpStatusSuccess    BulkOpStatus = "success"
+	BulkOpStatusFailure    BulkOpStatus = "failure"
+	BulkOpStatusAborted    BulkOpStatus = "aborted"
+)
+
+func NewBulkOpStatusFromString(s string) (BulkOpStatus, error) {
+	switch s {
+	case "in_progress":
+		return BulkOpStatusInProgress, nil
+	case "success":
+		return BulkOpStatusSuccess, nil
+	case "failure":
+		return BulkOpStatusFailure, nil
+	case "aborted":
+		return BulkOpStatusAborted, nil
+	}
+	var t BulkOpStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkOpStatus) Ptr() *BulkOpStatus {
+	return &b
+}
+
+type BulkOpType string
+
+const (
+	BulkOpTypeLinkBulkImport            BulkOpType = "link_bulk_import"
+	BulkOpTypeLinkBulkHistoricalTrigger BulkOpType = "link_bulk_historical_trigger"
+)
+
+func NewBulkOpTypeFromString(s string) (BulkOpType, error) {
+	switch s {
+	case "link_bulk_import":
+		return BulkOpTypeLinkBulkImport, nil
+	case "link_bulk_historical_trigger":
+		return BulkOpTypeLinkBulkHistoricalTrigger, nil
+	}
+	var t BulkOpType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BulkOpType) Ptr() *BulkOpType {
+	return &b
+}
+
+type BulkOpsResponse struct {
+	Data       []*BulkOp `json:"data,omitempty" url:"data,omitempty"`
+	NextCursor *string   `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BulkOpsResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BulkOpsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkOpsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BulkOpsResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BulkOpsResponse) String() string {
 	if len(b._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
 			return value
