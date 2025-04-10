@@ -6328,6 +6328,16 @@ type ClientFacingPatientDetailsCompatible struct {
 	Gender      string    `json:"gender" url:"gender"`
 	PhoneNumber *string   `json:"phone_number,omitempty" url:"phone_number,omitempty"`
 	Email       *string   `json:"email,omitempty" url:"email,omitempty"`
+	// Parent/medical_proxy details. Required if patient is a minor.
+	MedicalProxy *GuarantorDetails `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	Race *Race `json:"race,omitempty" url:"race,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	Ethnicity *Ethnicity `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	SexualOrientation *SexualOrientation `json:"sexual_orientation,omitempty" url:"sexual_orientation,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	GenderIdentity *GenderIdentity `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -10410,6 +10420,34 @@ func (c *ContinuousQueryResultTableChanges) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type Ethnicity string
+
+const (
+	EthnicityHispanic        Ethnicity = "hispanic"
+	EthnicityNonHispanic     Ethnicity = "non_hispanic"
+	EthnicityAshkenaziJewish Ethnicity = "ashkenazi_jewish"
+	EthnicityOther           Ethnicity = "other"
+)
+
+func NewEthnicityFromString(s string) (Ethnicity, error) {
+	switch s {
+	case "hispanic":
+		return EthnicityHispanic, nil
+	case "non_hispanic":
+		return EthnicityNonHispanic, nil
+	case "ashkenazi_jewish":
+		return EthnicityAshkenaziJewish, nil
+	case "other":
+		return EthnicityOther, nil
+	}
+	var t Ethnicity
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e Ethnicity) Ptr() *Ethnicity {
+	return &e
+}
+
 type FallbackBirthDate struct {
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	Value string `json:"value" url:"value"`
@@ -10563,6 +10601,87 @@ func NewGenderFromString(s string) (Gender, error) {
 
 func (g Gender) Ptr() *Gender {
 	return &g
+}
+
+type GenderIdentity string
+
+const (
+	GenderIdentityMale                                       GenderIdentity = "male"
+	GenderIdentityFemale                                     GenderIdentity = "female"
+	GenderIdentityFemaleToMaleFtmTransgenderMaleTransMan     GenderIdentity = "female_to_male_ftm_transgender_male_trans_man"
+	GenderIdentityMaleToFemaleMtfTransgenderFemaleTransWoman GenderIdentity = "male_to_female_mtf_transgender_female_trans_woman"
+	GenderIdentityGenderqueer                                GenderIdentity = "genderqueer"
+	GenderIdentityOther                                      GenderIdentity = "other"
+)
+
+func NewGenderIdentityFromString(s string) (GenderIdentity, error) {
+	switch s {
+	case "male":
+		return GenderIdentityMale, nil
+	case "female":
+		return GenderIdentityFemale, nil
+	case "female_to_male_ftm_transgender_male_trans_man":
+		return GenderIdentityFemaleToMaleFtmTransgenderMaleTransMan, nil
+	case "male_to_female_mtf_transgender_female_trans_woman":
+		return GenderIdentityMaleToFemaleMtfTransgenderFemaleTransWoman, nil
+	case "genderqueer":
+		return GenderIdentityGenderqueer, nil
+	case "other":
+		return GenderIdentityOther, nil
+	}
+	var t GenderIdentity
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GenderIdentity) Ptr() *GenderIdentity {
+	return &g
+}
+
+type GuarantorDetails struct {
+	FirstName       string   `json:"first_name" url:"first_name"`
+	LastName        string   `json:"last_name" url:"last_name"`
+	Address         *Address `json:"address,omitempty" url:"address,omitempty"`
+	PhoneNumber     string   `json:"phone_number" url:"phone_number"`
+	HouseholdIncome *int     `json:"household_income,omitempty" url:"household_income,omitempty"`
+	HouseholdSize   *int     `json:"household_size,omitempty" url:"household_size,omitempty"`
+	Email           *string  `json:"email,omitempty" url:"email,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GuarantorDetails) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GuarantorDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler GuarantorDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GuarantorDetails(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GuarantorDetails) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 type HealthInsuranceCreateRequest struct {
@@ -11427,6 +11546,16 @@ type PatientDetailsWithValidation struct {
 	Gender      Gender    `json:"gender" url:"gender"`
 	PhoneNumber string    `json:"phone_number" url:"phone_number"`
 	Email       string    `json:"email" url:"email"`
+	// Parent/medical_proxy details. Required if patient is a minor.
+	MedicalProxy *GuarantorDetails `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	Race *Race `json:"race,omitempty" url:"race,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	Ethnicity *Ethnicity `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	SexualOrientation *SexualOrientation `json:"sexual_orientation,omitempty" url:"sexual_orientation,omitempty"`
+	// If not provided, will be set to 'Not Specified'
+	GenderIdentity *GenderIdentity `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -11888,6 +12017,40 @@ func (q QuestionType) Ptr() *QuestionType {
 	return &q
 }
 
+type Race string
+
+const (
+	RaceAfricanAmericanOrBlack               Race = "african_american_or_black"
+	RaceAsian                                Race = "asian"
+	RaceIndigenousNativeAmericanAlaskaNative Race = "indigenous_native_american_alaska_native"
+	RaceOther                                Race = "other"
+	RacePacificIslanderOrHawaiian            Race = "pacific_islander_or_hawaiian"
+	RaceWhiteCaucasian                       Race = "white_caucasian"
+)
+
+func NewRaceFromString(s string) (Race, error) {
+	switch s {
+	case "african_american_or_black":
+		return RaceAfricanAmericanOrBlack, nil
+	case "asian":
+		return RaceAsian, nil
+	case "indigenous_native_american_alaska_native":
+		return RaceIndigenousNativeAmericanAlaskaNative, nil
+	case "other":
+		return RaceOther, nil
+	case "pacific_islander_or_hawaiian":
+		return RacePacificIslanderOrHawaiian, nil
+	case "white_caucasian":
+		return RaceWhiteCaucasian, nil
+	}
+	var t Race
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r Race) Ptr() *Race {
+	return &r
+}
+
 type ResponsibleRelationship string
 
 const (
@@ -11911,6 +12074,37 @@ func NewResponsibleRelationshipFromString(s string) (ResponsibleRelationship, er
 
 func (r ResponsibleRelationship) Ptr() *ResponsibleRelationship {
 	return &r
+}
+
+type SexualOrientation string
+
+const (
+	SexualOrientationLesbianGayOrHomosexual SexualOrientation = "lesbian_gay_or_homosexual"
+	SexualOrientationHeterosexualOrStraight SexualOrientation = "heterosexual_or_straight"
+	SexualOrientationBisexual               SexualOrientation = "bisexual"
+	SexualOrientationDontKnow               SexualOrientation = "dont_know"
+	SexualOrientationOther                  SexualOrientation = "other"
+)
+
+func NewSexualOrientationFromString(s string) (SexualOrientation, error) {
+	switch s {
+	case "lesbian_gay_or_homosexual":
+		return SexualOrientationLesbianGayOrHomosexual, nil
+	case "heterosexual_or_straight":
+		return SexualOrientationHeterosexualOrStraight, nil
+	case "bisexual":
+		return SexualOrientationBisexual, nil
+	case "dont_know":
+		return SexualOrientationDontKnow, nil
+	case "other":
+		return SexualOrientationOther, nil
+	}
+	var t SexualOrientation
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SexualOrientation) Ptr() *SexualOrientation {
+	return &s
 }
 
 type ShippingAddress struct {

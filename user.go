@@ -378,51 +378,6 @@ func (c *CompanyDetails) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-type GuarantorDetails struct {
-	FirstName   string   `json:"first_name" url:"first_name"`
-	LastName    string   `json:"last_name" url:"last_name"`
-	Address     *Address `json:"address,omitempty" url:"address,omitempty"`
-	PhoneNumber string   `json:"phone_number" url:"phone_number"`
-	Email       *string  `json:"email,omitempty" url:"email,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (g *GuarantorDetails) GetExtraProperties() map[string]interface{} {
-	return g.extraProperties
-}
-
-func (g *GuarantorDetails) UnmarshalJSON(data []byte) error {
-	type unmarshaler GuarantorDetails
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GuarantorDetails(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-
-	g._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GuarantorDetails) String() string {
-	if len(g._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
 type MetricsResult struct {
 	TeamId                          string                   `json:"team_id" url:"team_id"`
 	NumberOfConnectedSources        *int                     `json:"number_of_connected_sources,omitempty" url:"number_of_connected_sources,omitempty"`
@@ -701,13 +656,18 @@ func (t *TimeseriesMetricPoint) String() string {
 }
 
 type UserInfo struct {
-	FirstName   string   `json:"first_name" url:"first_name"`
-	LastName    string   `json:"last_name" url:"last_name"`
-	Email       string   `json:"email" url:"email"`
-	PhoneNumber string   `json:"phone_number" url:"phone_number"`
-	Gender      string   `json:"gender" url:"gender"`
-	Dob         string   `json:"dob" url:"dob"`
-	Address     *Address `json:"address,omitempty" url:"address,omitempty"`
+	FirstName         string             `json:"first_name" url:"first_name"`
+	LastName          string             `json:"last_name" url:"last_name"`
+	Email             string             `json:"email" url:"email"`
+	PhoneNumber       string             `json:"phone_number" url:"phone_number"`
+	Gender            string             `json:"gender" url:"gender"`
+	Dob               string             `json:"dob" url:"dob"`
+	Address           *Address           `json:"address,omitempty" url:"address,omitempty"`
+	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
+	Race              *Race              `json:"race,omitempty" url:"race,omitempty"`
+	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
+	SexualOrientation *SexualOrientation `json:"sexual_orientation,omitempty" url:"sexual_orientation,omitempty"`
+	GenderIdentity    *GenderIdentity    `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -933,11 +893,16 @@ type UserUndoDeleteRequest struct {
 }
 
 type UserInfoCreateRequest struct {
-	FirstName   string   `json:"first_name" url:"-"`
-	LastName    string   `json:"last_name" url:"-"`
-	Email       string   `json:"email" url:"-"`
-	PhoneNumber string   `json:"phone_number" url:"-"`
-	Gender      string   `json:"gender" url:"-"`
-	Dob         string   `json:"dob" url:"-"`
-	Address     *Address `json:"address,omitempty" url:"-"`
+	FirstName         string             `json:"first_name" url:"-"`
+	LastName          string             `json:"last_name" url:"-"`
+	Email             string             `json:"email" url:"-"`
+	PhoneNumber       string             `json:"phone_number" url:"-"`
+	Gender            string             `json:"gender" url:"-"`
+	Dob               string             `json:"dob" url:"-"`
+	Address           *Address           `json:"address,omitempty" url:"-"`
+	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"-"`
+	Race              *Race              `json:"race,omitempty" url:"-"`
+	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"-"`
+	SexualOrientation *SexualOrientation `json:"sexual_orientation,omitempty" url:"-"`
+	GenderIdentity    *GenderIdentity    `json:"gender_identity,omitempty" url:"-"`
 }

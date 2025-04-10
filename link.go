@@ -18,6 +18,13 @@ type BulkExportConnectionsBody struct {
 type BulkImportConnectionsBody struct {
 	Provider    OAuthProviders      `json:"provider" url:"-"`
 	Connections []*ConnectionRecipe `json:"connections,omitempty" url:"-"`
+	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
+	//
+	// When `wait_for_completion` is enabled, the endpoint may respond 200 OK if the Bulk Op takes less than 20 seconds to complete.
+	//
+	// Otherwise, the endpoint always responds with 202 Created once the submitted data have been enqueued successfully. You can use
+	// the [List Bulk Ops](https://docs.tryvital.io/api-reference/link/list-bulk-ops) endpoint to inspect the progress of the Bulk Op.
+	WaitForCompletion *bool `json:"wait_for_completion,omitempty" url:"-"`
 }
 
 type BulkPauseConnectionsBody struct {
@@ -28,6 +35,13 @@ type BulkPauseConnectionsBody struct {
 type BulkTriggerHistoricalPullBody struct {
 	UserIds  []string       `json:"user_ids,omitempty" url:"-"`
 	Provider OAuthProviders `json:"provider" url:"-"`
+	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
+	//
+	// When `wait_for_completion` is enabled, the endpoint may respond 200 OK if the Bulk Op takes less than 20 seconds to complete.
+	//
+	// Otherwise, the endpoint always responds with 202 Created once the submitted data have been enqueued successfully. You can use
+	// the [List Bulk Ops](https://docs.tryvital.io/api-reference/link/list-bulk-ops) endpoint to inspect the progress of the Bulk Op.
+	WaitForCompletion *bool `json:"wait_for_completion,omitempty" url:"-"`
 }
 
 type LinkCodeCreateRequest struct {
