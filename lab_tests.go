@@ -701,23 +701,25 @@ func (a *AreaInfo) String() string {
 
 // Represent the schema for an individual biomarker result.
 type BiomarkerResult struct {
-	Name            string                 `json:"name" url:"name"`
-	Slug            *string                `json:"slug,omitempty" url:"slug,omitempty"`
-	Value           float64                `json:"value" url:"value"`
-	Result          string                 `json:"result" url:"result"`
-	Type            ResultType             `json:"type" url:"type"`
-	Unit            *string                `json:"unit,omitempty" url:"unit,omitempty"`
-	Timestamp       *time.Time             `json:"timestamp,omitempty" url:"timestamp,omitempty"`
-	Notes           *string                `json:"notes,omitempty" url:"notes,omitempty"`
-	MinRangeValue   *float64               `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
-	MaxRangeValue   *float64               `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
-	IsAboveMaxRange *bool                  `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
-	IsBelowMinRange *bool                  `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
-	Interpretation  *string                `json:"interpretation,omitempty" url:"interpretation,omitempty"`
-	Loinc           *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
-	LoincSlug       *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
-	ProviderId      *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
-	SourceMarkers   []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
+	Name                 string                 `json:"name" url:"name"`
+	Slug                 *string                `json:"slug,omitempty" url:"slug,omitempty"`
+	Value                float64                `json:"value" url:"value"`
+	Result               string                 `json:"result" url:"result"`
+	Type                 ResultType             `json:"type" url:"type"`
+	Unit                 *string                `json:"unit,omitempty" url:"unit,omitempty"`
+	Timestamp            *time.Time             `json:"timestamp,omitempty" url:"timestamp,omitempty"`
+	Notes                *string                `json:"notes,omitempty" url:"notes,omitempty"`
+	MinRangeValue        *float64               `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
+	MaxRangeValue        *float64               `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
+	IsAboveMaxRange      *bool                  `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
+	IsBelowMinRange      *bool                  `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
+	Interpretation       *string                `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	Loinc                *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
+	LoincSlug            *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
+	ProviderId           *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	SourceMarkers        []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
+	PerformingLaboratory *string                `json:"performing_laboratory,omitempty" url:"performing_laboratory,omitempty"`
+	SourceSampleId       *string                `json:"source_sample_id,omitempty" url:"source_sample_id,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1174,6 +1176,50 @@ func (c *ClientFacingResult) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClinicalInformation struct {
+	Fasting     *bool   `json:"fasting,omitempty" url:"fasting,omitempty"`
+	Notes       *string `json:"notes,omitempty" url:"notes,omitempty"`
+	Information *string `json:"information,omitempty" url:"information,omitempty"`
+	TotalVolume *string `json:"total_volume,omitempty" url:"total_volume,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClinicalInformation) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClinicalInformation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClinicalInformation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClinicalInformation(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClinicalInformation) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type DaySlots struct {
 	Location *AppointmentLocation `json:"location,omitempty" url:"location,omitempty"`
 	Date     string               `json:"date" url:"date"`
@@ -1458,9 +1504,10 @@ func (l *LabResultsMetadata) String() string {
 }
 
 type LabResultsRaw struct {
-	Metadata       *LabResultsMetadata       `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Results        *LabResultsRawResults     `json:"results,omitempty" url:"results,omitempty"`
-	MissingResults []*MissingBiomarkerResult `json:"missing_results,omitempty" url:"missing_results,omitempty"`
+	Metadata          *LabResultsMetadata       `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Results           *LabResultsRawResults     `json:"results,omitempty" url:"results,omitempty"`
+	MissingResults    []*MissingBiomarkerResult `json:"missing_results,omitempty" url:"missing_results,omitempty"`
+	SampleInformation map[string]*SampleData    `json:"sample_information,omitempty" url:"sample_information,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1844,6 +1891,50 @@ func (p *PatientAddress) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type PerformingLaboratory struct {
+	Name            string   `json:"name" url:"name"`
+	PhoneNumber     *string  `json:"phone_number,omitempty" url:"phone_number,omitempty"`
+	MedicalDirector *string  `json:"medical_director,omitempty" url:"medical_director,omitempty"`
+	Address         *Address `json:"address,omitempty" url:"address,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (p *PerformingLaboratory) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PerformingLaboratory) UnmarshalJSON(data []byte) error {
+	type unmarshaler PerformingLaboratory
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PerformingLaboratory(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+
+	p._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PerformingLaboratory) String() string {
+	if len(p._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(p._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type PhlebotomyAreaInfo struct {
 	IsServed  bool                      `json:"is_served" url:"is_served"`
 	Providers []*PhlebotomyProviderInfo `json:"providers,omitempty" url:"providers,omitempty"`
@@ -2183,6 +2274,209 @@ func (r ResultType) Ptr() *ResultType {
 	return &r
 }
 
+type SampleData struct {
+	SampleId               *string                          `json:"sample_id,omitempty" url:"sample_id,omitempty"`
+	ControlNumber          *string                          `json:"control_number,omitempty" url:"control_number,omitempty"`
+	DateCollected          *SampleDataDateCollected         `json:"date_collected,omitempty" url:"date_collected,omitempty"`
+	DateReceived           *SampleDataDateReceived          `json:"date_received,omitempty" url:"date_received,omitempty"`
+	DateReported           *SampleDataDateReported          `json:"date_reported,omitempty" url:"date_reported,omitempty"`
+	PerformingLaboratories map[string]*PerformingLaboratory `json:"performing_laboratories,omitempty" url:"performing_laboratories,omitempty"`
+	ClinicalInformation    *ClinicalInformation             `json:"clinical_information,omitempty" url:"clinical_information,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SampleData) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SampleData) UnmarshalJSON(data []byte) error {
+	type unmarshaler SampleData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SampleData(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SampleData) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SampleDataDateCollected struct {
+	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
+	String                         string
+}
+
+func NewSampleDataDateCollectedFromUtcTimestampWithTimezoneOffset(value *UtcTimestampWithTimezoneOffset) *SampleDataDateCollected {
+	return &SampleDataDateCollected{UtcTimestampWithTimezoneOffset: value}
+}
+
+func NewSampleDataDateCollectedFromString(value string) *SampleDataDateCollected {
+	return &SampleDataDateCollected{String: value}
+}
+
+func (s *SampleDataDateCollected) UnmarshalJSON(data []byte) error {
+	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
+	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
+		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		s.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SampleDataDateCollected) MarshalJSON() ([]byte, error) {
+	if s.UtcTimestampWithTimezoneOffset != nil {
+		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.String != "" {
+		return json.Marshal(s.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateCollectedVisitor interface {
+	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
+	VisitString(string) error
+}
+
+func (s *SampleDataDateCollected) Accept(visitor SampleDataDateCollectedVisitor) error {
+	if s.UtcTimestampWithTimezoneOffset != nil {
+		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.String != "" {
+		return visitor.VisitString(s.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReceived struct {
+	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
+	String                         string
+}
+
+func NewSampleDataDateReceivedFromUtcTimestampWithTimezoneOffset(value *UtcTimestampWithTimezoneOffset) *SampleDataDateReceived {
+	return &SampleDataDateReceived{UtcTimestampWithTimezoneOffset: value}
+}
+
+func NewSampleDataDateReceivedFromString(value string) *SampleDataDateReceived {
+	return &SampleDataDateReceived{String: value}
+}
+
+func (s *SampleDataDateReceived) UnmarshalJSON(data []byte) error {
+	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
+	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
+		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		s.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SampleDataDateReceived) MarshalJSON() ([]byte, error) {
+	if s.UtcTimestampWithTimezoneOffset != nil {
+		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.String != "" {
+		return json.Marshal(s.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReceivedVisitor interface {
+	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
+	VisitString(string) error
+}
+
+func (s *SampleDataDateReceived) Accept(visitor SampleDataDateReceivedVisitor) error {
+	if s.UtcTimestampWithTimezoneOffset != nil {
+		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.String != "" {
+		return visitor.VisitString(s.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReported struct {
+	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
+	String                         string
+}
+
+func NewSampleDataDateReportedFromUtcTimestampWithTimezoneOffset(value *UtcTimestampWithTimezoneOffset) *SampleDataDateReported {
+	return &SampleDataDateReported{UtcTimestampWithTimezoneOffset: value}
+}
+
+func NewSampleDataDateReportedFromString(value string) *SampleDataDateReported {
+	return &SampleDataDateReported{String: value}
+}
+
+func (s *SampleDataDateReported) UnmarshalJSON(data []byte) error {
+	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
+	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
+		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		s.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SampleDataDateReported) MarshalJSON() ([]byte, error) {
+	if s.UtcTimestampWithTimezoneOffset != nil {
+		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.String != "" {
+		return json.Marshal(s.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReportedVisitor interface {
+	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
+	VisitString(string) error
+}
+
+func (s *SampleDataDateReported) Accept(visitor SampleDataDateReportedVisitor) error {
+	if s.UtcTimestampWithTimezoneOffset != nil {
+		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.String != "" {
+		return visitor.VisitString(s.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
 type TimeSlot struct {
 	BookingKey *string `json:"booking_key,omitempty" url:"booking_key,omitempty"`
 	// Time is in UTC
@@ -2294,6 +2588,66 @@ func (u *UsAddress) UnmarshalJSON(data []byte) error {
 }
 
 func (u *UsAddress) String() string {
+	if len(u._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UtcTimestampWithTimezoneOffset struct {
+	Timestamp      time.Time `json:"timestamp" url:"timestamp"`
+	TimezoneOffset int       `json:"timezone_offset" url:"timezone_offset"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (u *UtcTimestampWithTimezoneOffset) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UtcTimestampWithTimezoneOffset) UnmarshalJSON(data []byte) error {
+	type embed UtcTimestampWithTimezoneOffset
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed: embed(*u),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*u = UtcTimestampWithTimezoneOffset(unmarshaler.embed)
+	u.Timestamp = unmarshaler.Timestamp.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+
+	u._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UtcTimestampWithTimezoneOffset) MarshalJSON() ([]byte, error) {
+	type embed UtcTimestampWithTimezoneOffset
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+	}{
+		embed:     embed(*u),
+		Timestamp: core.NewDateTime(u.Timestamp),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (u *UtcTimestampWithTimezoneOffset) String() string {
 	if len(u._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(u._rawJSON); err == nil {
 			return value
