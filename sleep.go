@@ -285,6 +285,7 @@ func (r *RawSleep) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SleepSummaryState string
 
 const (
@@ -307,6 +308,7 @@ func (s SleepSummaryState) Ptr() *SleepSummaryState {
 	return &s
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SleepType string
 
 const (

@@ -43,6 +43,7 @@ func (q *QueryBatch) MarshalJSON() ([]byte, error) {
 }
 
 type ActivityColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Activity ActivityColumnExprActivity `json:"activity" url:"activity"`
 
 	extraProperties map[string]interface{}
@@ -83,6 +84,7 @@ func (a *ActivityColumnExpr) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ActivityColumnExprActivity string
 
 const (
@@ -169,7 +171,8 @@ func (a ActivityColumnExprActivity) Ptr() *ActivityColumnExprActivity {
 }
 
 type AggregateExpr struct {
-	Arg  *AggregateExprArg `json:"arg,omitempty" url:"arg,omitempty"`
+	Arg *AggregateExprArg `json:"arg,omitempty" url:"arg,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
 	Func AggregateExprFunc `json:"func" url:"func"`
 
 	extraProperties map[string]interface{}
@@ -364,6 +367,7 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	return fmt.Errorf("type %T does not include a non-empty union type", a)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AggregateExprFunc string
 
 const (
@@ -491,6 +495,7 @@ func (a *AggregationResult) String() string {
 }
 
 type BodyColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Body BodyColumnExprBody `json:"body" url:"body"`
 
 	extraProperties map[string]interface{}
@@ -531,6 +536,7 @@ func (b *BodyColumnExpr) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type BodyColumnExprBody string
 
 const (
@@ -981,6 +987,7 @@ func (g *GroupKeyColumnExprGroupKey) Accept(visitor GroupKeyColumnExprGroupKeyVi
 }
 
 type IndexColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Index IndexColumnExprIndex `json:"index" url:"index"`
 
 	extraProperties map[string]interface{}
@@ -1021,6 +1028,7 @@ func (i *IndexColumnExpr) String() string {
 	return fmt.Sprintf("%#v", i)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type IndexColumnExprIndex string
 
 const (
@@ -1053,8 +1061,9 @@ func (i IndexColumnExprIndex) Ptr() *IndexColumnExprIndex {
 }
 
 type Period struct {
-	Value *int       `json:"value,omitempty" url:"value,omitempty"`
-	Unit  PeriodUnit `json:"unit" url:"unit"`
+	Value *int `json:"value,omitempty" url:"value,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Unit PeriodUnit `json:"unit" url:"unit"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1094,6 +1103,7 @@ func (p *Period) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type PeriodUnit string
 
 const (
@@ -1633,6 +1643,7 @@ func (s Select) Ptr() *Select {
 }
 
 type SleepColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Sleep SleepColumnExprSleep `json:"sleep" url:"sleep"`
 
 	extraProperties map[string]interface{}
@@ -1673,6 +1684,7 @@ func (s *SleepColumnExpr) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SleepColumnExprSleep string
 
 const (
@@ -1882,6 +1894,7 @@ func (u *UnrecognizedValueMacroExpr) String() string {
 }
 
 type WorkoutColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Workout WorkoutColumnExprWorkout `json:"workout" url:"workout"`
 
 	extraProperties map[string]interface{}
@@ -1922,6 +1935,7 @@ func (w *WorkoutColumnExpr) String() string {
 	return fmt.Sprintf("%#v", w)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type WorkoutColumnExprWorkout string
 
 const (

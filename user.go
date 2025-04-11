@@ -55,6 +55,7 @@ type UserRefreshRequest struct {
 	Timeout *float64 `json:"-" url:"timeout,omitempty"`
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Availability string
 
 const (
@@ -78,6 +79,7 @@ func (a Availability) Ptr() *Availability {
 }
 
 type ClientFacingConnectionErrorDetails struct {
+	// ℹ️ This enum is non-exhaustive.
 	ErrorType    ClientFacingConnectionErrorDetailsErrorType `json:"error_type" url:"error_type"`
 	ErrorMessage string                                      `json:"error_message" url:"error_message"`
 	ErroredAt    time.Time                                   `json:"errored_at" url:"errored_at"`
@@ -138,6 +140,7 @@ func (c *ClientFacingConnectionErrorDetails) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingConnectionErrorDetailsErrorType string
 
 const (

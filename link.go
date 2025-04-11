@@ -122,18 +122,36 @@ type BeginLinkTokenRequest struct {
 
 type LinkTokenExchange struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
-	UserId            string      `json:"user_id" url:"-"`
-	Provider          *Providers  `json:"provider,omitempty" url:"-"`
-	RedirectUrl       *string     `json:"redirect_url,omitempty" url:"-"`
+	UserId      string     `json:"user_id" url:"-"`
+	Provider    *Providers `json:"provider,omitempty" url:"-"`
+	RedirectUrl *string    `json:"redirect_url,omitempty" url:"-"`
+	// An allowlist of providers dictating what Vital Link Widget should show to the end user.
+	// If unspecified, all linkable providers are shown.
+	//
+	// This has no effect on programmatic Vital Link API usage.
 	FilterOnProviders []Providers `json:"filter_on_providers,omitempty" url:"-"`
-	OnError           *string     `json:"on_error,omitempty" url:"-"`
-	OnClose           *string     `json:"on_close,omitempty" url:"-"`
+	// By default, Vital Link Widget input forms for password and email providers have in-built error handling.
+	//
+	// Specifying `on_error=redirect` disables this Vital Link Widget UI behaviour — it would
+	// instead redirect to your `redirect_url`, with Link Error parameters injected.
+	//
+	// This has no effect on OAuth providers — they always redirect to your `redirect_url`. This also has
+	// no effect on programmatic Vital Link API usage.
+	OnError *string `json:"on_error,omitempty" url:"-"`
+	// By default, Vital Link Widget closes the window or tab when the user taps the Close button.
+	//
+	// Specifying `on_close=redirect` would change the Close button behaviour to redirect to your `redirect_url`
+	// with the `user_cancelled` error specified.
+	//
+	// This has no effect on programmatic Vital Link API usage.
+	OnClose *string `json:"on_close,omitempty" url:"-"`
 }
 
 type LinkTokenStateRequest struct {
 	VitalLinkToken *string `json:"-" url:"-"`
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AuthType string
 
 const (
@@ -244,7 +262,9 @@ func (b *BulkImportConnectionsResponse) String() string {
 }
 
 type BulkOp struct {
-	Type      BulkOpType   `json:"type" url:"type"`
+	// ℹ️ This enum is non-exhaustive.
+	Type BulkOpType `json:"type" url:"type"`
+	// ℹ️ This enum is non-exhaustive.
 	Status    BulkOpStatus `json:"status" url:"status"`
 	Provider  Providers    `json:"provider" url:"provider"`
 	Pending   int          `json:"pending" url:"pending"`
@@ -312,6 +332,7 @@ func (b *BulkOp) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type BulkOpStatus string
 
 const (
@@ -340,6 +361,7 @@ func (b BulkOpStatus) Ptr() *BulkOpStatus {
 	return &b
 }
 
+// ℹ️ This enum is non-exhaustive.
 type BulkOpType string
 
 const (
@@ -510,6 +532,7 @@ func (d *DemoConnectionStatus) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type DemoProviders string
 
 const (
@@ -538,6 +561,7 @@ func (d DemoProviders) Ptr() *DemoProviders {
 	return &d
 }
 
+// ℹ️ This enum is non-exhaustive.
 type EmailProviders = string
 
 type LinkTokenExchangeResponse struct {
@@ -584,6 +608,7 @@ func (l *LinkTokenExchangeResponse) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ManualProviders string
 
 const (
@@ -627,6 +652,7 @@ func (m ManualProviders) Ptr() *ManualProviders {
 	return &m
 }
 
+// ℹ️ This enum is non-exhaustive.
 type OAuthProviders string
 
 const (
@@ -688,6 +714,7 @@ func (o OAuthProviders) Ptr() *OAuthProviders {
 	return &o
 }
 
+// ℹ️ This enum is non-exhaustive.
 type PasswordProviders string
 
 const (
@@ -738,6 +765,7 @@ func (p PasswordProviders) Ptr() *PasswordProviders {
 }
 
 type ProviderLinkResponse struct {
+	// ℹ️ This enum is non-exhaustive.
 	State       ProviderLinkResponseState `json:"state" url:"state"`
 	RedirectUrl *string                   `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
 	ErrorType   *string                   `json:"error_type,omitempty" url:"error_type,omitempty"`
@@ -785,6 +813,7 @@ func (p *ProviderLinkResponse) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ProviderLinkResponseState string
 
 const (
@@ -811,6 +840,7 @@ func (p ProviderLinkResponseState) Ptr() *ProviderLinkResponseState {
 }
 
 type ProviderMfaRequest struct {
+	// ℹ️ This enum is non-exhaustive.
 	Method ProviderMfaRequestMethod `json:"method" url:"method"`
 	Hint   string                   `json:"hint" url:"hint"`
 
@@ -852,6 +882,7 @@ func (p *ProviderMfaRequest) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ProviderMfaRequestMethod string
 
 const (
@@ -874,6 +905,7 @@ func (p ProviderMfaRequestMethod) Ptr() *ProviderMfaRequestMethod {
 	return &p
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Region string
 
 const (
@@ -1136,6 +1168,7 @@ func (s *SourceLink) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SourceType string
 
 const (

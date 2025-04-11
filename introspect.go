@@ -27,6 +27,7 @@ type IntrospectGetUserResourcesRequest struct {
 	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AttemptStatus string
 
 const (
@@ -49,6 +50,7 @@ func (a AttemptStatus) Ptr() *AttemptStatus {
 	return &a
 }
 
+// ℹ️ This enum is non-exhaustive.
 type HistoricalPullStatus string
 
 const (

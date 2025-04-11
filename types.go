@@ -139,6 +139,7 @@ func (a *AoE) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Billing string
 
 const (
@@ -6899,6 +6900,7 @@ func (c *ClientFacingProviderConnectionErrorEvent) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingResource string
 
 const (
@@ -10343,6 +10345,7 @@ func (c *Consent) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ConsentType string
 
 const (
@@ -10420,6 +10423,7 @@ func (c *ContinuousQueryResultTableChanges) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Ethnicity string
 
 const (
@@ -10575,6 +10579,7 @@ func (f *FallbackTimeZone) String() string {
 	return fmt.Sprintf("%#v", f)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Gender string
 
 const (
@@ -10603,6 +10608,7 @@ func (g Gender) Ptr() *Gender {
 	return &g
 }
 
+// ℹ️ This enum is non-exhaustive.
 type GenderIdentity string
 
 const (
@@ -11078,7 +11084,7 @@ func (j *Jpeg) String() string {
 	return fmt.Sprintf("%#v", j)
 }
 
-// The method used to perform a lab test.
+// The method used to perform a lab test. ℹ️ This enum is non-exhaustive.
 type LabTestCollectionMethod string
 
 const (
@@ -11104,7 +11110,7 @@ func (l LabTestCollectionMethod) Ptr() *LabTestCollectionMethod {
 	return &l
 }
 
-// The type of sample used to perform a lab test.
+// The type of sample used to perform a lab test. ℹ️ This enum is non-exhaustive.
 type LabTestSampleType string
 
 const (
@@ -11136,6 +11142,7 @@ func (l LabTestSampleType) Ptr() *LabTestSampleType {
 	return &l
 }
 
+// ℹ️ This enum is non-exhaustive.
 type LabTestStatus string
 
 const (
@@ -11161,6 +11168,7 @@ func (l LabTestStatus) Ptr() *LabTestStatus {
 	return &l
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Labs string
 
 const (
@@ -11207,6 +11215,7 @@ func (l Labs) Ptr() *Labs {
 	return &l
 }
 
+// ℹ️ This enum is non-exhaustive.
 type MarkerType string
 
 const (
@@ -11229,6 +11238,7 @@ func (m MarkerType) Ptr() *MarkerType {
 	return &m
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Minerals string
 
 const (
@@ -11272,6 +11282,7 @@ func (m Minerals) Ptr() *Minerals {
 	return &m
 }
 
+// ℹ️ This enum is non-exhaustive.
 type OrderStatus string
 
 const (
@@ -11408,6 +11419,7 @@ func (o OrderStatus) Ptr() *OrderStatus {
 	return &o
 }
 
+// ℹ️ This enum is non-exhaustive.
 type OrderTopLevelStatus string
 
 const (
@@ -11769,11 +11781,12 @@ func (p *ProviderConnectionCreated) String() string {
 }
 
 type ProviderConnectionError struct {
-	Provider     string `json:"provider" url:"provider"`
-	UserId       string `json:"user_id" url:"user_id"`
-	Message      string `json:"message" url:"message"`
-	ErrorType    string `json:"error_type" url:"error_type"`
-	ErrorDetails string `json:"error_details" url:"error_details"`
+	Provider string `json:"provider" url:"provider"`
+	UserId   string `json:"user_id" url:"user_id"`
+	Message  string `json:"message" url:"message"`
+	// ℹ️ This enum is non-exhaustive.
+	ErrorType    ProviderConnectionErrorErrorType `json:"error_type" url:"error_type"`
+	ErrorDetails string                           `json:"error_details" url:"error_details"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -11813,6 +11826,45 @@ func (p *ProviderConnectionError) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// ℹ️ This enum is non-exhaustive.
+type ProviderConnectionErrorErrorType string
+
+const (
+	ProviderConnectionErrorErrorTypeTokenRefreshFailed        ProviderConnectionErrorErrorType = "token_refresh_failed"
+	ProviderConnectionErrorErrorTypeWebhookRegistrationFailed ProviderConnectionErrorErrorType = "webhook_registration_failed"
+	ProviderConnectionErrorErrorTypeUserNotFound              ProviderConnectionErrorErrorType = "user_not_found"
+	ProviderConnectionErrorErrorTypeDeregisteredPerProvider   ProviderConnectionErrorErrorType = "deregistered_per_provider"
+	ProviderConnectionErrorErrorTypeRequiredScopesNotGranted  ProviderConnectionErrorErrorType = "required_scopes_not_granted"
+	ProviderConnectionErrorErrorTypeProviderCredentialError   ProviderConnectionErrorErrorType = "provider_credential_error"
+	ProviderConnectionErrorErrorTypeUnknown                   ProviderConnectionErrorErrorType = "unknown"
+)
+
+func NewProviderConnectionErrorErrorTypeFromString(s string) (ProviderConnectionErrorErrorType, error) {
+	switch s {
+	case "token_refresh_failed":
+		return ProviderConnectionErrorErrorTypeTokenRefreshFailed, nil
+	case "webhook_registration_failed":
+		return ProviderConnectionErrorErrorTypeWebhookRegistrationFailed, nil
+	case "user_not_found":
+		return ProviderConnectionErrorErrorTypeUserNotFound, nil
+	case "deregistered_per_provider":
+		return ProviderConnectionErrorErrorTypeDeregisteredPerProvider, nil
+	case "required_scopes_not_granted":
+		return ProviderConnectionErrorErrorTypeRequiredScopesNotGranted, nil
+	case "provider_credential_error":
+		return ProviderConnectionErrorErrorTypeProviderCredentialError, nil
+	case "unknown":
+		return ProviderConnectionErrorErrorTypeUnknown, nil
+	}
+	var t ProviderConnectionErrorErrorType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ProviderConnectionErrorErrorType) Ptr() *ProviderConnectionErrorErrorType {
+	return &p
+}
+
+// ℹ️ This enum is non-exhaustive.
 type Providers string
 
 const (
@@ -11989,6 +12041,7 @@ func (q *Question) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type QuestionType string
 
 const (
@@ -12017,6 +12070,7 @@ func (q QuestionType) Ptr() *QuestionType {
 	return &q
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Race string
 
 const (
@@ -12051,6 +12105,7 @@ func (r Race) Ptr() *Race {
 	return &r
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ResponsibleRelationship string
 
 const (
@@ -12076,6 +12131,7 @@ func (r ResponsibleRelationship) Ptr() *ResponsibleRelationship {
 	return &r
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SexualOrientation string
 
 const (
@@ -12155,6 +12211,7 @@ func (s *ShippingAddress) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SourceAuthType string
 
 const (
@@ -12192,6 +12249,7 @@ func (s SourceAuthType) Ptr() *SourceAuthType {
 	return &s
 }
 
+// ℹ️ This enum is non-exhaustive.
 type TimeseriesResource string
 
 const (
@@ -12364,6 +12422,7 @@ func (t TimeseriesResource) Ptr() *TimeseriesResource {
 	return &t
 }
 
+// ℹ️ This enum is non-exhaustive.
 type TraceElements string
 
 const (
@@ -12584,6 +12643,7 @@ func (v *VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails) String() 
 	return fmt.Sprintf("%#v", v)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type Vitamins string
 
 const (

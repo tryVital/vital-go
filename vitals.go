@@ -2814,8 +2814,9 @@ type ClientFacingHeartRateAlertSample struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int                                 `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	Type           ClientFacingHeartRateAlertSampleType `json:"type" url:"type"`
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Type ClientFacingHeartRateAlertSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -2900,6 +2901,7 @@ func (c *ClientFacingHeartRateAlertSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingHeartRateAlertSampleType string
 
 const (
@@ -3162,7 +3164,7 @@ type ClientFacingInsulinInjectionSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// Insulin type: rapid vs long acting
+	// Insulin type: rapid vs long acting ℹ️ This enum is non-exhaustive.
 	Type ClientFacingInsulinInjectionSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3249,7 +3251,7 @@ func (c *ClientFacingInsulinInjectionSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Insulin type: rapid vs long acting
+// Insulin type: rapid vs long acting ℹ️ This enum is non-exhaustive.
 type ClientFacingInsulinInjectionSampleType string
 
 const (
@@ -3953,8 +3955,9 @@ type ClientFacingStandHourSample struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int                            `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	Type           ClientFacingStandHourSampleType `json:"type" url:"type"`
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Type ClientFacingStandHourSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -4040,6 +4043,7 @@ func (c *ClientFacingStandHourSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingStandHourSampleType string
 
 const (

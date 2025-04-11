@@ -28,11 +28,12 @@ type ClientFacingElectrocardiogram struct {
 	AlgorithmVersion    *string                                         `json:"algorithm_version,omitempty" url:"algorithm_version,omitempty"`
 	TimeZone            *string                                         `json:"time_zone,omitempty" url:"time_zone,omitempty"`
 	SourceProvider      *ClientFacingElectrocardiogramSourceProvider    `json:"source_provider,omitempty" url:"source_provider,omitempty"`
-	SourceType          ClientFacingElectrocardiogramSourceType         `json:"source_type" url:"source_type"`
-	SourceAppId         *string                                         `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
-	SourceDeviceModel   *string                                         `json:"source_device_model,omitempty" url:"source_device_model,omitempty"`
-	UserId              string                                          `json:"user_id" url:"user_id"`
-	Source              *ClientFacingSource                             `json:"source,omitempty" url:"source,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	SourceType        ClientFacingElectrocardiogramSourceType `json:"source_type" url:"source_type"`
+	SourceAppId       *string                                 `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	SourceDeviceModel *string                                 `json:"source_device_model,omitempty" url:"source_device_model,omitempty"`
+	UserId            string                                  `json:"user_id" url:"user_id"`
+	Source            *ClientFacingSource                     `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -237,6 +238,7 @@ func (c *ClientFacingElectrocardiogramSourceProvider) Accept(visitor ClientFacin
 	return fmt.Errorf("type %T does not include a non-empty union type", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingElectrocardiogramSourceType string
 
 const (

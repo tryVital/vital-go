@@ -151,6 +151,7 @@ func (c *ClientFacingTeam) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type DelegatedFlowType string
 
 const (
@@ -177,6 +178,7 @@ func (d DelegatedFlowType) Ptr() *DelegatedFlowType {
 }
 
 type EventDestinationPreferences struct {
+	// ℹ️ This enum is non-exhaustive.
 	Preferred EventDestinationPreferencesPreferred     `json:"preferred" url:"preferred"`
 	Enabled   []EventDestinationPreferencesEnabledItem `json:"enabled,omitempty" url:"enabled,omitempty"`
 
@@ -246,6 +248,7 @@ func (e EventDestinationPreferencesEnabledItem) Ptr() *EventDestinationPreferenc
 	return &e
 }
 
+// ℹ️ This enum is non-exhaustive.
 type EventDestinationPreferencesPreferred string
 
 const (

@@ -33,10 +33,11 @@ type ClientFacingSleepCycle struct {
 	StageType      []VitalSleepStage                     `json:"stage_type,omitempty" url:"stage_type,omitempty"`
 	TimeZone       *string                               `json:"time_zone,omitempty" url:"time_zone,omitempty"`
 	SourceProvider *ClientFacingSleepCycleSourceProvider `json:"source_provider,omitempty" url:"source_provider,omitempty"`
-	SourceType     ClientFacingSleepCycleSourceType      `json:"source_type" url:"source_type"`
-	SourceAppId    *string                               `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
-	UserId         string                                `json:"user_id" url:"user_id"`
-	Source         *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	SourceType  ClientFacingSleepCycleSourceType `json:"source_type" url:"source_type"`
+	SourceAppId *string                          `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	UserId      string                           `json:"user_id" url:"user_id"`
+	Source      *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -150,6 +151,7 @@ func (c *ClientFacingSleepCycleSourceProvider) Accept(visitor ClientFacingSleepC
 	return fmt.Errorf("type %T does not include a non-empty union type", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingSleepCycleSourceType string
 
 const (
@@ -246,4 +248,5 @@ func (c *ClientSleepCycleResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type VitalSleepStage = int

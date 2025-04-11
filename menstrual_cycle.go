@@ -58,7 +58,8 @@ func (b *BasalBodyTemperatureEntry) String() string {
 }
 
 type CervicalMucusEntry struct {
-	Date    string                    `json:"date" url:"date"`
+	Date string `json:"date" url:"date"`
+	// ℹ️ This enum is non-exhaustive.
 	Quality CervicalMucusEntryQuality `json:"quality" url:"quality"`
 
 	extraProperties map[string]interface{}
@@ -99,6 +100,7 @@ func (c *CervicalMucusEntry) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type CervicalMucusEntryQuality string
 
 const (
@@ -147,10 +149,11 @@ type ClientFacingMenstrualCycle struct {
 	SexualActivity         []*SexualActivityEntry                    `json:"sexual_activity,omitempty" url:"sexual_activity,omitempty"`
 	BasalBodyTemperature   []*BasalBodyTemperatureEntry              `json:"basal_body_temperature,omitempty" url:"basal_body_temperature,omitempty"`
 	SourceProvider         *ClientFacingMenstrualCycleSourceProvider `json:"source_provider,omitempty" url:"source_provider,omitempty"`
-	SourceType             ClientFacingMenstrualCycleSourceType      `json:"source_type" url:"source_type"`
-	SourceAppId            *string                                   `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
-	UserId                 string                                    `json:"user_id" url:"user_id"`
-	Source                 *ClientFacingSource                       `json:"source,omitempty" url:"source,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	SourceType  ClientFacingMenstrualCycleSourceType `json:"source_type" url:"source_type"`
+	SourceAppId *string                              `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	UserId      string                               `json:"user_id" url:"user_id"`
+	Source      *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -242,6 +245,7 @@ func (c *ClientFacingMenstrualCycleSourceProvider) Accept(visitor ClientFacingMe
 	return fmt.Errorf("type %T does not include a non-empty union type", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingMenstrualCycleSourceType string
 
 const (
@@ -298,7 +302,8 @@ func (c ClientFacingMenstrualCycleSourceType) Ptr() *ClientFacingMenstrualCycleS
 }
 
 type ContraceptiveEntry struct {
-	Date string                 `json:"date" url:"date"`
+	Date string `json:"date" url:"date"`
+	// ℹ️ This enum is non-exhaustive.
 	Type ContraceptiveEntryType `json:"type" url:"type"`
 
 	extraProperties map[string]interface{}
@@ -339,6 +344,7 @@ func (c *ContraceptiveEntry) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ContraceptiveEntryType string
 
 const (
@@ -377,7 +383,8 @@ func (c ContraceptiveEntryType) Ptr() *ContraceptiveEntryType {
 }
 
 type DetectedDeviationEntry struct {
-	Date      string                          `json:"date" url:"date"`
+	Date string `json:"date" url:"date"`
+	// ℹ️ This enum is non-exhaustive.
 	Deviation DetectedDeviationEntryDeviation `json:"deviation" url:"deviation"`
 
 	extraProperties map[string]interface{}
@@ -418,6 +425,7 @@ func (d *DetectedDeviationEntry) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type DetectedDeviationEntryDeviation string
 
 const (
@@ -447,7 +455,8 @@ func (d DetectedDeviationEntryDeviation) Ptr() *DetectedDeviationEntryDeviation 
 }
 
 type HomePregnancyTestEntry struct {
-	Date       string                           `json:"date" url:"date"`
+	Date string `json:"date" url:"date"`
+	// ℹ️ This enum is non-exhaustive.
 	TestResult HomePregnancyTestEntryTestResult `json:"test_result" url:"test_result"`
 
 	extraProperties map[string]interface{}
@@ -488,6 +497,7 @@ func (h *HomePregnancyTestEntry) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type HomePregnancyTestEntryTestResult string
 
 const (
@@ -514,7 +524,8 @@ func (h HomePregnancyTestEntryTestResult) Ptr() *HomePregnancyTestEntryTestResul
 }
 
 type HomeProgesteroneTestEntry struct {
-	Date       string                              `json:"date" url:"date"`
+	Date string `json:"date" url:"date"`
+	// ℹ️ This enum is non-exhaustive.
 	TestResult HomeProgesteroneTestEntryTestResult `json:"test_result" url:"test_result"`
 
 	extraProperties map[string]interface{}
@@ -555,6 +566,7 @@ func (h *HomeProgesteroneTestEntry) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type HomeProgesteroneTestEntryTestResult string
 
 const (
@@ -663,7 +675,8 @@ func (m *MenstrualCycleResponse) String() string {
 }
 
 type MenstrualFlowEntry struct {
-	Date string                 `json:"date" url:"date"`
+	Date string `json:"date" url:"date"`
+	// ℹ️ This enum is non-exhaustive.
 	Flow MenstrualFlowEntryFlow `json:"flow" url:"flow"`
 
 	extraProperties map[string]interface{}
@@ -704,6 +717,7 @@ func (m *MenstrualFlowEntry) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type MenstrualFlowEntryFlow string
 
 const (
@@ -736,7 +750,8 @@ func (m MenstrualFlowEntryFlow) Ptr() *MenstrualFlowEntryFlow {
 }
 
 type OvulationTestEntry struct {
-	Date       string                       `json:"date" url:"date"`
+	Date string `json:"date" url:"date"`
+	// ℹ️ This enum is non-exhaustive.
 	TestResult OvulationTestEntryTestResult `json:"test_result" url:"test_result"`
 
 	extraProperties map[string]interface{}
@@ -777,6 +792,7 @@ func (o *OvulationTestEntry) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type OvulationTestEntryTestResult string
 
 const (

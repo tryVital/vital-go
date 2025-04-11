@@ -273,6 +273,7 @@ func (a *AddOnOrder) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AllowedRadius string
 
 const (
@@ -427,6 +428,7 @@ func (a *AppointmentBookingRequest) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AppointmentEventStatus string
 
 const (
@@ -503,6 +505,7 @@ func (a *AppointmentLocation) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AppointmentProvider string
 
 const (
@@ -531,6 +534,7 @@ func (a AppointmentProvider) Ptr() *AppointmentProvider {
 	return &a
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AppointmentPscLabs = string
 
 type AppointmentRescheduleRequest struct {
@@ -574,6 +578,7 @@ func (a *AppointmentRescheduleRequest) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AppointmentServiceType string
 
 const (
@@ -596,6 +601,7 @@ func (a AppointmentServiceType) Ptr() *AppointmentServiceType {
 	return &a
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AppointmentStatus string
 
 const (
@@ -627,6 +633,7 @@ func (a AppointmentStatus) Ptr() *AppointmentStatus {
 	return &a
 }
 
+// ℹ️ This enum is non-exhaustive.
 type AppointmentType string
 
 const (
@@ -997,6 +1004,7 @@ func (c *ClientFacingLabLocation) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingLabs string
 
 const (
@@ -1209,6 +1217,7 @@ func (d *DaySlots) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type FailureType string
 
 const (
@@ -1543,6 +1552,7 @@ func (l *LabResultsRawResults) Accept(visitor LabResultsRawResultsVisitor) error
 	return fmt.Errorf("type %T does not include a non-empty union type", l)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type LabTestGenerationMethodFilter string
 
 const (
@@ -2147,6 +2157,7 @@ func (p *PscInfo) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ResultType string
 
 const (

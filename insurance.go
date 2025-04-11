@@ -164,6 +164,7 @@ func (c *ClientFacingPayorSearchResponseDeprecated) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type PayorCodeExternalProvider string
 
 const (
