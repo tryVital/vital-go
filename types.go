@@ -6048,6 +6048,8 @@ type ClientFacingOrder struct {
 	Passthrough *string  `json:"passthrough,omitempty" url:"passthrough,omitempty"`
 	BillingType *Billing `json:"billing_type,omitempty" url:"billing_type,omitempty"`
 	IcdCodes    []string `json:"icd_codes,omitempty" url:"icd_codes,omitempty"`
+	// Defines whether the order has an Advanced Beneficiary Notice (ABN) form or not.
+	HasAbn bool `json:"has_abn" url:"has_abn"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
