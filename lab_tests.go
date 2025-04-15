@@ -132,9 +132,17 @@ type LabTestsGetOrdersRequest struct {
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
 	UpdatedStartDate *time.Time `json:"-" url:"updated_start_date,omitempty"`
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	UpdatedEndDate *time.Time                              `json:"-" url:"updated_end_date,omitempty"`
-	OrderKey       *LabTestsGetOrdersRequestOrderKey       `json:"-" url:"order_key,omitempty"`
+	UpdatedEndDate *time.Time `json:"-" url:"updated_end_date,omitempty"`
+	// Filter by low level status.
+	Status []*OrderLowLevelStatus `json:"-" url:"status,omitempty"`
+	// Order key to sort by.
+	OrderKey *LabTestsGetOrdersRequestOrderKey `json:"-" url:"order_key,omitempty"`
+	// Order direction to sort by.
 	OrderDirection *LabTestsGetOrdersRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
+	// Filter by method used to perform the lab test.
+	OrderType []*LabTestCollectionMethod `json:"-" url:"order_type,omitempty"`
+	// Filter by activation type.
+	OrderActivationTypes []*OrderActivationType `json:"-" url:"order_activation_types,omitempty"`
 	// Filter by user ID.
 	UserId *string `json:"-" url:"user_id,omitempty"`
 	// Filter by patient name.
@@ -1756,6 +1764,118 @@ func (m *MissingBiomarkerResult) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type OrderActivationType string
+
+const (
+	OrderActivationTypeCurrent   OrderActivationType = "current"
+	OrderActivationTypeScheduled OrderActivationType = "scheduled"
+)
+
+func NewOrderActivationTypeFromString(s string) (OrderActivationType, error) {
+	switch s {
+	case "current":
+		return OrderActivationTypeCurrent, nil
+	case "scheduled":
+		return OrderActivationTypeScheduled, nil
+	}
+	var t OrderActivationType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderActivationType) Ptr() *OrderActivationType {
+	return &o
+}
+
+// ℹ️ This enum is non-exhaustive.
+type OrderLowLevelStatus string
+
+const (
+	OrderLowLevelStatusOrdered                    OrderLowLevelStatus = "ordered"
+	OrderLowLevelStatusRequisitionCreated         OrderLowLevelStatus = "requisition_created"
+	OrderLowLevelStatusRequisitionBypassed        OrderLowLevelStatus = "requisition_bypassed"
+	OrderLowLevelStatusTransitCustomer            OrderLowLevelStatus = "transit_customer"
+	OrderLowLevelStatusOutForDelivery             OrderLowLevelStatus = "out_for_delivery"
+	OrderLowLevelStatusWithCustomer               OrderLowLevelStatus = "with_customer"
+	OrderLowLevelStatusTransitLab                 OrderLowLevelStatus = "transit_lab"
+	OrderLowLevelStatusDeliveredToLab             OrderLowLevelStatus = "delivered_to_lab"
+	OrderLowLevelStatusCompleted                  OrderLowLevelStatus = "completed"
+	OrderLowLevelStatusFailureToDeliverToLab      OrderLowLevelStatus = "failure_to_deliver_to_lab"
+	OrderLowLevelStatusFailureToDeliverToCustomer OrderLowLevelStatus = "failure_to_deliver_to_customer"
+	OrderLowLevelStatusProblemInTransitLab        OrderLowLevelStatus = "problem_in_transit_lab"
+	OrderLowLevelStatusProblemInTransitCustomer   OrderLowLevelStatus = "problem_in_transit_customer"
+	OrderLowLevelStatusSampleError                OrderLowLevelStatus = "sample_error"
+	OrderLowLevelStatusAppointmentScheduled       OrderLowLevelStatus = "appointment_scheduled"
+	OrderLowLevelStatusAppointmentCancelled       OrderLowLevelStatus = "appointment_cancelled"
+	OrderLowLevelStatusAppointmentPending         OrderLowLevelStatus = "appointment_pending"
+	OrderLowLevelStatusDrawCompleted              OrderLowLevelStatus = "draw_completed"
+	OrderLowLevelStatusCancelled                  OrderLowLevelStatus = "cancelled"
+	OrderLowLevelStatusLost                       OrderLowLevelStatus = "lost"
+	OrderLowLevelStatusDoNotProcess               OrderLowLevelStatus = "do_not_process"
+	OrderLowLevelStatusPartialResults             OrderLowLevelStatus = "partial_results"
+	OrderLowLevelStatusAwaitingRegistration       OrderLowLevelStatus = "awaiting_registration"
+	OrderLowLevelStatusRegistered                 OrderLowLevelStatus = "registered"
+)
+
+func NewOrderLowLevelStatusFromString(s string) (OrderLowLevelStatus, error) {
+	switch s {
+	case "ordered":
+		return OrderLowLevelStatusOrdered, nil
+	case "requisition_created":
+		return OrderLowLevelStatusRequisitionCreated, nil
+	case "requisition_bypassed":
+		return OrderLowLevelStatusRequisitionBypassed, nil
+	case "transit_customer":
+		return OrderLowLevelStatusTransitCustomer, nil
+	case "out_for_delivery":
+		return OrderLowLevelStatusOutForDelivery, nil
+	case "with_customer":
+		return OrderLowLevelStatusWithCustomer, nil
+	case "transit_lab":
+		return OrderLowLevelStatusTransitLab, nil
+	case "delivered_to_lab":
+		return OrderLowLevelStatusDeliveredToLab, nil
+	case "completed":
+		return OrderLowLevelStatusCompleted, nil
+	case "failure_to_deliver_to_lab":
+		return OrderLowLevelStatusFailureToDeliverToLab, nil
+	case "failure_to_deliver_to_customer":
+		return OrderLowLevelStatusFailureToDeliverToCustomer, nil
+	case "problem_in_transit_lab":
+		return OrderLowLevelStatusProblemInTransitLab, nil
+	case "problem_in_transit_customer":
+		return OrderLowLevelStatusProblemInTransitCustomer, nil
+	case "sample_error":
+		return OrderLowLevelStatusSampleError, nil
+	case "appointment_scheduled":
+		return OrderLowLevelStatusAppointmentScheduled, nil
+	case "appointment_cancelled":
+		return OrderLowLevelStatusAppointmentCancelled, nil
+	case "appointment_pending":
+		return OrderLowLevelStatusAppointmentPending, nil
+	case "draw_completed":
+		return OrderLowLevelStatusDrawCompleted, nil
+	case "cancelled":
+		return OrderLowLevelStatusCancelled, nil
+	case "lost":
+		return OrderLowLevelStatusLost, nil
+	case "do_not_process":
+		return OrderLowLevelStatusDoNotProcess, nil
+	case "partial_results":
+		return OrderLowLevelStatusPartialResults, nil
+	case "awaiting_registration":
+		return OrderLowLevelStatusAwaitingRegistration, nil
+	case "registered":
+		return OrderLowLevelStatusRegistered, nil
+	}
+	var t OrderLowLevelStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderLowLevelStatus) Ptr() *OrderLowLevelStatus {
+	return &o
 }
 
 type OrderSetRequest struct {
