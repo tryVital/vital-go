@@ -6,6 +6,7 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	core "github.com/tryVital/vital-go/core"
+	time "time"
 )
 
 type MenstrualCycleGetRequest struct {
@@ -152,6 +153,8 @@ type ClientFacingMenstrualCycle struct {
 	// ℹ️ This enum is non-exhaustive.
 	SourceType  ClientFacingMenstrualCycleSourceType `json:"source_type" url:"source_type"`
 	SourceAppId *string                              `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	CreatedAt   *time.Time                           `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt   *time.Time                           `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	UserId      string                               `json:"user_id" url:"user_id"`
 	Source      *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
 
@@ -164,12 +167,20 @@ func (c *ClientFacingMenstrualCycle) GetExtraProperties() map[string]interface{}
 }
 
 func (c *ClientFacingMenstrualCycle) UnmarshalJSON(data []byte) error {
-	type unmarshaler ClientFacingMenstrualCycle
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ClientFacingMenstrualCycle
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*c = ClientFacingMenstrualCycle(value)
+	*c = ClientFacingMenstrualCycle(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -179,6 +190,20 @@ func (c *ClientFacingMenstrualCycle) UnmarshalJSON(data []byte) error {
 
 	c._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (c *ClientFacingMenstrualCycle) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingMenstrualCycle
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: core.NewOptionalDateTime(c.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(c.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (c *ClientFacingMenstrualCycle) String() string {

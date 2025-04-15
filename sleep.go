@@ -347,6 +347,8 @@ type SleepV2InDb struct {
 	Id         string                 `json:"id" url:"id"`
 	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
 	Priority   *int                   `json:"priority,omitempty" url:"priority,omitempty"`
+	CreatedAt  *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt  *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -361,6 +363,8 @@ func (s *SleepV2InDb) UnmarshalJSON(data []byte) error {
 	var unmarshaler = struct {
 		embed
 		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*s),
 	}
@@ -369,6 +373,8 @@ func (s *SleepV2InDb) UnmarshalJSON(data []byte) error {
 	}
 	*s = SleepV2InDb(unmarshaler.embed)
 	s.Timestamp = unmarshaler.Timestamp.Time()
+	s.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	s.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *s)
 	if err != nil {
@@ -385,9 +391,13 @@ func (s *SleepV2InDb) MarshalJSON() ([]byte, error) {
 	var marshaler = struct {
 		embed
 		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:     embed(*s),
 		Timestamp: core.NewDateTime(s.Timestamp),
+		CreatedAt: core.NewOptionalDateTime(s.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(s.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }

@@ -36,6 +36,8 @@ type ActivityV2InDb struct {
 	PriorityId int                    `json:"priority_id" url:"priority_id"`
 	Id         string                 `json:"id" url:"id"`
 	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
+	CreatedAt  *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt  *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -50,6 +52,8 @@ func (a *ActivityV2InDb) UnmarshalJSON(data []byte) error {
 	var unmarshaler = struct {
 		embed
 		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*a),
 	}
@@ -58,6 +62,8 @@ func (a *ActivityV2InDb) UnmarshalJSON(data []byte) error {
 	}
 	*a = ActivityV2InDb(unmarshaler.embed)
 	a.Timestamp = unmarshaler.Timestamp.Time()
+	a.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	a.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *a)
 	if err != nil {
@@ -74,9 +80,13 @@ func (a *ActivityV2InDb) MarshalJSON() ([]byte, error) {
 	var marshaler = struct {
 		embed
 		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:     embed(*a),
 		Timestamp: core.NewDateTime(a.Timestamp),
+		CreatedAt: core.NewOptionalDateTime(a.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(a.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }

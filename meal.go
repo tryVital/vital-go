@@ -285,19 +285,17 @@ type MealInDbBaseClientFacingSource struct {
 	// This value has no meaning.
 	SourceId int `json:"source_id" url:"source_id"`
 	// This value is identical to `id`.
-	ProviderId string                       `json:"provider_id" url:"provider_id"`
-	Timestamp  time.Time                    `json:"timestamp" url:"timestamp"`
-	Name       string                       `json:"name" url:"name"`
-	Energy     *Energy                      `json:"energy,omitempty" url:"energy,omitempty"`
-	Macros     *Macros                      `json:"macros,omitempty" url:"macros,omitempty"`
-	Micros     *Micros                      `json:"micros,omitempty" url:"micros,omitempty"`
-	Data       map[string]*ClientFacingFood `json:"data,omitempty" url:"data,omitempty"`
-	Source     *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
-	// This value is identical to `timestamp`.
-	CreatedAt time.Time `json:"created_at" url:"created_at"`
-	// This value is identical to `timestamp`.
-	UpdatedAt   time.Time `json:"updated_at" url:"updated_at"`
-	SourceAppId *string   `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	ProviderId  string                       `json:"provider_id" url:"provider_id"`
+	Timestamp   time.Time                    `json:"timestamp" url:"timestamp"`
+	Name        string                       `json:"name" url:"name"`
+	Energy      *Energy                      `json:"energy,omitempty" url:"energy,omitempty"`
+	Macros      *Macros                      `json:"macros,omitempty" url:"macros,omitempty"`
+	Micros      *Micros                      `json:"micros,omitempty" url:"micros,omitempty"`
+	Data        map[string]*ClientFacingFood `json:"data,omitempty" url:"data,omitempty"`
+	Source      *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
+	CreatedAt   time.Time                    `json:"created_at" url:"created_at"`
+	UpdatedAt   time.Time                    `json:"updated_at" url:"updated_at"`
+	SourceAppId *string                      `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage

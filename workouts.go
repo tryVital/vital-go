@@ -917,6 +917,8 @@ type WorkoutV2InDb struct {
 	SportId    int                    `json:"sport_id" url:"sport_id"`
 	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
 	Sport      *ClientFacingSport     `json:"sport,omitempty" url:"sport,omitempty"`
+	CreatedAt  *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt  *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -931,6 +933,8 @@ func (w *WorkoutV2InDb) UnmarshalJSON(data []byte) error {
 	var unmarshaler = struct {
 		embed
 		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*w),
 	}
@@ -939,6 +943,8 @@ func (w *WorkoutV2InDb) UnmarshalJSON(data []byte) error {
 	}
 	*w = WorkoutV2InDb(unmarshaler.embed)
 	w.Timestamp = unmarshaler.Timestamp.Time()
+	w.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	w.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *w)
 	if err != nil {
@@ -955,9 +961,13 @@ func (w *WorkoutV2InDb) MarshalJSON() ([]byte, error) {
 	var marshaler = struct {
 		embed
 		Timestamp *core.DateTime `json:"timestamp"`
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:     embed(*w),
 		Timestamp: core.NewDateTime(w.Timestamp),
+		CreatedAt: core.NewOptionalDateTime(w.CreatedAt),
+		UpdatedAt: core.NewOptionalDateTime(w.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }

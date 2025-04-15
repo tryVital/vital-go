@@ -36,6 +36,8 @@ type ClientFacingSleepCycle struct {
 	// ℹ️ This enum is non-exhaustive.
 	SourceType  ClientFacingSleepCycleSourceType `json:"source_type" url:"source_type"`
 	SourceAppId *string                          `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	CreatedAt   *time.Time                       `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt   *time.Time                       `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 	UserId      string                           `json:"user_id" url:"user_id"`
 	Source      *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
 
@@ -53,6 +55,8 @@ func (c *ClientFacingSleepCycle) UnmarshalJSON(data []byte) error {
 		embed
 		SessionStart *core.DateTime `json:"session_start"`
 		SessionEnd   *core.DateTime `json:"session_end"`
+		CreatedAt    *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt    *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*c),
 	}
@@ -62,6 +66,8 @@ func (c *ClientFacingSleepCycle) UnmarshalJSON(data []byte) error {
 	*c = ClientFacingSleepCycle(unmarshaler.embed)
 	c.SessionStart = unmarshaler.SessionStart.Time()
 	c.SessionEnd = unmarshaler.SessionEnd.Time()
+	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -79,10 +85,14 @@ func (c *ClientFacingSleepCycle) MarshalJSON() ([]byte, error) {
 		embed
 		SessionStart *core.DateTime `json:"session_start"`
 		SessionEnd   *core.DateTime `json:"session_end"`
+		CreatedAt    *core.DateTime `json:"created_at,omitempty"`
+		UpdatedAt    *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:        embed(*c),
 		SessionStart: core.NewDateTime(c.SessionStart),
 		SessionEnd:   core.NewDateTime(c.SessionEnd),
+		CreatedAt:    core.NewOptionalDateTime(c.CreatedAt),
+		UpdatedAt:    core.NewOptionalDateTime(c.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
