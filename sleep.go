@@ -37,9 +37,9 @@ type SleepGetStreamRequest struct {
 }
 
 type ClientFacingSleep struct {
+	Id string `json:"id" url:"id"`
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
 	UserId string `json:"user_id" url:"user_id"`
-	Id     string `json:"id" url:"id"`
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
 	Date time.Time `json:"date" url:"date"`
 	// Date of the sleep summary in the YYYY-mm-dd format. This generally matches the sleep end date.
@@ -94,6 +94,8 @@ type ClientFacingSleep struct {
 	// Source the data has come from.
 	Source      *ClientFacingSource      `json:"source,omitempty" url:"source,omitempty"`
 	SleepStream *ClientFacingSleepStream `json:"sleep_stream,omitempty" url:"sleep_stream,omitempty"`
+	CreatedAt   time.Time                `json:"created_at" url:"created_at"`
+	UpdatedAt   time.Time                `json:"updated_at" url:"updated_at"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -110,6 +112,8 @@ func (c *ClientFacingSleep) UnmarshalJSON(data []byte) error {
 		Date         *core.DateTime `json:"date"`
 		BedtimeStart *core.DateTime `json:"bedtime_start"`
 		BedtimeStop  *core.DateTime `json:"bedtime_stop"`
+		CreatedAt    *core.DateTime `json:"created_at"`
+		UpdatedAt    *core.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*c),
 	}
@@ -120,6 +124,8 @@ func (c *ClientFacingSleep) UnmarshalJSON(data []byte) error {
 	c.Date = unmarshaler.Date.Time()
 	c.BedtimeStart = unmarshaler.BedtimeStart.Time()
 	c.BedtimeStop = unmarshaler.BedtimeStop.Time()
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -138,11 +144,15 @@ func (c *ClientFacingSleep) MarshalJSON() ([]byte, error) {
 		Date         *core.DateTime `json:"date"`
 		BedtimeStart *core.DateTime `json:"bedtime_start"`
 		BedtimeStop  *core.DateTime `json:"bedtime_stop"`
+		CreatedAt    *core.DateTime `json:"created_at"`
+		UpdatedAt    *core.DateTime `json:"updated_at"`
 	}{
 		embed:        embed(*c),
 		Date:         core.NewDateTime(c.Date),
 		BedtimeStart: core.NewDateTime(c.BedtimeStart),
 		BedtimeStop:  core.NewDateTime(c.BedtimeStop),
+		CreatedAt:    core.NewDateTime(c.CreatedAt),
+		UpdatedAt:    core.NewDateTime(c.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }

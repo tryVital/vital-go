@@ -146,9 +146,9 @@ func (c *ClientBodyResponse) String() string {
 }
 
 type ClientFacingBody struct {
+	Id string `json:"id" url:"id"`
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
 	UserId string `json:"user_id" url:"user_id"`
-	Id     string `json:"id" url:"id"`
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
 	Date time.Time `json:"date" url:"date"`
 	// Date of the summary in the YYYY-mm-dd format.
@@ -169,6 +169,8 @@ type ClientFacingBody struct {
 	LeanBodyMassKilogram         *float64            `json:"lean_body_mass_kilogram,omitempty" url:"lean_body_mass_kilogram,omitempty"`
 	WaistCircumferenceCentimeter *float64            `json:"waist_circumference_centimeter,omitempty" url:"waist_circumference_centimeter,omitempty"`
 	Source                       *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	CreatedAt                    time.Time           `json:"created_at" url:"created_at"`
+	UpdatedAt                    time.Time           `json:"updated_at" url:"updated_at"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -182,7 +184,9 @@ func (c *ClientFacingBody) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingBody
 	var unmarshaler = struct {
 		embed
-		Date *core.DateTime `json:"date"`
+		Date      *core.DateTime `json:"date"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*c),
 	}
@@ -191,6 +195,8 @@ func (c *ClientFacingBody) UnmarshalJSON(data []byte) error {
 	}
 	*c = ClientFacingBody(unmarshaler.embed)
 	c.Date = unmarshaler.Date.Time()
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -206,10 +212,14 @@ func (c *ClientFacingBody) MarshalJSON() ([]byte, error) {
 	type embed ClientFacingBody
 	var marshaler = struct {
 		embed
-		Date *core.DateTime `json:"date"`
+		Date      *core.DateTime `json:"date"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
 	}{
-		embed: embed(*c),
-		Date:  core.NewDateTime(c.Date),
+		embed:     embed(*c),
+		Date:      core.NewDateTime(c.Date),
+		CreatedAt: core.NewDateTime(c.CreatedAt),
+		UpdatedAt: core.NewDateTime(c.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }

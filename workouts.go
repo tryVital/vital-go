@@ -666,9 +666,9 @@ func (c *ClientFacingStreamVelocitySmooth) Accept(visitor ClientFacingStreamVelo
 }
 
 type ClientFacingWorkout struct {
+	Id string `json:"id" url:"id"`
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
 	UserId string `json:"user_id" url:"user_id"`
-	Id     string `json:"id" url:"id"`
 	// Title given for the workout
 	Title *string `json:"title,omitempty" url:"title,omitempty"`
 	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
@@ -718,7 +718,9 @@ type ClientFacingWorkout struct {
 	// Provider ID given for that specific workout
 	ProviderId string `json:"provider_id" url:"provider_id"`
 	// Source the data has come from.
-	Source *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	Source    *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	CreatedAt time.Time           `json:"created_at" url:"created_at"`
+	UpdatedAt time.Time           `json:"updated_at" url:"updated_at"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -734,6 +736,8 @@ func (c *ClientFacingWorkout) UnmarshalJSON(data []byte) error {
 		embed
 		TimeStart *core.DateTime `json:"time_start"`
 		TimeEnd   *core.DateTime `json:"time_end"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*c),
 	}
@@ -743,6 +747,8 @@ func (c *ClientFacingWorkout) UnmarshalJSON(data []byte) error {
 	*c = ClientFacingWorkout(unmarshaler.embed)
 	c.TimeStart = unmarshaler.TimeStart.Time()
 	c.TimeEnd = unmarshaler.TimeEnd.Time()
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -760,10 +766,14 @@ func (c *ClientFacingWorkout) MarshalJSON() ([]byte, error) {
 		embed
 		TimeStart *core.DateTime `json:"time_start"`
 		TimeEnd   *core.DateTime `json:"time_end"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
 	}{
 		embed:     embed(*c),
 		TimeStart: core.NewDateTime(c.TimeStart),
 		TimeEnd:   core.NewDateTime(c.TimeEnd),
+		CreatedAt: core.NewDateTime(c.CreatedAt),
+		UpdatedAt: core.NewDateTime(c.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }

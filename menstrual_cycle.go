@@ -153,8 +153,8 @@ type ClientFacingMenstrualCycle struct {
 	// ℹ️ This enum is non-exhaustive.
 	SourceType  ClientFacingMenstrualCycleSourceType `json:"source_type" url:"source_type"`
 	SourceAppId *string                              `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
-	CreatedAt   *time.Time                           `json:"created_at,omitempty" url:"created_at,omitempty"`
-	UpdatedAt   *time.Time                           `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	CreatedAt   time.Time                            `json:"created_at" url:"created_at"`
+	UpdatedAt   time.Time                            `json:"updated_at" url:"updated_at"`
 	UserId      string                               `json:"user_id" url:"user_id"`
 	Source      *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
 
@@ -170,8 +170,8 @@ func (c *ClientFacingMenstrualCycle) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingMenstrualCycle
 	var unmarshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*c),
 	}
@@ -179,8 +179,8 @@ func (c *ClientFacingMenstrualCycle) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = ClientFacingMenstrualCycle(unmarshaler.embed)
-	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -196,12 +196,12 @@ func (c *ClientFacingMenstrualCycle) MarshalJSON() ([]byte, error) {
 	type embed ClientFacingMenstrualCycle
 	var marshaler = struct {
 		embed
-		CreatedAt *core.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
 	}{
 		embed:     embed(*c),
-		CreatedAt: core.NewOptionalDateTime(c.CreatedAt),
-		UpdatedAt: core.NewOptionalDateTime(c.UpdatedAt),
+		CreatedAt: core.NewDateTime(c.CreatedAt),
+		UpdatedAt: core.NewDateTime(c.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
 }
