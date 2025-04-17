@@ -105,6 +105,7 @@ type LinkTokenValidationRequest struct {
 
 type LinkListBulkOpsRequest struct {
 	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	PageSize   *int    `json:"-" url:"page_size,omitempty"`
 }
 
 type PasswordAuthLink struct {
