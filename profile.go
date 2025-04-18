@@ -20,13 +20,15 @@ type ProfileGetRawRequest struct {
 }
 
 type ClientFacingProfile struct {
+	Id string `json:"id" url:"id"`
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
 	UserId        string              `json:"user_id" url:"user_id"`
-	Id            string              `json:"id" url:"id"`
 	Height        *int                `json:"height,omitempty" url:"height,omitempty"`
 	BirthDate     *string             `json:"birth_date,omitempty" url:"birth_date,omitempty"`
 	WheelchairUse *bool               `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
 	Source        *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
+	CreatedAt     time.Time           `json:"created_at" url:"created_at"`
+	UpdatedAt     time.Time           `json:"updated_at" url:"updated_at"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -37,12 +39,20 @@ func (c *ClientFacingProfile) GetExtraProperties() map[string]interface{} {
 }
 
 func (c *ClientFacingProfile) UnmarshalJSON(data []byte) error {
-	type unmarshaler ClientFacingProfile
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ClientFacingProfile
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*c = ClientFacingProfile(value)
+	*c = ClientFacingProfile(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -52,6 +62,20 @@ func (c *ClientFacingProfile) UnmarshalJSON(data []byte) error {
 
 	c._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (c *ClientFacingProfile) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingProfile
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: core.NewDateTime(c.CreatedAt),
+		UpdatedAt: core.NewDateTime(c.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (c *ClientFacingProfile) String() string {
@@ -67,12 +91,13 @@ func (c *ClientFacingProfile) String() string {
 }
 
 type ProfileInDb struct {
-	Data       string                `json:"data" url:"data"`
+	Id         string                `json:"id" url:"id"`
+	Data       interface{}           `json:"data,omitempty" url:"data,omitempty"`
 	UserId     string                `json:"user_id" url:"user_id"`
 	SourceId   int                   `json:"source_id" url:"source_id"`
 	PriorityId *int                  `json:"priority_id,omitempty" url:"priority_id,omitempty"`
-	Id         string                `json:"id" url:"id"`
 	Source     *ClientFacingProvider `json:"source,omitempty" url:"source,omitempty"`
+	CreatedAt  *time.Time            `json:"created_at,omitempty" url:"created_at,omitempty"`
 	UpdatedAt  *time.Time            `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -87,6 +112,7 @@ func (p *ProfileInDb) UnmarshalJSON(data []byte) error {
 	type embed ProfileInDb
 	var unmarshaler = struct {
 		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
 		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed: embed(*p),
@@ -95,6 +121,7 @@ func (p *ProfileInDb) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*p = ProfileInDb(unmarshaler.embed)
+	p.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	p.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *p)
@@ -111,9 +138,11 @@ func (p *ProfileInDb) MarshalJSON() ([]byte, error) {
 	type embed ProfileInDb
 	var marshaler = struct {
 		embed
+		CreatedAt *core.DateTime `json:"created_at,omitempty"`
 		UpdatedAt *core.DateTime `json:"updated_at,omitempty"`
 	}{
 		embed:     embed(*p),
+		CreatedAt: core.NewOptionalDateTime(p.CreatedAt),
 		UpdatedAt: core.NewOptionalDateTime(p.UpdatedAt),
 	}
 	return json.Marshal(marshaler)
