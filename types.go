@@ -6325,12 +6325,12 @@ func (c *ClientFacingOrderEvent) String() string {
 }
 
 type ClientFacingPatientDetailsCompatible struct {
-	FirstName   *string `json:"first_name,omitempty" url:"first_name,omitempty"`
-	LastName    *string `json:"last_name,omitempty" url:"last_name,omitempty"`
-	Dob         string  `json:"dob" url:"dob"`
-	Gender      string  `json:"gender" url:"gender"`
-	PhoneNumber *string `json:"phone_number,omitempty" url:"phone_number,omitempty"`
-	Email       *string `json:"email,omitempty" url:"email,omitempty"`
+	FirstName   *string   `json:"first_name,omitempty" url:"first_name,omitempty"`
+	LastName    *string   `json:"last_name,omitempty" url:"last_name,omitempty"`
+	Dob         time.Time `json:"dob" url:"dob"`
+	Gender      string    `json:"gender" url:"gender"`
+	PhoneNumber *string   `json:"phone_number,omitempty" url:"phone_number,omitempty"`
+	Email       *string   `json:"email,omitempty" url:"email,omitempty"`
 	// Parent/medical_proxy details. Required if patient is a minor.
 	MedicalProxy *GuarantorDetails `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
 	// If not provided, will be set to 'Not Specified'
@@ -6351,12 +6351,18 @@ func (c *ClientFacingPatientDetailsCompatible) GetExtraProperties() map[string]i
 }
 
 func (c *ClientFacingPatientDetailsCompatible) UnmarshalJSON(data []byte) error {
-	type unmarshaler ClientFacingPatientDetailsCompatible
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ClientFacingPatientDetailsCompatible
+	var unmarshaler = struct {
+		embed
+		Dob *core.DateTime `json:"dob"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*c = ClientFacingPatientDetailsCompatible(value)
+	*c = ClientFacingPatientDetailsCompatible(unmarshaler.embed)
+	c.Dob = unmarshaler.Dob.Time()
 
 	extraProperties, err := core.ExtractExtraProperties(data, *c)
 	if err != nil {
@@ -6366,6 +6372,18 @@ func (c *ClientFacingPatientDetailsCompatible) UnmarshalJSON(data []byte) error 
 
 	c._rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (c *ClientFacingPatientDetailsCompatible) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingPatientDetailsCompatible
+	var marshaler = struct {
+		embed
+		Dob *core.DateTime `json:"dob"`
+	}{
+		embed: embed(*c),
+		Dob:   core.NewDateTime(c.Dob),
+	}
+	return json.Marshal(marshaler)
 }
 
 func (c *ClientFacingPatientDetailsCompatible) String() string {
