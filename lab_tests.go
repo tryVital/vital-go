@@ -1472,6 +1472,8 @@ type LabResultsMetadata struct {
 	DateReceived   *string `json:"date_received,omitempty" url:"date_received,omitempty"`
 	Status         *string `json:"status,omitempty" url:"status,omitempty"`
 	Interpretation *string `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	PatientId      *string `json:"patient_id,omitempty" url:"patient_id,omitempty"`
+	AccountId      *string `json:"account_id,omitempty" url:"account_id,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
