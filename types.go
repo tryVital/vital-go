@@ -4125,6 +4125,143 @@ func (c *ClientFacingHeartRateAlertHistoricalPullCompleted) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingHeartRateRecoveryOneMinuteChanged struct {
+	EventType    ClientFacingHeartRateRecoveryOneMinuteChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                 `json:"team_id" url:"team_id"`
+	Data         *GroupedHeartRateRecoveryOneMinute                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingHeartRateRecoveryOneMinuteChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingHeartRateRecoveryOneMinuteChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingHeartRateRecoveryOneMinuteChangedEventType string
+
+const (
+	ClientFacingHeartRateRecoveryOneMinuteChangedEventTypeDailyDataHeartRateRecoveryOneMinuteCreated ClientFacingHeartRateRecoveryOneMinuteChangedEventType = "daily.data.heart_rate_recovery_one_minute.created"
+	ClientFacingHeartRateRecoveryOneMinuteChangedEventTypeDailyDataHeartRateRecoveryOneMinuteUpdated ClientFacingHeartRateRecoveryOneMinuteChangedEventType = "daily.data.heart_rate_recovery_one_minute.updated"
+)
+
+func NewClientFacingHeartRateRecoveryOneMinuteChangedEventTypeFromString(s string) (ClientFacingHeartRateRecoveryOneMinuteChangedEventType, error) {
+	switch s {
+	case "daily.data.heart_rate_recovery_one_minute.created":
+		return ClientFacingHeartRateRecoveryOneMinuteChangedEventTypeDailyDataHeartRateRecoveryOneMinuteCreated, nil
+	case "daily.data.heart_rate_recovery_one_minute.updated":
+		return ClientFacingHeartRateRecoveryOneMinuteChangedEventTypeDailyDataHeartRateRecoveryOneMinuteUpdated, nil
+	}
+	var t ClientFacingHeartRateRecoveryOneMinuteChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingHeartRateRecoveryOneMinuteChangedEventType) Ptr() *ClientFacingHeartRateRecoveryOneMinuteChangedEventType {
+	return &c
+}
+
+type ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.heart_rate_recovery_one_minute.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.heart_rate_recovery_one_minute.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.heart_rate_recovery_one_minute.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingHeartRateTimeseries struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
@@ -6906,70 +7043,73 @@ func (c *ClientFacingProviderConnectionErrorEvent) String() string {
 type ClientFacingResource string
 
 const (
-	ClientFacingResourceProfile                   ClientFacingResource = "profile"
-	ClientFacingResourceActivity                  ClientFacingResource = "activity"
-	ClientFacingResourceSleep                     ClientFacingResource = "sleep"
-	ClientFacingResourceBody                      ClientFacingResource = "body"
-	ClientFacingResourceWorkouts                  ClientFacingResource = "workouts"
-	ClientFacingResourceWorkoutStream             ClientFacingResource = "workout_stream"
-	ClientFacingResourceConnection                ClientFacingResource = "connection"
-	ClientFacingResourceOrder                     ClientFacingResource = "order"
-	ClientFacingResourceResult                    ClientFacingResource = "result"
-	ClientFacingResourceAppointment               ClientFacingResource = "appointment"
-	ClientFacingResourceGlucose                   ClientFacingResource = "glucose"
-	ClientFacingResourceHeartrate                 ClientFacingResource = "heartrate"
-	ClientFacingResourceHrv                       ClientFacingResource = "hrv"
-	ClientFacingResourceIge                       ClientFacingResource = "ige"
-	ClientFacingResourceIgg                       ClientFacingResource = "igg"
-	ClientFacingResourceBloodOxygen               ClientFacingResource = "blood_oxygen"
-	ClientFacingResourceBloodPressure             ClientFacingResource = "blood_pressure"
-	ClientFacingResourceCholesterol               ClientFacingResource = "cholesterol"
-	ClientFacingResourceDevice                    ClientFacingResource = "device"
-	ClientFacingResourceWeight                    ClientFacingResource = "weight"
-	ClientFacingResourceFat                       ClientFacingResource = "fat"
-	ClientFacingResourceBodyTemperature           ClientFacingResource = "body_temperature"
-	ClientFacingResourceBodyTemperatureDelta      ClientFacingResource = "body_temperature_delta"
-	ClientFacingResourceMeal                      ClientFacingResource = "meal"
-	ClientFacingResourceWater                     ClientFacingResource = "water"
-	ClientFacingResourceCaffeine                  ClientFacingResource = "caffeine"
-	ClientFacingResourceMindfulnessMinutes        ClientFacingResource = "mindfulness_minutes"
-	ClientFacingResourceSteps                     ClientFacingResource = "steps"
-	ClientFacingResourceCaloriesActive            ClientFacingResource = "calories_active"
-	ClientFacingResourceDistance                  ClientFacingResource = "distance"
-	ClientFacingResourceFloorsClimbed             ClientFacingResource = "floors_climbed"
-	ClientFacingResourceRespiratoryRate           ClientFacingResource = "respiratory_rate"
-	ClientFacingResourceVo2Max                    ClientFacingResource = "vo2_max"
-	ClientFacingResourceCaloriesBasal             ClientFacingResource = "calories_basal"
-	ClientFacingResourceStressLevel               ClientFacingResource = "stress_level"
-	ClientFacingResourceMenstrualCycle            ClientFacingResource = "menstrual_cycle"
-	ClientFacingResourceSleepCycle                ClientFacingResource = "sleep_cycle"
-	ClientFacingResourceElectrocardiogram         ClientFacingResource = "electrocardiogram"
-	ClientFacingResourceElectrocardiogramVoltage  ClientFacingResource = "electrocardiogram_voltage"
-	ClientFacingResourceAfibBurden                ClientFacingResource = "afib_burden"
-	ClientFacingResourceHeartRateAlert            ClientFacingResource = "heart_rate_alert"
-	ClientFacingResourceStandHour                 ClientFacingResource = "stand_hour"
-	ClientFacingResourceStandDuration             ClientFacingResource = "stand_duration"
-	ClientFacingResourceSleepApneaAlert           ClientFacingResource = "sleep_apnea_alert"
-	ClientFacingResourceSleepBreathingDisturbance ClientFacingResource = "sleep_breathing_disturbance"
-	ClientFacingResourceWheelchairPush            ClientFacingResource = "wheelchair_push"
-	ClientFacingResourceForcedExpiratoryVolume1   ClientFacingResource = "forced_expiratory_volume_1"
-	ClientFacingResourceForcedVitalCapacity       ClientFacingResource = "forced_vital_capacity"
-	ClientFacingResourcePeakExpiratoryFlowRate    ClientFacingResource = "peak_expiratory_flow_rate"
-	ClientFacingResourceInhalerUsage              ClientFacingResource = "inhaler_usage"
-	ClientFacingResourceFall                      ClientFacingResource = "fall"
-	ClientFacingResourceUvExposure                ClientFacingResource = "uv_exposure"
-	ClientFacingResourceDaylightExposure          ClientFacingResource = "daylight_exposure"
-	ClientFacingResourceHandwashing               ClientFacingResource = "handwashing"
-	ClientFacingResourceBasalBodyTemperature      ClientFacingResource = "basal_body_temperature"
-	ClientFacingResourceBodyMassIndex             ClientFacingResource = "body_mass_index"
-	ClientFacingResourceLeanBodyMass              ClientFacingResource = "lean_body_mass"
-	ClientFacingResourceWaistCircumference        ClientFacingResource = "waist_circumference"
-	ClientFacingResourceWorkoutDuration           ClientFacingResource = "workout_duration"
-	ClientFacingResourceInsulinInjection          ClientFacingResource = "insulin_injection"
-	ClientFacingResourceCarbohydrates             ClientFacingResource = "carbohydrates"
-	ClientFacingResourceNote                      ClientFacingResource = "note"
-	ClientFacingResourceSleepStream               ClientFacingResource = "sleep_stream"
-	ClientFacingResourceHypnogram                 ClientFacingResource = "hypnogram"
+	ClientFacingResourceProfile                    ClientFacingResource = "profile"
+	ClientFacingResourceActivity                   ClientFacingResource = "activity"
+	ClientFacingResourceSleep                      ClientFacingResource = "sleep"
+	ClientFacingResourceBody                       ClientFacingResource = "body"
+	ClientFacingResourceWorkouts                   ClientFacingResource = "workouts"
+	ClientFacingResourceWorkoutStream              ClientFacingResource = "workout_stream"
+	ClientFacingResourceConnection                 ClientFacingResource = "connection"
+	ClientFacingResourceOrder                      ClientFacingResource = "order"
+	ClientFacingResourceResult                     ClientFacingResource = "result"
+	ClientFacingResourceAppointment                ClientFacingResource = "appointment"
+	ClientFacingResourceGlucose                    ClientFacingResource = "glucose"
+	ClientFacingResourceHeartrate                  ClientFacingResource = "heartrate"
+	ClientFacingResourceHrv                        ClientFacingResource = "hrv"
+	ClientFacingResourceIge                        ClientFacingResource = "ige"
+	ClientFacingResourceIgg                        ClientFacingResource = "igg"
+	ClientFacingResourceBloodOxygen                ClientFacingResource = "blood_oxygen"
+	ClientFacingResourceBloodPressure              ClientFacingResource = "blood_pressure"
+	ClientFacingResourceCholesterol                ClientFacingResource = "cholesterol"
+	ClientFacingResourceDevice                     ClientFacingResource = "device"
+	ClientFacingResourceWeight                     ClientFacingResource = "weight"
+	ClientFacingResourceFat                        ClientFacingResource = "fat"
+	ClientFacingResourceBodyTemperature            ClientFacingResource = "body_temperature"
+	ClientFacingResourceBodyTemperatureDelta       ClientFacingResource = "body_temperature_delta"
+	ClientFacingResourceMeal                       ClientFacingResource = "meal"
+	ClientFacingResourceWater                      ClientFacingResource = "water"
+	ClientFacingResourceCaffeine                   ClientFacingResource = "caffeine"
+	ClientFacingResourceMindfulnessMinutes         ClientFacingResource = "mindfulness_minutes"
+	ClientFacingResourceSteps                      ClientFacingResource = "steps"
+	ClientFacingResourceCaloriesActive             ClientFacingResource = "calories_active"
+	ClientFacingResourceDistance                   ClientFacingResource = "distance"
+	ClientFacingResourceFloorsClimbed              ClientFacingResource = "floors_climbed"
+	ClientFacingResourceRespiratoryRate            ClientFacingResource = "respiratory_rate"
+	ClientFacingResourceVo2Max                     ClientFacingResource = "vo2_max"
+	ClientFacingResourceCaloriesBasal              ClientFacingResource = "calories_basal"
+	ClientFacingResourceStressLevel                ClientFacingResource = "stress_level"
+	ClientFacingResourceMenstrualCycle             ClientFacingResource = "menstrual_cycle"
+	ClientFacingResourceSleepCycle                 ClientFacingResource = "sleep_cycle"
+	ClientFacingResourceElectrocardiogram          ClientFacingResource = "electrocardiogram"
+	ClientFacingResourceElectrocardiogramVoltage   ClientFacingResource = "electrocardiogram_voltage"
+	ClientFacingResourceAfibBurden                 ClientFacingResource = "afib_burden"
+	ClientFacingResourceHeartRateAlert             ClientFacingResource = "heart_rate_alert"
+	ClientFacingResourceStandHour                  ClientFacingResource = "stand_hour"
+	ClientFacingResourceStandDuration              ClientFacingResource = "stand_duration"
+	ClientFacingResourceSleepApneaAlert            ClientFacingResource = "sleep_apnea_alert"
+	ClientFacingResourceSleepBreathingDisturbance  ClientFacingResource = "sleep_breathing_disturbance"
+	ClientFacingResourceWheelchairPush             ClientFacingResource = "wheelchair_push"
+	ClientFacingResourceForcedExpiratoryVolume1    ClientFacingResource = "forced_expiratory_volume_1"
+	ClientFacingResourceForcedVitalCapacity        ClientFacingResource = "forced_vital_capacity"
+	ClientFacingResourcePeakExpiratoryFlowRate     ClientFacingResource = "peak_expiratory_flow_rate"
+	ClientFacingResourceInhalerUsage               ClientFacingResource = "inhaler_usage"
+	ClientFacingResourceFall                       ClientFacingResource = "fall"
+	ClientFacingResourceUvExposure                 ClientFacingResource = "uv_exposure"
+	ClientFacingResourceDaylightExposure           ClientFacingResource = "daylight_exposure"
+	ClientFacingResourceHandwashing                ClientFacingResource = "handwashing"
+	ClientFacingResourceBasalBodyTemperature       ClientFacingResource = "basal_body_temperature"
+	ClientFacingResourceHeartRateRecoveryOneMinute ClientFacingResource = "heart_rate_recovery_one_minute"
+	ClientFacingResourceBodyMassIndex              ClientFacingResource = "body_mass_index"
+	ClientFacingResourceLeanBodyMass               ClientFacingResource = "lean_body_mass"
+	ClientFacingResourceWaistCircumference         ClientFacingResource = "waist_circumference"
+	ClientFacingResourceWorkoutDistance            ClientFacingResource = "workout_distance"
+	ClientFacingResourceWorkoutSwimmingStroke      ClientFacingResource = "workout_swimming_stroke"
+	ClientFacingResourceWorkoutDuration            ClientFacingResource = "workout_duration"
+	ClientFacingResourceInsulinInjection           ClientFacingResource = "insulin_injection"
+	ClientFacingResourceCarbohydrates              ClientFacingResource = "carbohydrates"
+	ClientFacingResourceNote                       ClientFacingResource = "note"
+	ClientFacingResourceSleepStream                ClientFacingResource = "sleep_stream"
+	ClientFacingResourceHypnogram                  ClientFacingResource = "hypnogram"
 )
 
 func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
@@ -7084,12 +7224,18 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceHandwashing, nil
 	case "basal_body_temperature":
 		return ClientFacingResourceBasalBodyTemperature, nil
+	case "heart_rate_recovery_one_minute":
+		return ClientFacingResourceHeartRateRecoveryOneMinute, nil
 	case "body_mass_index":
 		return ClientFacingResourceBodyMassIndex, nil
 	case "lean_body_mass":
 		return ClientFacingResourceLeanBodyMass, nil
 	case "waist_circumference":
 		return ClientFacingResourceWaistCircumference, nil
+	case "workout_distance":
+		return ClientFacingResourceWorkoutDistance, nil
+	case "workout_swimming_stroke":
+		return ClientFacingResourceWorkoutSwimmingStroke, nil
 	case "workout_duration":
 		return ClientFacingResourceWorkoutDuration, nil
 	case "insulin_injection":
@@ -9708,6 +9854,143 @@ func (c *ClientFacingWheelchairPushHistoricalPullCompleted) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingWorkoutDistanceChanged struct {
+	EventType    ClientFacingWorkoutDistanceChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                      `json:"user_id" url:"user_id"`
+	ClientUserId string                                      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                      `json:"team_id" url:"team_id"`
+	Data         *GroupedWorkoutDistance                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutDistanceChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutDistanceChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingWorkoutDistanceChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutDistanceChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutDistanceChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWorkoutDistanceChangedEventType string
+
+const (
+	ClientFacingWorkoutDistanceChangedEventTypeDailyDataWorkoutDistanceCreated ClientFacingWorkoutDistanceChangedEventType = "daily.data.workout_distance.created"
+	ClientFacingWorkoutDistanceChangedEventTypeDailyDataWorkoutDistanceUpdated ClientFacingWorkoutDistanceChangedEventType = "daily.data.workout_distance.updated"
+)
+
+func NewClientFacingWorkoutDistanceChangedEventTypeFromString(s string) (ClientFacingWorkoutDistanceChangedEventType, error) {
+	switch s {
+	case "daily.data.workout_distance.created":
+		return ClientFacingWorkoutDistanceChangedEventTypeDailyDataWorkoutDistanceCreated, nil
+	case "daily.data.workout_distance.updated":
+		return ClientFacingWorkoutDistanceChangedEventTypeDailyDataWorkoutDistanceUpdated, nil
+	}
+	var t ClientFacingWorkoutDistanceChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingWorkoutDistanceChangedEventType) Ptr() *ClientFacingWorkoutDistanceChangedEventType {
+	return &c
+}
+
+type ClientFacingWorkoutDistanceHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutDistanceHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutDistanceHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingWorkoutDistanceHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWorkoutDistanceHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutDistanceHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.workout_distance.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.workout_distance.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutDistanceHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWorkoutDistanceHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.workout_distance.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWorkoutDistanceHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingWorkoutDurationChanged struct {
 	EventType    ClientFacingWorkoutDurationChangedEventType `json:"event_type" url:"event_type"`
 	UserId       string                                      `json:"user_id" url:"user_id"`
@@ -9971,6 +10254,143 @@ func (c *ClientFacingWorkoutStreamHistoricalPullCompleted) MarshalJSON() ([]byte
 }
 
 func (c *ClientFacingWorkoutStreamHistoricalPullCompleted) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWorkoutSwimmingStrokeChanged struct {
+	EventType    ClientFacingWorkoutSwimmingStrokeChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                                            `json:"user_id" url:"user_id"`
+	ClientUserId string                                            `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                            `json:"team_id" url:"team_id"`
+	Data         *GroupedWorkoutSwimmingStroke                     `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingWorkoutSwimmingStrokeChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutSwimmingStrokeChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingWorkoutSwimmingStrokeChangedEventType string
+
+const (
+	ClientFacingWorkoutSwimmingStrokeChangedEventTypeDailyDataWorkoutSwimmingStrokeCreated ClientFacingWorkoutSwimmingStrokeChangedEventType = "daily.data.workout_swimming_stroke.created"
+	ClientFacingWorkoutSwimmingStrokeChangedEventTypeDailyDataWorkoutSwimmingStrokeUpdated ClientFacingWorkoutSwimmingStrokeChangedEventType = "daily.data.workout_swimming_stroke.updated"
+)
+
+func NewClientFacingWorkoutSwimmingStrokeChangedEventTypeFromString(s string) (ClientFacingWorkoutSwimmingStrokeChangedEventType, error) {
+	switch s {
+	case "daily.data.workout_swimming_stroke.created":
+		return ClientFacingWorkoutSwimmingStrokeChangedEventTypeDailyDataWorkoutSwimmingStrokeCreated, nil
+	case "daily.data.workout_swimming_stroke.updated":
+		return ClientFacingWorkoutSwimmingStrokeChangedEventTypeDailyDataWorkoutSwimmingStrokeUpdated, nil
+	}
+	var t ClientFacingWorkoutSwimmingStrokeChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingWorkoutSwimmingStrokeChangedEventType) Ptr() *ClientFacingWorkoutSwimmingStrokeChangedEventType {
+	return &c
+}
+
+type ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted struct {
+	UserId       string                   `json:"user_id" url:"user_id"`
+	ClientUserId string                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                   `json:"team_id" url:"team_id"`
+	Data         *HistoricalPullCompleted `json:"data,omitempty" url:"data,omitempty"`
+	eventType    string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted(unmarshaler.embed)
+	if unmarshaler.EventType != "historical.data.workout_swimming_stroke.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "historical.data.workout_swimming_stroke.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "historical.data.workout_swimming_stroke.created",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeHistoricalPullCompleted) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -12237,58 +12657,61 @@ func (s SourceAuthType) Ptr() *SourceAuthType {
 type TimeseriesResource string
 
 const (
-	TimeseriesResourceCaloriesActive            TimeseriesResource = "calories_active"
-	TimeseriesResourceCaloriesBasal             TimeseriesResource = "calories_basal"
-	TimeseriesResourceDistance                  TimeseriesResource = "distance"
-	TimeseriesResourceBloodOxygen               TimeseriesResource = "blood_oxygen"
-	TimeseriesResourceBloodPressure             TimeseriesResource = "blood_pressure"
-	TimeseriesResourceBodyFat                   TimeseriesResource = "body_fat"
-	TimeseriesResourceBodyWeight                TimeseriesResource = "body_weight"
-	TimeseriesResourceBodyTemperature           TimeseriesResource = "body_temperature"
-	TimeseriesResourceBodyTemperatureDelta      TimeseriesResource = "body_temperature_delta"
-	TimeseriesResourceCholesterol               TimeseriesResource = "cholesterol"
-	TimeseriesResourceCholesterolLdl            TimeseriesResource = "cholesterol/ldl"
-	TimeseriesResourceCholesterolHdl            TimeseriesResource = "cholesterol/hdl"
-	TimeseriesResourceCholesterolTotal          TimeseriesResource = "cholesterol/total"
-	TimeseriesResourceCholesterolTriglycerides  TimeseriesResource = "cholesterol/triglycerides"
-	TimeseriesResourceElectrocardiogramVoltage  TimeseriesResource = "electrocardiogram_voltage"
-	TimeseriesResourceFloorsClimbed             TimeseriesResource = "floors_climbed"
-	TimeseriesResourceGlucose                   TimeseriesResource = "glucose"
-	TimeseriesResourceHeartrate                 TimeseriesResource = "heartrate"
-	TimeseriesResourceHrv                       TimeseriesResource = "hrv"
-	TimeseriesResourceHypnogram                 TimeseriesResource = "hypnogram"
-	TimeseriesResourceIge                       TimeseriesResource = "ige"
-	TimeseriesResourceIgg                       TimeseriesResource = "igg"
-	TimeseriesResourceRespiratoryRate           TimeseriesResource = "respiratory_rate"
-	TimeseriesResourceSteps                     TimeseriesResource = "steps"
-	TimeseriesResourceStressLevel               TimeseriesResource = "stress_level"
-	TimeseriesResourceVo2Max                    TimeseriesResource = "vo2_max"
-	TimeseriesResourceWater                     TimeseriesResource = "water"
-	TimeseriesResourceCaffeine                  TimeseriesResource = "caffeine"
-	TimeseriesResourceMindfulnessMinutes        TimeseriesResource = "mindfulness_minutes"
-	TimeseriesResourceAfibBurden                TimeseriesResource = "afib_burden"
-	TimeseriesResourceHeartRateAlert            TimeseriesResource = "heart_rate_alert"
-	TimeseriesResourceStandHour                 TimeseriesResource = "stand_hour"
-	TimeseriesResourceStandDuration             TimeseriesResource = "stand_duration"
-	TimeseriesResourceSleepApneaAlert           TimeseriesResource = "sleep_apnea_alert"
-	TimeseriesResourceSleepBreathingDisturbance TimeseriesResource = "sleep_breathing_disturbance"
-	TimeseriesResourceWheelchairPush            TimeseriesResource = "wheelchair_push"
-	TimeseriesResourceForcedExpiratoryVolume1   TimeseriesResource = "forced_expiratory_volume_1"
-	TimeseriesResourceForcedVitalCapacity       TimeseriesResource = "forced_vital_capacity"
-	TimeseriesResourcePeakExpiratoryFlowRate    TimeseriesResource = "peak_expiratory_flow_rate"
-	TimeseriesResourceInhalerUsage              TimeseriesResource = "inhaler_usage"
-	TimeseriesResourceFall                      TimeseriesResource = "fall"
-	TimeseriesResourceUvExposure                TimeseriesResource = "uv_exposure"
-	TimeseriesResourceDaylightExposure          TimeseriesResource = "daylight_exposure"
-	TimeseriesResourceHandwashing               TimeseriesResource = "handwashing"
-	TimeseriesResourceBasalBodyTemperature      TimeseriesResource = "basal_body_temperature"
-	TimeseriesResourceBodyMassIndex             TimeseriesResource = "body_mass_index"
-	TimeseriesResourceLeanBodyMass              TimeseriesResource = "lean_body_mass"
-	TimeseriesResourceWaistCircumference        TimeseriesResource = "waist_circumference"
-	TimeseriesResourceWorkoutDuration           TimeseriesResource = "workout_duration"
-	TimeseriesResourceInsulinInjection          TimeseriesResource = "insulin_injection"
-	TimeseriesResourceCarbohydrates             TimeseriesResource = "carbohydrates"
-	TimeseriesResourceNote                      TimeseriesResource = "note"
+	TimeseriesResourceCaloriesActive             TimeseriesResource = "calories_active"
+	TimeseriesResourceCaloriesBasal              TimeseriesResource = "calories_basal"
+	TimeseriesResourceDistance                   TimeseriesResource = "distance"
+	TimeseriesResourceBloodOxygen                TimeseriesResource = "blood_oxygen"
+	TimeseriesResourceBloodPressure              TimeseriesResource = "blood_pressure"
+	TimeseriesResourceBodyFat                    TimeseriesResource = "body_fat"
+	TimeseriesResourceBodyWeight                 TimeseriesResource = "body_weight"
+	TimeseriesResourceBodyTemperature            TimeseriesResource = "body_temperature"
+	TimeseriesResourceBodyTemperatureDelta       TimeseriesResource = "body_temperature_delta"
+	TimeseriesResourceCholesterol                TimeseriesResource = "cholesterol"
+	TimeseriesResourceCholesterolLdl             TimeseriesResource = "cholesterol/ldl"
+	TimeseriesResourceCholesterolHdl             TimeseriesResource = "cholesterol/hdl"
+	TimeseriesResourceCholesterolTotal           TimeseriesResource = "cholesterol/total"
+	TimeseriesResourceCholesterolTriglycerides   TimeseriesResource = "cholesterol/triglycerides"
+	TimeseriesResourceElectrocardiogramVoltage   TimeseriesResource = "electrocardiogram_voltage"
+	TimeseriesResourceFloorsClimbed              TimeseriesResource = "floors_climbed"
+	TimeseriesResourceGlucose                    TimeseriesResource = "glucose"
+	TimeseriesResourceHeartrate                  TimeseriesResource = "heartrate"
+	TimeseriesResourceHrv                        TimeseriesResource = "hrv"
+	TimeseriesResourceHypnogram                  TimeseriesResource = "hypnogram"
+	TimeseriesResourceIge                        TimeseriesResource = "ige"
+	TimeseriesResourceIgg                        TimeseriesResource = "igg"
+	TimeseriesResourceRespiratoryRate            TimeseriesResource = "respiratory_rate"
+	TimeseriesResourceSteps                      TimeseriesResource = "steps"
+	TimeseriesResourceStressLevel                TimeseriesResource = "stress_level"
+	TimeseriesResourceVo2Max                     TimeseriesResource = "vo2_max"
+	TimeseriesResourceWater                      TimeseriesResource = "water"
+	TimeseriesResourceCaffeine                   TimeseriesResource = "caffeine"
+	TimeseriesResourceMindfulnessMinutes         TimeseriesResource = "mindfulness_minutes"
+	TimeseriesResourceAfibBurden                 TimeseriesResource = "afib_burden"
+	TimeseriesResourceHeartRateAlert             TimeseriesResource = "heart_rate_alert"
+	TimeseriesResourceStandHour                  TimeseriesResource = "stand_hour"
+	TimeseriesResourceStandDuration              TimeseriesResource = "stand_duration"
+	TimeseriesResourceSleepApneaAlert            TimeseriesResource = "sleep_apnea_alert"
+	TimeseriesResourceSleepBreathingDisturbance  TimeseriesResource = "sleep_breathing_disturbance"
+	TimeseriesResourceWheelchairPush             TimeseriesResource = "wheelchair_push"
+	TimeseriesResourceForcedExpiratoryVolume1    TimeseriesResource = "forced_expiratory_volume_1"
+	TimeseriesResourceForcedVitalCapacity        TimeseriesResource = "forced_vital_capacity"
+	TimeseriesResourcePeakExpiratoryFlowRate     TimeseriesResource = "peak_expiratory_flow_rate"
+	TimeseriesResourceInhalerUsage               TimeseriesResource = "inhaler_usage"
+	TimeseriesResourceFall                       TimeseriesResource = "fall"
+	TimeseriesResourceUvExposure                 TimeseriesResource = "uv_exposure"
+	TimeseriesResourceDaylightExposure           TimeseriesResource = "daylight_exposure"
+	TimeseriesResourceHandwashing                TimeseriesResource = "handwashing"
+	TimeseriesResourceBasalBodyTemperature       TimeseriesResource = "basal_body_temperature"
+	TimeseriesResourceBodyMassIndex              TimeseriesResource = "body_mass_index"
+	TimeseriesResourceLeanBodyMass               TimeseriesResource = "lean_body_mass"
+	TimeseriesResourceWaistCircumference         TimeseriesResource = "waist_circumference"
+	TimeseriesResourceHeartRateRecoveryOneMinute TimeseriesResource = "heart_rate_recovery_one_minute"
+	TimeseriesResourceWorkoutDistance            TimeseriesResource = "workout_distance"
+	TimeseriesResourceWorkoutSwimmingStroke      TimeseriesResource = "workout_swimming_stroke"
+	TimeseriesResourceWorkoutDuration            TimeseriesResource = "workout_duration"
+	TimeseriesResourceInsulinInjection           TimeseriesResource = "insulin_injection"
+	TimeseriesResourceCarbohydrates              TimeseriesResource = "carbohydrates"
+	TimeseriesResourceNote                       TimeseriesResource = "note"
 )
 
 func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
@@ -12389,6 +12812,12 @@ func NewTimeseriesResourceFromString(s string) (TimeseriesResource, error) {
 		return TimeseriesResourceLeanBodyMass, nil
 	case "waist_circumference":
 		return TimeseriesResourceWaistCircumference, nil
+	case "heart_rate_recovery_one_minute":
+		return TimeseriesResourceHeartRateRecoveryOneMinute, nil
+	case "workout_distance":
+		return TimeseriesResourceWorkoutDistance, nil
+	case "workout_swimming_stroke":
+		return TimeseriesResourceWorkoutSwimmingStroke, nil
 	case "workout_duration":
 		return TimeseriesResourceWorkoutDuration, nil
 	case "insulin_injection":

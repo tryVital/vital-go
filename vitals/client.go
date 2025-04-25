@@ -34,6 +34,204 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+func (c *Client) WorkoutSwimmingStrokeGrouped(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.VitalsWorkoutSwimmingStrokeGroupedRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.GroupedWorkoutSwimmingStrokeResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/timeseries/%v/workout_swimming_stroke/grouped", userId)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.GroupedWorkoutSwimmingStrokeResponse
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (c *Client) WorkoutDistanceGrouped(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.VitalsWorkoutDistanceGroupedRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.GroupedWorkoutDistanceResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/timeseries/%v/workout_distance/grouped", userId)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.GroupedWorkoutDistanceResponse
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (c *Client) HeartRateRecoveryOneMinuteGrouped(
+	ctx context.Context,
+	userId string,
+	request *vitalgo.VitalsHeartRateRecoveryOneMinuteGroupedRequest,
+	opts ...option.RequestOption,
+) (*vitalgo.GroupedHeartRateRecoveryOneMinuteResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/timeseries/%v/heart_rate_recovery_one_minute/grouped", userId)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.GroupedHeartRateRecoveryOneMinuteResponse
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) WaistCircumferenceGrouped(
 	ctx context.Context,
 	userId string,

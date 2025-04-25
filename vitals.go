@@ -465,6 +465,19 @@ type VitalsHeartRateAlertGroupedRequest struct {
 	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
+type VitalsHeartRateRecoveryOneMinuteGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
 type VitalsHeartrateRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
@@ -2927,6 +2940,98 @@ func (c ClientFacingHeartRateAlertSampleType) Ptr() *ClientFacingHeartRateAlertS
 	return &c
 }
 
+type ClientFacingHeartRateRecoveryOneMinuteSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingHeartRateRecoveryOneMinuteSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingHeartRateRecoveryOneMinuteSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingHeartRateRecoveryOneMinuteSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingHeartRateRecoveryOneMinuteSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingIgeTimeseries struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
@@ -4656,6 +4761,98 @@ func (c *ClientFacingWheelchairPushSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingWorkoutDistanceSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutDistanceSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutDistanceSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingWorkoutDistanceSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWorkoutDistanceSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutDistanceSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "m" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "m", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutDistanceSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWorkoutDistanceSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "m",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWorkoutDistanceSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingWorkoutDurationSample struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
@@ -4773,6 +4970,98 @@ func NewClientFacingWorkoutDurationSampleIntensityFromString(s string) (ClientFa
 
 func (c ClientFacingWorkoutDurationSampleIntensity) Ptr() *ClientFacingWorkoutDurationSampleIntensity {
 	return &c
+}
+
+type ClientFacingWorkoutSwimmingStrokeSample struct {
+	// Deprecated
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Depracated. The start time (inclusive) of the interval.
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// The start time (inclusive) of the interval.
+	Start time.Time `json:"start" url:"start"`
+	// The end time (exclusive) of the interval.
+	End time.Time `json:"end" url:"end"`
+	// The recorded value for the interval.
+	Value float64 `json:"value" url:"value"`
+	unit  string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeSample) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeSample) Unit() string {
+	return c.unit
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeSample) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingWorkoutSwimmingStrokeSample
+	var unmarshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingWorkoutSwimmingStrokeSample(unmarshaler.embed)
+	c.Timestamp = unmarshaler.Timestamp.Time()
+	c.Start = unmarshaler.Start.Time()
+	c.End = unmarshaler.End.Time()
+	if unmarshaler.Unit != "count" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "count", unmarshaler.Unit)
+	}
+	c.unit = unmarshaler.Unit
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c, "unit")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeSample) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingWorkoutSwimmingStrokeSample
+	var marshaler = struct {
+		embed
+		Timestamp *core.DateTime `json:"timestamp"`
+		Start     *core.DateTime `json:"start"`
+		End       *core.DateTime `json:"end"`
+		Unit      string         `json:"unit"`
+	}{
+		embed:     embed(*c),
+		Timestamp: core.NewDateTime(c.Timestamp),
+		Start:     core.NewDateTime(c.Start),
+		End:       core.NewDateTime(c.End),
+		Unit:      "count",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingWorkoutSwimmingStrokeSample) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 type GroupedAFibBurden struct {
@@ -6929,6 +7218,94 @@ func (g *GroupedHeartRateAlertResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedHeartRateRecoveryOneMinute struct {
+	Source *ClientFacingSource                             `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingHeartRateRecoveryOneMinuteSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHeartRateRecoveryOneMinute) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHeartRateRecoveryOneMinute) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHeartRateRecoveryOneMinute
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHeartRateRecoveryOneMinute(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHeartRateRecoveryOneMinute) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHeartRateRecoveryOneMinuteResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedHeartRateRecoveryOneMinute `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHeartRateRecoveryOneMinuteResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHeartRateRecoveryOneMinuteResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHeartRateRecoveryOneMinuteResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHeartRateRecoveryOneMinuteResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHeartRateRecoveryOneMinuteResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedHeartRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
 	Groups map[string][]*GroupedHeartRate `json:"groups,omitempty" url:"groups,omitempty"`
@@ -8911,6 +9288,94 @@ func (g *GroupedWheelchairPushResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedWorkoutDistance struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWorkoutDistanceSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWorkoutDistance) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWorkoutDistance) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWorkoutDistance
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWorkoutDistance(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWorkoutDistance) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWorkoutDistanceResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedWorkoutDistance `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWorkoutDistanceResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWorkoutDistanceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWorkoutDistanceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWorkoutDistanceResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWorkoutDistanceResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedWorkoutDuration struct {
 	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
 	Data   []*ClientFacingWorkoutDurationSample `json:"data,omitempty" url:"data,omitempty"`
@@ -8988,6 +9453,94 @@ func (g *GroupedWorkoutDurationResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GroupedWorkoutDurationResponse) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWorkoutSwimmingStroke struct {
+	Source *ClientFacingSource                        `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWorkoutSwimmingStrokeSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWorkoutSwimmingStroke) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWorkoutSwimmingStroke) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWorkoutSwimmingStroke
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWorkoutSwimmingStroke(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWorkoutSwimmingStroke) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedWorkoutSwimmingStrokeResponse struct {
+	// For each matching provider or lab, a list of grouped timeseries values.
+	Groups map[string][]*GroupedWorkoutSwimmingStroke `json:"groups,omitempty" url:"groups,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	Next *string `json:"next,omitempty" url:"next,omitempty"`
+	// The cursor for fetching the next page, or `null` if there is no more data.
+	NextCursor *string `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWorkoutSwimmingStrokeResponse) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWorkoutSwimmingStrokeResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWorkoutSwimmingStrokeResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWorkoutSwimmingStrokeResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWorkoutSwimmingStrokeResponse) String() string {
 	if len(g._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
 			return value
@@ -9082,7 +9635,33 @@ type VitalsWheelchairPushGroupedRequest struct {
 	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
+type VitalsWorkoutDistanceGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
 type VitalsWorkoutDurationGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+}
+
+type VitalsWorkoutSwimmingStrokeGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
