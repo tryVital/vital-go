@@ -235,6 +235,13 @@ type ClientFacingProviderWithStatus struct {
 	CreatedOn time.Time `json:"created_on" url:"created_on"`
 	// Status of source, either error or connected
 	Status string `json:"status" url:"status"`
+	// The unique identifier of the associated external data provider user.
+	//
+	// * OAuth Providers: User unique identifier; provider-specific formats
+	// * Password Providers: Username
+	// * Email Providers: Email
+	// * Junction Mobile SDK Providers: `null` (not available)
+	ExternalUserId *string `json:"external_user_id,omitempty" url:"external_user_id,omitempty"`
 	// Details of the terminal connection error — populated only when the status is `error`.
 	ErrorDetails         *ClientFacingConnectionErrorDetails `json:"error_details,omitempty" url:"error_details,omitempty"`
 	ResourceAvailability map[string]*ResourceAvailability    `json:"resource_availability,omitempty" url:"resource_availability,omitempty"`

@@ -12142,8 +12142,15 @@ func (p *PostOrderResponse) String() string {
 type ProviderConnectionCreated struct {
 	UserId string `json:"user_id" url:"user_id"`
 	// Deprecated. Use `provider` instead. Subject to removal after 1 Jan 2024.
-	Source               *ClientFacingProvider            `json:"source,omitempty" url:"source,omitempty"`
-	Provider             *ClientFacingProvider            `json:"provider,omitempty" url:"provider,omitempty"`
+	Source   *ClientFacingProvider `json:"source,omitempty" url:"source,omitempty"`
+	Provider *ClientFacingProvider `json:"provider,omitempty" url:"provider,omitempty"`
+	// The unique identifier of the associated external data provider user.
+	//
+	// * OAuth Providers: User unique identifier; provider-specific formats
+	// * Password Providers: Username
+	// * Email Providers: Email
+	// * Junction Mobile SDK Providers: `null` (not available)
+	ExternalUserId       *string                          `json:"external_user_id,omitempty" url:"external_user_id,omitempty"`
 	ResourceAvailability map[string]*ResourceAvailability `json:"resource_availability,omitempty" url:"resource_availability,omitempty"`
 
 	extraProperties map[string]interface{}

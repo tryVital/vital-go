@@ -51,6 +51,61 @@ func (a AttemptStatus) Ptr() *AttemptStatus {
 }
 
 // ℹ️ This enum is non-exhaustive.
+type HistoricalPullNonRetriableErrorDetails string
+
+const (
+	HistoricalPullNonRetriableErrorDetailsNonRetriableError   HistoricalPullNonRetriableErrorDetails = "non_retriable_error"
+	HistoricalPullNonRetriableErrorDetailsUnexpectedError     HistoricalPullNonRetriableErrorDetails = "unexpected_error"
+	HistoricalPullNonRetriableErrorDetailsRetryQuotaExhausted HistoricalPullNonRetriableErrorDetails = "retry_quota_exhausted"
+)
+
+func NewHistoricalPullNonRetriableErrorDetailsFromString(s string) (HistoricalPullNonRetriableErrorDetails, error) {
+	switch s {
+	case "non_retriable_error":
+		return HistoricalPullNonRetriableErrorDetailsNonRetriableError, nil
+	case "unexpected_error":
+		return HistoricalPullNonRetriableErrorDetailsUnexpectedError, nil
+	case "retry_quota_exhausted":
+		return HistoricalPullNonRetriableErrorDetailsRetryQuotaExhausted, nil
+	}
+	var t HistoricalPullNonRetriableErrorDetails
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HistoricalPullNonRetriableErrorDetails) Ptr() *HistoricalPullNonRetriableErrorDetails {
+	return &h
+}
+
+// ℹ️ This enum is non-exhaustive.
+type HistoricalPullRetriableErrorDetails string
+
+const (
+	HistoricalPullRetriableErrorDetailsProviderRateLimitExceeded HistoricalPullRetriableErrorDetails = "provider_rate_limit_exceeded"
+	HistoricalPullRetriableErrorDetailsProviderUnavailable       HistoricalPullRetriableErrorDetails = "provider_unavailable"
+	HistoricalPullRetriableErrorDetailsTransportFailure          HistoricalPullRetriableErrorDetails = "transport_failure"
+	HistoricalPullRetriableErrorDetailsResourceContention        HistoricalPullRetriableErrorDetails = "resource_contention"
+)
+
+func NewHistoricalPullRetriableErrorDetailsFromString(s string) (HistoricalPullRetriableErrorDetails, error) {
+	switch s {
+	case "provider_rate_limit_exceeded":
+		return HistoricalPullRetriableErrorDetailsProviderRateLimitExceeded, nil
+	case "provider_unavailable":
+		return HistoricalPullRetriableErrorDetailsProviderUnavailable, nil
+	case "transport_failure":
+		return HistoricalPullRetriableErrorDetailsTransportFailure, nil
+	case "resource_contention":
+		return HistoricalPullRetriableErrorDetailsResourceContention, nil
+	}
+	var t HistoricalPullRetriableErrorDetails
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (h HistoricalPullRetriableErrorDetails) Ptr() *HistoricalPullRetriableErrorDetails {
+	return &h
+}
+
+// ℹ️ This enum is non-exhaustive.
 type HistoricalPullStatus string
 
 const (
@@ -212,13 +267,14 @@ func (l *LastAttempt) String() string {
 }
 
 type SingleHistoricalPullStatistics struct {
-	Status       HistoricalPullStatus    `json:"status" url:"status"`
-	RangeStart   *time.Time              `json:"range_start,omitempty" url:"range_start,omitempty"`
-	RangeEnd     *time.Time              `json:"range_end,omitempty" url:"range_end,omitempty"`
-	Timeline     *HistoricalPullTimeline `json:"timeline,omitempty" url:"timeline,omitempty"`
-	DaysWithData *int                    `json:"days_with_data,omitempty" url:"days_with_data,omitempty"`
-	Release      string                  `json:"release" url:"release"`
-	TraceId      *string                 `json:"trace_id,omitempty" url:"trace_id,omitempty"`
+	Status       HistoricalPullStatus                        `json:"status" url:"status"`
+	RangeStart   *time.Time                                  `json:"range_start,omitempty" url:"range_start,omitempty"`
+	RangeEnd     *time.Time                                  `json:"range_end,omitempty" url:"range_end,omitempty"`
+	Timeline     *HistoricalPullTimeline                     `json:"timeline,omitempty" url:"timeline,omitempty"`
+	DaysWithData *int                                        `json:"days_with_data,omitempty" url:"days_with_data,omitempty"`
+	Release      string                                      `json:"release" url:"release"`
+	TraceId      *string                                     `json:"trace_id,omitempty" url:"trace_id,omitempty"`
+	ErrorDetails *SingleHistoricalPullStatisticsErrorDetails `json:"error_details,omitempty" url:"error_details,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -278,6 +334,58 @@ func (s *SingleHistoricalPullStatistics) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
+}
+
+type SingleHistoricalPullStatisticsErrorDetails struct {
+	HistoricalPullRetriableErrorDetails    HistoricalPullRetriableErrorDetails
+	HistoricalPullNonRetriableErrorDetails HistoricalPullNonRetriableErrorDetails
+}
+
+func NewSingleHistoricalPullStatisticsErrorDetailsFromHistoricalPullRetriableErrorDetails(value HistoricalPullRetriableErrorDetails) *SingleHistoricalPullStatisticsErrorDetails {
+	return &SingleHistoricalPullStatisticsErrorDetails{HistoricalPullRetriableErrorDetails: value}
+}
+
+func NewSingleHistoricalPullStatisticsErrorDetailsFromHistoricalPullNonRetriableErrorDetails(value HistoricalPullNonRetriableErrorDetails) *SingleHistoricalPullStatisticsErrorDetails {
+	return &SingleHistoricalPullStatisticsErrorDetails{HistoricalPullNonRetriableErrorDetails: value}
+}
+
+func (s *SingleHistoricalPullStatisticsErrorDetails) UnmarshalJSON(data []byte) error {
+	var valueHistoricalPullRetriableErrorDetails HistoricalPullRetriableErrorDetails
+	if err := json.Unmarshal(data, &valueHistoricalPullRetriableErrorDetails); err == nil {
+		s.HistoricalPullRetriableErrorDetails = valueHistoricalPullRetriableErrorDetails
+		return nil
+	}
+	var valueHistoricalPullNonRetriableErrorDetails HistoricalPullNonRetriableErrorDetails
+	if err := json.Unmarshal(data, &valueHistoricalPullNonRetriableErrorDetails); err == nil {
+		s.HistoricalPullNonRetriableErrorDetails = valueHistoricalPullNonRetriableErrorDetails
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SingleHistoricalPullStatisticsErrorDetails) MarshalJSON() ([]byte, error) {
+	if s.HistoricalPullRetriableErrorDetails != "" {
+		return json.Marshal(s.HistoricalPullRetriableErrorDetails)
+	}
+	if s.HistoricalPullNonRetriableErrorDetails != "" {
+		return json.Marshal(s.HistoricalPullNonRetriableErrorDetails)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SingleHistoricalPullStatisticsErrorDetailsVisitor interface {
+	VisitHistoricalPullRetriableErrorDetails(HistoricalPullRetriableErrorDetails) error
+	VisitHistoricalPullNonRetriableErrorDetails(HistoricalPullNonRetriableErrorDetails) error
+}
+
+func (s *SingleHistoricalPullStatisticsErrorDetails) Accept(visitor SingleHistoricalPullStatisticsErrorDetailsVisitor) error {
+	if s.HistoricalPullRetriableErrorDetails != "" {
+		return visitor.VisitHistoricalPullRetriableErrorDetails(s.HistoricalPullRetriableErrorDetails)
+	}
+	if s.HistoricalPullNonRetriableErrorDetails != "" {
+		return visitor.VisitHistoricalPullNonRetriableErrorDetails(s.HistoricalPullNonRetriableErrorDetails)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
 }
 
 type SingleProviderHistoricalPullResponse struct {

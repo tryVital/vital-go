@@ -6,7 +6,13 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	core "github.com/tryVital/vital-go/core"
+	time "time"
 )
+
+type AggregateGetTaskHistoryForContinuousQueryRequest struct {
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	Limit      *int    `json:"-" url:"limit,omitempty"`
+}
 
 type QueryBatch struct {
 	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
@@ -660,6 +666,151 @@ func (c *ChronotypeValueMacroExpr) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ContinuousQueryTaskHistoryEntry struct {
+	TaskerTodoId int                       `json:"tasker_todo_id" url:"tasker_todo_id"`
+	QueryId      string                    `json:"query_id" url:"query_id"`
+	UserId       string                    `json:"user_id" url:"user_id"`
+	Status       ContinuousQueryTaskStatus `json:"status" url:"status"`
+	ScheduledAt  time.Time                 `json:"scheduled_at" url:"scheduled_at"`
+	StartedAt    *time.Time                `json:"started_at,omitempty" url:"started_at,omitempty"`
+	EndedAt      *time.Time                `json:"ended_at,omitempty" url:"ended_at,omitempty"`
+	ErrorDetails *string                   `json:"error_details,omitempty" url:"error_details,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ContinuousQueryTaskHistoryEntry) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ContinuousQueryTaskHistoryEntry) UnmarshalJSON(data []byte) error {
+	type embed ContinuousQueryTaskHistoryEntry
+	var unmarshaler = struct {
+		embed
+		ScheduledAt *core.DateTime `json:"scheduled_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		EndedAt     *core.DateTime `json:"ended_at,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ContinuousQueryTaskHistoryEntry(unmarshaler.embed)
+	c.ScheduledAt = unmarshaler.ScheduledAt.Time()
+	c.StartedAt = unmarshaler.StartedAt.TimePtr()
+	c.EndedAt = unmarshaler.EndedAt.TimePtr()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ContinuousQueryTaskHistoryEntry) MarshalJSON() ([]byte, error) {
+	type embed ContinuousQueryTaskHistoryEntry
+	var marshaler = struct {
+		embed
+		ScheduledAt *core.DateTime `json:"scheduled_at"`
+		StartedAt   *core.DateTime `json:"started_at,omitempty"`
+		EndedAt     *core.DateTime `json:"ended_at,omitempty"`
+	}{
+		embed:       embed(*c),
+		ScheduledAt: core.NewDateTime(c.ScheduledAt),
+		StartedAt:   core.NewOptionalDateTime(c.StartedAt),
+		EndedAt:     core.NewOptionalDateTime(c.EndedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ContinuousQueryTaskHistoryEntry) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ContinuousQueryTaskHistoryResponse struct {
+	Data       []*ContinuousQueryTaskHistoryEntry `json:"data,omitempty" url:"data,omitempty"`
+	NextCursor *string                            `json:"next_cursor,omitempty" url:"next_cursor,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ContinuousQueryTaskHistoryResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ContinuousQueryTaskHistoryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ContinuousQueryTaskHistoryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ContinuousQueryTaskHistoryResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ContinuousQueryTaskHistoryResponse) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// This has to match the `continuous_query_task_status` enum type in postgres. ℹ️ This enum is non-exhaustive.
+type ContinuousQueryTaskStatus string
+
+const (
+	ContinuousQueryTaskStatusScheduled ContinuousQueryTaskStatus = "scheduled"
+	ContinuousQueryTaskStatusStarted   ContinuousQueryTaskStatus = "started"
+	ContinuousQueryTaskStatusCompleted ContinuousQueryTaskStatus = "completed"
+	ContinuousQueryTaskStatusError     ContinuousQueryTaskStatus = "error"
+)
+
+func NewContinuousQueryTaskStatusFromString(s string) (ContinuousQueryTaskStatus, error) {
+	switch s {
+	case "scheduled":
+		return ContinuousQueryTaskStatusScheduled, nil
+	case "started":
+		return ContinuousQueryTaskStatusStarted, nil
+	case "completed":
+		return ContinuousQueryTaskStatusCompleted, nil
+	case "error":
+		return ContinuousQueryTaskStatusError, nil
+	}
+	var t ContinuousQueryTaskStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ContinuousQueryTaskStatus) Ptr() *ContinuousQueryTaskStatus {
+	return &c
 }
 
 type DatePartExpr struct {
