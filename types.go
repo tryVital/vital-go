@@ -11604,6 +11604,7 @@ const (
 	LabsManual       Labs = "manual"
 	LabsSanocardio   Labs = "sanocardio"
 	LabsIhd          Labs = "ihd"
+	LabsNexus        Labs = "nexus"
 )
 
 func NewLabsFromString(s string) (Labs, error) {
@@ -11628,6 +11629,8 @@ func NewLabsFromString(s string) (Labs, error) {
 		return LabsSanocardio, nil
 	case "ihd":
 		return LabsIhd, nil
+	case "nexus":
+		return LabsNexus, nil
 	}
 	var t Labs
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
