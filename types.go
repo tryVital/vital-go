@@ -6147,6 +6147,115 @@ func (c *ClientFacingNoteHistoricalPullCompleted) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// Schema for an on-site collection order in the client facing API.
+// To be used as part of a ClientFacingOrder.
+type ClientFacingOnSiteCollectionOrder struct {
+	// The Junction on-site collection Order ID
+	Id        string    `json:"id" url:"id"`
+	CreatedAt time.Time `json:"created_at" url:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" url:"updated_at"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingOnSiteCollectionOrder) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingOnSiteCollectionOrder) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingOnSiteCollectionOrder
+	var unmarshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingOnSiteCollectionOrder(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingOnSiteCollectionOrder) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingOnSiteCollectionOrder
+	var marshaler = struct {
+		embed
+		CreatedAt *core.DateTime `json:"created_at"`
+		UpdatedAt *core.DateTime `json:"updated_at"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: core.NewDateTime(c.CreatedAt),
+		UpdatedAt: core.NewDateTime(c.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientFacingOnSiteCollectionOrder) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingOnSiteCollectionOrderDetails struct {
+	Data *ClientFacingOnSiteCollectionOrder `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingOnSiteCollectionOrderDetails) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingOnSiteCollectionOrderDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingOnSiteCollectionOrderDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingOnSiteCollectionOrderDetails(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingOnSiteCollectionOrderDetails) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ClientFacingOrder struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
 	UserId string `json:"user_id" url:"user_id"`
@@ -6320,6 +6429,7 @@ type ClientFacingOrderDetails struct {
 	WalkInTest       *ClientFacingWalkInOrderDetails
 	Testkit          *ClientFacingTestKitOrderDetails
 	AtHomePhlebotomy *ClientFacingAtHomePhlebotomyOrderDetails
+	OnSiteCollection *ClientFacingOnSiteCollectionOrderDetails
 }
 
 func NewClientFacingOrderDetailsFromWalkInTest(value *ClientFacingWalkInOrderDetails) *ClientFacingOrderDetails {
@@ -6332,6 +6442,10 @@ func NewClientFacingOrderDetailsFromTestkit(value *ClientFacingTestKitOrderDetai
 
 func NewClientFacingOrderDetailsFromAtHomePhlebotomy(value *ClientFacingAtHomePhlebotomyOrderDetails) *ClientFacingOrderDetails {
 	return &ClientFacingOrderDetails{Type: "at_home_phlebotomy", AtHomePhlebotomy: value}
+}
+
+func NewClientFacingOrderDetailsFromOnSiteCollection(value *ClientFacingOnSiteCollectionOrderDetails) *ClientFacingOrderDetails {
+	return &ClientFacingOrderDetails{Type: "on_site_collection", OnSiteCollection: value}
 }
 
 func (c *ClientFacingOrderDetails) UnmarshalJSON(data []byte) error {
@@ -6364,6 +6478,12 @@ func (c *ClientFacingOrderDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		c.AtHomePhlebotomy = value
+	case "on_site_collection":
+		value := new(ClientFacingOnSiteCollectionOrderDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		c.OnSiteCollection = value
 	}
 	return nil
 }
@@ -6378,6 +6498,8 @@ func (c ClientFacingOrderDetails) MarshalJSON() ([]byte, error) {
 		return core.MarshalJSONWithExtraProperty(c.Testkit, "type", "testkit")
 	case "at_home_phlebotomy":
 		return core.MarshalJSONWithExtraProperty(c.AtHomePhlebotomy, "type", "at_home_phlebotomy")
+	case "on_site_collection":
+		return core.MarshalJSONWithExtraProperty(c.OnSiteCollection, "type", "on_site_collection")
 	}
 }
 
@@ -6385,6 +6507,7 @@ type ClientFacingOrderDetailsVisitor interface {
 	VisitWalkInTest(*ClientFacingWalkInOrderDetails) error
 	VisitTestkit(*ClientFacingTestKitOrderDetails) error
 	VisitAtHomePhlebotomy(*ClientFacingAtHomePhlebotomyOrderDetails) error
+	VisitOnSiteCollection(*ClientFacingOnSiteCollectionOrderDetails) error
 }
 
 func (c *ClientFacingOrderDetails) Accept(visitor ClientFacingOrderDetailsVisitor) error {
@@ -6397,6 +6520,8 @@ func (c *ClientFacingOrderDetails) Accept(visitor ClientFacingOrderDetailsVisito
 		return visitor.VisitTestkit(c.Testkit)
 	case "at_home_phlebotomy":
 		return visitor.VisitAtHomePhlebotomy(c.AtHomePhlebotomy)
+	case "on_site_collection":
+		return visitor.VisitOnSiteCollection(c.OnSiteCollection)
 	}
 }
 
@@ -11513,6 +11638,7 @@ const (
 	LabTestCollectionMethodTestkit          LabTestCollectionMethod = "testkit"
 	LabTestCollectionMethodWalkInTest       LabTestCollectionMethod = "walk_in_test"
 	LabTestCollectionMethodAtHomePhlebotomy LabTestCollectionMethod = "at_home_phlebotomy"
+	LabTestCollectionMethodOnSiteCollection LabTestCollectionMethod = "on_site_collection"
 )
 
 func NewLabTestCollectionMethodFromString(s string) (LabTestCollectionMethod, error) {
@@ -11523,6 +11649,8 @@ func NewLabTestCollectionMethodFromString(s string) (LabTestCollectionMethod, er
 		return LabTestCollectionMethodWalkInTest, nil
 	case "at_home_phlebotomy":
 		return LabTestCollectionMethodAtHomePhlebotomy, nil
+	case "on_site_collection":
+		return LabTestCollectionMethodOnSiteCollection, nil
 	}
 	var t LabTestCollectionMethod
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -11751,6 +11879,14 @@ const (
 	OrderStatusCancelledTestkitDoNotProcess                         OrderStatus = "cancelled.testkit.do_not_process"
 	OrderStatusCollectingSampleTestkitProblemInTransitCustomer      OrderStatus = "collecting_sample.testkit.problem_in_transit_customer"
 	OrderStatusCollectingSampleTestkitProblemInTransitLab           OrderStatus = "collecting_sample.testkit.problem_in_transit_lab"
+	OrderStatusReceivedOnSiteCollectionOrdered                      OrderStatus = "received.on_site_collection.ordered"
+	OrderStatusReceivedOnSiteCollectionRequisitionCreated           OrderStatus = "received.on_site_collection.requisition_created"
+	OrderStatusReceivedOnSiteCollectionRequisitionBypassed          OrderStatus = "received.on_site_collection.requisition_bypassed"
+	OrderStatusSampleWithLabOnSiteCollectionDrawCompleted           OrderStatus = "sample_with_lab.on_site_collection.draw_completed"
+	OrderStatusCompletedOnSiteCollectionCompleted                   OrderStatus = "completed.on_site_collection.completed"
+	OrderStatusCancelledOnSiteCollectionCancelled                   OrderStatus = "cancelled.on_site_collection.cancelled"
+	OrderStatusSampleWithLabOnSiteCollectionPartialResults          OrderStatus = "sample_with_lab.on_site_collection.partial_results"
+	OrderStatusFailedOnSiteCollectionSampleError                    OrderStatus = "failed.on_site_collection.sample_error"
 )
 
 func NewOrderStatusFromString(s string) (OrderStatus, error) {
@@ -11835,6 +11971,22 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusCollectingSampleTestkitProblemInTransitCustomer, nil
 	case "collecting_sample.testkit.problem_in_transit_lab":
 		return OrderStatusCollectingSampleTestkitProblemInTransitLab, nil
+	case "received.on_site_collection.ordered":
+		return OrderStatusReceivedOnSiteCollectionOrdered, nil
+	case "received.on_site_collection.requisition_created":
+		return OrderStatusReceivedOnSiteCollectionRequisitionCreated, nil
+	case "received.on_site_collection.requisition_bypassed":
+		return OrderStatusReceivedOnSiteCollectionRequisitionBypassed, nil
+	case "sample_with_lab.on_site_collection.draw_completed":
+		return OrderStatusSampleWithLabOnSiteCollectionDrawCompleted, nil
+	case "completed.on_site_collection.completed":
+		return OrderStatusCompletedOnSiteCollectionCompleted, nil
+	case "cancelled.on_site_collection.cancelled":
+		return OrderStatusCancelledOnSiteCollectionCancelled, nil
+	case "sample_with_lab.on_site_collection.partial_results":
+		return OrderStatusSampleWithLabOnSiteCollectionPartialResults, nil
+	case "failed.on_site_collection.sample_error":
+		return OrderStatusFailedOnSiteCollectionSampleError, nil
 	}
 	var t OrderStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
