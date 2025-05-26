@@ -2341,7 +2341,7 @@ type ClientFacingCriticalResult struct {
 	SampleId string `json:"sample_id" url:"sample_id"`
 	// The current results status, can be either (final, partial).
 	Status string `json:"status" url:"status"`
-	// The results interpretation, can be either (normal, abnormal, critical).
+	// The results interpretation, can be one of (normal, abnormal, critical).
 	Interpretation string `json:"interpretation" url:"interpretation"`
 	// Your team id.
 	TeamId string `json:"team_id" url:"team_id"`
@@ -6296,6 +6296,8 @@ type ClientFacingOrder struct {
 	IcdCodes    []string `json:"icd_codes,omitempty" url:"icd_codes,omitempty"`
 	// Defines whether the order has an Advanced Beneficiary Notice (ABN) form or not.
 	HasAbn bool `json:"has_abn" url:"has_abn"`
+	// Interpretation of the order result. Can be one of (normal, abnormal, critical).
+	Interpretation *Interpretation `json:"interpretation,omitempty" url:"interpretation,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -11564,6 +11566,32 @@ func (h *HttpValidationError) String() string {
 	return fmt.Sprintf("%#v", h)
 }
 
+// ℹ️ This enum is non-exhaustive.
+type Interpretation string
+
+const (
+	InterpretationNormal   Interpretation = "normal"
+	InterpretationAbnormal Interpretation = "abnormal"
+	InterpretationCritical Interpretation = "critical"
+)
+
+func NewInterpretationFromString(s string) (Interpretation, error) {
+	switch s {
+	case "normal":
+		return InterpretationNormal, nil
+	case "abnormal":
+		return InterpretationAbnormal, nil
+	case "critical":
+		return InterpretationCritical, nil
+	}
+	var t Interpretation
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i Interpretation) Ptr() *Interpretation {
+	return &i
+}
+
 type Jpeg struct {
 	Content     string `json:"content" url:"content"`
 	contentType string
@@ -12145,6 +12173,10 @@ type PatientDetailsWithValidation struct {
 	SexualOrientation *SexualOrientation `json:"sexual_orientation,omitempty" url:"sexual_orientation,omitempty"`
 	// If not provided, will be set to 'Not Specified'
 	GenderIdentity *GenderIdentity `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
+	// Household income in USD. If not provided, will be set to None
+	HouseholdIncome *int `json:"household_income,omitempty" url:"household_income,omitempty"`
+	// Household size. If not provided, will be set to None
+	HouseholdSize *int `json:"household_size,omitempty" url:"household_size,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage

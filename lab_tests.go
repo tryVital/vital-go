@@ -143,6 +143,8 @@ type LabTestsGetOrdersRequest struct {
 	OrderType []*LabTestCollectionMethod `json:"-" url:"order_type,omitempty"`
 	// Filter by critical order status.
 	IsCritical *bool `json:"-" url:"is_critical,omitempty"`
+	// Filter by result interpretation of the lab test.
+	Interpretation *Interpretation `json:"-" url:"interpretation,omitempty"`
 	// Filter by activation type.
 	OrderActivationTypes []*OrderActivationType `json:"-" url:"order_activation_types,omitempty"`
 	// Filter by user ID.

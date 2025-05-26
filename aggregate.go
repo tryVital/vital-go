@@ -669,7 +669,6 @@ func (c *ChronotypeValueMacroExpr) String() string {
 }
 
 type ContinuousQueryTaskHistoryEntry struct {
-	TaskerTodoId int                       `json:"tasker_todo_id" url:"tasker_todo_id"`
 	QueryId      string                    `json:"query_id" url:"query_id"`
 	UserId       string                    `json:"user_id" url:"user_id"`
 	Status       ContinuousQueryTaskStatus `json:"status" url:"status"`

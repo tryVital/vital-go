@@ -2368,6 +2368,65 @@ func (c *Client) SimulateOrderProcess(
 	return response, nil
 }
 
+// PATCH update on site collection order when draw is completed
+func (c *Client) UpdateOnSiteCollectionOrderDrawCompleted(
+	ctx context.Context,
+	// Your Order ID.
+	orderId string,
+	opts ...option.RequestOption,
+) (*vitalgo.PostOrderResponse, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v3/order/%v/draw_completed", orderId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.PostOrderResponse
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 // GET many orders with filters.
 func (c *Client) GetOrders(
 	ctx context.Context,
