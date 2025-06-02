@@ -10,6 +10,7 @@ import (
 )
 
 type IntrospectGetUserHistoricalPullsRequest struct {
+	// Filter by user ID.
 	UserId    *string    `json:"-" url:"user_id,omitempty"`
 	Provider  *Providers `json:"-" url:"provider,omitempty"`
 	UserLimit *int       `json:"-" url:"user_limit,omitempty"`
@@ -19,6 +20,7 @@ type IntrospectGetUserHistoricalPullsRequest struct {
 }
 
 type IntrospectGetUserResourcesRequest struct {
+	// Filter by user ID.
 	UserId    *string    `json:"-" url:"user_id,omitempty"`
 	Provider  *Providers `json:"-" url:"provider,omitempty"`
 	UserLimit *int       `json:"-" url:"user_limit,omitempty"`
