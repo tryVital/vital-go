@@ -1090,18 +1090,20 @@ func (c *ClientFacingLoinc) String() string {
 }
 
 type ClientFacingMarkerComplete struct {
-	Id              int                   `json:"id" url:"id"`
-	Name            string                `json:"name" url:"name"`
-	Slug            string                `json:"slug" url:"slug"`
-	Description     *string               `json:"description,omitempty" url:"description,omitempty"`
-	LabId           *int                  `json:"lab_id,omitempty" url:"lab_id,omitempty"`
-	ProviderId      *string               `json:"provider_id,omitempty" url:"provider_id,omitempty"`
-	Type            *MarkerType           `json:"type,omitempty" url:"type,omitempty"`
-	Unit            *string               `json:"unit,omitempty" url:"unit,omitempty"`
-	Price           *string               `json:"price,omitempty" url:"price,omitempty"`
-	Aoe             *AoE                  `json:"aoe,omitempty" url:"aoe,omitempty"`
-	ALaCarteEnabled *bool                 `json:"a_la_carte_enabled,omitempty" url:"a_la_carte_enabled,omitempty"`
-	ExpectedResults []*ClientFacingResult `json:"expected_results,omitempty" url:"expected_results,omitempty"`
+	Id               int                   `json:"id" url:"id"`
+	Name             string                `json:"name" url:"name"`
+	Slug             string                `json:"slug" url:"slug"`
+	Description      *string               `json:"description,omitempty" url:"description,omitempty"`
+	LabId            *int                  `json:"lab_id,omitempty" url:"lab_id,omitempty"`
+	ProviderId       *string               `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	Type             *MarkerType           `json:"type,omitempty" url:"type,omitempty"`
+	Unit             *string               `json:"unit,omitempty" url:"unit,omitempty"`
+	Price            *string               `json:"price,omitempty" url:"price,omitempty"`
+	Aoe              *AoE                  `json:"aoe,omitempty" url:"aoe,omitempty"`
+	ALaCarteEnabled  *bool                 `json:"a_la_carte_enabled,omitempty" url:"a_la_carte_enabled,omitempty"`
+	CommonTatDays    *int                  `json:"common_tat_days,omitempty" url:"common_tat_days,omitempty"`
+	WorstCaseTatDays *int                  `json:"worst_case_tat_days,omitempty" url:"worst_case_tat_days,omitempty"`
+	ExpectedResults  []*ClientFacingResult `json:"expected_results,omitempty" url:"expected_results,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
