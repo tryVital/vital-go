@@ -116,6 +116,14 @@ func (c *Client) BulkImport(
 	}
 	endpointURL := baseURL + "/v2/link/bulk_import"
 
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
@@ -173,6 +181,14 @@ func (c *Client) BulkTriggerHistoricalPull(
 		baseURL = options.BaseURL
 	}
 	endpointURL := baseURL + "/v2/link/bulk_trigger_historical_pull"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -232,6 +248,14 @@ func (c *Client) BulkExport(
 	}
 	endpointURL := baseURL + "/v2/link/bulk_export"
 
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
@@ -289,6 +313,14 @@ func (c *Client) BulkPause(
 		baseURL = options.BaseURL
 	}
 	endpointURL := baseURL + "/v2/link/bulk_pause"
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 

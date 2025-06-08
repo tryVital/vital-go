@@ -10,14 +10,16 @@ import (
 )
 
 type BulkExportConnectionsBody struct {
-	UserIds   []string       `json:"user_ids,omitempty" url:"-"`
-	Provider  OAuthProviders `json:"provider" url:"-"`
-	NextToken *string        `json:"next_token,omitempty" url:"-"`
+	TeamId    *LinkBulkExportRequestTeamId `json:"-" url:"team_id,omitempty"`
+	UserIds   []string                     `json:"user_ids,omitempty" url:"-"`
+	Provider  OAuthProviders               `json:"provider" url:"-"`
+	NextToken *string                      `json:"next_token,omitempty" url:"-"`
 }
 
 type BulkImportConnectionsBody struct {
-	Provider    OAuthProviders      `json:"provider" url:"-"`
-	Connections []*ConnectionRecipe `json:"connections,omitempty" url:"-"`
+	TeamId      *LinkBulkImportRequestTeamId `json:"-" url:"team_id,omitempty"`
+	Provider    OAuthProviders               `json:"provider" url:"-"`
+	Connections []*ConnectionRecipe          `json:"connections,omitempty" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
 	//
 	// When `wait_for_completion` is enabled, the endpoint may respond 200 OK if the Bulk Op takes less than 20 seconds to complete.
@@ -28,13 +30,15 @@ type BulkImportConnectionsBody struct {
 }
 
 type BulkPauseConnectionsBody struct {
-	UserIds  []string       `json:"user_ids,omitempty" url:"-"`
-	Provider OAuthProviders `json:"provider" url:"-"`
+	TeamId   *LinkBulkPauseRequestTeamId `json:"-" url:"team_id,omitempty"`
+	UserIds  []string                    `json:"user_ids,omitempty" url:"-"`
+	Provider OAuthProviders              `json:"provider" url:"-"`
 }
 
 type BulkTriggerHistoricalPullBody struct {
-	UserIds  []string       `json:"user_ids,omitempty" url:"-"`
-	Provider OAuthProviders `json:"provider" url:"-"`
+	TeamId   *LinkBulkTriggerHistoricalPullRequestTeamId `json:"-" url:"team_id,omitempty"`
+	UserIds  []string                                    `json:"user_ids,omitempty" url:"-"`
+	Provider OAuthProviders                              `json:"provider" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
 	//
 	// When `wait_for_completion` is enabled, the endpoint may respond 200 OK if the Bulk Op takes less than 20 seconds to complete.
@@ -104,8 +108,9 @@ type LinkTokenValidationRequest struct {
 }
 
 type LinkListBulkOpsRequest struct {
-	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
-	PageSize   *int    `json:"-" url:"page_size,omitempty"`
+	NextCursor *string                       `json:"-" url:"next_cursor,omitempty"`
+	PageSize   *int                          `json:"-" url:"page_size,omitempty"`
+	TeamId     *LinkListBulkOpsRequestTeamId `json:"-" url:"team_id,omitempty"`
 }
 
 type PasswordAuthLink struct {
@@ -1260,4 +1265,99 @@ func (v *VitalTokenCreatedResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)
+}
+
+type LinkBulkExportRequestTeamId string
+
+const (
+	LinkBulkExportRequestTeamIdInferFromContext LinkBulkExportRequestTeamId = "infer_from_context"
+)
+
+func NewLinkBulkExportRequestTeamIdFromString(s string) (LinkBulkExportRequestTeamId, error) {
+	switch s {
+	case "infer_from_context":
+		return LinkBulkExportRequestTeamIdInferFromContext, nil
+	}
+	var t LinkBulkExportRequestTeamId
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LinkBulkExportRequestTeamId) Ptr() *LinkBulkExportRequestTeamId {
+	return &l
+}
+
+type LinkBulkImportRequestTeamId string
+
+const (
+	LinkBulkImportRequestTeamIdInferFromContext LinkBulkImportRequestTeamId = "infer_from_context"
+)
+
+func NewLinkBulkImportRequestTeamIdFromString(s string) (LinkBulkImportRequestTeamId, error) {
+	switch s {
+	case "infer_from_context":
+		return LinkBulkImportRequestTeamIdInferFromContext, nil
+	}
+	var t LinkBulkImportRequestTeamId
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LinkBulkImportRequestTeamId) Ptr() *LinkBulkImportRequestTeamId {
+	return &l
+}
+
+type LinkBulkPauseRequestTeamId string
+
+const (
+	LinkBulkPauseRequestTeamIdInferFromContext LinkBulkPauseRequestTeamId = "infer_from_context"
+)
+
+func NewLinkBulkPauseRequestTeamIdFromString(s string) (LinkBulkPauseRequestTeamId, error) {
+	switch s {
+	case "infer_from_context":
+		return LinkBulkPauseRequestTeamIdInferFromContext, nil
+	}
+	var t LinkBulkPauseRequestTeamId
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LinkBulkPauseRequestTeamId) Ptr() *LinkBulkPauseRequestTeamId {
+	return &l
+}
+
+type LinkBulkTriggerHistoricalPullRequestTeamId string
+
+const (
+	LinkBulkTriggerHistoricalPullRequestTeamIdInferFromContext LinkBulkTriggerHistoricalPullRequestTeamId = "infer_from_context"
+)
+
+func NewLinkBulkTriggerHistoricalPullRequestTeamIdFromString(s string) (LinkBulkTriggerHistoricalPullRequestTeamId, error) {
+	switch s {
+	case "infer_from_context":
+		return LinkBulkTriggerHistoricalPullRequestTeamIdInferFromContext, nil
+	}
+	var t LinkBulkTriggerHistoricalPullRequestTeamId
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LinkBulkTriggerHistoricalPullRequestTeamId) Ptr() *LinkBulkTriggerHistoricalPullRequestTeamId {
+	return &l
+}
+
+type LinkListBulkOpsRequestTeamId string
+
+const (
+	LinkListBulkOpsRequestTeamIdInferFromContext LinkListBulkOpsRequestTeamId = "infer_from_context"
+)
+
+func NewLinkListBulkOpsRequestTeamIdFromString(s string) (LinkListBulkOpsRequestTeamId, error) {
+	switch s {
+	case "infer_from_context":
+		return LinkListBulkOpsRequestTeamIdInferFromContext, nil
+	}
+	var t LinkListBulkOpsRequestTeamId
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LinkListBulkOpsRequestTeamId) Ptr() *LinkListBulkOpsRequestTeamId {
+	return &l
 }
