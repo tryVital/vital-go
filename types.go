@@ -12603,7 +12603,7 @@ func (p Providers) Ptr() *Providers {
 }
 
 type Question struct {
-	Id         int          `json:"id" url:"id"`
+	Id         int64        `json:"id" url:"id"`
 	Required   bool         `json:"required" url:"required"`
 	Code       string       `json:"code" url:"code"`
 	Value      string       `json:"value" url:"value"`
