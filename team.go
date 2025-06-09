@@ -14,7 +14,7 @@ type TeamGetLinkConfigRequest struct {
 }
 
 type TeamGetSourcePrioritiesRequest struct {
-	DataType *string `json:"-" url:"data_type,omitempty"`
+	DataType *PriorityResource `json:"-" url:"data_type,omitempty"`
 }
 
 type TeamGetUserByIdRequest struct {
@@ -317,6 +317,38 @@ func (l *LibreConfig) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type PriorityResource string
+
+const (
+	PriorityResourceWorkouts   PriorityResource = "workouts"
+	PriorityResourceActivity   PriorityResource = "activity"
+	PriorityResourceSleep      PriorityResource = "sleep"
+	PriorityResourceBody       PriorityResource = "body"
+	PriorityResourceTimeseries PriorityResource = "timeseries"
+)
+
+func NewPriorityResourceFromString(s string) (PriorityResource, error) {
+	switch s {
+	case "workouts":
+		return PriorityResourceWorkouts, nil
+	case "activity":
+		return PriorityResourceActivity, nil
+	case "sleep":
+		return PriorityResourceSleep, nil
+	case "body":
+		return PriorityResourceBody, nil
+	case "timeseries":
+		return PriorityResourceTimeseries, nil
+	}
+	var t PriorityResource
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PriorityResource) Ptr() *PriorityResource {
+	return &p
 }
 
 type TeamConfig struct {

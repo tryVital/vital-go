@@ -220,14 +220,20 @@ func (a *AggregateExpr) String() string {
 }
 
 type AggregateExprArg struct {
-	SleepColumnExpr            *SleepColumnExpr
-	ActivityColumnExpr         *ActivityColumnExpr
-	WorkoutColumnExpr          *WorkoutColumnExpr
-	BodyColumnExpr             *BodyColumnExpr
-	IndexColumnExpr            *IndexColumnExpr
-	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr   *ChronotypeValueMacroExpr
-	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
+	SleepColumnExpr               *SleepColumnExpr
+	ActivityColumnExpr            *ActivityColumnExpr
+	WorkoutColumnExpr             *WorkoutColumnExpr
+	BodyColumnExpr                *BodyColumnExpr
+	IndexColumnExpr               *IndexColumnExpr
+	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
+	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
+	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr            *NoteTimeseriesExpr
 }
 
 func NewAggregateExprArgFromSleepColumnExpr(value *SleepColumnExpr) *AggregateExprArg {
@@ -260,6 +266,30 @@ func NewAggregateExprArgFromChronotypeValueMacroExpr(value *ChronotypeValueMacro
 
 func NewAggregateExprArgFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *AggregateExprArg {
 	return &AggregateExprArg{UnrecognizedValueMacroExpr: value}
+}
+
+func NewAggregateExprArgFromDiscreteTimeseriesExpr(value *DiscreteTimeseriesExpr) *AggregateExprArg {
+	return &AggregateExprArg{DiscreteTimeseriesExpr: value}
+}
+
+func NewAggregateExprArgFromIntervalTimeseriesExpr(value *IntervalTimeseriesExpr) *AggregateExprArg {
+	return &AggregateExprArg{IntervalTimeseriesExpr: value}
+}
+
+func NewAggregateExprArgFromBloodPressureTimeseriesExpr(value *BloodPressureTimeseriesExpr) *AggregateExprArg {
+	return &AggregateExprArg{BloodPressureTimeseriesExpr: value}
+}
+
+func NewAggregateExprArgFromTemperatureTimeseriesExpr(value *TemperatureTimeseriesExpr) *AggregateExprArg {
+	return &AggregateExprArg{TemperatureTimeseriesExpr: value}
+}
+
+func NewAggregateExprArgFromWorkoutDurationTimeseriesExpr(value *WorkoutDurationTimeseriesExpr) *AggregateExprArg {
+	return &AggregateExprArg{WorkoutDurationTimeseriesExpr: value}
+}
+
+func NewAggregateExprArgFromNoteTimeseriesExpr(value *NoteTimeseriesExpr) *AggregateExprArg {
+	return &AggregateExprArg{NoteTimeseriesExpr: value}
 }
 
 func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
@@ -303,6 +333,36 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
 		return nil
 	}
+	valueDiscreteTimeseriesExpr := new(DiscreteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueDiscreteTimeseriesExpr); err == nil {
+		a.DiscreteTimeseriesExpr = valueDiscreteTimeseriesExpr
+		return nil
+	}
+	valueIntervalTimeseriesExpr := new(IntervalTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueIntervalTimeseriesExpr); err == nil {
+		a.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
+		return nil
+	}
+	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueBloodPressureTimeseriesExpr); err == nil {
+		a.BloodPressureTimeseriesExpr = valueBloodPressureTimeseriesExpr
+		return nil
+	}
+	valueTemperatureTimeseriesExpr := new(TemperatureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueTemperatureTimeseriesExpr); err == nil {
+		a.TemperatureTimeseriesExpr = valueTemperatureTimeseriesExpr
+		return nil
+	}
+	valueWorkoutDurationTimeseriesExpr := new(WorkoutDurationTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueWorkoutDurationTimeseriesExpr); err == nil {
+		a.WorkoutDurationTimeseriesExpr = valueWorkoutDurationTimeseriesExpr
+		return nil
+	}
+	valueNoteTimeseriesExpr := new(NoteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueNoteTimeseriesExpr); err == nil {
+		a.NoteTimeseriesExpr = valueNoteTimeseriesExpr
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
 }
 
@@ -331,6 +391,24 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(a.UnrecognizedValueMacroExpr)
 	}
+	if a.DiscreteTimeseriesExpr != nil {
+		return json.Marshal(a.DiscreteTimeseriesExpr)
+	}
+	if a.IntervalTimeseriesExpr != nil {
+		return json.Marshal(a.IntervalTimeseriesExpr)
+	}
+	if a.BloodPressureTimeseriesExpr != nil {
+		return json.Marshal(a.BloodPressureTimeseriesExpr)
+	}
+	if a.TemperatureTimeseriesExpr != nil {
+		return json.Marshal(a.TemperatureTimeseriesExpr)
+	}
+	if a.WorkoutDurationTimeseriesExpr != nil {
+		return json.Marshal(a.WorkoutDurationTimeseriesExpr)
+	}
+	if a.NoteTimeseriesExpr != nil {
+		return json.Marshal(a.NoteTimeseriesExpr)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
 }
 
@@ -343,6 +421,12 @@ type AggregateExprArgVisitor interface {
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
+	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
+	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
+	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
+	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
+	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
 }
 
 func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
@@ -369,6 +453,24 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(a.UnrecognizedValueMacroExpr)
+	}
+	if a.DiscreteTimeseriesExpr != nil {
+		return visitor.VisitDiscreteTimeseriesExpr(a.DiscreteTimeseriesExpr)
+	}
+	if a.IntervalTimeseriesExpr != nil {
+		return visitor.VisitIntervalTimeseriesExpr(a.IntervalTimeseriesExpr)
+	}
+	if a.BloodPressureTimeseriesExpr != nil {
+		return visitor.VisitBloodPressureTimeseriesExpr(a.BloodPressureTimeseriesExpr)
+	}
+	if a.TemperatureTimeseriesExpr != nil {
+		return visitor.VisitTemperatureTimeseriesExpr(a.TemperatureTimeseriesExpr)
+	}
+	if a.WorkoutDurationTimeseriesExpr != nil {
+		return visitor.VisitWorkoutDurationTimeseriesExpr(a.WorkoutDurationTimeseriesExpr)
+	}
+	if a.NoteTimeseriesExpr != nil {
+		return visitor.VisitNoteTimeseriesExpr(a.NoteTimeseriesExpr)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", a)
 }
@@ -498,6 +600,113 @@ func (a *AggregationResult) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", a)
+}
+
+type BloodPressureTimeseriesExpr struct {
+	Field      BloodPressureTimeseriesExprField `json:"field" url:"field"`
+	timeseries string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (b *BloodPressureTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BloodPressureTimeseriesExpr) Timeseries() string {
+	return b.timeseries
+}
+
+func (b *BloodPressureTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type embed BloodPressureTimeseriesExpr
+	var unmarshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BloodPressureTimeseriesExpr(unmarshaler.embed)
+	if unmarshaler.Timeseries != "blood_pressure" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", b, "blood_pressure", unmarshaler.Timeseries)
+	}
+	b.timeseries = unmarshaler.Timeseries
+
+	extraProperties, err := core.ExtractExtraProperties(data, *b, "timeseries")
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+
+	b._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BloodPressureTimeseriesExpr) MarshalJSON() ([]byte, error) {
+	type embed BloodPressureTimeseriesExpr
+	var marshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed:      embed(*b),
+		Timeseries: "blood_pressure",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BloodPressureTimeseriesExpr) String() string {
+	if len(b._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(b._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BloodPressureTimeseriesExprField string
+
+const (
+	BloodPressureTimeseriesExprFieldSourceProvider  BloodPressureTimeseriesExprField = "source_provider"
+	BloodPressureTimeseriesExprFieldSourceType      BloodPressureTimeseriesExprField = "source_type"
+	BloodPressureTimeseriesExprFieldSourceWorkoutId BloodPressureTimeseriesExprField = "source_workout_id"
+	BloodPressureTimeseriesExprFieldSourceSport     BloodPressureTimeseriesExprField = "source_sport"
+	BloodPressureTimeseriesExprFieldTimezoneOffset  BloodPressureTimeseriesExprField = "timezone_offset"
+	BloodPressureTimeseriesExprFieldType            BloodPressureTimeseriesExprField = "type"
+	BloodPressureTimeseriesExprFieldSystolic        BloodPressureTimeseriesExprField = "systolic"
+	BloodPressureTimeseriesExprFieldDiastolic       BloodPressureTimeseriesExprField = "diastolic"
+)
+
+func NewBloodPressureTimeseriesExprFieldFromString(s string) (BloodPressureTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return BloodPressureTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return BloodPressureTimeseriesExprFieldSourceType, nil
+	case "source_workout_id":
+		return BloodPressureTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return BloodPressureTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return BloodPressureTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return BloodPressureTimeseriesExprFieldType, nil
+	case "systolic":
+		return BloodPressureTimeseriesExprFieldSystolic, nil
+	case "diastolic":
+		return BloodPressureTimeseriesExprFieldDiastolic, nil
+	}
+	var t BloodPressureTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BloodPressureTimeseriesExprField) Ptr() *BloodPressureTimeseriesExprField {
+	return &b
 }
 
 type BodyColumnExpr struct {
@@ -1043,6 +1252,139 @@ func (d *DateTruncExprArg) Accept(visitor DateTruncExprArgVisitor) error {
 	return fmt.Errorf("type %T does not include a non-empty union type", d)
 }
 
+type DiscreteTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	Timeseries DiscreteTimeseriesExprTimeseries `json:"timeseries" url:"timeseries"`
+	Field      DiscreteTimeseriesExprField      `json:"field" url:"field"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (d *DiscreteTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DiscreteTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler DiscreteTimeseriesExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DiscreteTimeseriesExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+
+	d._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DiscreteTimeseriesExpr) String() string {
+	if len(d._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(d._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type DiscreteTimeseriesExprField string
+
+const (
+	DiscreteTimeseriesExprFieldSourceProvider  DiscreteTimeseriesExprField = "source_provider"
+	DiscreteTimeseriesExprFieldSourceType      DiscreteTimeseriesExprField = "source_type"
+	DiscreteTimeseriesExprFieldSourceWorkoutId DiscreteTimeseriesExprField = "source_workout_id"
+	DiscreteTimeseriesExprFieldSourceSport     DiscreteTimeseriesExprField = "source_sport"
+	DiscreteTimeseriesExprFieldTimezoneOffset  DiscreteTimeseriesExprField = "timezone_offset"
+	DiscreteTimeseriesExprFieldType            DiscreteTimeseriesExprField = "type"
+	DiscreteTimeseriesExprFieldValue           DiscreteTimeseriesExprField = "value"
+)
+
+func NewDiscreteTimeseriesExprFieldFromString(s string) (DiscreteTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return DiscreteTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return DiscreteTimeseriesExprFieldSourceType, nil
+	case "source_workout_id":
+		return DiscreteTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return DiscreteTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return DiscreteTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return DiscreteTimeseriesExprFieldType, nil
+	case "value":
+		return DiscreteTimeseriesExprFieldValue, nil
+	}
+	var t DiscreteTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DiscreteTimeseriesExprField) Ptr() *DiscreteTimeseriesExprField {
+	return &d
+}
+
+// ℹ️ This enum is non-exhaustive.
+type DiscreteTimeseriesExprTimeseries string
+
+const (
+	DiscreteTimeseriesExprTimeseriesGlucose                  DiscreteTimeseriesExprTimeseries = "glucose"
+	DiscreteTimeseriesExprTimeseriesHeartrate                DiscreteTimeseriesExprTimeseries = "heartrate"
+	DiscreteTimeseriesExprTimeseriesHrv                      DiscreteTimeseriesExprTimeseries = "hrv"
+	DiscreteTimeseriesExprTimeseriesIge                      DiscreteTimeseriesExprTimeseries = "ige"
+	DiscreteTimeseriesExprTimeseriesIgg                      DiscreteTimeseriesExprTimeseries = "igg"
+	DiscreteTimeseriesExprTimeseriesCholesterol              DiscreteTimeseriesExprTimeseries = "cholesterol"
+	DiscreteTimeseriesExprTimeseriesWeight                   DiscreteTimeseriesExprTimeseries = "weight"
+	DiscreteTimeseriesExprTimeseriesFat                      DiscreteTimeseriesExprTimeseries = "fat"
+	DiscreteTimeseriesExprTimeseriesBloodOxygen              DiscreteTimeseriesExprTimeseries = "blood_oxygen"
+	DiscreteTimeseriesExprTimeseriesElectrocardiogramVoltage DiscreteTimeseriesExprTimeseries = "electrocardiogram_voltage"
+	DiscreteTimeseriesExprTimeseriesRespiratoryRate          DiscreteTimeseriesExprTimeseries = "respiratory_rate"
+	DiscreteTimeseriesExprTimeseriesStressLevel              DiscreteTimeseriesExprTimeseries = "stress_level"
+)
+
+func NewDiscreteTimeseriesExprTimeseriesFromString(s string) (DiscreteTimeseriesExprTimeseries, error) {
+	switch s {
+	case "glucose":
+		return DiscreteTimeseriesExprTimeseriesGlucose, nil
+	case "heartrate":
+		return DiscreteTimeseriesExprTimeseriesHeartrate, nil
+	case "hrv":
+		return DiscreteTimeseriesExprTimeseriesHrv, nil
+	case "ige":
+		return DiscreteTimeseriesExprTimeseriesIge, nil
+	case "igg":
+		return DiscreteTimeseriesExprTimeseriesIgg, nil
+	case "cholesterol":
+		return DiscreteTimeseriesExprTimeseriesCholesterol, nil
+	case "weight":
+		return DiscreteTimeseriesExprTimeseriesWeight, nil
+	case "fat":
+		return DiscreteTimeseriesExprTimeseriesFat, nil
+	case "blood_oxygen":
+		return DiscreteTimeseriesExprTimeseriesBloodOxygen, nil
+	case "electrocardiogram_voltage":
+		return DiscreteTimeseriesExprTimeseriesElectrocardiogramVoltage, nil
+	case "respiratory_rate":
+		return DiscreteTimeseriesExprTimeseriesRespiratoryRate, nil
+	case "stress_level":
+		return DiscreteTimeseriesExprTimeseriesStressLevel, nil
+	}
+	var t DiscreteTimeseriesExprTimeseries
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DiscreteTimeseriesExprTimeseries) Ptr() *DiscreteTimeseriesExprTimeseries {
+	return &d
+}
+
 type GroupKeyColumnExpr struct {
 	GroupKey *GroupKeyColumnExprGroupKey `json:"group_key,omitempty" url:"group_key,omitempty"`
 
@@ -1182,11 +1524,12 @@ func (i *IndexColumnExpr) String() string {
 type IndexColumnExprIndex string
 
 const (
-	IndexColumnExprIndexSleep    IndexColumnExprIndex = "sleep"
-	IndexColumnExprIndexActivity IndexColumnExprIndex = "activity"
-	IndexColumnExprIndexWorkout  IndexColumnExprIndex = "workout"
-	IndexColumnExprIndexBody     IndexColumnExprIndex = "body"
-	IndexColumnExprIndexMeal     IndexColumnExprIndex = "meal"
+	IndexColumnExprIndexSleep      IndexColumnExprIndex = "sleep"
+	IndexColumnExprIndexActivity   IndexColumnExprIndex = "activity"
+	IndexColumnExprIndexWorkout    IndexColumnExprIndex = "workout"
+	IndexColumnExprIndexBody       IndexColumnExprIndex = "body"
+	IndexColumnExprIndexMeal       IndexColumnExprIndex = "meal"
+	IndexColumnExprIndexTimeseries IndexColumnExprIndex = "timeseries"
 )
 
 func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
@@ -1201,6 +1544,8 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 		return IndexColumnExprIndexBody, nil
 	case "meal":
 		return IndexColumnExprIndexMeal, nil
+	case "timeseries":
+		return IndexColumnExprIndexTimeseries, nil
 	}
 	var t IndexColumnExprIndex
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -1208,6 +1553,312 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 
 func (i IndexColumnExprIndex) Ptr() *IndexColumnExprIndex {
 	return &i
+}
+
+type IntervalTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	Timeseries IntervalTimeseriesExprTimeseries `json:"timeseries" url:"timeseries"`
+	Field      IntervalTimeseriesExprField      `json:"field" url:"field"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (i *IntervalTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *IntervalTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler IntervalTimeseriesExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = IntervalTimeseriesExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+
+	i._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *IntervalTimeseriesExpr) String() string {
+	if len(i._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(i._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+type IntervalTimeseriesExprField string
+
+const (
+	IntervalTimeseriesExprFieldSourceProvider  IntervalTimeseriesExprField = "source_provider"
+	IntervalTimeseriesExprFieldSourceType      IntervalTimeseriesExprField = "source_type"
+	IntervalTimeseriesExprFieldSourceWorkoutId IntervalTimeseriesExprField = "source_workout_id"
+	IntervalTimeseriesExprFieldSourceSport     IntervalTimeseriesExprField = "source_sport"
+	IntervalTimeseriesExprFieldTimezoneOffset  IntervalTimeseriesExprField = "timezone_offset"
+	IntervalTimeseriesExprFieldType            IntervalTimeseriesExprField = "type"
+	IntervalTimeseriesExprFieldDuration        IntervalTimeseriesExprField = "duration"
+	IntervalTimeseriesExprFieldValue           IntervalTimeseriesExprField = "value"
+)
+
+func NewIntervalTimeseriesExprFieldFromString(s string) (IntervalTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return IntervalTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return IntervalTimeseriesExprFieldSourceType, nil
+	case "source_workout_id":
+		return IntervalTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return IntervalTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return IntervalTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return IntervalTimeseriesExprFieldType, nil
+	case "duration":
+		return IntervalTimeseriesExprFieldDuration, nil
+	case "value":
+		return IntervalTimeseriesExprFieldValue, nil
+	}
+	var t IntervalTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i IntervalTimeseriesExprField) Ptr() *IntervalTimeseriesExprField {
+	return &i
+}
+
+// ℹ️ This enum is non-exhaustive.
+type IntervalTimeseriesExprTimeseries string
+
+const (
+	IntervalTimeseriesExprTimeseriesSteps                      IntervalTimeseriesExprTimeseries = "steps"
+	IntervalTimeseriesExprTimeseriesDistance                   IntervalTimeseriesExprTimeseries = "distance"
+	IntervalTimeseriesExprTimeseriesVo2Max                     IntervalTimeseriesExprTimeseries = "vo2_max"
+	IntervalTimeseriesExprTimeseriesHeartRateAlert             IntervalTimeseriesExprTimeseries = "heart_rate_alert"
+	IntervalTimeseriesExprTimeseriesStandHour                  IntervalTimeseriesExprTimeseries = "stand_hour"
+	IntervalTimeseriesExprTimeseriesSleepBreathingDisturbance  IntervalTimeseriesExprTimeseries = "sleep_breathing_disturbance"
+	IntervalTimeseriesExprTimeseriesInsulinInjection           IntervalTimeseriesExprTimeseries = "insulin_injection"
+	IntervalTimeseriesExprTimeseriesWater                      IntervalTimeseriesExprTimeseries = "water"
+	IntervalTimeseriesExprTimeseriesCaffeine                   IntervalTimeseriesExprTimeseries = "caffeine"
+	IntervalTimeseriesExprTimeseriesMindfulnessMinutes         IntervalTimeseriesExprTimeseries = "mindfulness_minutes"
+	IntervalTimeseriesExprTimeseriesCaloriesActive             IntervalTimeseriesExprTimeseries = "calories_active"
+	IntervalTimeseriesExprTimeseriesFloorsClimbed              IntervalTimeseriesExprTimeseries = "floors_climbed"
+	IntervalTimeseriesExprTimeseriesCaloriesBasal              IntervalTimeseriesExprTimeseries = "calories_basal"
+	IntervalTimeseriesExprTimeseriesAfibBurden                 IntervalTimeseriesExprTimeseries = "afib_burden"
+	IntervalTimeseriesExprTimeseriesStandDuration              IntervalTimeseriesExprTimeseries = "stand_duration"
+	IntervalTimeseriesExprTimeseriesSleepApneaAlert            IntervalTimeseriesExprTimeseries = "sleep_apnea_alert"
+	IntervalTimeseriesExprTimeseriesWheelchairPush             IntervalTimeseriesExprTimeseries = "wheelchair_push"
+	IntervalTimeseriesExprTimeseriesForcedExpiratoryVolume1    IntervalTimeseriesExprTimeseries = "forced_expiratory_volume_1"
+	IntervalTimeseriesExprTimeseriesForcedVitalCapacity        IntervalTimeseriesExprTimeseries = "forced_vital_capacity"
+	IntervalTimeseriesExprTimeseriesPeakExpiratoryFlowRate     IntervalTimeseriesExprTimeseries = "peak_expiratory_flow_rate"
+	IntervalTimeseriesExprTimeseriesInhalerUsage               IntervalTimeseriesExprTimeseries = "inhaler_usage"
+	IntervalTimeseriesExprTimeseriesFall                       IntervalTimeseriesExprTimeseries = "fall"
+	IntervalTimeseriesExprTimeseriesUvExposure                 IntervalTimeseriesExprTimeseries = "uv_exposure"
+	IntervalTimeseriesExprTimeseriesDaylightExposure           IntervalTimeseriesExprTimeseries = "daylight_exposure"
+	IntervalTimeseriesExprTimeseriesHandwashing                IntervalTimeseriesExprTimeseries = "handwashing"
+	IntervalTimeseriesExprTimeseriesBasalBodyTemperature       IntervalTimeseriesExprTimeseries = "basal_body_temperature"
+	IntervalTimeseriesExprTimeseriesBodyMassIndex              IntervalTimeseriesExprTimeseries = "body_mass_index"
+	IntervalTimeseriesExprTimeseriesLeanBodyMass               IntervalTimeseriesExprTimeseries = "lean_body_mass"
+	IntervalTimeseriesExprTimeseriesWaistCircumference         IntervalTimeseriesExprTimeseries = "waist_circumference"
+	IntervalTimeseriesExprTimeseriesHeartRateRecoveryOneMinute IntervalTimeseriesExprTimeseries = "heart_rate_recovery_one_minute"
+	IntervalTimeseriesExprTimeseriesWorkoutSwimmingStroke      IntervalTimeseriesExprTimeseries = "workout_swimming_stroke"
+	IntervalTimeseriesExprTimeseriesWorkoutDistance            IntervalTimeseriesExprTimeseries = "workout_distance"
+	IntervalTimeseriesExprTimeseriesCarbohydrates              IntervalTimeseriesExprTimeseries = "carbohydrates"
+)
+
+func NewIntervalTimeseriesExprTimeseriesFromString(s string) (IntervalTimeseriesExprTimeseries, error) {
+	switch s {
+	case "steps":
+		return IntervalTimeseriesExprTimeseriesSteps, nil
+	case "distance":
+		return IntervalTimeseriesExprTimeseriesDistance, nil
+	case "vo2_max":
+		return IntervalTimeseriesExprTimeseriesVo2Max, nil
+	case "heart_rate_alert":
+		return IntervalTimeseriesExprTimeseriesHeartRateAlert, nil
+	case "stand_hour":
+		return IntervalTimeseriesExprTimeseriesStandHour, nil
+	case "sleep_breathing_disturbance":
+		return IntervalTimeseriesExprTimeseriesSleepBreathingDisturbance, nil
+	case "insulin_injection":
+		return IntervalTimeseriesExprTimeseriesInsulinInjection, nil
+	case "water":
+		return IntervalTimeseriesExprTimeseriesWater, nil
+	case "caffeine":
+		return IntervalTimeseriesExprTimeseriesCaffeine, nil
+	case "mindfulness_minutes":
+		return IntervalTimeseriesExprTimeseriesMindfulnessMinutes, nil
+	case "calories_active":
+		return IntervalTimeseriesExprTimeseriesCaloriesActive, nil
+	case "floors_climbed":
+		return IntervalTimeseriesExprTimeseriesFloorsClimbed, nil
+	case "calories_basal":
+		return IntervalTimeseriesExprTimeseriesCaloriesBasal, nil
+	case "afib_burden":
+		return IntervalTimeseriesExprTimeseriesAfibBurden, nil
+	case "stand_duration":
+		return IntervalTimeseriesExprTimeseriesStandDuration, nil
+	case "sleep_apnea_alert":
+		return IntervalTimeseriesExprTimeseriesSleepApneaAlert, nil
+	case "wheelchair_push":
+		return IntervalTimeseriesExprTimeseriesWheelchairPush, nil
+	case "forced_expiratory_volume_1":
+		return IntervalTimeseriesExprTimeseriesForcedExpiratoryVolume1, nil
+	case "forced_vital_capacity":
+		return IntervalTimeseriesExprTimeseriesForcedVitalCapacity, nil
+	case "peak_expiratory_flow_rate":
+		return IntervalTimeseriesExprTimeseriesPeakExpiratoryFlowRate, nil
+	case "inhaler_usage":
+		return IntervalTimeseriesExprTimeseriesInhalerUsage, nil
+	case "fall":
+		return IntervalTimeseriesExprTimeseriesFall, nil
+	case "uv_exposure":
+		return IntervalTimeseriesExprTimeseriesUvExposure, nil
+	case "daylight_exposure":
+		return IntervalTimeseriesExprTimeseriesDaylightExposure, nil
+	case "handwashing":
+		return IntervalTimeseriesExprTimeseriesHandwashing, nil
+	case "basal_body_temperature":
+		return IntervalTimeseriesExprTimeseriesBasalBodyTemperature, nil
+	case "body_mass_index":
+		return IntervalTimeseriesExprTimeseriesBodyMassIndex, nil
+	case "lean_body_mass":
+		return IntervalTimeseriesExprTimeseriesLeanBodyMass, nil
+	case "waist_circumference":
+		return IntervalTimeseriesExprTimeseriesWaistCircumference, nil
+	case "heart_rate_recovery_one_minute":
+		return IntervalTimeseriesExprTimeseriesHeartRateRecoveryOneMinute, nil
+	case "workout_swimming_stroke":
+		return IntervalTimeseriesExprTimeseriesWorkoutSwimmingStroke, nil
+	case "workout_distance":
+		return IntervalTimeseriesExprTimeseriesWorkoutDistance, nil
+	case "carbohydrates":
+		return IntervalTimeseriesExprTimeseriesCarbohydrates, nil
+	}
+	var t IntervalTimeseriesExprTimeseries
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i IntervalTimeseriesExprTimeseries) Ptr() *IntervalTimeseriesExprTimeseries {
+	return &i
+}
+
+type NoteTimeseriesExpr struct {
+	Field      NoteTimeseriesExprField `json:"field" url:"field"`
+	timeseries string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (n *NoteTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
+}
+
+func (n *NoteTimeseriesExpr) Timeseries() string {
+	return n.timeseries
+}
+
+func (n *NoteTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type embed NoteTimeseriesExpr
+	var unmarshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed: embed(*n),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*n = NoteTimeseriesExpr(unmarshaler.embed)
+	if unmarshaler.Timeseries != "note" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", n, "note", unmarshaler.Timeseries)
+	}
+	n.timeseries = unmarshaler.Timeseries
+
+	extraProperties, err := core.ExtractExtraProperties(data, *n, "timeseries")
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+
+	n._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NoteTimeseriesExpr) MarshalJSON() ([]byte, error) {
+	type embed NoteTimeseriesExpr
+	var marshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed:      embed(*n),
+		Timeseries: "note",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (n *NoteTimeseriesExpr) String() string {
+	if len(n._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(n._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
+type NoteTimeseriesExprField string
+
+const (
+	NoteTimeseriesExprFieldSourceProvider  NoteTimeseriesExprField = "source_provider"
+	NoteTimeseriesExprFieldSourceType      NoteTimeseriesExprField = "source_type"
+	NoteTimeseriesExprFieldSourceWorkoutId NoteTimeseriesExprField = "source_workout_id"
+	NoteTimeseriesExprFieldSourceSport     NoteTimeseriesExprField = "source_sport"
+	NoteTimeseriesExprFieldTimezoneOffset  NoteTimeseriesExprField = "timezone_offset"
+	NoteTimeseriesExprFieldType            NoteTimeseriesExprField = "type"
+	NoteTimeseriesExprFieldTags            NoteTimeseriesExprField = "tags"
+	NoteTimeseriesExprFieldContent         NoteTimeseriesExprField = "content"
+)
+
+func NewNoteTimeseriesExprFieldFromString(s string) (NoteTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return NoteTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return NoteTimeseriesExprFieldSourceType, nil
+	case "source_workout_id":
+		return NoteTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return NoteTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return NoteTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return NoteTimeseriesExprFieldType, nil
+	case "tags":
+		return NoteTimeseriesExprFieldTags, nil
+	case "content":
+		return NoteTimeseriesExprFieldContent, nil
+	}
+	var t NoteTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (n NoteTimeseriesExprField) Ptr() *NoteTimeseriesExprField {
+	return &n
 }
 
 type Period struct {
@@ -1518,16 +2169,22 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 }
 
 type QuerySelectItem struct {
-	AggregateExpr              *AggregateExpr
-	GroupKeyColumnExpr         *GroupKeyColumnExpr
-	SleepColumnExpr            *SleepColumnExpr
-	ActivityColumnExpr         *ActivityColumnExpr
-	WorkoutColumnExpr          *WorkoutColumnExpr
-	BodyColumnExpr             *BodyColumnExpr
-	IndexColumnExpr            *IndexColumnExpr
-	SleepScoreValueMacroExpr   *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr   *ChronotypeValueMacroExpr
-	UnrecognizedValueMacroExpr *UnrecognizedValueMacroExpr
+	AggregateExpr                 *AggregateExpr
+	GroupKeyColumnExpr            *GroupKeyColumnExpr
+	SleepColumnExpr               *SleepColumnExpr
+	ActivityColumnExpr            *ActivityColumnExpr
+	WorkoutColumnExpr             *WorkoutColumnExpr
+	BodyColumnExpr                *BodyColumnExpr
+	IndexColumnExpr               *IndexColumnExpr
+	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
+	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
+	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr            *NoteTimeseriesExpr
 }
 
 func NewQuerySelectItemFromAggregateExpr(value *AggregateExpr) *QuerySelectItem {
@@ -1568,6 +2225,30 @@ func NewQuerySelectItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroE
 
 func NewQuerySelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QuerySelectItem {
 	return &QuerySelectItem{UnrecognizedValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromDiscreteTimeseriesExpr(value *DiscreteTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{DiscreteTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromIntervalTimeseriesExpr(value *IntervalTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{IntervalTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromBloodPressureTimeseriesExpr(value *BloodPressureTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{BloodPressureTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromTemperatureTimeseriesExpr(value *TemperatureTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{TemperatureTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromWorkoutDurationTimeseriesExpr(value *WorkoutDurationTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{WorkoutDurationTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromNoteTimeseriesExpr(value *NoteTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{NoteTimeseriesExpr: value}
 }
 
 func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
@@ -1621,6 +2302,36 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
 		return nil
 	}
+	valueDiscreteTimeseriesExpr := new(DiscreteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueDiscreteTimeseriesExpr); err == nil {
+		q.DiscreteTimeseriesExpr = valueDiscreteTimeseriesExpr
+		return nil
+	}
+	valueIntervalTimeseriesExpr := new(IntervalTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueIntervalTimeseriesExpr); err == nil {
+		q.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
+		return nil
+	}
+	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueBloodPressureTimeseriesExpr); err == nil {
+		q.BloodPressureTimeseriesExpr = valueBloodPressureTimeseriesExpr
+		return nil
+	}
+	valueTemperatureTimeseriesExpr := new(TemperatureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueTemperatureTimeseriesExpr); err == nil {
+		q.TemperatureTimeseriesExpr = valueTemperatureTimeseriesExpr
+		return nil
+	}
+	valueWorkoutDurationTimeseriesExpr := new(WorkoutDurationTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueWorkoutDurationTimeseriesExpr); err == nil {
+		q.WorkoutDurationTimeseriesExpr = valueWorkoutDurationTimeseriesExpr
+		return nil
+	}
+	valueNoteTimeseriesExpr := new(NoteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueNoteTimeseriesExpr); err == nil {
+		q.NoteTimeseriesExpr = valueNoteTimeseriesExpr
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
 }
 
@@ -1655,6 +2366,24 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(q.UnrecognizedValueMacroExpr)
 	}
+	if q.DiscreteTimeseriesExpr != nil {
+		return json.Marshal(q.DiscreteTimeseriesExpr)
+	}
+	if q.IntervalTimeseriesExpr != nil {
+		return json.Marshal(q.IntervalTimeseriesExpr)
+	}
+	if q.BloodPressureTimeseriesExpr != nil {
+		return json.Marshal(q.BloodPressureTimeseriesExpr)
+	}
+	if q.TemperatureTimeseriesExpr != nil {
+		return json.Marshal(q.TemperatureTimeseriesExpr)
+	}
+	if q.WorkoutDurationTimeseriesExpr != nil {
+		return json.Marshal(q.WorkoutDurationTimeseriesExpr)
+	}
+	if q.NoteTimeseriesExpr != nil {
+		return json.Marshal(q.NoteTimeseriesExpr)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
@@ -1669,6 +2398,12 @@ type QuerySelectItemVisitor interface {
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
+	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
+	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
+	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
+	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
+	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
 }
 
 func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
@@ -1701,6 +2436,24 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
+	}
+	if q.DiscreteTimeseriesExpr != nil {
+		return visitor.VisitDiscreteTimeseriesExpr(q.DiscreteTimeseriesExpr)
+	}
+	if q.IntervalTimeseriesExpr != nil {
+		return visitor.VisitIntervalTimeseriesExpr(q.IntervalTimeseriesExpr)
+	}
+	if q.BloodPressureTimeseriesExpr != nil {
+		return visitor.VisitBloodPressureTimeseriesExpr(q.BloodPressureTimeseriesExpr)
+	}
+	if q.TemperatureTimeseriesExpr != nil {
+		return visitor.VisitTemperatureTimeseriesExpr(q.TemperatureTimeseriesExpr)
+	}
+	if q.WorkoutDurationTimeseriesExpr != nil {
+		return visitor.VisitWorkoutDurationTimeseriesExpr(q.WorkoutDurationTimeseriesExpr)
+	}
+	if q.NoteTimeseriesExpr != nil {
+		return visitor.VisitNoteTimeseriesExpr(q.NoteTimeseriesExpr)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", q)
 }
@@ -2002,6 +2755,115 @@ func (s *SleepScoreValueMacroExpr) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type TemperatureTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	Timeseries TemperatureTimeseriesExprTimeseries `json:"timeseries" url:"timeseries"`
+	Field      TemperatureTimeseriesExprField      `json:"field" url:"field"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (t *TemperatureTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TemperatureTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler TemperatureTimeseriesExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TemperatureTimeseriesExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+
+	t._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TemperatureTimeseriesExpr) String() string {
+	if len(t._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(t._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TemperatureTimeseriesExprField string
+
+const (
+	TemperatureTimeseriesExprFieldSourceProvider  TemperatureTimeseriesExprField = "source_provider"
+	TemperatureTimeseriesExprFieldSourceType      TemperatureTimeseriesExprField = "source_type"
+	TemperatureTimeseriesExprFieldSourceWorkoutId TemperatureTimeseriesExprField = "source_workout_id"
+	TemperatureTimeseriesExprFieldSourceSport     TemperatureTimeseriesExprField = "source_sport"
+	TemperatureTimeseriesExprFieldTimezoneOffset  TemperatureTimeseriesExprField = "timezone_offset"
+	TemperatureTimeseriesExprFieldType            TemperatureTimeseriesExprField = "type"
+	TemperatureTimeseriesExprFieldDuration        TemperatureTimeseriesExprField = "duration"
+	TemperatureTimeseriesExprFieldValue           TemperatureTimeseriesExprField = "value"
+	TemperatureTimeseriesExprFieldSensorLocation  TemperatureTimeseriesExprField = "sensor_location"
+)
+
+func NewTemperatureTimeseriesExprFieldFromString(s string) (TemperatureTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return TemperatureTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return TemperatureTimeseriesExprFieldSourceType, nil
+	case "source_workout_id":
+		return TemperatureTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return TemperatureTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return TemperatureTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return TemperatureTimeseriesExprFieldType, nil
+	case "duration":
+		return TemperatureTimeseriesExprFieldDuration, nil
+	case "value":
+		return TemperatureTimeseriesExprFieldValue, nil
+	case "sensor_location":
+		return TemperatureTimeseriesExprFieldSensorLocation, nil
+	}
+	var t TemperatureTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (t TemperatureTimeseriesExprField) Ptr() *TemperatureTimeseriesExprField {
+	return &t
+}
+
+// ℹ️ This enum is non-exhaustive.
+type TemperatureTimeseriesExprTimeseries string
+
+const (
+	TemperatureTimeseriesExprTimeseriesBodyTemperature      TemperatureTimeseriesExprTimeseries = "body_temperature"
+	TemperatureTimeseriesExprTimeseriesBodyTemperatureDelta TemperatureTimeseriesExprTimeseries = "body_temperature_delta"
+)
+
+func NewTemperatureTimeseriesExprTimeseriesFromString(s string) (TemperatureTimeseriesExprTimeseries, error) {
+	switch s {
+	case "body_temperature":
+		return TemperatureTimeseriesExprTimeseriesBodyTemperature, nil
+	case "body_temperature_delta":
+		return TemperatureTimeseriesExprTimeseriesBodyTemperatureDelta, nil
+	}
+	var t TemperatureTimeseriesExprTimeseries
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (t TemperatureTimeseriesExprTimeseries) Ptr() *TemperatureTimeseriesExprTimeseries {
+	return &t
+}
+
 type UnrecognizedValueMacroExpr struct {
 	ValueMacro string `json:"value_macro" url:"value_macro"`
 
@@ -2201,6 +3063,116 @@ func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, 
 }
 
 func (w WorkoutColumnExprWorkout) Ptr() *WorkoutColumnExprWorkout {
+	return &w
+}
+
+type WorkoutDurationTimeseriesExpr struct {
+	Field      WorkoutDurationTimeseriesExprField `json:"field" url:"field"`
+	timeseries string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (w *WorkoutDurationTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WorkoutDurationTimeseriesExpr) Timeseries() string {
+	return w.timeseries
+}
+
+func (w *WorkoutDurationTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type embed WorkoutDurationTimeseriesExpr
+	var unmarshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed: embed(*w),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*w = WorkoutDurationTimeseriesExpr(unmarshaler.embed)
+	if unmarshaler.Timeseries != "workout_duration" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", w, "workout_duration", unmarshaler.Timeseries)
+	}
+	w.timeseries = unmarshaler.Timeseries
+
+	extraProperties, err := core.ExtractExtraProperties(data, *w, "timeseries")
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+
+	w._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WorkoutDurationTimeseriesExpr) MarshalJSON() ([]byte, error) {
+	type embed WorkoutDurationTimeseriesExpr
+	var marshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed:      embed(*w),
+		Timeseries: "workout_duration",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (w *WorkoutDurationTimeseriesExpr) String() string {
+	if len(w._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(w._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+type WorkoutDurationTimeseriesExprField string
+
+const (
+	WorkoutDurationTimeseriesExprFieldSourceProvider  WorkoutDurationTimeseriesExprField = "source_provider"
+	WorkoutDurationTimeseriesExprFieldSourceType      WorkoutDurationTimeseriesExprField = "source_type"
+	WorkoutDurationTimeseriesExprFieldSourceWorkoutId WorkoutDurationTimeseriesExprField = "source_workout_id"
+	WorkoutDurationTimeseriesExprFieldSourceSport     WorkoutDurationTimeseriesExprField = "source_sport"
+	WorkoutDurationTimeseriesExprFieldTimezoneOffset  WorkoutDurationTimeseriesExprField = "timezone_offset"
+	WorkoutDurationTimeseriesExprFieldType            WorkoutDurationTimeseriesExprField = "type"
+	WorkoutDurationTimeseriesExprFieldDuration        WorkoutDurationTimeseriesExprField = "duration"
+	WorkoutDurationTimeseriesExprFieldValue           WorkoutDurationTimeseriesExprField = "value"
+	WorkoutDurationTimeseriesExprFieldIntensity       WorkoutDurationTimeseriesExprField = "intensity"
+)
+
+func NewWorkoutDurationTimeseriesExprFieldFromString(s string) (WorkoutDurationTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return WorkoutDurationTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return WorkoutDurationTimeseriesExprFieldSourceType, nil
+	case "source_workout_id":
+		return WorkoutDurationTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return WorkoutDurationTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return WorkoutDurationTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return WorkoutDurationTimeseriesExprFieldType, nil
+	case "duration":
+		return WorkoutDurationTimeseriesExprFieldDuration, nil
+	case "value":
+		return WorkoutDurationTimeseriesExprFieldValue, nil
+	case "intensity":
+		return WorkoutDurationTimeseriesExprFieldIntensity, nil
+	}
+	var t WorkoutDurationTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (w WorkoutDurationTimeseriesExprField) Ptr() *WorkoutDurationTimeseriesExprField {
 	return &w
 }
 
