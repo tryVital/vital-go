@@ -224,7 +224,7 @@ type AggregateExprArg struct {
 	ActivityColumnExpr            *ActivityColumnExpr
 	WorkoutColumnExpr             *WorkoutColumnExpr
 	BodyColumnExpr                *BodyColumnExpr
-	IndexColumnExpr               *IndexColumnExpr
+	MealColumnExpr                *MealColumnExpr
 	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
 	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
@@ -234,6 +234,7 @@ type AggregateExprArg struct {
 	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
 	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
 	NoteTimeseriesExpr            *NoteTimeseriesExpr
+	IndexColumnExpr               *IndexColumnExpr
 }
 
 func NewAggregateExprArgFromSleepColumnExpr(value *SleepColumnExpr) *AggregateExprArg {
@@ -252,8 +253,8 @@ func NewAggregateExprArgFromBodyColumnExpr(value *BodyColumnExpr) *AggregateExpr
 	return &AggregateExprArg{BodyColumnExpr: value}
 }
 
-func NewAggregateExprArgFromIndexColumnExpr(value *IndexColumnExpr) *AggregateExprArg {
-	return &AggregateExprArg{IndexColumnExpr: value}
+func NewAggregateExprArgFromMealColumnExpr(value *MealColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{MealColumnExpr: value}
 }
 
 func NewAggregateExprArgFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *AggregateExprArg {
@@ -292,6 +293,10 @@ func NewAggregateExprArgFromNoteTimeseriesExpr(value *NoteTimeseriesExpr) *Aggre
 	return &AggregateExprArg{NoteTimeseriesExpr: value}
 }
 
+func NewAggregateExprArgFromIndexColumnExpr(value *IndexColumnExpr) *AggregateExprArg {
+	return &AggregateExprArg{IndexColumnExpr: value}
+}
+
 func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 	valueSleepColumnExpr := new(SleepColumnExpr)
 	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
@@ -313,9 +318,9 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.BodyColumnExpr = valueBodyColumnExpr
 		return nil
 	}
-	valueIndexColumnExpr := new(IndexColumnExpr)
-	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
-		a.IndexColumnExpr = valueIndexColumnExpr
+	valueMealColumnExpr := new(MealColumnExpr)
+	if err := json.Unmarshal(data, &valueMealColumnExpr); err == nil {
+		a.MealColumnExpr = valueMealColumnExpr
 		return nil
 	}
 	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
@@ -363,6 +368,11 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.NoteTimeseriesExpr = valueNoteTimeseriesExpr
 		return nil
 	}
+	valueIndexColumnExpr := new(IndexColumnExpr)
+	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
+		a.IndexColumnExpr = valueIndexColumnExpr
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
 }
 
@@ -379,8 +389,8 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.BodyColumnExpr != nil {
 		return json.Marshal(a.BodyColumnExpr)
 	}
-	if a.IndexColumnExpr != nil {
-		return json.Marshal(a.IndexColumnExpr)
+	if a.MealColumnExpr != nil {
+		return json.Marshal(a.MealColumnExpr)
 	}
 	if a.SleepScoreValueMacroExpr != nil {
 		return json.Marshal(a.SleepScoreValueMacroExpr)
@@ -409,6 +419,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.NoteTimeseriesExpr != nil {
 		return json.Marshal(a.NoteTimeseriesExpr)
 	}
+	if a.IndexColumnExpr != nil {
+		return json.Marshal(a.IndexColumnExpr)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
 }
 
@@ -417,7 +430,7 @@ type AggregateExprArgVisitor interface {
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
-	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitMealColumnExpr(*MealColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
@@ -427,6 +440,7 @@ type AggregateExprArgVisitor interface {
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
 	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
+	VisitIndexColumnExpr(*IndexColumnExpr) error
 }
 
 func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
@@ -442,8 +456,8 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	if a.BodyColumnExpr != nil {
 		return visitor.VisitBodyColumnExpr(a.BodyColumnExpr)
 	}
-	if a.IndexColumnExpr != nil {
-		return visitor.VisitIndexColumnExpr(a.IndexColumnExpr)
+	if a.MealColumnExpr != nil {
+		return visitor.VisitMealColumnExpr(a.MealColumnExpr)
 	}
 	if a.SleepScoreValueMacroExpr != nil {
 		return visitor.VisitSleepScoreValueMacroExpr(a.SleepScoreValueMacroExpr)
@@ -471,6 +485,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.NoteTimeseriesExpr != nil {
 		return visitor.VisitNoteTimeseriesExpr(a.NoteTimeseriesExpr)
+	}
+	if a.IndexColumnExpr != nil {
+		return visitor.VisitIndexColumnExpr(a.IndexColumnExpr)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", a)
 }
@@ -674,6 +691,7 @@ type BloodPressureTimeseriesExprField string
 const (
 	BloodPressureTimeseriesExprFieldSourceProvider  BloodPressureTimeseriesExprField = "source_provider"
 	BloodPressureTimeseriesExprFieldSourceType      BloodPressureTimeseriesExprField = "source_type"
+	BloodPressureTimeseriesExprFieldSourceAppId     BloodPressureTimeseriesExprField = "source_app_id"
 	BloodPressureTimeseriesExprFieldSourceWorkoutId BloodPressureTimeseriesExprField = "source_workout_id"
 	BloodPressureTimeseriesExprFieldSourceSport     BloodPressureTimeseriesExprField = "source_sport"
 	BloodPressureTimeseriesExprFieldTimezoneOffset  BloodPressureTimeseriesExprField = "timezone_offset"
@@ -688,6 +706,8 @@ func NewBloodPressureTimeseriesExprFieldFromString(s string) (BloodPressureTimes
 		return BloodPressureTimeseriesExprFieldSourceProvider, nil
 	case "source_type":
 		return BloodPressureTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return BloodPressureTimeseriesExprFieldSourceAppId, nil
 	case "source_workout_id":
 		return BloodPressureTimeseriesExprFieldSourceWorkoutId, nil
 	case "source_sport":
@@ -1300,6 +1320,7 @@ type DiscreteTimeseriesExprField string
 const (
 	DiscreteTimeseriesExprFieldSourceProvider  DiscreteTimeseriesExprField = "source_provider"
 	DiscreteTimeseriesExprFieldSourceType      DiscreteTimeseriesExprField = "source_type"
+	DiscreteTimeseriesExprFieldSourceAppId     DiscreteTimeseriesExprField = "source_app_id"
 	DiscreteTimeseriesExprFieldSourceWorkoutId DiscreteTimeseriesExprField = "source_workout_id"
 	DiscreteTimeseriesExprFieldSourceSport     DiscreteTimeseriesExprField = "source_sport"
 	DiscreteTimeseriesExprFieldTimezoneOffset  DiscreteTimeseriesExprField = "timezone_offset"
@@ -1313,6 +1334,8 @@ func NewDiscreteTimeseriesExprFieldFromString(s string) (DiscreteTimeseriesExprF
 		return DiscreteTimeseriesExprFieldSourceProvider, nil
 	case "source_type":
 		return DiscreteTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return DiscreteTimeseriesExprFieldSourceAppId, nil
 	case "source_workout_id":
 		return DiscreteTimeseriesExprFieldSourceWorkoutId, nil
 	case "source_sport":
@@ -1603,6 +1626,7 @@ type IntervalTimeseriesExprField string
 const (
 	IntervalTimeseriesExprFieldSourceProvider  IntervalTimeseriesExprField = "source_provider"
 	IntervalTimeseriesExprFieldSourceType      IntervalTimeseriesExprField = "source_type"
+	IntervalTimeseriesExprFieldSourceAppId     IntervalTimeseriesExprField = "source_app_id"
 	IntervalTimeseriesExprFieldSourceWorkoutId IntervalTimeseriesExprField = "source_workout_id"
 	IntervalTimeseriesExprFieldSourceSport     IntervalTimeseriesExprField = "source_sport"
 	IntervalTimeseriesExprFieldTimezoneOffset  IntervalTimeseriesExprField = "timezone_offset"
@@ -1617,6 +1641,8 @@ func NewIntervalTimeseriesExprFieldFromString(s string) (IntervalTimeseriesExprF
 		return IntervalTimeseriesExprFieldSourceProvider, nil
 	case "source_type":
 		return IntervalTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return IntervalTimeseriesExprFieldSourceAppId, nil
 	case "source_workout_id":
 		return IntervalTimeseriesExprFieldSourceWorkoutId, nil
 	case "source_sport":
@@ -1754,6 +1780,206 @@ func (i IntervalTimeseriesExprTimeseries) Ptr() *IntervalTimeseriesExprTimeserie
 	return &i
 }
 
+type MealColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	Meal MealColumnExprMeal `json:"meal" url:"meal"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (m *MealColumnExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MealColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler MealColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MealColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+
+	m._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MealColumnExpr) String() string {
+	if len(m._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(m._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type MealColumnExprMeal string
+
+const (
+	MealColumnExprMealCalories                 MealColumnExprMeal = "calories"
+	MealColumnExprMealCarbohydrateGram         MealColumnExprMeal = "carbohydrate_gram"
+	MealColumnExprMealProteinGram              MealColumnExprMeal = "protein_gram"
+	MealColumnExprMealAlcoholGram              MealColumnExprMeal = "alcohol_gram"
+	MealColumnExprMealWaterGram                MealColumnExprMeal = "water_gram"
+	MealColumnExprMealFibreGram                MealColumnExprMeal = "fibre_gram"
+	MealColumnExprMealSugarGram                MealColumnExprMeal = "sugar_gram"
+	MealColumnExprMealCholesterolGram          MealColumnExprMeal = "cholesterol_gram"
+	MealColumnExprMealSaturatedFatGram         MealColumnExprMeal = "saturated_fat_gram"
+	MealColumnExprMealMonounsaturatedFatGram   MealColumnExprMeal = "monounsaturated_fat_gram"
+	MealColumnExprMealPolyunsaturatedFatGram   MealColumnExprMeal = "polyunsaturated_fat_gram"
+	MealColumnExprMealOmega3FatGram            MealColumnExprMeal = "omega3_fat_gram"
+	MealColumnExprMealOmega6FatGram            MealColumnExprMeal = "omega6_fat_gram"
+	MealColumnExprMealTotalFatGram             MealColumnExprMeal = "total_fat_gram"
+	MealColumnExprMealSodiumMilligram          MealColumnExprMeal = "sodium_milligram"
+	MealColumnExprMealPotassiumMilligram       MealColumnExprMeal = "potassium_milligram"
+	MealColumnExprMealCalciumMilligram         MealColumnExprMeal = "calcium_milligram"
+	MealColumnExprMealPhosphorusMilligram      MealColumnExprMeal = "phosphorus_milligram"
+	MealColumnExprMealMagnesiumMilligram       MealColumnExprMeal = "magnesium_milligram"
+	MealColumnExprMealIronMilligram            MealColumnExprMeal = "iron_milligram"
+	MealColumnExprMealZincMilligram            MealColumnExprMeal = "zinc_milligram"
+	MealColumnExprMealFluorideMilligram        MealColumnExprMeal = "fluoride_milligram"
+	MealColumnExprMealChlorideMilligram        MealColumnExprMeal = "chloride_milligram"
+	MealColumnExprMealVitaminAMilligram        MealColumnExprMeal = "vitamin_a_milligram"
+	MealColumnExprMealVitaminB1Milligram       MealColumnExprMeal = "vitamin_b1_milligram"
+	MealColumnExprMealRiboflavinMilligram      MealColumnExprMeal = "riboflavin_milligram"
+	MealColumnExprMealNiacinMilligram          MealColumnExprMeal = "niacin_milligram"
+	MealColumnExprMealPantothenicAcidMilligram MealColumnExprMeal = "pantothenic_acid_milligram"
+	MealColumnExprMealVitaminB6Milligram       MealColumnExprMeal = "vitamin_b6_milligram"
+	MealColumnExprMealBiotinMicrogram          MealColumnExprMeal = "biotin_microgram"
+	MealColumnExprMealVitaminB12Microgram      MealColumnExprMeal = "vitamin_b12_microgram"
+	MealColumnExprMealVitaminCMilligram        MealColumnExprMeal = "vitamin_c_milligram"
+	MealColumnExprMealVitaminDMicrogram        MealColumnExprMeal = "vitamin_d_microgram"
+	MealColumnExprMealVitaminEMilligram        MealColumnExprMeal = "vitamin_e_milligram"
+	MealColumnExprMealVitaminKMicrogram        MealColumnExprMeal = "vitamin_k_microgram"
+	MealColumnExprMealFolicAcidMicrogram       MealColumnExprMeal = "folic_acid_microgram"
+	MealColumnExprMealChromiumMicrogram        MealColumnExprMeal = "chromium_microgram"
+	MealColumnExprMealCopperMilligram          MealColumnExprMeal = "copper_milligram"
+	MealColumnExprMealIodineMicrogram          MealColumnExprMeal = "iodine_microgram"
+	MealColumnExprMealManganeseMilligram       MealColumnExprMeal = "manganese_milligram"
+	MealColumnExprMealMolybdenumMicrogram      MealColumnExprMeal = "molybdenum_microgram"
+	MealColumnExprMealSeleniumMicrogram        MealColumnExprMeal = "selenium_microgram"
+	MealColumnExprMealDate                     MealColumnExprMeal = "date"
+	MealColumnExprMealName                     MealColumnExprMeal = "name"
+	MealColumnExprMealSourceType               MealColumnExprMeal = "source_type"
+	MealColumnExprMealSourceProvider           MealColumnExprMeal = "source_provider"
+	MealColumnExprMealSourceAppId              MealColumnExprMeal = "source_app_id"
+)
+
+func NewMealColumnExprMealFromString(s string) (MealColumnExprMeal, error) {
+	switch s {
+	case "calories":
+		return MealColumnExprMealCalories, nil
+	case "carbohydrate_gram":
+		return MealColumnExprMealCarbohydrateGram, nil
+	case "protein_gram":
+		return MealColumnExprMealProteinGram, nil
+	case "alcohol_gram":
+		return MealColumnExprMealAlcoholGram, nil
+	case "water_gram":
+		return MealColumnExprMealWaterGram, nil
+	case "fibre_gram":
+		return MealColumnExprMealFibreGram, nil
+	case "sugar_gram":
+		return MealColumnExprMealSugarGram, nil
+	case "cholesterol_gram":
+		return MealColumnExprMealCholesterolGram, nil
+	case "saturated_fat_gram":
+		return MealColumnExprMealSaturatedFatGram, nil
+	case "monounsaturated_fat_gram":
+		return MealColumnExprMealMonounsaturatedFatGram, nil
+	case "polyunsaturated_fat_gram":
+		return MealColumnExprMealPolyunsaturatedFatGram, nil
+	case "omega3_fat_gram":
+		return MealColumnExprMealOmega3FatGram, nil
+	case "omega6_fat_gram":
+		return MealColumnExprMealOmega6FatGram, nil
+	case "total_fat_gram":
+		return MealColumnExprMealTotalFatGram, nil
+	case "sodium_milligram":
+		return MealColumnExprMealSodiumMilligram, nil
+	case "potassium_milligram":
+		return MealColumnExprMealPotassiumMilligram, nil
+	case "calcium_milligram":
+		return MealColumnExprMealCalciumMilligram, nil
+	case "phosphorus_milligram":
+		return MealColumnExprMealPhosphorusMilligram, nil
+	case "magnesium_milligram":
+		return MealColumnExprMealMagnesiumMilligram, nil
+	case "iron_milligram":
+		return MealColumnExprMealIronMilligram, nil
+	case "zinc_milligram":
+		return MealColumnExprMealZincMilligram, nil
+	case "fluoride_milligram":
+		return MealColumnExprMealFluorideMilligram, nil
+	case "chloride_milligram":
+		return MealColumnExprMealChlorideMilligram, nil
+	case "vitamin_a_milligram":
+		return MealColumnExprMealVitaminAMilligram, nil
+	case "vitamin_b1_milligram":
+		return MealColumnExprMealVitaminB1Milligram, nil
+	case "riboflavin_milligram":
+		return MealColumnExprMealRiboflavinMilligram, nil
+	case "niacin_milligram":
+		return MealColumnExprMealNiacinMilligram, nil
+	case "pantothenic_acid_milligram":
+		return MealColumnExprMealPantothenicAcidMilligram, nil
+	case "vitamin_b6_milligram":
+		return MealColumnExprMealVitaminB6Milligram, nil
+	case "biotin_microgram":
+		return MealColumnExprMealBiotinMicrogram, nil
+	case "vitamin_b12_microgram":
+		return MealColumnExprMealVitaminB12Microgram, nil
+	case "vitamin_c_milligram":
+		return MealColumnExprMealVitaminCMilligram, nil
+	case "vitamin_d_microgram":
+		return MealColumnExprMealVitaminDMicrogram, nil
+	case "vitamin_e_milligram":
+		return MealColumnExprMealVitaminEMilligram, nil
+	case "vitamin_k_microgram":
+		return MealColumnExprMealVitaminKMicrogram, nil
+	case "folic_acid_microgram":
+		return MealColumnExprMealFolicAcidMicrogram, nil
+	case "chromium_microgram":
+		return MealColumnExprMealChromiumMicrogram, nil
+	case "copper_milligram":
+		return MealColumnExprMealCopperMilligram, nil
+	case "iodine_microgram":
+		return MealColumnExprMealIodineMicrogram, nil
+	case "manganese_milligram":
+		return MealColumnExprMealManganeseMilligram, nil
+	case "molybdenum_microgram":
+		return MealColumnExprMealMolybdenumMicrogram, nil
+	case "selenium_microgram":
+		return MealColumnExprMealSeleniumMicrogram, nil
+	case "date":
+		return MealColumnExprMealDate, nil
+	case "name":
+		return MealColumnExprMealName, nil
+	case "source_type":
+		return MealColumnExprMealSourceType, nil
+	case "source_provider":
+		return MealColumnExprMealSourceProvider, nil
+	case "source_app_id":
+		return MealColumnExprMealSourceAppId, nil
+	}
+	var t MealColumnExprMeal
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m MealColumnExprMeal) Ptr() *MealColumnExprMeal {
+	return &m
+}
+
 type NoteTimeseriesExpr struct {
 	Field      NoteTimeseriesExprField `json:"field" url:"field"`
 	timeseries string
@@ -1826,6 +2052,7 @@ type NoteTimeseriesExprField string
 const (
 	NoteTimeseriesExprFieldSourceProvider  NoteTimeseriesExprField = "source_provider"
 	NoteTimeseriesExprFieldSourceType      NoteTimeseriesExprField = "source_type"
+	NoteTimeseriesExprFieldSourceAppId     NoteTimeseriesExprField = "source_app_id"
 	NoteTimeseriesExprFieldSourceWorkoutId NoteTimeseriesExprField = "source_workout_id"
 	NoteTimeseriesExprFieldSourceSport     NoteTimeseriesExprField = "source_sport"
 	NoteTimeseriesExprFieldTimezoneOffset  NoteTimeseriesExprField = "timezone_offset"
@@ -1840,6 +2067,8 @@ func NewNoteTimeseriesExprFieldFromString(s string) (NoteTimeseriesExprField, er
 		return NoteTimeseriesExprFieldSourceProvider, nil
 	case "source_type":
 		return NoteTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return NoteTimeseriesExprFieldSourceAppId, nil
 	case "source_workout_id":
 		return NoteTimeseriesExprFieldSourceWorkoutId, nil
 	case "source_sport":
@@ -1981,9 +2210,8 @@ func (p *Placeholder) String() string {
 }
 
 type Query struct {
-	Select        []*QuerySelectItem  `json:"select,omitempty" url:"select,omitempty"`
-	GroupBy       []*QueryGroupByItem `json:"group_by,omitempty" url:"group_by,omitempty"`
-	SplitBySource *bool               `json:"split_by_source,omitempty" url:"split_by_source,omitempty"`
+	Select  []*QuerySelectItem  `json:"select,omitempty" url:"select,omitempty"`
+	GroupBy []*QueryGroupByItem `json:"group_by,omitempty" url:"group_by,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -2117,8 +2345,23 @@ func (q *QueryConfigProviderPriorityOverridesItem) Accept(visitor QueryConfigPro
 }
 
 type QueryGroupByItem struct {
-	DateTruncExpr *DateTruncExpr
-	DatePartExpr  *DatePartExpr
+	DateTruncExpr                 *DateTruncExpr
+	DatePartExpr                  *DatePartExpr
+	SleepColumnExpr               *SleepColumnExpr
+	ActivityColumnExpr            *ActivityColumnExpr
+	WorkoutColumnExpr             *WorkoutColumnExpr
+	BodyColumnExpr                *BodyColumnExpr
+	MealColumnExpr                *MealColumnExpr
+	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
+	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
+	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr            *NoteTimeseriesExpr
+	SourceColumnExpr              *SourceColumnExpr
 }
 
 func NewQueryGroupByItemFromDateTruncExpr(value *DateTruncExpr) *QueryGroupByItem {
@@ -2127,6 +2370,66 @@ func NewQueryGroupByItemFromDateTruncExpr(value *DateTruncExpr) *QueryGroupByIte
 
 func NewQueryGroupByItemFromDatePartExpr(value *DatePartExpr) *QueryGroupByItem {
 	return &QueryGroupByItem{DatePartExpr: value}
+}
+
+func NewQueryGroupByItemFromSleepColumnExpr(value *SleepColumnExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{SleepColumnExpr: value}
+}
+
+func NewQueryGroupByItemFromActivityColumnExpr(value *ActivityColumnExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{ActivityColumnExpr: value}
+}
+
+func NewQueryGroupByItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{WorkoutColumnExpr: value}
+}
+
+func NewQueryGroupByItemFromBodyColumnExpr(value *BodyColumnExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{BodyColumnExpr: value}
+}
+
+func NewQueryGroupByItemFromMealColumnExpr(value *MealColumnExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{MealColumnExpr: value}
+}
+
+func NewQueryGroupByItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{SleepScoreValueMacroExpr: value}
+}
+
+func NewQueryGroupByItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{ChronotypeValueMacroExpr: value}
+}
+
+func NewQueryGroupByItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{UnrecognizedValueMacroExpr: value}
+}
+
+func NewQueryGroupByItemFromDiscreteTimeseriesExpr(value *DiscreteTimeseriesExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{DiscreteTimeseriesExpr: value}
+}
+
+func NewQueryGroupByItemFromIntervalTimeseriesExpr(value *IntervalTimeseriesExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{IntervalTimeseriesExpr: value}
+}
+
+func NewQueryGroupByItemFromBloodPressureTimeseriesExpr(value *BloodPressureTimeseriesExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{BloodPressureTimeseriesExpr: value}
+}
+
+func NewQueryGroupByItemFromTemperatureTimeseriesExpr(value *TemperatureTimeseriesExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{TemperatureTimeseriesExpr: value}
+}
+
+func NewQueryGroupByItemFromWorkoutDurationTimeseriesExpr(value *WorkoutDurationTimeseriesExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{WorkoutDurationTimeseriesExpr: value}
+}
+
+func NewQueryGroupByItemFromNoteTimeseriesExpr(value *NoteTimeseriesExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{NoteTimeseriesExpr: value}
+}
+
+func NewQueryGroupByItemFromSourceColumnExpr(value *SourceColumnExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{SourceColumnExpr: value}
 }
 
 func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
@@ -2138,128 +2441,6 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 	valueDatePartExpr := new(DatePartExpr)
 	if err := json.Unmarshal(data, &valueDatePartExpr); err == nil {
 		q.DatePartExpr = valueDatePartExpr
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
-}
-
-func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
-	if q.DateTruncExpr != nil {
-		return json.Marshal(q.DateTruncExpr)
-	}
-	if q.DatePartExpr != nil {
-		return json.Marshal(q.DatePartExpr)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
-}
-
-type QueryGroupByItemVisitor interface {
-	VisitDateTruncExpr(*DateTruncExpr) error
-	VisitDatePartExpr(*DatePartExpr) error
-}
-
-func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
-	if q.DateTruncExpr != nil {
-		return visitor.VisitDateTruncExpr(q.DateTruncExpr)
-	}
-	if q.DatePartExpr != nil {
-		return visitor.VisitDatePartExpr(q.DatePartExpr)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", q)
-}
-
-type QuerySelectItem struct {
-	AggregateExpr                 *AggregateExpr
-	GroupKeyColumnExpr            *GroupKeyColumnExpr
-	SleepColumnExpr               *SleepColumnExpr
-	ActivityColumnExpr            *ActivityColumnExpr
-	WorkoutColumnExpr             *WorkoutColumnExpr
-	BodyColumnExpr                *BodyColumnExpr
-	IndexColumnExpr               *IndexColumnExpr
-	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
-	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
-	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
-	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
-	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
-	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
-	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
-	NoteTimeseriesExpr            *NoteTimeseriesExpr
-}
-
-func NewQuerySelectItemFromAggregateExpr(value *AggregateExpr) *QuerySelectItem {
-	return &QuerySelectItem{AggregateExpr: value}
-}
-
-func NewQuerySelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QuerySelectItem {
-	return &QuerySelectItem{GroupKeyColumnExpr: value}
-}
-
-func NewQuerySelectItemFromSleepColumnExpr(value *SleepColumnExpr) *QuerySelectItem {
-	return &QuerySelectItem{SleepColumnExpr: value}
-}
-
-func NewQuerySelectItemFromActivityColumnExpr(value *ActivityColumnExpr) *QuerySelectItem {
-	return &QuerySelectItem{ActivityColumnExpr: value}
-}
-
-func NewQuerySelectItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QuerySelectItem {
-	return &QuerySelectItem{WorkoutColumnExpr: value}
-}
-
-func NewQuerySelectItemFromBodyColumnExpr(value *BodyColumnExpr) *QuerySelectItem {
-	return &QuerySelectItem{BodyColumnExpr: value}
-}
-
-func NewQuerySelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QuerySelectItem {
-	return &QuerySelectItem{IndexColumnExpr: value}
-}
-
-func NewQuerySelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QuerySelectItem {
-	return &QuerySelectItem{SleepScoreValueMacroExpr: value}
-}
-
-func NewQuerySelectItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QuerySelectItem {
-	return &QuerySelectItem{ChronotypeValueMacroExpr: value}
-}
-
-func NewQuerySelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QuerySelectItem {
-	return &QuerySelectItem{UnrecognizedValueMacroExpr: value}
-}
-
-func NewQuerySelectItemFromDiscreteTimeseriesExpr(value *DiscreteTimeseriesExpr) *QuerySelectItem {
-	return &QuerySelectItem{DiscreteTimeseriesExpr: value}
-}
-
-func NewQuerySelectItemFromIntervalTimeseriesExpr(value *IntervalTimeseriesExpr) *QuerySelectItem {
-	return &QuerySelectItem{IntervalTimeseriesExpr: value}
-}
-
-func NewQuerySelectItemFromBloodPressureTimeseriesExpr(value *BloodPressureTimeseriesExpr) *QuerySelectItem {
-	return &QuerySelectItem{BloodPressureTimeseriesExpr: value}
-}
-
-func NewQuerySelectItemFromTemperatureTimeseriesExpr(value *TemperatureTimeseriesExpr) *QuerySelectItem {
-	return &QuerySelectItem{TemperatureTimeseriesExpr: value}
-}
-
-func NewQuerySelectItemFromWorkoutDurationTimeseriesExpr(value *WorkoutDurationTimeseriesExpr) *QuerySelectItem {
-	return &QuerySelectItem{WorkoutDurationTimeseriesExpr: value}
-}
-
-func NewQuerySelectItemFromNoteTimeseriesExpr(value *NoteTimeseriesExpr) *QuerySelectItem {
-	return &QuerySelectItem{NoteTimeseriesExpr: value}
-}
-
-func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
-	valueAggregateExpr := new(AggregateExpr)
-	if err := json.Unmarshal(data, &valueAggregateExpr); err == nil {
-		q.AggregateExpr = valueAggregateExpr
-		return nil
-	}
-	valueGroupKeyColumnExpr := new(GroupKeyColumnExpr)
-	if err := json.Unmarshal(data, &valueGroupKeyColumnExpr); err == nil {
-		q.GroupKeyColumnExpr = valueGroupKeyColumnExpr
 		return nil
 	}
 	valueSleepColumnExpr := new(SleepColumnExpr)
@@ -2282,9 +2463,9 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.BodyColumnExpr = valueBodyColumnExpr
 		return nil
 	}
-	valueIndexColumnExpr := new(IndexColumnExpr)
-	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
-		q.IndexColumnExpr = valueIndexColumnExpr
+	valueMealColumnExpr := new(MealColumnExpr)
+	if err := json.Unmarshal(data, &valueMealColumnExpr); err == nil {
+		q.MealColumnExpr = valueMealColumnExpr
 		return nil
 	}
 	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
@@ -2332,15 +2513,20 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.NoteTimeseriesExpr = valueNoteTimeseriesExpr
 		return nil
 	}
+	valueSourceColumnExpr := new(SourceColumnExpr)
+	if err := json.Unmarshal(data, &valueSourceColumnExpr); err == nil {
+		q.SourceColumnExpr = valueSourceColumnExpr
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
 }
 
-func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
-	if q.AggregateExpr != nil {
-		return json.Marshal(q.AggregateExpr)
+func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
+	if q.DateTruncExpr != nil {
+		return json.Marshal(q.DateTruncExpr)
 	}
-	if q.GroupKeyColumnExpr != nil {
-		return json.Marshal(q.GroupKeyColumnExpr)
+	if q.DatePartExpr != nil {
+		return json.Marshal(q.DatePartExpr)
 	}
 	if q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
@@ -2354,8 +2540,8 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.BodyColumnExpr != nil {
 		return json.Marshal(q.BodyColumnExpr)
 	}
-	if q.IndexColumnExpr != nil {
-		return json.Marshal(q.IndexColumnExpr)
+	if q.MealColumnExpr != nil {
+		return json.Marshal(q.MealColumnExpr)
 	}
 	if q.SleepScoreValueMacroExpr != nil {
 		return json.Marshal(q.SleepScoreValueMacroExpr)
@@ -2384,17 +2570,20 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.NoteTimeseriesExpr != nil {
 		return json.Marshal(q.NoteTimeseriesExpr)
 	}
+	if q.SourceColumnExpr != nil {
+		return json.Marshal(q.SourceColumnExpr)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
 }
 
-type QuerySelectItemVisitor interface {
-	VisitAggregateExpr(*AggregateExpr) error
-	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
+type QueryGroupByItemVisitor interface {
+	VisitDateTruncExpr(*DateTruncExpr) error
+	VisitDatePartExpr(*DatePartExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
-	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitMealColumnExpr(*MealColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
@@ -2404,14 +2593,15 @@ type QuerySelectItemVisitor interface {
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
 	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
+	VisitSourceColumnExpr(*SourceColumnExpr) error
 }
 
-func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
-	if q.AggregateExpr != nil {
-		return visitor.VisitAggregateExpr(q.AggregateExpr)
+func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
+	if q.DateTruncExpr != nil {
+		return visitor.VisitDateTruncExpr(q.DateTruncExpr)
 	}
-	if q.GroupKeyColumnExpr != nil {
-		return visitor.VisitGroupKeyColumnExpr(q.GroupKeyColumnExpr)
+	if q.DatePartExpr != nil {
+		return visitor.VisitDatePartExpr(q.DatePartExpr)
 	}
 	if q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
@@ -2425,8 +2615,8 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	if q.BodyColumnExpr != nil {
 		return visitor.VisitBodyColumnExpr(q.BodyColumnExpr)
 	}
-	if q.IndexColumnExpr != nil {
-		return visitor.VisitIndexColumnExpr(q.IndexColumnExpr)
+	if q.MealColumnExpr != nil {
+		return visitor.VisitMealColumnExpr(q.MealColumnExpr)
 	}
 	if q.SleepScoreValueMacroExpr != nil {
 		return visitor.VisitSleepScoreValueMacroExpr(q.SleepScoreValueMacroExpr)
@@ -2454,6 +2644,333 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.NoteTimeseriesExpr != nil {
 		return visitor.VisitNoteTimeseriesExpr(q.NoteTimeseriesExpr)
+	}
+	if q.SourceColumnExpr != nil {
+		return visitor.VisitSourceColumnExpr(q.SourceColumnExpr)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type QuerySelectItem struct {
+	AggregateExpr                 *AggregateExpr
+	GroupKeyColumnExpr            *GroupKeyColumnExpr
+	SleepColumnExpr               *SleepColumnExpr
+	ActivityColumnExpr            *ActivityColumnExpr
+	WorkoutColumnExpr             *WorkoutColumnExpr
+	BodyColumnExpr                *BodyColumnExpr
+	MealColumnExpr                *MealColumnExpr
+	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
+	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
+	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr            *NoteTimeseriesExpr
+	IndexColumnExpr               *IndexColumnExpr
+	SourceColumnExpr              *SourceColumnExpr
+}
+
+func NewQuerySelectItemFromAggregateExpr(value *AggregateExpr) *QuerySelectItem {
+	return &QuerySelectItem{AggregateExpr: value}
+}
+
+func NewQuerySelectItemFromGroupKeyColumnExpr(value *GroupKeyColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{GroupKeyColumnExpr: value}
+}
+
+func NewQuerySelectItemFromSleepColumnExpr(value *SleepColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{SleepColumnExpr: value}
+}
+
+func NewQuerySelectItemFromActivityColumnExpr(value *ActivityColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{ActivityColumnExpr: value}
+}
+
+func NewQuerySelectItemFromWorkoutColumnExpr(value *WorkoutColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{WorkoutColumnExpr: value}
+}
+
+func NewQuerySelectItemFromBodyColumnExpr(value *BodyColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{BodyColumnExpr: value}
+}
+
+func NewQuerySelectItemFromMealColumnExpr(value *MealColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{MealColumnExpr: value}
+}
+
+func NewQuerySelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{SleepScoreValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{ChronotypeValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{UnrecognizedValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromDiscreteTimeseriesExpr(value *DiscreteTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{DiscreteTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromIntervalTimeseriesExpr(value *IntervalTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{IntervalTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromBloodPressureTimeseriesExpr(value *BloodPressureTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{BloodPressureTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromTemperatureTimeseriesExpr(value *TemperatureTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{TemperatureTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromWorkoutDurationTimeseriesExpr(value *WorkoutDurationTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{WorkoutDurationTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromNoteTimeseriesExpr(value *NoteTimeseriesExpr) *QuerySelectItem {
+	return &QuerySelectItem{NoteTimeseriesExpr: value}
+}
+
+func NewQuerySelectItemFromIndexColumnExpr(value *IndexColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{IndexColumnExpr: value}
+}
+
+func NewQuerySelectItemFromSourceColumnExpr(value *SourceColumnExpr) *QuerySelectItem {
+	return &QuerySelectItem{SourceColumnExpr: value}
+}
+
+func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
+	valueAggregateExpr := new(AggregateExpr)
+	if err := json.Unmarshal(data, &valueAggregateExpr); err == nil {
+		q.AggregateExpr = valueAggregateExpr
+		return nil
+	}
+	valueGroupKeyColumnExpr := new(GroupKeyColumnExpr)
+	if err := json.Unmarshal(data, &valueGroupKeyColumnExpr); err == nil {
+		q.GroupKeyColumnExpr = valueGroupKeyColumnExpr
+		return nil
+	}
+	valueSleepColumnExpr := new(SleepColumnExpr)
+	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
+		q.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueActivityColumnExpr := new(ActivityColumnExpr)
+	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
+		q.ActivityColumnExpr = valueActivityColumnExpr
+		return nil
+	}
+	valueWorkoutColumnExpr := new(WorkoutColumnExpr)
+	if err := json.Unmarshal(data, &valueWorkoutColumnExpr); err == nil {
+		q.WorkoutColumnExpr = valueWorkoutColumnExpr
+		return nil
+	}
+	valueBodyColumnExpr := new(BodyColumnExpr)
+	if err := json.Unmarshal(data, &valueBodyColumnExpr); err == nil {
+		q.BodyColumnExpr = valueBodyColumnExpr
+		return nil
+	}
+	valueMealColumnExpr := new(MealColumnExpr)
+	if err := json.Unmarshal(data, &valueMealColumnExpr); err == nil {
+		q.MealColumnExpr = valueMealColumnExpr
+		return nil
+	}
+	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
+	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
+		q.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
+		return nil
+	}
+	valueChronotypeValueMacroExpr := new(ChronotypeValueMacroExpr)
+	if err := json.Unmarshal(data, &valueChronotypeValueMacroExpr); err == nil {
+		q.ChronotypeValueMacroExpr = valueChronotypeValueMacroExpr
+		return nil
+	}
+	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
+	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
+		q.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
+		return nil
+	}
+	valueDiscreteTimeseriesExpr := new(DiscreteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueDiscreteTimeseriesExpr); err == nil {
+		q.DiscreteTimeseriesExpr = valueDiscreteTimeseriesExpr
+		return nil
+	}
+	valueIntervalTimeseriesExpr := new(IntervalTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueIntervalTimeseriesExpr); err == nil {
+		q.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
+		return nil
+	}
+	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueBloodPressureTimeseriesExpr); err == nil {
+		q.BloodPressureTimeseriesExpr = valueBloodPressureTimeseriesExpr
+		return nil
+	}
+	valueTemperatureTimeseriesExpr := new(TemperatureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueTemperatureTimeseriesExpr); err == nil {
+		q.TemperatureTimeseriesExpr = valueTemperatureTimeseriesExpr
+		return nil
+	}
+	valueWorkoutDurationTimeseriesExpr := new(WorkoutDurationTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueWorkoutDurationTimeseriesExpr); err == nil {
+		q.WorkoutDurationTimeseriesExpr = valueWorkoutDurationTimeseriesExpr
+		return nil
+	}
+	valueNoteTimeseriesExpr := new(NoteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueNoteTimeseriesExpr); err == nil {
+		q.NoteTimeseriesExpr = valueNoteTimeseriesExpr
+		return nil
+	}
+	valueIndexColumnExpr := new(IndexColumnExpr)
+	if err := json.Unmarshal(data, &valueIndexColumnExpr); err == nil {
+		q.IndexColumnExpr = valueIndexColumnExpr
+		return nil
+	}
+	valueSourceColumnExpr := new(SourceColumnExpr)
+	if err := json.Unmarshal(data, &valueSourceColumnExpr); err == nil {
+		q.SourceColumnExpr = valueSourceColumnExpr
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, q)
+}
+
+func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
+	if q.AggregateExpr != nil {
+		return json.Marshal(q.AggregateExpr)
+	}
+	if q.GroupKeyColumnExpr != nil {
+		return json.Marshal(q.GroupKeyColumnExpr)
+	}
+	if q.SleepColumnExpr != nil {
+		return json.Marshal(q.SleepColumnExpr)
+	}
+	if q.ActivityColumnExpr != nil {
+		return json.Marshal(q.ActivityColumnExpr)
+	}
+	if q.WorkoutColumnExpr != nil {
+		return json.Marshal(q.WorkoutColumnExpr)
+	}
+	if q.BodyColumnExpr != nil {
+		return json.Marshal(q.BodyColumnExpr)
+	}
+	if q.MealColumnExpr != nil {
+		return json.Marshal(q.MealColumnExpr)
+	}
+	if q.SleepScoreValueMacroExpr != nil {
+		return json.Marshal(q.SleepScoreValueMacroExpr)
+	}
+	if q.ChronotypeValueMacroExpr != nil {
+		return json.Marshal(q.ChronotypeValueMacroExpr)
+	}
+	if q.UnrecognizedValueMacroExpr != nil {
+		return json.Marshal(q.UnrecognizedValueMacroExpr)
+	}
+	if q.DiscreteTimeseriesExpr != nil {
+		return json.Marshal(q.DiscreteTimeseriesExpr)
+	}
+	if q.IntervalTimeseriesExpr != nil {
+		return json.Marshal(q.IntervalTimeseriesExpr)
+	}
+	if q.BloodPressureTimeseriesExpr != nil {
+		return json.Marshal(q.BloodPressureTimeseriesExpr)
+	}
+	if q.TemperatureTimeseriesExpr != nil {
+		return json.Marshal(q.TemperatureTimeseriesExpr)
+	}
+	if q.WorkoutDurationTimeseriesExpr != nil {
+		return json.Marshal(q.WorkoutDurationTimeseriesExpr)
+	}
+	if q.NoteTimeseriesExpr != nil {
+		return json.Marshal(q.NoteTimeseriesExpr)
+	}
+	if q.IndexColumnExpr != nil {
+		return json.Marshal(q.IndexColumnExpr)
+	}
+	if q.SourceColumnExpr != nil {
+		return json.Marshal(q.SourceColumnExpr)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", q)
+}
+
+type QuerySelectItemVisitor interface {
+	VisitAggregateExpr(*AggregateExpr) error
+	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
+	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitActivityColumnExpr(*ActivityColumnExpr) error
+	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
+	VisitBodyColumnExpr(*BodyColumnExpr) error
+	VisitMealColumnExpr(*MealColumnExpr) error
+	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
+	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
+	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
+	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
+	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
+	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
+	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
+	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
+	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitSourceColumnExpr(*SourceColumnExpr) error
+}
+
+func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
+	if q.AggregateExpr != nil {
+		return visitor.VisitAggregateExpr(q.AggregateExpr)
+	}
+	if q.GroupKeyColumnExpr != nil {
+		return visitor.VisitGroupKeyColumnExpr(q.GroupKeyColumnExpr)
+	}
+	if q.SleepColumnExpr != nil {
+		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
+	}
+	if q.ActivityColumnExpr != nil {
+		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
+	}
+	if q.WorkoutColumnExpr != nil {
+		return visitor.VisitWorkoutColumnExpr(q.WorkoutColumnExpr)
+	}
+	if q.BodyColumnExpr != nil {
+		return visitor.VisitBodyColumnExpr(q.BodyColumnExpr)
+	}
+	if q.MealColumnExpr != nil {
+		return visitor.VisitMealColumnExpr(q.MealColumnExpr)
+	}
+	if q.SleepScoreValueMacroExpr != nil {
+		return visitor.VisitSleepScoreValueMacroExpr(q.SleepScoreValueMacroExpr)
+	}
+	if q.ChronotypeValueMacroExpr != nil {
+		return visitor.VisitChronotypeValueMacroExpr(q.ChronotypeValueMacroExpr)
+	}
+	if q.UnrecognizedValueMacroExpr != nil {
+		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
+	}
+	if q.DiscreteTimeseriesExpr != nil {
+		return visitor.VisitDiscreteTimeseriesExpr(q.DiscreteTimeseriesExpr)
+	}
+	if q.IntervalTimeseriesExpr != nil {
+		return visitor.VisitIntervalTimeseriesExpr(q.IntervalTimeseriesExpr)
+	}
+	if q.BloodPressureTimeseriesExpr != nil {
+		return visitor.VisitBloodPressureTimeseriesExpr(q.BloodPressureTimeseriesExpr)
+	}
+	if q.TemperatureTimeseriesExpr != nil {
+		return visitor.VisitTemperatureTimeseriesExpr(q.TemperatureTimeseriesExpr)
+	}
+	if q.WorkoutDurationTimeseriesExpr != nil {
+		return visitor.VisitWorkoutDurationTimeseriesExpr(q.WorkoutDurationTimeseriesExpr)
+	}
+	if q.NoteTimeseriesExpr != nil {
+		return visitor.VisitNoteTimeseriesExpr(q.NoteTimeseriesExpr)
+	}
+	if q.IndexColumnExpr != nil {
+		return visitor.VisitIndexColumnExpr(q.IndexColumnExpr)
+	}
+	if q.SourceColumnExpr != nil {
+		return visitor.VisitSourceColumnExpr(q.SourceColumnExpr)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", q)
 }
@@ -2755,6 +3272,78 @@ func (s *SleepScoreValueMacroExpr) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type SourceColumnExpr struct {
+	Source SourceColumnExprSource `json:"source" url:"source"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SourceColumnExpr) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SourceColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler SourceColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SourceColumnExpr(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SourceColumnExpr) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SourceColumnExprSource string
+
+const (
+	SourceColumnExprSourceSourceProvider  SourceColumnExprSource = "source_provider"
+	SourceColumnExprSourceSourceType      SourceColumnExprSource = "source_type"
+	SourceColumnExprSourceSourceAppId     SourceColumnExprSource = "source_app_id"
+	SourceColumnExprSourceSourceWorkoutId SourceColumnExprSource = "source_workout_id"
+	SourceColumnExprSourceSourceSport     SourceColumnExprSource = "source_sport"
+)
+
+func NewSourceColumnExprSourceFromString(s string) (SourceColumnExprSource, error) {
+	switch s {
+	case "source_provider":
+		return SourceColumnExprSourceSourceProvider, nil
+	case "source_type":
+		return SourceColumnExprSourceSourceType, nil
+	case "source_app_id":
+		return SourceColumnExprSourceSourceAppId, nil
+	case "source_workout_id":
+		return SourceColumnExprSourceSourceWorkoutId, nil
+	case "source_sport":
+		return SourceColumnExprSourceSourceSport, nil
+	}
+	var t SourceColumnExprSource
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SourceColumnExprSource) Ptr() *SourceColumnExprSource {
+	return &s
+}
+
 type TemperatureTimeseriesExpr struct {
 	// ℹ️ This enum is non-exhaustive.
 	Timeseries TemperatureTimeseriesExprTimeseries `json:"timeseries" url:"timeseries"`
@@ -2803,6 +3392,7 @@ type TemperatureTimeseriesExprField string
 const (
 	TemperatureTimeseriesExprFieldSourceProvider  TemperatureTimeseriesExprField = "source_provider"
 	TemperatureTimeseriesExprFieldSourceType      TemperatureTimeseriesExprField = "source_type"
+	TemperatureTimeseriesExprFieldSourceAppId     TemperatureTimeseriesExprField = "source_app_id"
 	TemperatureTimeseriesExprFieldSourceWorkoutId TemperatureTimeseriesExprField = "source_workout_id"
 	TemperatureTimeseriesExprFieldSourceSport     TemperatureTimeseriesExprField = "source_sport"
 	TemperatureTimeseriesExprFieldTimezoneOffset  TemperatureTimeseriesExprField = "timezone_offset"
@@ -2818,6 +3408,8 @@ func NewTemperatureTimeseriesExprFieldFromString(s string) (TemperatureTimeserie
 		return TemperatureTimeseriesExprFieldSourceProvider, nil
 	case "source_type":
 		return TemperatureTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return TemperatureTimeseriesExprFieldSourceAppId, nil
 	case "source_workout_id":
 		return TemperatureTimeseriesExprFieldSourceWorkoutId, nil
 	case "source_sport":
@@ -3138,6 +3730,7 @@ type WorkoutDurationTimeseriesExprField string
 const (
 	WorkoutDurationTimeseriesExprFieldSourceProvider  WorkoutDurationTimeseriesExprField = "source_provider"
 	WorkoutDurationTimeseriesExprFieldSourceType      WorkoutDurationTimeseriesExprField = "source_type"
+	WorkoutDurationTimeseriesExprFieldSourceAppId     WorkoutDurationTimeseriesExprField = "source_app_id"
 	WorkoutDurationTimeseriesExprFieldSourceWorkoutId WorkoutDurationTimeseriesExprField = "source_workout_id"
 	WorkoutDurationTimeseriesExprFieldSourceSport     WorkoutDurationTimeseriesExprField = "source_sport"
 	WorkoutDurationTimeseriesExprFieldTimezoneOffset  WorkoutDurationTimeseriesExprField = "timezone_offset"
@@ -3153,6 +3746,8 @@ func NewWorkoutDurationTimeseriesExprFieldFromString(s string) (WorkoutDurationT
 		return WorkoutDurationTimeseriesExprFieldSourceProvider, nil
 	case "source_type":
 		return WorkoutDurationTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return WorkoutDurationTimeseriesExprFieldSourceAppId, nil
 	case "source_workout_id":
 		return WorkoutDurationTimeseriesExprFieldSourceWorkoutId, nil
 	case "source_sport":
