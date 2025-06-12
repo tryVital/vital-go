@@ -2125,7 +2125,6 @@ func (c *Client) GetOrder(
 	return response, nil
 }
 
-// POST create new order
 func (c *Client) CreateOrder(
 	ctx context.Context,
 	request *vitalgo.CreateOrderRequestCompatible,
