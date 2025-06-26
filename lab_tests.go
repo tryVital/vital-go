@@ -239,8 +239,22 @@ type RequestAppointmentRequest struct {
 }
 
 type LabTestsSimulateOrderProcessRequest struct {
-	FinalStatus *OrderStatus `json:"-" url:"final_status,omitempty"`
-	Delay       *int         `json:"-" url:"delay,omitempty"`
+	FinalStatus *OrderStatus     `json:"-" url:"final_status,omitempty"`
+	Delay       *int             `json:"-" url:"delay,omitempty"`
+	Body        *SimulationFlags `json:"-" url:"-"`
+}
+
+func (l *LabTestsSimulateOrderProcessRequest) UnmarshalJSON(data []byte) error {
+	var body SimulationFlags
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	l.Body = body
+	return nil
+}
+
+func (l *LabTestsSimulateOrderProcessRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
 }
 
 type AddOnOrder struct {
@@ -804,6 +818,7 @@ type ClientFacingAppointment struct {
 	Provider      AppointmentProvider             `json:"provider" url:"provider"`
 	Status        AppointmentStatus               `json:"status" url:"status"`
 	ProviderId    string                          `json:"provider_id" url:"provider_id"`
+	ExternalId    *string                         `json:"external_id,omitempty" url:"external_id,omitempty"`
 	CanReschedule bool                            `json:"can_reschedule" url:"can_reschedule"`
 	EventStatus   AppointmentEventStatus          `json:"event_status" url:"event_status"`
 	EventData     map[string]interface{}          `json:"event_data,omitempty" url:"event_data,omitempty"`
@@ -2603,6 +2618,48 @@ func (s *SampleDataDateReported) Accept(visitor SampleDataDateReportedVisitor) e
 		return visitor.VisitString(s.String)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SimulationFlags struct {
+	Interpretation *Interpretation `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	ResultTypes    []ResultType    `json:"result_types,omitempty" url:"result_types,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (s *SimulationFlags) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SimulationFlags) UnmarshalJSON(data []byte) error {
+	type unmarshaler SimulationFlags
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SimulationFlags(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+
+	s._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SimulationFlags) String() string {
+	if len(s._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(s._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 type TimeSlot struct {
