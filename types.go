@@ -11889,6 +11889,7 @@ const (
 	OrderStatusCollectingSampleWalkInTestAppointmentPending         OrderStatus = "collecting_sample.walk_in_test.appointment_pending"
 	OrderStatusCollectingSampleWalkInTestAppointmentScheduled       OrderStatus = "collecting_sample.walk_in_test.appointment_scheduled"
 	OrderStatusCollectingSampleWalkInTestAppointmentCancelled       OrderStatus = "collecting_sample.walk_in_test.appointment_cancelled"
+	OrderStatusCollectingSampleWalkInTestRedrawAvailable            OrderStatus = "collecting_sample.walk_in_test.redraw_available"
 	OrderStatusReceivedAtHomePhlebotomyOrdered                      OrderStatus = "received.at_home_phlebotomy.ordered"
 	OrderStatusReceivedAtHomePhlebotomyRequisitionCreated           OrderStatus = "received.at_home_phlebotomy.requisition_created"
 	OrderStatusReceivedAtHomePhlebotomyRequisitionBypassed          OrderStatus = "received.at_home_phlebotomy.requisition_bypassed"
@@ -11951,6 +11952,8 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusCollectingSampleWalkInTestAppointmentScheduled, nil
 	case "collecting_sample.walk_in_test.appointment_cancelled":
 		return OrderStatusCollectingSampleWalkInTestAppointmentCancelled, nil
+	case "collecting_sample.walk_in_test.redraw_available":
+		return OrderStatusCollectingSampleWalkInTestRedrawAvailable, nil
 	case "received.at_home_phlebotomy.ordered":
 		return OrderStatusReceivedAtHomePhlebotomyOrdered, nil
 	case "received.at_home_phlebotomy.requisition_created":

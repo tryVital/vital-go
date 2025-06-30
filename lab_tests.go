@@ -1840,6 +1840,7 @@ const (
 	OrderLowLevelStatusPartialResults             OrderLowLevelStatus = "partial_results"
 	OrderLowLevelStatusAwaitingRegistration       OrderLowLevelStatus = "awaiting_registration"
 	OrderLowLevelStatusRegistered                 OrderLowLevelStatus = "registered"
+	OrderLowLevelStatusRedrawAvailable            OrderLowLevelStatus = "redraw_available"
 )
 
 func NewOrderLowLevelStatusFromString(s string) (OrderLowLevelStatus, error) {
@@ -1892,6 +1893,8 @@ func NewOrderLowLevelStatusFromString(s string) (OrderLowLevelStatus, error) {
 		return OrderLowLevelStatusAwaitingRegistration, nil
 	case "registered":
 		return OrderLowLevelStatusRegistered, nil
+	case "redraw_available":
+		return OrderLowLevelStatusRedrawAvailable, nil
 	}
 	var t OrderLowLevelStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
