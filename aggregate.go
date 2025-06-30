@@ -3575,6 +3575,7 @@ const (
 	WorkoutColumnExprWorkoutSourceType            WorkoutColumnExprWorkout = "source_type"
 	WorkoutColumnExprWorkoutSourceProvider        WorkoutColumnExprWorkout = "source_provider"
 	WorkoutColumnExprWorkoutSourceAppId           WorkoutColumnExprWorkout = "source_app_id"
+	WorkoutColumnExprWorkoutSourceDeviceId        WorkoutColumnExprWorkout = "source_device_id"
 	WorkoutColumnExprWorkoutExternalId            WorkoutColumnExprWorkout = "external_id"
 	WorkoutColumnExprWorkoutTimeZone              WorkoutColumnExprWorkout = "time_zone"
 )
@@ -3645,6 +3646,8 @@ func NewWorkoutColumnExprWorkoutFromString(s string) (WorkoutColumnExprWorkout, 
 		return WorkoutColumnExprWorkoutSourceProvider, nil
 	case "source_app_id":
 		return WorkoutColumnExprWorkoutSourceAppId, nil
+	case "source_device_id":
+		return WorkoutColumnExprWorkoutSourceDeviceId, nil
 	case "external_id":
 		return WorkoutColumnExprWorkoutExternalId, nil
 	case "time_zone":
