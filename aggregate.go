@@ -115,6 +115,7 @@ const (
 	ActivityColumnExprActivitySourceType               ActivityColumnExprActivity = "source_type"
 	ActivityColumnExprActivitySourceProvider           ActivityColumnExprActivity = "source_provider"
 	ActivityColumnExprActivitySourceAppId              ActivityColumnExprActivity = "source_app_id"
+	ActivityColumnExprActivitySourceDeviceId           ActivityColumnExprActivity = "source_device_id"
 	ActivityColumnExprActivityTimeZone                 ActivityColumnExprActivity = "time_zone"
 	ActivityColumnExprActivityTimeZoneOffset           ActivityColumnExprActivity = "time_zone_offset"
 )
@@ -163,6 +164,8 @@ func NewActivityColumnExprActivityFromString(s string) (ActivityColumnExprActivi
 		return ActivityColumnExprActivitySourceProvider, nil
 	case "source_app_id":
 		return ActivityColumnExprActivitySourceAppId, nil
+	case "source_device_id":
+		return ActivityColumnExprActivitySourceDeviceId, nil
 	case "time_zone":
 		return ActivityColumnExprActivityTimeZone, nil
 	case "time_zone_offset":
@@ -788,6 +791,7 @@ const (
 	BodyColumnExprBodySourceType                   BodyColumnExprBody = "source_type"
 	BodyColumnExprBodySourceProvider               BodyColumnExprBody = "source_provider"
 	BodyColumnExprBodySourceAppId                  BodyColumnExprBody = "source_app_id"
+	BodyColumnExprBodySourceDeviceId               BodyColumnExprBody = "source_device_id"
 	BodyColumnExprBodyTimeZone                     BodyColumnExprBody = "time_zone"
 )
 
@@ -819,6 +823,8 @@ func NewBodyColumnExprBodyFromString(s string) (BodyColumnExprBody, error) {
 		return BodyColumnExprBodySourceProvider, nil
 	case "source_app_id":
 		return BodyColumnExprBodySourceAppId, nil
+	case "source_device_id":
+		return BodyColumnExprBodySourceDeviceId, nil
 	case "time_zone":
 		return BodyColumnExprBodyTimeZone, nil
 	}
@@ -1873,6 +1879,7 @@ const (
 	MealColumnExprMealSourceType               MealColumnExprMeal = "source_type"
 	MealColumnExprMealSourceProvider           MealColumnExprMeal = "source_provider"
 	MealColumnExprMealSourceAppId              MealColumnExprMeal = "source_app_id"
+	MealColumnExprMealSourceDeviceId           MealColumnExprMeal = "source_device_id"
 )
 
 func NewMealColumnExprMealFromString(s string) (MealColumnExprMeal, error) {
@@ -1971,6 +1978,8 @@ func NewMealColumnExprMealFromString(s string) (MealColumnExprMeal, error) {
 		return MealColumnExprMealSourceProvider, nil
 	case "source_app_id":
 		return MealColumnExprMealSourceAppId, nil
+	case "source_device_id":
+		return MealColumnExprMealSourceDeviceId, nil
 	}
 	var t MealColumnExprMeal
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -3135,6 +3144,7 @@ const (
 	SleepColumnExprSleepSourceType           SleepColumnExprSleep = "source_type"
 	SleepColumnExprSleepSourceProvider       SleepColumnExprSleep = "source_provider"
 	SleepColumnExprSleepSourceAppId          SleepColumnExprSleep = "source_app_id"
+	SleepColumnExprSleepSourceDeviceId       SleepColumnExprSleep = "source_device_id"
 	SleepColumnExprSleepTimeZone             SleepColumnExprSleep = "time_zone"
 )
 
@@ -3194,6 +3204,8 @@ func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 		return SleepColumnExprSleepSourceProvider, nil
 	case "source_app_id":
 		return SleepColumnExprSleepSourceAppId, nil
+	case "source_device_id":
+		return SleepColumnExprSleepSourceDeviceId, nil
 	case "time_zone":
 		return SleepColumnExprSleepTimeZone, nil
 	}

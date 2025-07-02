@@ -151,12 +151,13 @@ type ClientFacingMenstrualCycle struct {
 	BasalBodyTemperature   []*BasalBodyTemperatureEntry              `json:"basal_body_temperature,omitempty" url:"basal_body_temperature,omitempty"`
 	SourceProvider         *ClientFacingMenstrualCycleSourceProvider `json:"source_provider,omitempty" url:"source_provider,omitempty"`
 	// ℹ️ This enum is non-exhaustive.
-	SourceType  ClientFacingMenstrualCycleSourceType `json:"source_type" url:"source_type"`
-	SourceAppId *string                              `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
-	CreatedAt   time.Time                            `json:"created_at" url:"created_at"`
-	UpdatedAt   time.Time                            `json:"updated_at" url:"updated_at"`
-	UserId      string                               `json:"user_id" url:"user_id"`
-	Source      *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	SourceType     ClientFacingMenstrualCycleSourceType `json:"source_type" url:"source_type"`
+	SourceAppId    *string                              `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
+	SourceDeviceId *string                              `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
+	CreatedAt      time.Time                            `json:"created_at" url:"created_at"`
+	UpdatedAt      time.Time                            `json:"updated_at" url:"updated_at"`
+	UserId         string                               `json:"user_id" url:"user_id"`
+	Source         *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage

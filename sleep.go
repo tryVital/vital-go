@@ -348,17 +348,18 @@ func (s SleepType) Ptr() *SleepType {
 }
 
 type SleepV2InDb struct {
-	Timestamp  time.Time              `json:"timestamp" url:"timestamp"`
-	Data       map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
-	ProviderId string                 `json:"provider_id" url:"provider_id"`
-	UserId     string                 `json:"user_id" url:"user_id"`
-	SourceId   int                    `json:"source_id" url:"source_id"`
-	PriorityId *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
-	Id         string                 `json:"id" url:"id"`
-	Source     *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
-	Priority   *int                   `json:"priority,omitempty" url:"priority,omitempty"`
-	CreatedAt  *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
-	UpdatedAt  *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
+	Data           map[string]interface{} `json:"data,omitempty" url:"data,omitempty"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
+	UserId         string                 `json:"user_id" url:"user_id"`
+	SourceId       int                    `json:"source_id" url:"source_id"`
+	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
+	Id             string                 `json:"id" url:"id"`
+	Source         *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
+	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
+	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
+	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
