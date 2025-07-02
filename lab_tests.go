@@ -735,6 +735,7 @@ type BiomarkerResult struct {
 	Unit                 *string                `json:"unit,omitempty" url:"unit,omitempty"`
 	Timestamp            *time.Time             `json:"timestamp,omitempty" url:"timestamp,omitempty"`
 	Notes                *string                `json:"notes,omitempty" url:"notes,omitempty"`
+	ReferenceRange       *string                `json:"reference_range,omitempty" url:"reference_range,omitempty"`
 	MinRangeValue        *float64               `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
 	MaxRangeValue        *float64               `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
 	IsAboveMaxRange      *bool                  `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
