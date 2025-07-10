@@ -150,6 +150,7 @@ const (
 	ClientFacingConnectionErrorDetailsErrorTypeDeregisteredPerProvider   ClientFacingConnectionErrorDetailsErrorType = "deregistered_per_provider"
 	ClientFacingConnectionErrorDetailsErrorTypeRequiredScopesNotGranted  ClientFacingConnectionErrorDetailsErrorType = "required_scopes_not_granted"
 	ClientFacingConnectionErrorDetailsErrorTypeProviderCredentialError   ClientFacingConnectionErrorDetailsErrorType = "provider_credential_error"
+	ClientFacingConnectionErrorDetailsErrorTypeProviderPasswordExpired   ClientFacingConnectionErrorDetailsErrorType = "provider_password_expired"
 	ClientFacingConnectionErrorDetailsErrorTypeUnknown                   ClientFacingConnectionErrorDetailsErrorType = "unknown"
 )
 
@@ -167,6 +168,8 @@ func NewClientFacingConnectionErrorDetailsErrorTypeFromString(s string) (ClientF
 		return ClientFacingConnectionErrorDetailsErrorTypeRequiredScopesNotGranted, nil
 	case "provider_credential_error":
 		return ClientFacingConnectionErrorDetailsErrorTypeProviderCredentialError, nil
+	case "provider_password_expired":
+		return ClientFacingConnectionErrorDetailsErrorTypeProviderPasswordExpired, nil
 	case "unknown":
 		return ClientFacingConnectionErrorDetailsErrorTypeUnknown, nil
 	}

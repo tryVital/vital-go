@@ -2007,7 +2007,7 @@ func (c *Client) GetOrderRequistionPdf(
 	return response, nil
 }
 
-// GET requisition pdf for an order
+// GET ABN pdf for an order
 func (c *Client) GetOrderAbnPdf(
 	ctx context.Context,
 	// Your Order ID.

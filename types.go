@@ -12231,6 +12231,32 @@ func (p *PatientDetailsWithValidation) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// ℹ️ This enum is non-exhaustive.
+type PayorCodeExternalProvider string
+
+const (
+	PayorCodeExternalProviderChangeHealthcare PayorCodeExternalProvider = "change_healthcare"
+	PayorCodeExternalProviderAvaility         PayorCodeExternalProvider = "availity"
+	PayorCodeExternalProviderStedi            PayorCodeExternalProvider = "stedi"
+)
+
+func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider, error) {
+	switch s {
+	case "change_healthcare":
+		return PayorCodeExternalProviderChangeHealthcare, nil
+	case "availity":
+		return PayorCodeExternalProviderAvaility, nil
+	case "stedi":
+		return PayorCodeExternalProviderStedi, nil
+	}
+	var t PayorCodeExternalProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PayorCodeExternalProvider) Ptr() *PayorCodeExternalProvider {
+	return &p
+}
+
 type Png struct {
 	Content     string `json:"content" url:"content"`
 	contentType string
@@ -12449,6 +12475,7 @@ const (
 	ProviderConnectionErrorErrorTypeDeregisteredPerProvider   ProviderConnectionErrorErrorType = "deregistered_per_provider"
 	ProviderConnectionErrorErrorTypeRequiredScopesNotGranted  ProviderConnectionErrorErrorType = "required_scopes_not_granted"
 	ProviderConnectionErrorErrorTypeProviderCredentialError   ProviderConnectionErrorErrorType = "provider_credential_error"
+	ProviderConnectionErrorErrorTypeProviderPasswordExpired   ProviderConnectionErrorErrorType = "provider_password_expired"
 	ProviderConnectionErrorErrorTypeUnknown                   ProviderConnectionErrorErrorType = "unknown"
 )
 
@@ -12466,6 +12493,8 @@ func NewProviderConnectionErrorErrorTypeFromString(s string) (ProviderConnection
 		return ProviderConnectionErrorErrorTypeRequiredScopesNotGranted, nil
 	case "provider_credential_error":
 		return ProviderConnectionErrorErrorTypeProviderCredentialError, nil
+	case "provider_password_expired":
+		return ProviderConnectionErrorErrorTypeProviderPasswordExpired, nil
 	case "unknown":
 		return ProviderConnectionErrorErrorTypeUnknown, nil
 	}

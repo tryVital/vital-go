@@ -17,6 +17,7 @@ import (
 	menstrualcycle "github.com/tryVital/vital-go/menstrualcycle"
 	option "github.com/tryVital/vital-go/option"
 	order "github.com/tryVital/vital-go/order"
+	payor "github.com/tryVital/vital-go/payor"
 	profile "github.com/tryVital/vital-go/profile"
 	providers "github.com/tryVital/vital-go/providers"
 	sleep "github.com/tryVital/vital-go/sleep"
@@ -54,6 +55,7 @@ type Client struct {
 	Testkit           *testkit.Client
 	Order             *order.Client
 	Insurance         *insurance.Client
+	Payor             *payor.Client
 	Aggregate         *aggregate.Client
 }
 
@@ -88,6 +90,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Testkit:           testkit.NewClient(opts...),
 		Order:             order.NewClient(opts...),
 		Insurance:         insurance.NewClient(opts...),
+		Payor:             payor.NewClient(opts...),
 		Aggregate:         aggregate.NewClient(opts...),
 	}
 }

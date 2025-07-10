@@ -83,8 +83,9 @@ type IndividualProviderData struct {
 	// Username for provider
 	Username string `json:"username" url:"-"`
 	// Password for provider
-	Password string  `json:"password" url:"-"`
-	Region   *Region `json:"region,omitempty" url:"-"`
+	Password string `json:"password" url:"-"`
+	// Provider region to authenticate against. Only applicable to specific providers.
+	Region *Region `json:"region,omitempty" url:"-"`
 }
 
 type EmailAuthLink struct {
@@ -772,14 +773,18 @@ func (p PasswordProviders) Ptr() *PasswordProviders {
 
 type ProviderLinkResponse struct {
 	// ℹ️ This enum is non-exhaustive.
-	State       ProviderLinkResponseState `json:"state" url:"state"`
-	RedirectUrl *string                   `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	ErrorType   *string                   `json:"error_type,omitempty" url:"error_type,omitempty"`
-	Error       *string                   `json:"error,omitempty" url:"error,omitempty"`
-	ProviderMfa *ProviderMfaRequest       `json:"provider_mfa,omitempty" url:"provider_mfa,omitempty"`
-	Provider    PasswordProviders         `json:"provider" url:"provider"`
-	Connected   bool                      `json:"connected" url:"connected"`
-	ProviderId  *string                   `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	State ProviderLinkResponseState `json:"state" url:"state"`
+	// The redirect URL you supplied when creating the Link Token (via `POST /v2/link/token`).
+	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
+	// The Link Error Type. This field is populated only when state is `error`.
+	ErrorType *ProviderLinkResponseErrorType `json:"error_type,omitempty" url:"error_type,omitempty"`
+	// A developer-readable debug description of the Link Error. This field is populated only when state is `error`.
+	Error *string `json:"error,omitempty" url:"error,omitempty"`
+	// The provider MFA request. This field is populated only when state is `pending_provider_mfa`.
+	ProviderMfa *ProviderMfaRequest `json:"provider_mfa,omitempty" url:"provider_mfa,omitempty"`
+	Provider    PasswordProviders   `json:"provider" url:"provider"`
+	Connected   bool                `json:"connected" url:"connected"`
+	ProviderId  *string             `json:"provider_id,omitempty" url:"provider_id,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -819,6 +824,58 @@ func (p *ProviderLinkResponse) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type ProviderLinkResponseErrorType string
+
+const (
+	ProviderLinkResponseErrorTypeInvalidToken             ProviderLinkResponseErrorType = "invalid_token"
+	ProviderLinkResponseErrorTypeTokenExpired             ProviderLinkResponseErrorType = "token_expired"
+	ProviderLinkResponseErrorTypeTokenNotValidated        ProviderLinkResponseErrorType = "token_not_validated"
+	ProviderLinkResponseErrorTypeTokenConsumed            ProviderLinkResponseErrorType = "token_consumed"
+	ProviderLinkResponseErrorTypeProviderCredentialError  ProviderLinkResponseErrorType = "provider_credential_error"
+	ProviderLinkResponseErrorTypeProviderPasswordExpired  ProviderLinkResponseErrorType = "provider_password_expired"
+	ProviderLinkResponseErrorTypeProviderApiError         ProviderLinkResponseErrorType = "provider_api_error"
+	ProviderLinkResponseErrorTypeUnsupportedRegion        ProviderLinkResponseErrorType = "unsupported_region"
+	ProviderLinkResponseErrorTypeDuplicateConnection      ProviderLinkResponseErrorType = "duplicate_connection"
+	ProviderLinkResponseErrorTypeRequiredScopesNotGranted ProviderLinkResponseErrorType = "required_scopes_not_granted"
+	ProviderLinkResponseErrorTypeIncorrectMfaCode         ProviderLinkResponseErrorType = "incorrect_mfa_code"
+	ProviderLinkResponseErrorTypeUserCancelled            ProviderLinkResponseErrorType = "user_cancelled"
+)
+
+func NewProviderLinkResponseErrorTypeFromString(s string) (ProviderLinkResponseErrorType, error) {
+	switch s {
+	case "invalid_token":
+		return ProviderLinkResponseErrorTypeInvalidToken, nil
+	case "token_expired":
+		return ProviderLinkResponseErrorTypeTokenExpired, nil
+	case "token_not_validated":
+		return ProviderLinkResponseErrorTypeTokenNotValidated, nil
+	case "token_consumed":
+		return ProviderLinkResponseErrorTypeTokenConsumed, nil
+	case "provider_credential_error":
+		return ProviderLinkResponseErrorTypeProviderCredentialError, nil
+	case "provider_password_expired":
+		return ProviderLinkResponseErrorTypeProviderPasswordExpired, nil
+	case "provider_api_error":
+		return ProviderLinkResponseErrorTypeProviderApiError, nil
+	case "unsupported_region":
+		return ProviderLinkResponseErrorTypeUnsupportedRegion, nil
+	case "duplicate_connection":
+		return ProviderLinkResponseErrorTypeDuplicateConnection, nil
+	case "required_scopes_not_granted":
+		return ProviderLinkResponseErrorTypeRequiredScopesNotGranted, nil
+	case "incorrect_mfa_code":
+		return ProviderLinkResponseErrorTypeIncorrectMfaCode, nil
+	case "user_cancelled":
+		return ProviderLinkResponseErrorTypeUserCancelled, nil
+	}
+	var t ProviderLinkResponseErrorType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ProviderLinkResponseErrorType) Ptr() *ProviderLinkResponseErrorType {
+	return &p
+}
+
 // ℹ️ This enum is non-exhaustive.
 type ProviderLinkResponseState string
 
@@ -846,9 +903,10 @@ func (p ProviderLinkResponseState) Ptr() *ProviderLinkResponseState {
 }
 
 type ProviderMfaRequest struct {
-	// ℹ️ This enum is non-exhaustive.
+	// The MFA method requested by the password provider to complete authentication. ℹ️ This enum is non-exhaustive.
 	Method ProviderMfaRequestMethod `json:"method" url:"method"`
-	Hint   string                   `json:"hint" url:"hint"`
+	// The MFA hint provided by the password provider, e.g., the redacted phone number.
+	Hint string `json:"hint" url:"hint"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -888,7 +946,7 @@ func (p *ProviderMfaRequest) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// ℹ️ This enum is non-exhaustive.
+// The MFA method requested by the password provider to complete authentication. ℹ️ This enum is non-exhaustive.
 type ProviderMfaRequestMethod string
 
 const (
