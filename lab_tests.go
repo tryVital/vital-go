@@ -5,8 +5,9 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/tryVital/vital-go/core"
 	time "time"
+
+	core "github.com/tryVital/vital-go/core"
 )
 
 type ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest struct {
@@ -249,7 +250,7 @@ func (l *LabTestsSimulateOrderProcessRequest) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	l.Body = body
+	l.Body = &body
 	return nil
 }
 
