@@ -1294,7 +1294,7 @@ type ClientFacingBodyTemperatureDeltaSample struct {
 	End time.Time `json:"end" url:"end"`
 	// The recorded value for the interval.
 	Value float64 `json:"value" url:"value"`
-	// Location of the temperature sensor.
+	// Location of the temperature sensor. ℹ️ This enum is non-exhaustive.
 	SensorLocation *ClientFacingBodyTemperatureDeltaSampleSensorLocation `json:"sensor_location,omitempty" url:"sensor_location,omitempty"`
 	unit           string
 
@@ -1440,7 +1440,7 @@ type ClientFacingBodyTemperatureSample struct {
 	End time.Time `json:"end" url:"end"`
 	// The recorded value for the interval.
 	Value float64 `json:"value" url:"value"`
-	// Location of the temperature sensor.
+	// Location of the temperature sensor. ℹ️ This enum is non-exhaustive.
 	SensorLocation *ClientFacingBodyTemperatureSampleSensorLocation `json:"sensor_location,omitempty" url:"sensor_location,omitempty"`
 	unit           string
 
@@ -3855,8 +3855,9 @@ type ClientFacingSleepBreathingDisturbanceSample struct {
 	// Deprecated
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
-	TimezoneOffset *int                                             `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	Type           *ClientFacingSleepBreathingDisturbanceSampleType `json:"type,omitempty" url:"type,omitempty"`
+	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Type *ClientFacingSleepBreathingDisturbanceSampleType `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
 	// The start time (inclusive) of the interval.
@@ -4868,7 +4869,7 @@ type ClientFacingWorkoutDurationSample struct {
 	End time.Time `json:"end" url:"end"`
 	// The recorded value for the interval.
 	Value float64 `json:"value" url:"value"`
-	// Workout intensity.
+	// Workout intensity. ℹ️ This enum is non-exhaustive.
 	Intensity *ClientFacingWorkoutDurationSampleIntensity `json:"intensity,omitempty" url:"intensity,omitempty"`
 	unit      string
 

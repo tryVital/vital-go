@@ -17,17 +17,19 @@ type ElectrocardiogramGetRequest struct {
 }
 
 type ClientFacingElectrocardiogram struct {
-	Id                  string                                          `json:"id" url:"id"`
-	SessionStart        time.Time                                       `json:"session_start" url:"session_start"`
-	SessionEnd          time.Time                                       `json:"session_end" url:"session_end"`
-	VoltageSampleCount  int                                             `json:"voltage_sample_count" url:"voltage_sample_count"`
-	HeartRateMean       *int                                            `json:"heart_rate_mean,omitempty" url:"heart_rate_mean,omitempty"`
-	SamplingFrequencyHz *float64                                        `json:"sampling_frequency_hz,omitempty" url:"sampling_frequency_hz,omitempty"`
-	Classification      *ClientFacingElectrocardiogramClassification    `json:"classification,omitempty" url:"classification,omitempty"`
-	InconclusiveCause   *ClientFacingElectrocardiogramInconclusiveCause `json:"inconclusive_cause,omitempty" url:"inconclusive_cause,omitempty"`
-	AlgorithmVersion    *string                                         `json:"algorithm_version,omitempty" url:"algorithm_version,omitempty"`
-	TimeZone            *string                                         `json:"time_zone,omitempty" url:"time_zone,omitempty"`
-	SourceProvider      *ClientFacingElectrocardiogramSourceProvider    `json:"source_provider,omitempty" url:"source_provider,omitempty"`
+	Id                  string    `json:"id" url:"id"`
+	SessionStart        time.Time `json:"session_start" url:"session_start"`
+	SessionEnd          time.Time `json:"session_end" url:"session_end"`
+	VoltageSampleCount  int       `json:"voltage_sample_count" url:"voltage_sample_count"`
+	HeartRateMean       *int      `json:"heart_rate_mean,omitempty" url:"heart_rate_mean,omitempty"`
+	SamplingFrequencyHz *float64  `json:"sampling_frequency_hz,omitempty" url:"sampling_frequency_hz,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Classification *ClientFacingElectrocardiogramClassification `json:"classification,omitempty" url:"classification,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	InconclusiveCause *ClientFacingElectrocardiogramInconclusiveCause `json:"inconclusive_cause,omitempty" url:"inconclusive_cause,omitempty"`
+	AlgorithmVersion  *string                                         `json:"algorithm_version,omitempty" url:"algorithm_version,omitempty"`
+	TimeZone          *string                                         `json:"time_zone,omitempty" url:"time_zone,omitempty"`
+	SourceProvider    *ClientFacingElectrocardiogramSourceProvider    `json:"source_provider,omitempty" url:"source_provider,omitempty"`
 	// ℹ️ This enum is non-exhaustive.
 	SourceType        ClientFacingElectrocardiogramSourceType `json:"source_type" url:"source_type"`
 	SourceAppId       *string                                 `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`

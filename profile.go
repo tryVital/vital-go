@@ -26,6 +26,8 @@ type ClientFacingProfile struct {
 	Height        *int                `json:"height,omitempty" url:"height,omitempty"`
 	BirthDate     *string             `json:"birth_date,omitempty" url:"birth_date,omitempty"`
 	WheelchairUse *bool               `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
+	Gender        *Gender             `json:"gender,omitempty" url:"gender,omitempty"`
+	Sex           *Sex                `json:"sex,omitempty" url:"sex,omitempty"`
 	Source        *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
 	CreatedAt     time.Time           `json:"created_at" url:"created_at"`
 	UpdatedAt     time.Time           `json:"updated_at" url:"updated_at"`
@@ -199,4 +201,30 @@ func (r *RawProfile) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type Sex string
+
+const (
+	SexFemale Sex = "female"
+	SexMale   Sex = "male"
+	SexOther  Sex = "other"
+)
+
+func NewSexFromString(s string) (Sex, error) {
+	switch s {
+	case "female":
+		return SexFemale, nil
+	case "male":
+		return SexMale, nil
+	case "other":
+		return SexOther, nil
+	}
+	var t Sex
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s Sex) Ptr() *Sex {
+	return &s
 }

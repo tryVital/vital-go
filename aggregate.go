@@ -623,6 +623,7 @@ func (a *AggregationResult) String() string {
 }
 
 type BloodPressureTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Field      BloodPressureTimeseriesExprField `json:"field" url:"field"`
 	timeseries string
 
@@ -689,6 +690,7 @@ func (b *BloodPressureTimeseriesExpr) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type BloodPressureTimeseriesExprField string
 
 const (
@@ -1048,7 +1050,8 @@ func (c ContinuousQueryTaskStatus) Ptr() *ContinuousQueryTaskStatus {
 }
 
 type DatePartExpr struct {
-	Arg      *DatePartExprArg     `json:"arg,omitempty" url:"arg,omitempty"`
+	Arg *DatePartExprArg `json:"arg,omitempty" url:"arg,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
 	DatePart DatePartExprDatePart `json:"date_part" url:"date_part"`
 
 	extraProperties map[string]interface{}
@@ -1141,6 +1144,7 @@ func (d *DatePartExprArg) Accept(visitor DatePartExprArgVisitor) error {
 	return fmt.Errorf("type %T does not include a non-empty union type", d)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type DatePartExprDatePart string
 
 const (
@@ -1281,7 +1285,8 @@ func (d *DateTruncExprArg) Accept(visitor DateTruncExprArgVisitor) error {
 type DiscreteTimeseriesExpr struct {
 	// ℹ️ This enum is non-exhaustive.
 	Timeseries DiscreteTimeseriesExprTimeseries `json:"timeseries" url:"timeseries"`
-	Field      DiscreteTimeseriesExprField      `json:"field" url:"field"`
+	// ℹ️ This enum is non-exhaustive.
+	Field DiscreteTimeseriesExprField `json:"field" url:"field"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1321,6 +1326,7 @@ func (d *DiscreteTimeseriesExpr) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type DiscreteTimeseriesExprField string
 
 const (
@@ -1587,7 +1593,8 @@ func (i IndexColumnExprIndex) Ptr() *IndexColumnExprIndex {
 type IntervalTimeseriesExpr struct {
 	// ℹ️ This enum is non-exhaustive.
 	Timeseries IntervalTimeseriesExprTimeseries `json:"timeseries" url:"timeseries"`
-	Field      IntervalTimeseriesExprField      `json:"field" url:"field"`
+	// ℹ️ This enum is non-exhaustive.
+	Field IntervalTimeseriesExprField `json:"field" url:"field"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1627,6 +1634,7 @@ func (i *IntervalTimeseriesExpr) String() string {
 	return fmt.Sprintf("%#v", i)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type IntervalTimeseriesExprField string
 
 const (
@@ -1990,6 +1998,7 @@ func (m MealColumnExprMeal) Ptr() *MealColumnExprMeal {
 }
 
 type NoteTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Field      NoteTimeseriesExprField `json:"field" url:"field"`
 	timeseries string
 
@@ -2056,6 +2065,7 @@ func (n *NoteTimeseriesExpr) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type NoteTimeseriesExprField string
 
 const (
@@ -3285,6 +3295,7 @@ func (s *SleepScoreValueMacroExpr) String() string {
 }
 
 type SourceColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Source SourceColumnExprSource `json:"source" url:"source"`
 
 	extraProperties map[string]interface{}
@@ -3325,6 +3336,7 @@ func (s *SourceColumnExpr) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SourceColumnExprSource string
 
 const (
@@ -3359,7 +3371,8 @@ func (s SourceColumnExprSource) Ptr() *SourceColumnExprSource {
 type TemperatureTimeseriesExpr struct {
 	// ℹ️ This enum is non-exhaustive.
 	Timeseries TemperatureTimeseriesExprTimeseries `json:"timeseries" url:"timeseries"`
-	Field      TemperatureTimeseriesExprField      `json:"field" url:"field"`
+	// ℹ️ This enum is non-exhaustive.
+	Field TemperatureTimeseriesExprField `json:"field" url:"field"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3399,6 +3412,7 @@ func (t *TemperatureTimeseriesExpr) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type TemperatureTimeseriesExprField string
 
 const (
@@ -3674,6 +3688,7 @@ func (w WorkoutColumnExprWorkout) Ptr() *WorkoutColumnExprWorkout {
 }
 
 type WorkoutDurationTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
 	Field      WorkoutDurationTimeseriesExprField `json:"field" url:"field"`
 	timeseries string
 
@@ -3740,6 +3755,7 @@ func (w *WorkoutDurationTimeseriesExpr) String() string {
 	return fmt.Sprintf("%#v", w)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type WorkoutDurationTimeseriesExprField string
 
 const (

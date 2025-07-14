@@ -776,7 +776,7 @@ type ProviderLinkResponse struct {
 	State ProviderLinkResponseState `json:"state" url:"state"`
 	// The redirect URL you supplied when creating the Link Token (via `POST /v2/link/token`).
 	RedirectUrl *string `json:"redirect_url,omitempty" url:"redirect_url,omitempty"`
-	// The Link Error Type. This field is populated only when state is `error`.
+	// The Link Error Type. This field is populated only when state is `error`. ℹ️ This enum is non-exhaustive.
 	ErrorType *ProviderLinkResponseErrorType `json:"error_type,omitempty" url:"error_type,omitempty"`
 	// A developer-readable debug description of the Link Error. This field is populated only when state is `error`.
 	Error *string `json:"error,omitempty" url:"error,omitempty"`
