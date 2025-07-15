@@ -173,7 +173,7 @@ type ClientFacingActivity struct {
 	Source *ClientFacingSource `json:"source,omitempty" url:"source,omitempty"`
 	// Number of floors climbed by the user::count
 	FloorsClimbed *int `json:"floors_climbed,omitempty" url:"floors_climbed,omitempty"`
-	// [DEPRECATED] The time zone full identifier for the data. Example: 'Europe/London'.
+	// The IANA time zone identifier. Example: 'Europe/London'.
 	TimeZone *string `json:"time_zone,omitempty" url:"time_zone,omitempty"`
 	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
