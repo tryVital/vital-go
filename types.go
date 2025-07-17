@@ -6306,6 +6306,8 @@ type ClientFacingOrder struct {
 	HasAbn bool `json:"has_abn" url:"has_abn"`
 	// Interpretation of the order result. Can be one of (normal, abnormal, critical).
 	Interpretation *Interpretation `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	// Defines whether the order result has missing biomarkers.
+	HasMissingResults *bool `json:"has_missing_results,omitempty" url:"has_missing_results,omitempty"`
 	// The common-case date by which the order result is expected to be available.
 	ExpectedResultByDate *string `json:"expected_result_by_date,omitempty" url:"expected_result_by_date,omitempty"`
 	// The latest date by which the order result is expected to be available.
@@ -6672,6 +6674,29 @@ func (c *ClientFacingPatientDetailsCompatible) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type ClientFacingPayorCodeSource string
+
+const (
+	ClientFacingPayorCodeSourcePlatform ClientFacingPayorCodeSource = "platform"
+	ClientFacingPayorCodeSourceTeam     ClientFacingPayorCodeSource = "team"
+)
+
+func NewClientFacingPayorCodeSourceFromString(s string) (ClientFacingPayorCodeSource, error) {
+	switch s {
+	case "platform":
+		return ClientFacingPayorCodeSourcePlatform, nil
+	case "team":
+		return ClientFacingPayorCodeSourceTeam, nil
+	}
+	var t ClientFacingPayorCodeSource
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingPayorCodeSource) Ptr() *ClientFacingPayorCodeSource {
+	return &c
 }
 
 type ClientFacingPeakExpiratoryFlowRateChanged struct {
