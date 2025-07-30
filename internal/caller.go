@@ -1,4 +1,4 @@
-package core
+package internal
 
 import (
 	"bytes"
@@ -7,11 +7,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"mime/multipart"
 	"net/http"
 	"net/url"
 	"reflect"
 	"strings"
+
+	"github.com/tryVital/vital-go/core"
 )
 
 const (
@@ -20,105 +21,21 @@ const (
 	contentTypeHeader = "Content-Type"
 )
 
-// HTTPClient is an interface for a subset of the *http.Client.
-type HTTPClient interface {
-	Do(*http.Request) (*http.Response, error)
-}
-
-// EncodeURL encodes the given arguments into the URL, escaping
-// values as needed.
-func EncodeURL(urlFormat string, args ...interface{}) string {
-	escapedArgs := make([]interface{}, 0, len(args))
-	for _, arg := range args {
-		escapedArgs = append(escapedArgs, url.PathEscape(fmt.Sprintf("%v", arg)))
-	}
-	return fmt.Sprintf(urlFormat, escapedArgs...)
-}
-
-// MergeHeaders merges the given headers together, where the right
-// takes precedence over the left.
-func MergeHeaders(left, right http.Header) http.Header {
-	for key, values := range right {
-		if len(values) > 1 {
-			left[key] = values
-			continue
-		}
-		if value := right.Get(key); value != "" {
-			left.Set(key, value)
-		}
-	}
-	return left
-}
-
-// WriteMultipartJSON writes the given value as a JSON part.
-// This is used to serialize non-primitive multipart properties
-// (i.e. lists, objects, etc).
-func WriteMultipartJSON(writer *multipart.Writer, field string, value interface{}) error {
-	bytes, err := json.Marshal(value)
-	if err != nil {
-		return err
-	}
-	return writer.WriteField(field, string(bytes))
-}
-
-// APIError is a lightweight wrapper around the standard error
-// interface that preserves the status code from the RPC, if any.
-type APIError struct {
-	err error
-
-	StatusCode int `json:"-"`
-}
-
-// NewAPIError constructs a new API error.
-func NewAPIError(statusCode int, err error) *APIError {
-	return &APIError{
-		err:        err,
-		StatusCode: statusCode,
-	}
-}
-
-// Unwrap returns the underlying error. This also makes the error compatible
-// with errors.As and errors.Is.
-func (a *APIError) Unwrap() error {
-	if a == nil {
-		return nil
-	}
-	return a.err
-}
-
-// Error returns the API error's message.
-func (a *APIError) Error() string {
-	if a == nil || (a.err == nil && a.StatusCode == 0) {
-		return ""
-	}
-	if a.err == nil {
-		return fmt.Sprintf("%d", a.StatusCode)
-	}
-	if a.StatusCode == 0 {
-		return a.err.Error()
-	}
-	return fmt.Sprintf("%d: %s", a.StatusCode, a.err.Error())
-}
-
-// ErrorDecoder decodes *http.Response errors and returns a
-// typed API error (e.g. *APIError).
-type ErrorDecoder func(statusCode int, body io.Reader) error
-
 // Caller calls APIs and deserializes their response, if any.
 type Caller struct {
-	client  HTTPClient
+	client  core.HTTPClient
 	retrier *Retrier
 }
 
 // CallerParams represents the parameters used to constrcut a new *Caller.
 type CallerParams struct {
-	Client      HTTPClient
+	Client      core.HTTPClient
 	MaxAttempts uint
 }
 
 // NewCaller returns a new *Caller backed by the given parameters.
 func NewCaller(params *CallerParams) *Caller {
-	var httpClient HTTPClient = http.DefaultClient
+	var httpClient core.HTTPClient = http.DefaultClient
 	if params.Client != nil {
 		httpClient = params.Client
 	}
@@ -140,15 +57,21 @@ type CallParams struct {
 	Headers            http.Header
 	BodyProperties     map[string]interface{}
 	QueryParameters    url.Values
-	Client             HTTPClient
+	Client             core.HTTPClient
 	Request            interface{}
 	Response           interface{}
 	ResponseIsOptional bool
 	ErrorDecoder       ErrorDecoder
 }
 
+// CallResponse is a parsed HTTP response from an API call.
+type CallResponse struct {
+	StatusCode int
+	Header     http.Header
+}
+
 // Call issues an API call according to the given call parameters.
-func (c *Caller) Call(ctx context.Context, params *CallParams) error {
+func (c *Caller) Call(ctx context.Context, params *CallParams) (*CallResponse, error) {
 	url := buildURL(params.URL, params.QueryParameters)
 	req, err := newRequest(
 		ctx,
@@ -159,12 +82,12 @@ func (c *Caller) Call(ctx context.Context, params *CallParams) error {
 		params.BodyProperties,
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// If the call has been cancelled, don't issue the request.
 	if err := ctx.Err(); err != nil {
-		return err
+		return nil, err
 	}
 
 	client := c.client
@@ -185,7 +108,7 @@ func (c *Caller) Call(ctx context.Context, params *CallParams) error {
 		retryOptions...,
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Close the response body after we're done.
@@ -194,11 +117,11 @@ func (c *Caller) Call(ctx context.Context, params *CallParams) error {
 	// Check if the call was cancelled before we return the error
 	// associated with the call and/or unmarshal the response data.
 	if err := ctx.Err(); err != nil {
-		return err
+		return nil, err
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return decodeError(resp, params.ErrorDecoder)
+		return nil, decodeError(resp, params.ErrorDecoder)
 	}
 
 	// Mutate the response parameter in-place.
@@ -213,15 +136,21 @@ func (c *Caller) Call(ctx context.Context, params *CallParams) error {
 				if params.ResponseIsOptional {
 					// The response is optional, so we should ignore the
 					// io.EOF error
-					return nil
+					return &CallResponse{
+						StatusCode: resp.StatusCode,
+						Header:     resp.Header,
+					}, nil
 				}
-				return fmt.Errorf("expected a %T response, but the server responded with nothing", params.Response)
+				return nil, fmt.Errorf("expected a %T response, but the server responded with nothing", params.Response)
 			}
-			return err
+			return nil, err
 		}
 	}
 
-	return nil
+	return &CallResponse{
+		StatusCode: resp.StatusCode,
+		Header:     resp.Header,
+	}, nil
 }
 
 // buildURL constructs the final URL by appending the given query parameters (if any).
@@ -296,7 +225,7 @@ func decodeError(response *http.Response, errorDecoder ErrorDecoder) error {
 		// This endpoint has custom errors, so we'll
 		// attempt to unmarshal the error into a structured
 		// type based on the status code.
-		return errorDecoder(response.StatusCode, response.Body)
+		return errorDecoder(response.StatusCode, response.Header, response.Body)
 	}
 	// This endpoint doesn't have any custom error
 	// types, so we just read the body as-is, and
@@ -309,9 +238,9 @@ func decodeError(response *http.Response, errorDecoder ErrorDecoder) error {
 		// The error didn't have a response body,
 		// so all we can do is return an error
 		// with the status code.
-		return NewAPIError(response.StatusCode, nil)
+		return core.NewAPIError(response.StatusCode, response.Header, nil)
 	}
-	return NewAPIError(response.StatusCode, errors.New(string(bytes)))
+	return core.NewAPIError(response.StatusCode, response.Header, errors.New(string(bytes)))
 }
 
 // isNil is used to determine if the request value is equal to nil (i.e. an interface
