@@ -8293,6 +8293,8 @@ type ClientFacingSource struct {
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// The identifier of the app which recorded this summary. This is only applicable to multi-source providers like Apple Health and Android Health Connect.
 	AppId *string `json:"app_id,omitempty" url:"app_id,omitempty"`
+	// The identifier of the device which recorded this summary.
+	DeviceId *string `json:"device_id,omitempty" url:"device_id,omitempty"`
 	// For workout stream timeseries, this is the standard sport slug of the workout with which the timeseries data are associated.
 	//
 	// For the `distance` timeseries, this is `wheelchair_pushing` if the user is a wheelchair user, or `null` otherwise.

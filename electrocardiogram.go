@@ -34,6 +34,7 @@ type ClientFacingElectrocardiogram struct {
 	SourceType        ClientFacingElectrocardiogramSourceType `json:"source_type" url:"source_type"`
 	SourceAppId       *string                                 `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
 	SourceDeviceModel *string                                 `json:"source_device_model,omitempty" url:"source_device_model,omitempty"`
+	SourceDeviceId    *string                                 `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
 	CreatedAt         time.Time                               `json:"created_at" url:"created_at"`
 	UpdatedAt         time.Time                               `json:"updated_at" url:"updated_at"`
 	UserId            string                                  `json:"user_id" url:"user_id"`

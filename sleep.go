@@ -27,15 +27,6 @@ type SleepGetRawRequest struct {
 	EndDate *string `json:"-" url:"end_date,omitempty"`
 }
 
-type SleepGetStreamRequest struct {
-	// Provider oura/strava etc
-	Provider *string `json:"-" url:"provider,omitempty"`
-	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-" url:"start_date"`
-	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-" url:"end_date,omitempty"`
-}
-
 type ClientFacingSleep struct {
 	Id string `json:"id" url:"id"`
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
