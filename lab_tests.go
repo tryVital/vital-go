@@ -249,7 +249,7 @@ func (l *LabTestsSimulateOrderProcessRequest) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	l.Body = body
+	l.Body = &body
 	return nil
 }
 
