@@ -12335,6 +12335,8 @@ const (
 	PayorCodeExternalProviderChangeHealthcare PayorCodeExternalProvider = "change_healthcare"
 	PayorCodeExternalProviderAvaility         PayorCodeExternalProvider = "availity"
 	PayorCodeExternalProviderStedi            PayorCodeExternalProvider = "stedi"
+	PayorCodeExternalProviderWaystar          PayorCodeExternalProvider = "waystar"
+	PayorCodeExternalProviderClaimMd          PayorCodeExternalProvider = "claim_md"
 )
 
 func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider, error) {
@@ -12345,6 +12347,10 @@ func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider
 		return PayorCodeExternalProviderAvaility, nil
 	case "stedi":
 		return PayorCodeExternalProviderStedi, nil
+	case "waystar":
+		return PayorCodeExternalProviderWaystar, nil
+	case "claim_md":
+		return PayorCodeExternalProviderClaimMd, nil
 	}
 	var t PayorCodeExternalProvider
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
