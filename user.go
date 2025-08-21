@@ -181,6 +181,115 @@ func (c ClientFacingConnectionErrorDetailsErrorType) Ptr() *ClientFacingConnecti
 	return &c
 }
 
+type ClientFacingDevice struct {
+	Id       string `json:"id" url:"id"`
+	UserId   string `json:"user_id" url:"user_id"`
+	Provider string `json:"provider" url:"provider"`
+	// ℹ️ This enum is non-exhaustive.
+	SourceType         ClientFacingDeviceSourceType `json:"source_type" url:"source_type"`
+	AppId              *string                      `json:"app_id,omitempty" url:"app_id,omitempty"`
+	DeviceManufacturer *string                      `json:"device_manufacturer,omitempty" url:"device_manufacturer,omitempty"`
+	DeviceModel        *string                      `json:"device_model,omitempty" url:"device_model,omitempty"`
+	DeviceVersion      *string                      `json:"device_version,omitempty" url:"device_version,omitempty"`
+	DeviceId           *string                      `json:"device_id,omitempty" url:"device_id,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingDevice) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingDevice) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingDevice
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingDevice(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingDevice) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type ClientFacingDeviceSourceType string
+
+const (
+	ClientFacingDeviceSourceTypeUnknown         ClientFacingDeviceSourceType = "unknown"
+	ClientFacingDeviceSourceTypePhone           ClientFacingDeviceSourceType = "phone"
+	ClientFacingDeviceSourceTypeWatch           ClientFacingDeviceSourceType = "watch"
+	ClientFacingDeviceSourceTypeApp             ClientFacingDeviceSourceType = "app"
+	ClientFacingDeviceSourceTypeMultipleSources ClientFacingDeviceSourceType = "multiple_sources"
+	ClientFacingDeviceSourceTypeFingerprick     ClientFacingDeviceSourceType = "fingerprick"
+	ClientFacingDeviceSourceTypeCuff            ClientFacingDeviceSourceType = "cuff"
+	ClientFacingDeviceSourceTypeManualScan      ClientFacingDeviceSourceType = "manual_scan"
+	ClientFacingDeviceSourceTypeAutomatic       ClientFacingDeviceSourceType = "automatic"
+	ClientFacingDeviceSourceTypeScale           ClientFacingDeviceSourceType = "scale"
+	ClientFacingDeviceSourceTypeChestStrap      ClientFacingDeviceSourceType = "chest_strap"
+	ClientFacingDeviceSourceTypeRing            ClientFacingDeviceSourceType = "ring"
+	ClientFacingDeviceSourceTypeLab             ClientFacingDeviceSourceType = "lab"
+	ClientFacingDeviceSourceTypeExerciseMachine ClientFacingDeviceSourceType = "exercise_machine"
+)
+
+func NewClientFacingDeviceSourceTypeFromString(s string) (ClientFacingDeviceSourceType, error) {
+	switch s {
+	case "unknown":
+		return ClientFacingDeviceSourceTypeUnknown, nil
+	case "phone":
+		return ClientFacingDeviceSourceTypePhone, nil
+	case "watch":
+		return ClientFacingDeviceSourceTypeWatch, nil
+	case "app":
+		return ClientFacingDeviceSourceTypeApp, nil
+	case "multiple_sources":
+		return ClientFacingDeviceSourceTypeMultipleSources, nil
+	case "fingerprick":
+		return ClientFacingDeviceSourceTypeFingerprick, nil
+	case "cuff":
+		return ClientFacingDeviceSourceTypeCuff, nil
+	case "manual_scan":
+		return ClientFacingDeviceSourceTypeManualScan, nil
+	case "automatic":
+		return ClientFacingDeviceSourceTypeAutomatic, nil
+	case "scale":
+		return ClientFacingDeviceSourceTypeScale, nil
+	case "chest_strap":
+		return ClientFacingDeviceSourceTypeChestStrap, nil
+	case "ring":
+		return ClientFacingDeviceSourceTypeRing, nil
+	case "lab":
+		return ClientFacingDeviceSourceTypeLab, nil
+	case "exercise_machine":
+		return ClientFacingDeviceSourceTypeExerciseMachine, nil
+	}
+	var t ClientFacingDeviceSourceType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingDeviceSourceType) Ptr() *ClientFacingDeviceSourceType {
+	return &c
+}
+
 type ClientFacingInsurance struct {
 	MemberId     string                                                  `json:"member_id" url:"member_id"`
 	PayorCode    string                                                  `json:"payor_code" url:"payor_code"`

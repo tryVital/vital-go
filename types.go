@@ -2618,6 +2618,73 @@ func (c *ClientFacingDaylightExposureHistoricalPullCompleted) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ClientFacingDeviceChanged struct {
+	EventType    ClientFacingDeviceChangedEventType `json:"event_type" url:"event_type"`
+	UserId       string                             `json:"user_id" url:"user_id"`
+	ClientUserId string                             `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                             `json:"team_id" url:"team_id"`
+	Data         *ClientFacingDevice                `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *ClientFacingDeviceChanged) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingDeviceChanged) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingDeviceChanged
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingDeviceChanged(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingDeviceChanged) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ClientFacingDeviceChangedEventType string
+
+const (
+	ClientFacingDeviceChangedEventTypeProviderDeviceCreated ClientFacingDeviceChangedEventType = "provider.device.created"
+	ClientFacingDeviceChangedEventTypeProviderDeviceUpdated ClientFacingDeviceChangedEventType = "provider.device.updated"
+)
+
+func NewClientFacingDeviceChangedEventTypeFromString(s string) (ClientFacingDeviceChangedEventType, error) {
+	switch s {
+	case "provider.device.created":
+		return ClientFacingDeviceChangedEventTypeProviderDeviceCreated, nil
+	case "provider.device.updated":
+		return ClientFacingDeviceChangedEventTypeProviderDeviceUpdated, nil
+	}
+	var t ClientFacingDeviceChangedEventType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingDeviceChangedEventType) Ptr() *ClientFacingDeviceChangedEventType {
+	return &c
+}
+
 type ClientFacingDistanceChanged struct {
 	EventType    ClientFacingDistanceChangedEventType `json:"event_type" url:"event_type"`
 	UserId       string                               `json:"user_id" url:"user_id"`
@@ -7226,6 +7293,7 @@ const (
 	ClientFacingResourceBloodPressure              ClientFacingResource = "blood_pressure"
 	ClientFacingResourceCholesterol                ClientFacingResource = "cholesterol"
 	ClientFacingResourceDevice                     ClientFacingResource = "device"
+	ClientFacingResourceDeviceLegacy               ClientFacingResource = "device_legacy"
 	ClientFacingResourceWeight                     ClientFacingResource = "weight"
 	ClientFacingResourceFat                        ClientFacingResource = "fat"
 	ClientFacingResourceBodyTemperature            ClientFacingResource = "body_temperature"
@@ -7316,6 +7384,8 @@ func NewClientFacingResourceFromString(s string) (ClientFacingResource, error) {
 		return ClientFacingResourceCholesterol, nil
 	case "device":
 		return ClientFacingResourceDevice, nil
+	case "device_legacy":
+		return ClientFacingResourceDeviceLegacy, nil
 	case "weight":
 		return ClientFacingResourceWeight, nil
 	case "fat":
