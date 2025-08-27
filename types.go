@@ -5635,6 +5635,7 @@ type ClientFacingMarker struct {
 	ALaCarteEnabled  *bool       `json:"a_la_carte_enabled,omitempty" url:"a_la_carte_enabled,omitempty"`
 	CommonTatDays    *int        `json:"common_tat_days,omitempty" url:"common_tat_days,omitempty"`
 	WorstCaseTatDays *int        `json:"worst_case_tat_days,omitempty" url:"worst_case_tat_days,omitempty"`
+	IsOrderable      *bool       `json:"is_orderable,omitempty" url:"is_orderable,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
