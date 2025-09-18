@@ -36,6 +36,8 @@ type Client struct {
 	header  http.Header
 
 	Link              *link.Client
+	User              *user.Client
+	Providers         *providers.Client
 	Electrocardiogram *electrocardiogram.Client
 	SleepCycle        *sleepcycle.Client
 	Profile           *profile.Client
@@ -46,14 +48,12 @@ type Client struct {
 	Body              *body.Client
 	Meal              *meal.Client
 	MenstrualCycle    *menstrualcycle.Client
-	Vitals            *vitals.Client
-	User              *user.Client
-	Team              *team.Client
-	Providers         *providers.Client
-	Introspect        *introspect.Client
 	LabTests          *labtests.Client
 	Testkit           *testkit.Client
 	Order             *order.Client
+	Team              *team.Client
+	Vitals            *vitals.Client
+	Introspect        *introspect.Client
 	Insurance         *insurance.Client
 	Payor             *payor.Client
 	Aggregate         *aggregate.Client
@@ -71,6 +71,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 		),
 		header:            options.ToHeader(),
 		Link:              link.NewClient(opts...),
+		User:              user.NewClient(opts...),
+		Providers:         providers.NewClient(opts...),
 		Electrocardiogram: electrocardiogram.NewClient(opts...),
 		SleepCycle:        sleepcycle.NewClient(opts...),
 		Profile:           profile.NewClient(opts...),
@@ -81,14 +83,12 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Body:              body.NewClient(opts...),
 		Meal:              meal.NewClient(opts...),
 		MenstrualCycle:    menstrualcycle.NewClient(opts...),
-		Vitals:            vitals.NewClient(opts...),
-		User:              user.NewClient(opts...),
-		Team:              team.NewClient(opts...),
-		Providers:         providers.NewClient(opts...),
-		Introspect:        introspect.NewClient(opts...),
 		LabTests:          labtests.NewClient(opts...),
 		Testkit:           testkit.NewClient(opts...),
 		Order:             order.NewClient(opts...),
+		Team:              team.NewClient(opts...),
+		Vitals:            vitals.NewClient(opts...),
+		Introspect:        introspect.NewClient(opts...),
 		Insurance:         insurance.NewClient(opts...),
 		Payor:             payor.NewClient(opts...),
 		Aggregate:         aggregate.NewClient(opts...),
