@@ -34,6 +34,65 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
+// Get Sleep stream for a user_id
+func (c *Client) GetStreamBySleepId(
+	ctx context.Context,
+	// The Vital Sleep ID
+	sleepId string,
+	opts ...option.RequestOption,
+) (*vitalgo.ClientFacingSleepStream, error) {
+	options := core.NewRequestOptions(opts...)
+
+	baseURL := "https://api.tryvital.io"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	if options.BaseURL != "" {
+		baseURL = options.BaseURL
+	}
+	endpointURL := core.EncodeURL(baseURL+"/v2/timeseries/sleep/%v/stream", sleepId)
+
+	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 422:
+			value := new(vitalgo.UnprocessableEntityError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *vitalgo.ClientFacingSleepStream
+	if err := c.caller.Call(
+		ctx,
+		&core.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			MaxAttempts:     options.MaxAttempts,
+			Headers:         headers,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    errorDecoder,
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 // Get sleep summary for user_id
 func (c *Client) Get(
 	ctx context.Context,
@@ -149,65 +208,6 @@ func (c *Client) GetRaw(
 	}
 
 	var response *vitalgo.RawSleep
-	if err := c.caller.Call(
-		ctx,
-		&core.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			MaxAttempts:     options.MaxAttempts,
-			Headers:         headers,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    errorDecoder,
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-// Get Sleep stream for a user_id
-func (c *Client) GetStreamBySleepId(
-	ctx context.Context,
-	// The Vital Sleep ID
-	sleepId string,
-	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingSleepStream, error) {
-	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://api.tryvital.io"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
-	endpointURL := core.EncodeURL(baseURL+"/v2/timeseries/sleep/%v/stream", sleepId)
-
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	errorDecoder := func(statusCode int, body io.Reader) error {
-		raw, err := io.ReadAll(body)
-		if err != nil {
-			return err
-		}
-		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
-		decoder := json.NewDecoder(bytes.NewReader(raw))
-		switch statusCode {
-		case 422:
-			value := new(vitalgo.UnprocessableEntityError)
-			value.APIError = apiError
-			if err := decoder.Decode(value); err != nil {
-				return apiError
-			}
-			return value
-		}
-		return apiError
-	}
-
-	var response *vitalgo.ClientFacingSleepStream
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
