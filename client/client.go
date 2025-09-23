@@ -36,10 +36,13 @@ type Client struct {
 	header  http.Header
 
 	User              *user.Client
-	Link              *link.Client
+	Team              *team.Client
+	Providers         *providers.Client
 	Sleep             *sleep.Client
 	Workouts          *workouts.Client
 	Vitals            *vitals.Client
+	Link              *link.Client
+	LabTests          *labtests.Client
 	Electrocardiogram *electrocardiogram.Client
 	SleepCycle        *sleepcycle.Client
 	Profile           *profile.Client
@@ -48,9 +51,6 @@ type Client struct {
 	Body              *body.Client
 	Meal              *meal.Client
 	MenstrualCycle    *menstrualcycle.Client
-	Providers         *providers.Client
-	LabTests          *labtests.Client
-	Team              *team.Client
 	Testkit           *testkit.Client
 	Order             *order.Client
 	Introspect        *introspect.Client
@@ -71,10 +71,13 @@ func NewClient(opts ...option.RequestOption) *Client {
 		),
 		header:            options.ToHeader(),
 		User:              user.NewClient(opts...),
-		Link:              link.NewClient(opts...),
+		Team:              team.NewClient(opts...),
+		Providers:         providers.NewClient(opts...),
 		Sleep:             sleep.NewClient(opts...),
 		Workouts:          workouts.NewClient(opts...),
 		Vitals:            vitals.NewClient(opts...),
+		Link:              link.NewClient(opts...),
+		LabTests:          labtests.NewClient(opts...),
 		Electrocardiogram: electrocardiogram.NewClient(opts...),
 		SleepCycle:        sleepcycle.NewClient(opts...),
 		Profile:           profile.NewClient(opts...),
@@ -83,9 +86,6 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Body:              body.NewClient(opts...),
 		Meal:              meal.NewClient(opts...),
 		MenstrualCycle:    menstrualcycle.NewClient(opts...),
-		Providers:         providers.NewClient(opts...),
-		LabTests:          labtests.NewClient(opts...),
-		Team:              team.NewClient(opts...),
 		Testkit:           testkit.NewClient(opts...),
 		Order:             order.NewClient(opts...),
 		Introspect:        introspect.NewClient(opts...),
