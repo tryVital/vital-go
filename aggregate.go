@@ -230,6 +230,8 @@ type AggregateExprArg struct {
 	MealColumnExpr                *MealColumnExpr
 	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
 	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
 	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
 	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
@@ -266,6 +268,14 @@ func NewAggregateExprArgFromSleepScoreValueMacroExpr(value *SleepScoreValueMacro
 
 func NewAggregateExprArgFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *AggregateExprArg {
 	return &AggregateExprArg{ChronotypeValueMacroExpr: value}
+}
+
+func NewAggregateExprArgFromAsleepAtValueMacroExpr(value *AsleepAtValueMacroExpr) *AggregateExprArg {
+	return &AggregateExprArg{AsleepAtValueMacroExpr: value}
+}
+
+func NewAggregateExprArgFromAwakeAtValueMacroExpr(value *AwakeAtValueMacroExpr) *AggregateExprArg {
+	return &AggregateExprArg{AwakeAtValueMacroExpr: value}
 }
 
 func NewAggregateExprArgFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *AggregateExprArg {
@@ -336,6 +346,16 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.ChronotypeValueMacroExpr = valueChronotypeValueMacroExpr
 		return nil
 	}
+	valueAsleepAtValueMacroExpr := new(AsleepAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAsleepAtValueMacroExpr); err == nil {
+		a.AsleepAtValueMacroExpr = valueAsleepAtValueMacroExpr
+		return nil
+	}
+	valueAwakeAtValueMacroExpr := new(AwakeAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeAtValueMacroExpr); err == nil {
+		a.AwakeAtValueMacroExpr = valueAwakeAtValueMacroExpr
+		return nil
+	}
 	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
 	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
 		a.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
@@ -401,6 +421,12 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.ChronotypeValueMacroExpr != nil {
 		return json.Marshal(a.ChronotypeValueMacroExpr)
 	}
+	if a.AsleepAtValueMacroExpr != nil {
+		return json.Marshal(a.AsleepAtValueMacroExpr)
+	}
+	if a.AwakeAtValueMacroExpr != nil {
+		return json.Marshal(a.AwakeAtValueMacroExpr)
+	}
 	if a.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(a.UnrecognizedValueMacroExpr)
 	}
@@ -436,6 +462,8 @@ type AggregateExprArgVisitor interface {
 	VisitMealColumnExpr(*MealColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
+	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
+	VisitAwakeAtValueMacroExpr(*AwakeAtValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
@@ -467,6 +495,12 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.ChronotypeValueMacroExpr != nil {
 		return visitor.VisitChronotypeValueMacroExpr(a.ChronotypeValueMacroExpr)
+	}
+	if a.AsleepAtValueMacroExpr != nil {
+		return visitor.VisitAsleepAtValueMacroExpr(a.AsleepAtValueMacroExpr)
+	}
+	if a.AwakeAtValueMacroExpr != nil {
+		return visitor.VisitAwakeAtValueMacroExpr(a.AwakeAtValueMacroExpr)
 	}
 	if a.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(a.UnrecognizedValueMacroExpr)
@@ -611,6 +645,140 @@ func (a *AggregationResult) UnmarshalJSON(data []byte) error {
 }
 
 func (a *AggregationResult) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AsleepAtValueMacroExpr struct {
+	Version    *string `json:"version,omitempty" url:"version,omitempty"`
+	valueMacro string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AsleepAtValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AsleepAtValueMacroExpr) ValueMacro() string {
+	return a.valueMacro
+}
+
+func (a *AsleepAtValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type embed AsleepAtValueMacroExpr
+	var unmarshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*a = AsleepAtValueMacroExpr(unmarshaler.embed)
+	if unmarshaler.ValueMacro != "asleep_at" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "asleep_at", unmarshaler.ValueMacro)
+	}
+	a.valueMacro = unmarshaler.ValueMacro
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a, "value_macro")
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AsleepAtValueMacroExpr) MarshalJSON() ([]byte, error) {
+	type embed AsleepAtValueMacroExpr
+	var marshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed:      embed(*a),
+		ValueMacro: "asleep_at",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (a *AsleepAtValueMacroExpr) String() string {
+	if len(a._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AwakeAtValueMacroExpr struct {
+	Version    *string `json:"version,omitempty" url:"version,omitempty"`
+	valueMacro string
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (a *AwakeAtValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AwakeAtValueMacroExpr) ValueMacro() string {
+	return a.valueMacro
+}
+
+func (a *AwakeAtValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type embed AwakeAtValueMacroExpr
+	var unmarshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*a = AwakeAtValueMacroExpr(unmarshaler.embed)
+	if unmarshaler.ValueMacro != "awake_at" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "awake_at", unmarshaler.ValueMacro)
+	}
+	a.valueMacro = unmarshaler.ValueMacro
+
+	extraProperties, err := core.ExtractExtraProperties(data, *a, "value_macro")
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+
+	a._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AwakeAtValueMacroExpr) MarshalJSON() ([]byte, error) {
+	type embed AwakeAtValueMacroExpr
+	var marshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed:      embed(*a),
+		ValueMacro: "awake_at",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (a *AwakeAtValueMacroExpr) String() string {
 	if len(a._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
 			return value
@@ -2373,6 +2541,8 @@ type QueryGroupByItem struct {
 	MealColumnExpr                *MealColumnExpr
 	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
 	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
 	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
 	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
@@ -2417,6 +2587,14 @@ func NewQueryGroupByItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacro
 
 func NewQueryGroupByItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QueryGroupByItem {
 	return &QueryGroupByItem{ChronotypeValueMacroExpr: value}
+}
+
+func NewQueryGroupByItemFromAsleepAtValueMacroExpr(value *AsleepAtValueMacroExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{AsleepAtValueMacroExpr: value}
+}
+
+func NewQueryGroupByItemFromAwakeAtValueMacroExpr(value *AwakeAtValueMacroExpr) *QueryGroupByItem {
+	return &QueryGroupByItem{AwakeAtValueMacroExpr: value}
 }
 
 func NewQueryGroupByItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QueryGroupByItem {
@@ -2497,6 +2675,16 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 		q.ChronotypeValueMacroExpr = valueChronotypeValueMacroExpr
 		return nil
 	}
+	valueAsleepAtValueMacroExpr := new(AsleepAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAsleepAtValueMacroExpr); err == nil {
+		q.AsleepAtValueMacroExpr = valueAsleepAtValueMacroExpr
+		return nil
+	}
+	valueAwakeAtValueMacroExpr := new(AwakeAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeAtValueMacroExpr); err == nil {
+		q.AwakeAtValueMacroExpr = valueAwakeAtValueMacroExpr
+		return nil
+	}
 	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
 	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
 		q.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
@@ -2568,6 +2756,12 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.ChronotypeValueMacroExpr != nil {
 		return json.Marshal(q.ChronotypeValueMacroExpr)
 	}
+	if q.AsleepAtValueMacroExpr != nil {
+		return json.Marshal(q.AsleepAtValueMacroExpr)
+	}
+	if q.AwakeAtValueMacroExpr != nil {
+		return json.Marshal(q.AwakeAtValueMacroExpr)
+	}
 	if q.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(q.UnrecognizedValueMacroExpr)
 	}
@@ -2605,6 +2799,8 @@ type QueryGroupByItemVisitor interface {
 	VisitMealColumnExpr(*MealColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
+	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
+	VisitAwakeAtValueMacroExpr(*AwakeAtValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
@@ -2643,6 +2839,12 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	if q.ChronotypeValueMacroExpr != nil {
 		return visitor.VisitChronotypeValueMacroExpr(q.ChronotypeValueMacroExpr)
 	}
+	if q.AsleepAtValueMacroExpr != nil {
+		return visitor.VisitAsleepAtValueMacroExpr(q.AsleepAtValueMacroExpr)
+	}
+	if q.AwakeAtValueMacroExpr != nil {
+		return visitor.VisitAwakeAtValueMacroExpr(q.AwakeAtValueMacroExpr)
+	}
 	if q.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
 	}
@@ -2680,6 +2882,8 @@ type QuerySelectItem struct {
 	MealColumnExpr                *MealColumnExpr
 	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
 	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
 	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
 	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
@@ -2725,6 +2929,14 @@ func NewQuerySelectItemFromSleepScoreValueMacroExpr(value *SleepScoreValueMacroE
 
 func NewQuerySelectItemFromChronotypeValueMacroExpr(value *ChronotypeValueMacroExpr) *QuerySelectItem {
 	return &QuerySelectItem{ChronotypeValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromAsleepAtValueMacroExpr(value *AsleepAtValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{AsleepAtValueMacroExpr: value}
+}
+
+func NewQuerySelectItemFromAwakeAtValueMacroExpr(value *AwakeAtValueMacroExpr) *QuerySelectItem {
+	return &QuerySelectItem{AwakeAtValueMacroExpr: value}
 }
 
 func NewQuerySelectItemFromUnrecognizedValueMacroExpr(value *UnrecognizedValueMacroExpr) *QuerySelectItem {
@@ -2809,6 +3021,16 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.ChronotypeValueMacroExpr = valueChronotypeValueMacroExpr
 		return nil
 	}
+	valueAsleepAtValueMacroExpr := new(AsleepAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAsleepAtValueMacroExpr); err == nil {
+		q.AsleepAtValueMacroExpr = valueAsleepAtValueMacroExpr
+		return nil
+	}
+	valueAwakeAtValueMacroExpr := new(AwakeAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeAtValueMacroExpr); err == nil {
+		q.AwakeAtValueMacroExpr = valueAwakeAtValueMacroExpr
+		return nil
+	}
 	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
 	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
 		q.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
@@ -2885,6 +3107,12 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.ChronotypeValueMacroExpr != nil {
 		return json.Marshal(q.ChronotypeValueMacroExpr)
 	}
+	if q.AsleepAtValueMacroExpr != nil {
+		return json.Marshal(q.AsleepAtValueMacroExpr)
+	}
+	if q.AwakeAtValueMacroExpr != nil {
+		return json.Marshal(q.AwakeAtValueMacroExpr)
+	}
 	if q.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(q.UnrecognizedValueMacroExpr)
 	}
@@ -2925,6 +3153,8 @@ type QuerySelectItemVisitor interface {
 	VisitMealColumnExpr(*MealColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
+	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
+	VisitAwakeAtValueMacroExpr(*AwakeAtValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
@@ -2963,6 +3193,12 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.ChronotypeValueMacroExpr != nil {
 		return visitor.VisitChronotypeValueMacroExpr(q.ChronotypeValueMacroExpr)
+	}
+	if q.AsleepAtValueMacroExpr != nil {
+		return visitor.VisitAsleepAtValueMacroExpr(q.AsleepAtValueMacroExpr)
+	}
+	if q.AwakeAtValueMacroExpr != nil {
+		return visitor.VisitAwakeAtValueMacroExpr(q.AwakeAtValueMacroExpr)
 	}
 	if q.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
@@ -3127,6 +3363,7 @@ func (s *SleepColumnExpr) String() string {
 type SleepColumnExprSleep string
 
 const (
+	SleepColumnExprSleepId                   SleepColumnExprSleep = "id"
 	SleepColumnExprSleepSessionStart         SleepColumnExprSleep = "session_start"
 	SleepColumnExprSleepSessionEnd           SleepColumnExprSleep = "session_end"
 	SleepColumnExprSleepState                SleepColumnExprSleep = "state"
@@ -3160,6 +3397,8 @@ const (
 
 func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 	switch s {
+	case "id":
+		return SleepColumnExprSleepId, nil
 	case "session_start":
 		return SleepColumnExprSleepSessionStart, nil
 	case "session_end":

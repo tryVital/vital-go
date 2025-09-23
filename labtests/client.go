@@ -2435,7 +2435,6 @@ func (c *Client) GetPaginated(
 	return response, nil
 }
 
-// GET collection instructions for a lab test
 func (c *Client) GetLabTestCollectionInstructionPdf(
 	ctx context.Context,
 	labTestId string,
