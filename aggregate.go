@@ -2399,6 +2399,12 @@ func (p *Placeholder) String() string {
 type Query struct {
 	Select  []*QuerySelectItem  `json:"select,omitempty" url:"select,omitempty"`
 	GroupBy []*QueryGroupByItem `json:"group_by,omitempty" url:"group_by,omitempty"`
+	// A WHERE clause filtering the input data. If a GROUP BY clause is present, filtering happens prior to GROUP BY evaluation.
+	//
+	// WHERE clause uses SQL Expression syntax to describe the filtering criteria:
+	// * Available operators: `>`, `>=`, `<`, `<=`, `=`, `!=`, `NOT`, `AND` and `OR`.
+	// * Parentheses is supported.
+	Where *string `json:"where,omitempty" url:"where,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
