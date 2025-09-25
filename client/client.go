@@ -35,6 +35,8 @@ type Client struct {
 	caller  *core.Caller
 	header  http.Header
 
+	Link              *link.Client
+	User              *user.Client
 	Electrocardiogram *electrocardiogram.Client
 	SleepCycle        *sleepcycle.Client
 	Profile           *profile.Client
@@ -45,13 +47,11 @@ type Client struct {
 	Body              *body.Client
 	Meal              *meal.Client
 	MenstrualCycle    *menstrualcycle.Client
-	User              *user.Client
-	Link              *link.Client
 	Providers         *providers.Client
+	Vitals            *vitals.Client
 	Testkit           *testkit.Client
 	LabTests          *labtests.Client
 	Order             *order.Client
-	Vitals            *vitals.Client
 	Team              *team.Client
 	Introspect        *introspect.Client
 	Insurance         *insurance.Client
@@ -70,6 +70,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 			},
 		),
 		header:            options.ToHeader(),
+		Link:              link.NewClient(opts...),
+		User:              user.NewClient(opts...),
 		Electrocardiogram: electrocardiogram.NewClient(opts...),
 		SleepCycle:        sleepcycle.NewClient(opts...),
 		Profile:           profile.NewClient(opts...),
@@ -80,13 +82,11 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Body:              body.NewClient(opts...),
 		Meal:              meal.NewClient(opts...),
 		MenstrualCycle:    menstrualcycle.NewClient(opts...),
-		User:              user.NewClient(opts...),
-		Link:              link.NewClient(opts...),
 		Providers:         providers.NewClient(opts...),
+		Vitals:            vitals.NewClient(opts...),
 		Testkit:           testkit.NewClient(opts...),
 		LabTests:          labtests.NewClient(opts...),
 		Order:             order.NewClient(opts...),
-		Vitals:            vitals.NewClient(opts...),
 		Team:              team.NewClient(opts...),
 		Introspect:        introspect.NewClient(opts...),
 		Insurance:         insurance.NewClient(opts...),
