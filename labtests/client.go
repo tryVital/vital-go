@@ -7,6 +7,7 @@ import (
 	context "context"
 	json "encoding/json"
 	errors "errors"
+	fmt "fmt"
 	vitalgo "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	option "github.com/tryVital/vital-go/option"
@@ -1479,6 +1480,9 @@ func (c *Client) CreateOrder(
 	endpointURL := baseURL + "/v3/order"
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
+	if request.IdempotencyKey != nil {
+		headers.Add("X-Idempotency-Key", fmt.Sprintf("%v", *request.IdempotencyKey))
+	}
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
