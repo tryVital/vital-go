@@ -35,25 +35,25 @@ type Client struct {
 	caller  *core.Caller
 	header  http.Header
 
-	User              *user.Client
-	LabTests          *labtests.Client
 	Link              *link.Client
 	Providers         *providers.Client
+	User              *user.Client
+	Sleep             *sleep.Client
+	Workouts          *workouts.Client
+	Vitals            *vitals.Client
 	Electrocardiogram *electrocardiogram.Client
 	SleepCycle        *sleepcycle.Client
 	Profile           *profile.Client
 	Devices           *devices.Client
 	Activity          *activity.Client
-	Workouts          *workouts.Client
-	Sleep             *sleep.Client
 	Body              *body.Client
 	Meal              *meal.Client
 	MenstrualCycle    *menstrualcycle.Client
-	Testkit           *testkit.Client
-	Order             *order.Client
-	Vitals            *vitals.Client
 	Team              *team.Client
 	Introspect        *introspect.Client
+	LabTests          *labtests.Client
+	Testkit           *testkit.Client
+	Order             *order.Client
 	Insurance         *insurance.Client
 	Payor             *payor.Client
 	Aggregate         *aggregate.Client
@@ -70,25 +70,25 @@ func NewClient(opts ...option.RequestOption) *Client {
 			},
 		),
 		header:            options.ToHeader(),
-		User:              user.NewClient(opts...),
-		LabTests:          labtests.NewClient(opts...),
 		Link:              link.NewClient(opts...),
 		Providers:         providers.NewClient(opts...),
+		User:              user.NewClient(opts...),
+		Sleep:             sleep.NewClient(opts...),
+		Workouts:          workouts.NewClient(opts...),
+		Vitals:            vitals.NewClient(opts...),
 		Electrocardiogram: electrocardiogram.NewClient(opts...),
 		SleepCycle:        sleepcycle.NewClient(opts...),
 		Profile:           profile.NewClient(opts...),
 		Devices:           devices.NewClient(opts...),
 		Activity:          activity.NewClient(opts...),
-		Workouts:          workouts.NewClient(opts...),
-		Sleep:             sleep.NewClient(opts...),
 		Body:              body.NewClient(opts...),
 		Meal:              meal.NewClient(opts...),
 		MenstrualCycle:    menstrualcycle.NewClient(opts...),
-		Testkit:           testkit.NewClient(opts...),
-		Order:             order.NewClient(opts...),
-		Vitals:            vitals.NewClient(opts...),
 		Team:              team.NewClient(opts...),
 		Introspect:        introspect.NewClient(opts...),
+		LabTests:          labtests.NewClient(opts...),
+		Testkit:           testkit.NewClient(opts...),
+		Order:             order.NewClient(opts...),
 		Insurance:         insurance.NewClient(opts...),
 		Payor:             payor.NewClient(opts...),
 		Aggregate:         aggregate.NewClient(opts...),
