@@ -249,6 +249,7 @@ const (
 	ClientFacingDeviceSourceTypeRing            ClientFacingDeviceSourceType = "ring"
 	ClientFacingDeviceSourceTypeLab             ClientFacingDeviceSourceType = "lab"
 	ClientFacingDeviceSourceTypeExerciseMachine ClientFacingDeviceSourceType = "exercise_machine"
+	ClientFacingDeviceSourceTypeEarphone        ClientFacingDeviceSourceType = "earphone"
 )
 
 func NewClientFacingDeviceSourceTypeFromString(s string) (ClientFacingDeviceSourceType, error) {
@@ -281,6 +282,8 @@ func NewClientFacingDeviceSourceTypeFromString(s string) (ClientFacingDeviceSour
 		return ClientFacingDeviceSourceTypeLab, nil
 	case "exercise_machine":
 		return ClientFacingDeviceSourceTypeExerciseMachine, nil
+	case "earphone":
+		return ClientFacingDeviceSourceTypeEarphone, nil
 	}
 	var t ClientFacingDeviceSourceType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

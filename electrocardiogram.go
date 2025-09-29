@@ -269,6 +269,7 @@ const (
 	ClientFacingElectrocardiogramSourceTypeRing            ClientFacingElectrocardiogramSourceType = "ring"
 	ClientFacingElectrocardiogramSourceTypeLab             ClientFacingElectrocardiogramSourceType = "lab"
 	ClientFacingElectrocardiogramSourceTypeExerciseMachine ClientFacingElectrocardiogramSourceType = "exercise_machine"
+	ClientFacingElectrocardiogramSourceTypeEarphone        ClientFacingElectrocardiogramSourceType = "earphone"
 )
 
 func NewClientFacingElectrocardiogramSourceTypeFromString(s string) (ClientFacingElectrocardiogramSourceType, error) {
@@ -301,6 +302,8 @@ func NewClientFacingElectrocardiogramSourceTypeFromString(s string) (ClientFacin
 		return ClientFacingElectrocardiogramSourceTypeLab, nil
 	case "exercise_machine":
 		return ClientFacingElectrocardiogramSourceTypeExerciseMachine, nil
+	case "earphone":
+		return ClientFacingElectrocardiogramSourceTypeEarphone, nil
 	}
 	var t ClientFacingElectrocardiogramSourceType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

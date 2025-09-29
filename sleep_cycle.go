@@ -180,6 +180,7 @@ const (
 	ClientFacingSleepCycleSourceTypeRing            ClientFacingSleepCycleSourceType = "ring"
 	ClientFacingSleepCycleSourceTypeLab             ClientFacingSleepCycleSourceType = "lab"
 	ClientFacingSleepCycleSourceTypeExerciseMachine ClientFacingSleepCycleSourceType = "exercise_machine"
+	ClientFacingSleepCycleSourceTypeEarphone        ClientFacingSleepCycleSourceType = "earphone"
 )
 
 func NewClientFacingSleepCycleSourceTypeFromString(s string) (ClientFacingSleepCycleSourceType, error) {
@@ -212,6 +213,8 @@ func NewClientFacingSleepCycleSourceTypeFromString(s string) (ClientFacingSleepC
 		return ClientFacingSleepCycleSourceTypeLab, nil
 	case "exercise_machine":
 		return ClientFacingSleepCycleSourceTypeExerciseMachine, nil
+	case "earphone":
+		return ClientFacingSleepCycleSourceTypeEarphone, nil
 	}
 	var t ClientFacingSleepCycleSourceType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

@@ -289,6 +289,7 @@ const (
 	ClientFacingMenstrualCycleSourceTypeRing            ClientFacingMenstrualCycleSourceType = "ring"
 	ClientFacingMenstrualCycleSourceTypeLab             ClientFacingMenstrualCycleSourceType = "lab"
 	ClientFacingMenstrualCycleSourceTypeExerciseMachine ClientFacingMenstrualCycleSourceType = "exercise_machine"
+	ClientFacingMenstrualCycleSourceTypeEarphone        ClientFacingMenstrualCycleSourceType = "earphone"
 )
 
 func NewClientFacingMenstrualCycleSourceTypeFromString(s string) (ClientFacingMenstrualCycleSourceType, error) {
@@ -321,6 +322,8 @@ func NewClientFacingMenstrualCycleSourceTypeFromString(s string) (ClientFacingMe
 		return ClientFacingMenstrualCycleSourceTypeLab, nil
 	case "exercise_machine":
 		return ClientFacingMenstrualCycleSourceTypeExerciseMachine, nil
+	case "earphone":
+		return ClientFacingMenstrualCycleSourceTypeEarphone, nil
 	}
 	var t ClientFacingMenstrualCycleSourceType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
