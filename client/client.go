@@ -35,6 +35,7 @@ type Client struct {
 	caller  *core.Caller
 	header  http.Header
 
+	User              *user.Client
 	Providers         *providers.Client
 	Link              *link.Client
 	Electrocardiogram *electrocardiogram.Client
@@ -48,7 +49,6 @@ type Client struct {
 	Meal              *meal.Client
 	MenstrualCycle    *menstrualcycle.Client
 	Vitals            *vitals.Client
-	User              *user.Client
 	Team              *team.Client
 	Introspect        *introspect.Client
 	LabTests          *labtests.Client
@@ -70,6 +70,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 			},
 		),
 		header:            options.ToHeader(),
+		User:              user.NewClient(opts...),
 		Providers:         providers.NewClient(opts...),
 		Link:              link.NewClient(opts...),
 		Electrocardiogram: electrocardiogram.NewClient(opts...),
@@ -83,7 +84,6 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Meal:              meal.NewClient(opts...),
 		MenstrualCycle:    menstrualcycle.NewClient(opts...),
 		Vitals:            vitals.NewClient(opts...),
-		User:              user.NewClient(opts...),
 		Team:              team.NewClient(opts...),
 		Introspect:        introspect.NewClient(opts...),
 		LabTests:          labtests.NewClient(opts...),
