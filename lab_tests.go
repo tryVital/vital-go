@@ -5,8 +5,9 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/tryVital/vital-go/core"
 	time "time"
+
+	core "github.com/tryVital/vital-go/core"
 )
 
 type ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest struct {
@@ -29,6 +30,7 @@ type CreateLabTestRequest struct {
 }
 
 type CreateOrderRequestCompatible struct {
+	IdempotencyKey   *string                       `json:"-" url:"-"`
 	UserId           string                        `json:"user_id" url:"-"`
 	LabTestId        *string                       `json:"lab_test_id,omitempty" url:"-"`
 	OrderSet         *OrderSetRequest              `json:"order_set,omitempty" url:"-"`
@@ -74,6 +76,8 @@ type LabTestsGetAreaInfoRequest struct {
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 	// Lab to check for PSCs
 	Lab *ClientFacingLabs `json:"-" url:"lab,omitempty"`
+	// List of labs to check for PSCs
+	Labs []*ClientFacingLabs `json:"-" url:"labs,omitempty"`
 }
 
 type LabTestsGetLabelsPdfRequest struct {
@@ -120,6 +124,8 @@ func (l *LabTestsGetMarkersForOrderSetRequest) MarshalJSON() ([]byte, error) {
 type LabTestsGetOrderPscInfoRequest struct {
 	// Radius in which to search in miles
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
+	// Filter for only locations with certain capabilities
+	Capabilities []*LabLocationCapability `json:"-" url:"capabilities,omitempty"`
 }
 
 type LabTestsGetOrdersRequest struct {
@@ -217,8 +223,10 @@ type LabTestsGetPscInfoRequest struct {
 	ZipCode string `json:"-" url:"zip_code"`
 	// Lab ID to check for PSCs
 	LabId int `json:"-" url:"lab_id"`
-	// Radius in which to search in miles
+	// Radius in which to search in miles. Note that we limit to 30 PSCs.
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
+	// Filter for only locations with certain capabilities
+	Capabilities []*LabLocationCapability `json:"-" url:"capabilities,omitempty"`
 }
 
 type ImportOrderBody struct {
@@ -307,6 +315,7 @@ const (
 	AllowedRadiusTwenty     AllowedRadius = "20"
 	AllowedRadiusTwentyFive AllowedRadius = "25"
 	AllowedRadiusFifty      AllowedRadius = "50"
+	AllowedRadiusOneHundred AllowedRadius = "100"
 )
 
 func NewAllowedRadiusFromString(s string) (AllowedRadius, error) {
@@ -319,6 +328,8 @@ func NewAllowedRadiusFromString(s string) (AllowedRadius, error) {
 		return AllowedRadiusTwentyFive, nil
 	case "50":
 		return AllowedRadiusFifty, nil
+	case "100":
+		return AllowedRadiusOneHundred, nil
 	}
 	var t AllowedRadius
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -459,6 +470,7 @@ type AppointmentEventStatus string
 
 const (
 	AppointmentEventStatusPending    AppointmentEventStatus = "pending"
+	AppointmentEventStatusReserved   AppointmentEventStatus = "reserved"
 	AppointmentEventStatusScheduled  AppointmentEventStatus = "scheduled"
 	AppointmentEventStatusCompleted  AppointmentEventStatus = "completed"
 	AppointmentEventStatusCancelled  AppointmentEventStatus = "cancelled"
@@ -469,6 +481,8 @@ func NewAppointmentEventStatusFromString(s string) (AppointmentEventStatus, erro
 	switch s {
 	case "pending":
 		return AppointmentEventStatusPending, nil
+	case "reserved":
+		return AppointmentEventStatusReserved, nil
 	case "scheduled":
 		return AppointmentEventStatusScheduled, nil
 	case "completed":
@@ -488,6 +502,7 @@ func (a AppointmentEventStatus) Ptr() *AppointmentEventStatus {
 
 type AppointmentLocation struct {
 	Location     *LngLat    `json:"location,omitempty" url:"location,omitempty"`
+	Distance     *int       `json:"distance,omitempty" url:"distance,omitempty"`
 	Address      *UsAddress `json:"address,omitempty" url:"address,omitempty"`
 	Code         string     `json:"code" url:"code"`
 	Name         string     `json:"name" url:"name"`
@@ -633,6 +648,7 @@ type AppointmentStatus string
 const (
 	AppointmentStatusConfirmed  AppointmentStatus = "confirmed"
 	AppointmentStatusPending    AppointmentStatus = "pending"
+	AppointmentStatusReserved   AppointmentStatus = "reserved"
 	AppointmentStatusInProgress AppointmentStatus = "in_progress"
 	AppointmentStatusCompleted  AppointmentStatus = "completed"
 	AppointmentStatusCancelled  AppointmentStatus = "cancelled"
@@ -644,6 +660,8 @@ func NewAppointmentStatusFromString(s string) (AppointmentStatus, error) {
 		return AppointmentStatusConfirmed, nil
 	case "pending":
 		return AppointmentStatusPending, nil
+	case "reserved":
+		return AppointmentStatusReserved, nil
 	case "in_progress":
 		return AppointmentStatusInProgress, nil
 	case "completed":
@@ -727,9 +745,10 @@ func (a *AreaInfo) String() string {
 
 // Represent the schema for an individual biomarker result.
 type BiomarkerResult struct {
-	Name                 string                 `json:"name" url:"name"`
-	Slug                 *string                `json:"slug,omitempty" url:"slug,omitempty"`
-	Value                float64                `json:"value" url:"value"`
+	Name string  `json:"name" url:"name"`
+	Slug *string `json:"slug,omitempty" url:"slug,omitempty"`
+	// Deprecated: Use 'result' (string) and `type` (enum) instead.
+	Value                *float64               `json:"value,omitempty" url:"value,omitempty"`
 	Result               string                 `json:"result" url:"result"`
 	Type                 ResultType             `json:"type" url:"type"`
 	Unit                 *string                `json:"unit,omitempty" url:"unit,omitempty"`
@@ -990,11 +1009,12 @@ func (c *ClientFacingAppointmentEvent) String() string {
 }
 
 type ClientFacingLabLocation struct {
-	Metadata           *LabLocationMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
-	Distance           int                  `json:"distance" url:"distance"`
-	SiteCode           string               `json:"site_code" url:"site_code"`
-	SupportedBillTypes []Billing            `json:"supported_bill_types,omitempty" url:"supported_bill_types,omitempty"`
-	Location           *LngLat              `json:"location,omitempty" url:"location,omitempty"`
+	Metadata           *LabLocationMetadata    `json:"metadata,omitempty" url:"metadata,omitempty"`
+	Distance           int                     `json:"distance" url:"distance"`
+	SiteCode           string                  `json:"site_code" url:"site_code"`
+	SupportedBillTypes []Billing               `json:"supported_bill_types,omitempty" url:"supported_bill_types,omitempty"`
+	Location           *LngLat                 `json:"location,omitempty" url:"location,omitempty"`
+	Capabilities       []LabLocationCapability `json:"capabilities,omitempty" url:"capabilities,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1119,6 +1139,7 @@ type ClientFacingMarkerComplete struct {
 	ALaCarteEnabled  *bool                 `json:"a_la_carte_enabled,omitempty" url:"a_la_carte_enabled,omitempty"`
 	CommonTatDays    *int                  `json:"common_tat_days,omitempty" url:"common_tat_days,omitempty"`
 	WorstCaseTatDays *int                  `json:"worst_case_tat_days,omitempty" url:"worst_case_tat_days,omitempty"`
+	IsOrderable      *bool                 `json:"is_orderable,omitempty" url:"is_orderable,omitempty"`
 	ExpectedResults  []*ClientFacingResult `json:"expected_results,omitempty" url:"expected_results,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -1430,6 +1451,32 @@ func (g *GetOrdersResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type LabLocationCapability string
+
+const (
+	LabLocationCapabilityStat                             LabLocationCapability = "stat"
+	LabLocationCapabilityAppointmentSchedulingViaJunction LabLocationCapability = "appointment_scheduling_via_junction"
+	LabLocationCapabilityAppointmentSchedulingWithLab     LabLocationCapability = "appointment_scheduling_with_lab"
+)
+
+func NewLabLocationCapabilityFromString(s string) (LabLocationCapability, error) {
+	switch s {
+	case "stat":
+		return LabLocationCapabilityStat, nil
+	case "appointment_scheduling_via_junction":
+		return LabLocationCapabilityAppointmentSchedulingViaJunction, nil
+	case "appointment_scheduling_with_lab":
+		return LabLocationCapabilityAppointmentSchedulingWithLab, nil
+	}
+	var t LabLocationCapability
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabLocationCapability) Ptr() *LabLocationCapability {
+	return &l
 }
 
 type LabLocationMetadata struct {
@@ -2310,9 +2357,10 @@ func (p *PscAreaInfo) String() string {
 }
 
 type PscAreaInfoDetails struct {
-	AppointmentWithVital bool   `json:"appointment_with_vital" url:"appointment_with_vital"`
-	WithinRadius         int    `json:"within_radius" url:"within_radius"`
-	Radius               string `json:"radius" url:"radius"`
+	AppointmentWithVital bool                    `json:"appointment_with_vital" url:"appointment_with_vital"`
+	WithinRadius         int                     `json:"within_radius" url:"within_radius"`
+	Radius               string                  `json:"radius" url:"radius"`
+	Capabilities         []LabLocationCapability `json:"capabilities,omitempty" url:"capabilities,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -2625,8 +2673,9 @@ func (s *SampleDataDateReported) Accept(visitor SampleDataDateReportedVisitor) e
 }
 
 type SimulationFlags struct {
-	Interpretation *Interpretation `json:"interpretation,omitempty" url:"interpretation,omitempty"`
-	ResultTypes    []ResultType    `json:"result_types,omitempty" url:"result_types,omitempty"`
+	Interpretation    *Interpretation `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	ResultTypes       []ResultType    `json:"result_types,omitempty" url:"result_types,omitempty"`
+	HasMissingResults *bool           `json:"has_missing_results,omitempty" url:"has_missing_results,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
