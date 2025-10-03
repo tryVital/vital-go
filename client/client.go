@@ -35,8 +35,8 @@ type Client struct {
 	caller  *core.Caller
 	header  http.Header
 
-	Providers         *providers.Client
 	User              *user.Client
+	Providers         *providers.Client
 	Link              *link.Client
 	Electrocardiogram *electrocardiogram.Client
 	SleepCycle        *sleepcycle.Client
@@ -70,8 +70,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 			},
 		),
 		header:            options.ToHeader(),
-		Providers:         providers.NewClient(opts...),
 		User:              user.NewClient(opts...),
+		Providers:         providers.NewClient(opts...),
 		Link:              link.NewClient(opts...),
 		Electrocardiogram: electrocardiogram.NewClient(opts...),
 		SleepCycle:        sleepcycle.NewClient(opts...),
