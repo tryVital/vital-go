@@ -163,6 +163,7 @@ func (c *Client) Create(
 func (c *Client) GetById(
 	ctx context.Context,
 	labTestId string,
+	request *vitalgo.LabTestsGetByIdRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingLabTest, error) {
 	options := core.NewRequestOptions(opts...)
@@ -175,6 +176,14 @@ func (c *Client) GetById(
 		baseURL = options.BaseURL
 	}
 	endpointURL := core.EncodeURL(baseURL+"/v3/lab_tests/%v", labTestId)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
@@ -479,6 +488,7 @@ func (c *Client) GetMarkersByLabAndProviderId(
 	ctx context.Context,
 	providerId string,
 	labId int,
+	request *vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingMarker, error) {
 	options := core.NewRequestOptions(opts...)
@@ -495,6 +505,14 @@ func (c *Client) GetMarkersByLabAndProviderId(
 		labId,
 		providerId,
 	)
+
+	queryParams, err := core.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
