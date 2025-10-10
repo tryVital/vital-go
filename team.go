@@ -112,6 +112,7 @@ type ClientFacingTeam struct {
 	LabTestsPatientEmailCommunicationEnabled bool                  `json:"lab_tests_patient_email_communication_enabled" url:"lab_tests_patient_email_communication_enabled"`
 	LogoUrl                                  *string               `json:"logo_url,omitempty" url:"logo_url,omitempty"`
 	DelegatedFlow                            DelegatedFlowType     `json:"delegated_flow" url:"delegated_flow"`
+	CriticalResultNotificationEmail          *string               `json:"critical_result_notification_email,omitempty" url:"critical_result_notification_email,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -358,6 +359,8 @@ type TeamConfig struct {
 	ProviderRawData                *bool                        `json:"provider_raw_data,omitempty" url:"provider_raw_data,omitempty"`
 	RejectDuplicateConnection      *bool                        `json:"reject_duplicate_connection,omitempty" url:"reject_duplicate_connection,omitempty"`
 	SdkPerDeviceActivityTimeseries *bool                        `json:"sdk_per_device_activity_timeseries,omitempty" url:"sdk_per_device_activity_timeseries,omitempty"`
+	PartialWebhooksEnabled         *bool                        `json:"partial_webhooks_enabled,omitempty" url:"partial_webhooks_enabled,omitempty"`
+	MinorOrderingEnabled           *bool                        `json:"minor_ordering_enabled,omitempty" url:"minor_ordering_enabled,omitempty"`
 	EdsPreferences                 *EventDestinationPreferences `json:"eds_preferences,omitempty" url:"eds_preferences,omitempty"`
 	EventTypePrefixes              []string                     `json:"event_type_prefixes,omitempty" url:"event_type_prefixes,omitempty"`
 
