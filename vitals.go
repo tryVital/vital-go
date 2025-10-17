@@ -798,7 +798,7 @@ type ClientFacingAFibBurdenSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -890,7 +890,7 @@ type ClientFacingBasalBodyTemperatureSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -982,7 +982,7 @@ type ClientFacingBloodOxygenTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in percentage (spo2).
 	Unit string `json:"unit" url:"unit"`
@@ -1052,7 +1052,7 @@ type ClientFacingBloodPressureTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// The unit of the value. We use SI units where possible, e.g. mmol/L for glucose/cholesterol, bpm for heart rate, etc.
 	Unit      string                          `json:"unit" url:"unit"`
@@ -1122,7 +1122,7 @@ type ClientFacingBodyFatTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in percentage (0-100).
 	Unit string `json:"unit" url:"unit"`
@@ -1192,7 +1192,7 @@ type ClientFacingBodyMassIndexSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -1284,7 +1284,7 @@ type ClientFacingBodyTemperatureDeltaSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -1430,7 +1430,7 @@ type ClientFacingBodyTemperatureSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -1576,7 +1576,7 @@ type ClientFacingBodyWeightTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in kilograms (kg).
 	Unit string `json:"unit" url:"unit"`
@@ -1646,7 +1646,7 @@ type ClientFacingCaffeineTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in grams.
 	Unit string `json:"unit" url:"unit"`
@@ -1728,7 +1728,7 @@ type ClientFacingCaloriesActiveTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in kilocalories (kcal)
 	// Depracated. The start time (inclusive) of the interval.
@@ -1821,7 +1821,7 @@ type ClientFacingCaloriesBasalTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in kilocalories (kcal)
 	// The timestamp of the measurement.
@@ -1902,7 +1902,7 @@ type ClientFacingCarbohydratesSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in grams.
 	Unit string `json:"unit" url:"unit"`
@@ -1984,8 +1984,8 @@ type ClientFacingCholesterolTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// The reading type of the measurement.
+	Type string `json:"type" url:"type"`
 	// Measured in mmol/L.
 	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
@@ -2054,7 +2054,7 @@ type ClientFacingDaylightExposureSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -2146,7 +2146,7 @@ type ClientFacingDistanceTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in meters (m)
 	// Depracated. The start time (inclusive) of the interval.
@@ -2309,7 +2309,7 @@ type ClientFacingFallSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -2401,7 +2401,7 @@ type ClientFacingFloorsClimbedTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in counts
 	// The timestamp of the measurement.
@@ -2482,7 +2482,7 @@ type ClientFacingForcedExpiratoryVolume1Sample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -2574,7 +2574,7 @@ type ClientFacingForcedVitalCapacitySample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -2666,7 +2666,7 @@ type ClientFacingGlucoseTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in mmol/L.
 	Unit string `json:"unit" url:"unit"`
@@ -2736,7 +2736,7 @@ type ClientFacingHandwashingSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -2828,7 +2828,7 @@ type ClientFacingHeartRateAlertSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// ℹ️ This enum is non-exhaustive.
+	// The type of heart rate alert. ℹ️ This enum is non-exhaustive.
 	Type ClientFacingHeartRateAlertSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -2914,7 +2914,7 @@ func (c *ClientFacingHeartRateAlertSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// ℹ️ This enum is non-exhaustive.
+// The type of heart rate alert. ℹ️ This enum is non-exhaustive.
 type ClientFacingHeartRateAlertSampleType string
 
 const (
@@ -2945,7 +2945,7 @@ type ClientFacingHeartRateRecoveryOneMinuteSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3037,8 +3037,8 @@ type ClientFacingIgeTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// The reading type of the measurement.
+	Type string `json:"type" url:"type"`
 	// Measured in FSU.
 	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
@@ -3107,8 +3107,8 @@ type ClientFacingIggTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
-	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// The reading type of the measurement.
+	Type string `json:"type" url:"type"`
 	// Measured in FSU.
 	Unit string `json:"unit" url:"unit"`
 	// The timestamp of the measurement.
@@ -3177,7 +3177,7 @@ type ClientFacingInhalerUsageSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3269,7 +3269,7 @@ type ClientFacingInsulinInjectionSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// Insulin type: rapid vs long acting ℹ️ This enum is non-exhaustive.
+	// The type of insulin injection. ℹ️ This enum is non-exhaustive.
 	Type ClientFacingInsulinInjectionSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3356,7 +3356,7 @@ func (c *ClientFacingInsulinInjectionSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Insulin type: rapid vs long acting ℹ️ This enum is non-exhaustive.
+// The type of insulin injection. ℹ️ This enum is non-exhaustive.
 type ClientFacingInsulinInjectionSampleType string
 
 const (
@@ -3384,7 +3384,7 @@ type ClientFacingLeanBodyMassSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3476,7 +3476,7 @@ type ClientFacingMindfulnessMinutesTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in minutes.
 	Unit string `json:"unit" url:"unit"`
@@ -3558,7 +3558,7 @@ type ClientFacingNoteSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// User notes as text.
 	Unit string `json:"unit" url:"unit"`
@@ -3670,7 +3670,7 @@ type ClientFacingPeakExpiratoryFlowRateSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3764,7 +3764,7 @@ type ClientFacingSleepApneaAlertSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3856,7 +3856,7 @@ type ClientFacingSleepBreathingDisturbanceSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// ℹ️ This enum is non-exhaustive.
+	// The type of sleep breathing disturbance. ℹ️ This enum is non-exhaustive.
 	Type *ClientFacingSleepBreathingDisturbanceSampleType `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -3970,7 +3970,7 @@ type ClientFacingStandDurationSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -4062,7 +4062,7 @@ type ClientFacingStandHourSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// ℹ️ This enum is non-exhaustive.
+	// The type of stand hour. ℹ️ This enum is non-exhaustive.
 	Type ClientFacingStandHourSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -4149,7 +4149,7 @@ func (c *ClientFacingStandHourSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// ℹ️ This enum is non-exhaustive.
+// The type of stand hour. ℹ️ This enum is non-exhaustive.
 type ClientFacingStandHourSampleType string
 
 const (
@@ -4177,7 +4177,7 @@ type ClientFacingStepsTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in counts
 	// Depracated. The start time (inclusive) of the interval.
@@ -4270,7 +4270,7 @@ type ClientFacingStressLevelTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in percentage (0-100).
 	Unit string `json:"unit" url:"unit"`
@@ -4339,7 +4339,7 @@ type ClientFacingUvExposureSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -4431,7 +4431,7 @@ type ClientFacingVo2MaxTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in mL/kg/min.
 	Unit string `json:"unit" url:"unit"`
@@ -4513,7 +4513,7 @@ type ClientFacingWaistCircumferenceSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -4605,7 +4605,7 @@ type ClientFacingWaterTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in milliters.
 	Unit string `json:"unit" url:"unit"`
@@ -4675,7 +4675,7 @@ type ClientFacingWheelchairPushSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -4767,7 +4767,7 @@ type ClientFacingWorkoutDistanceSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -4859,7 +4859,7 @@ type ClientFacingWorkoutDurationSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -4978,7 +4978,7 @@ type ClientFacingWorkoutSwimmingStrokeSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`

@@ -4334,7 +4334,7 @@ type ClientFacingHeartRateTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in bpm.
 	Unit string `json:"unit" url:"unit"`
@@ -4678,7 +4678,7 @@ type ClientFacingHrvTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in rmssd.
 	Unit string `json:"unit" url:"unit"`
@@ -4748,7 +4748,7 @@ type ClientFacingHypnogramTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// enum: 1: deep, 2: light, 3: rem, 4: awake, -1: missing_data.
 	Unit string `json:"unit" url:"unit"`
@@ -7634,7 +7634,7 @@ type ClientFacingRespiratoryRateTimeseries struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The reading type of the measurement. This is applicable only to Cholesterol, IGG, IGE and InsulinInjection.
+	// Type is always null for this resource.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// Measured in bpm.
 	Unit string `json:"unit" url:"unit"`
