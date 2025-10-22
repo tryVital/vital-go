@@ -32,6 +32,19 @@ type CreateInsuranceRequest struct {
 	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"-"`
 }
 
+type CreateUserPortalUrlBody struct {
+	// `launch`: Generates a short-lived (minutes) portal URL that is intended for launching a user from your
+	// authenticated web context directly into the Junction User Portal. This URL is not suitable for asynchronous
+	// communications due to its verbosity as well as short-lived nature.
+	//
+	// `communications`: Generates a long-lived (weeks) but shortened portal URL that is suitable for Emails, SMS
+	// messages and other communication channels. Users may be asked to verify their identity with Email and SMS
+	// authentication, e.g., when they open a short link on a new device. ℹ️ This enum is non-exhaustive.
+	Context CreateUserPortalUrlBodyContext `json:"context" url:"-"`
+	// If specified, the generated URL will deeplink to the specified Order.
+	OrderId *string `json:"order_id,omitempty" url:"-"`
+}
+
 type UserGetAllRequest struct {
 	Offset *int `json:"-" url:"offset,omitempty"`
 	Limit  *int `json:"-" url:"limit,omitempty"`
@@ -492,6 +505,48 @@ func (c *CompanyDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (c *CompanyDetails) String() string {
+	if len(c._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateUserPortalUrlResponse struct {
+	Url       string `json:"url" url:"url"`
+	ExpiresIn int    `json:"expires_in" url:"expires_in"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (c *CreateUserPortalUrlResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateUserPortalUrlResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateUserPortalUrlResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateUserPortalUrlResponse(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+
+	c._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateUserPortalUrlResponse) String() string {
 	if len(c._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(c._rawJSON); err == nil {
 			return value
@@ -1008,6 +1063,35 @@ func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) String() string
 		return value
 	}
 	return fmt.Sprintf("%#v", v)
+}
+
+// `launch`: Generates a short-lived (minutes) portal URL that is intended for launching a user from your
+// authenticated web context directly into the Junction User Portal. This URL is not suitable for asynchronous
+// communications due to its verbosity as well as short-lived nature.
+//
+// `communications`: Generates a long-lived (weeks) but shortened portal URL that is suitable for Emails, SMS
+// messages and other communication channels. Users may be asked to verify their identity with Email and SMS
+// authentication, e.g., when they open a short link on a new device. ℹ️ This enum is non-exhaustive.
+type CreateUserPortalUrlBodyContext string
+
+const (
+	CreateUserPortalUrlBodyContextLaunch         CreateUserPortalUrlBodyContext = "launch"
+	CreateUserPortalUrlBodyContextCommunications CreateUserPortalUrlBodyContext = "communications"
+)
+
+func NewCreateUserPortalUrlBodyContextFromString(s string) (CreateUserPortalUrlBodyContext, error) {
+	switch s {
+	case "launch":
+		return CreateUserPortalUrlBodyContextLaunch, nil
+	case "communications":
+		return CreateUserPortalUrlBodyContextCommunications, nil
+	}
+	var t CreateUserPortalUrlBodyContext
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateUserPortalUrlBodyContext) Ptr() *CreateUserPortalUrlBodyContext {
+	return &c
 }
 
 type UserUndoDeleteRequest struct {
