@@ -11973,6 +11973,47 @@ func (m Minerals) Ptr() *Minerals {
 	return &m
 }
 
+type NotFoundErrorBody struct {
+	Detail *string `json:"detail,omitempty" url:"detail,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (n *NotFoundErrorBody) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
+}
+
+func (n *NotFoundErrorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotFoundErrorBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*n = NotFoundErrorBody(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *n)
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+
+	n._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NotFoundErrorBody) String() string {
+	if len(n._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(n._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
 // ℹ️ This enum is non-exhaustive.
 type OrderStatus string
 

@@ -1667,6 +1667,13 @@ func (c *Client) GetPscAppointmentAvailability(
 		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
+		case 404:
+			value := new(vitalgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
 		case 422:
 			value := new(vitalgo.UnprocessableEntityError)
 			value.APIError = apiError

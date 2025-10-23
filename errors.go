@@ -31,6 +31,30 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
+// No slots found. Not all PSCs support scheduling appointments and some included in your query were filtered out because of this.
+type NotFoundError struct {
+	*core.APIError
+	Body *NotFoundErrorBody
+}
+
+func (n *NotFoundError) UnmarshalJSON(data []byte) error {
+	var body *NotFoundErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	n.StatusCode = 404
+	n.Body = body
+	return nil
+}
+
+func (n *NotFoundError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(n.Body)
+}
+
+func (n *NotFoundError) Unwrap() error {
+	return n.APIError
+}
+
 // Validation Error
 type UnprocessableEntityError struct {
 	*core.APIError
