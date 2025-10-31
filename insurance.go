@@ -29,6 +29,7 @@ type ClientFacingDiagnosisInformation struct {
 	DiagnosisCode string `json:"diagnosis_code" url:"diagnosis_code"`
 	// Diagnosis description insurance information.
 	Description string `json:"description" url:"description"`
+	IsSecondary *bool  `json:"is_secondary,omitempty" url:"is_secondary,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
