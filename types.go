@@ -12695,6 +12695,7 @@ const (
 	ProvidersUltrahuman        Providers = "ultrahuman"
 	ProvidersMyFitnessPalV2    Providers = "my_fitness_pal_v2"
 	ProvidersMapMyFitness      Providers = "map_my_fitness"
+	ProvidersRunkeeper         Providers = "runkeeper"
 )
 
 func NewProvidersFromString(s string) (Providers, error) {
@@ -12773,6 +12774,8 @@ func NewProvidersFromString(s string) (Providers, error) {
 		return ProvidersMyFitnessPalV2, nil
 	case "map_my_fitness":
 		return ProvidersMapMyFitness, nil
+	case "runkeeper":
+		return ProvidersRunkeeper, nil
 	}
 	var t Providers
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
