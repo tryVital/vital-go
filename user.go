@@ -475,8 +475,8 @@ func (c *ClientFacingUserKey) String() string {
 }
 
 type CompanyDetails struct {
-	Name    string                                                  `json:"name" url:"name"`
-	Address *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
+	Name    string                                            `json:"name" url:"name"`
+	Address *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -836,18 +836,18 @@ func (t *TimeseriesMetricPoint) String() string {
 }
 
 type UserInfo struct {
-	FirstName         string                                                  `json:"first_name" url:"first_name"`
-	LastName          string                                                  `json:"last_name" url:"last_name"`
-	Email             string                                                  `json:"email" url:"email"`
-	PhoneNumber       string                                                  `json:"phone_number" url:"phone_number"`
-	Gender            string                                                  `json:"gender" url:"gender"`
-	Dob               string                                                  `json:"dob" url:"dob"`
-	Address           *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
-	MedicalProxy      *GuarantorDetails                                       `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
-	Race              *Race                                                   `json:"race,omitempty" url:"race,omitempty"`
-	Ethnicity         *Ethnicity                                              `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
-	SexualOrientation *SexualOrientation                                      `json:"sexual_orientation,omitempty" url:"sexual_orientation,omitempty"`
-	GenderIdentity    *GenderIdentity                                         `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
+	FirstName         string                                            `json:"first_name" url:"first_name"`
+	LastName          string                                            `json:"last_name" url:"last_name"`
+	Email             string                                            `json:"email" url:"email"`
+	PhoneNumber       string                                            `json:"phone_number" url:"phone_number"`
+	Gender            string                                            `json:"gender" url:"gender"`
+	Dob               string                                            `json:"dob" url:"dob"`
+	Address           *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
+	MedicalProxy      *GuarantorDetails                                 `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
+	Race              *Race                                             `json:"race,omitempty" url:"race,omitempty"`
+	Ethnicity         *Ethnicity                                        `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
+	SexualOrientation *SexualOrientation                                `json:"sexual_orientation,omitempty" url:"sexual_orientation,omitempty"`
+	GenderIdentity    *GenderIdentity                                   `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1019,13 +1019,13 @@ func (u *UserSuccessResponse) String() string {
 }
 
 type VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails struct {
-	FirstName   string                                                  `json:"first_name" url:"first_name"`
-	LastName    string                                                  `json:"last_name" url:"last_name"`
-	Gender      Gender                                                  `json:"gender" url:"gender"`
-	Address     *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
-	Dob         string                                                  `json:"dob" url:"dob"`
-	Email       string                                                  `json:"email" url:"email"`
-	PhoneNumber string                                                  `json:"phone_number" url:"phone_number"`
+	FirstName   string                                            `json:"first_name" url:"first_name"`
+	LastName    string                                            `json:"last_name" url:"last_name"`
+	Gender      Gender                                            `json:"gender" url:"gender"`
+	Address     *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
+	Dob         string                                            `json:"dob" url:"dob"`
+	Email       string                                            `json:"email" url:"email"`
+	PhoneNumber string                                            `json:"phone_number" url:"phone_number"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1102,16 +1102,16 @@ type UserUndoDeleteRequest struct {
 }
 
 type UserInfoCreateRequest struct {
-	FirstName         string                                                  `json:"first_name" url:"-"`
-	LastName          string                                                  `json:"last_name" url:"-"`
-	Email             string                                                  `json:"email" url:"-"`
-	PhoneNumber       string                                                  `json:"phone_number" url:"-"`
-	Gender            string                                                  `json:"gender" url:"-"`
-	Dob               string                                                  `json:"dob" url:"-"`
-	Address           *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"-"`
-	MedicalProxy      *GuarantorDetails                                       `json:"medical_proxy,omitempty" url:"-"`
-	Race              *Race                                                   `json:"race,omitempty" url:"-"`
-	Ethnicity         *Ethnicity                                              `json:"ethnicity,omitempty" url:"-"`
-	SexualOrientation *SexualOrientation                                      `json:"sexual_orientation,omitempty" url:"-"`
-	GenderIdentity    *GenderIdentity                                         `json:"gender_identity,omitempty" url:"-"`
+	FirstName         string                                            `json:"first_name" url:"-"`
+	LastName          string                                            `json:"last_name" url:"-"`
+	Email             string                                            `json:"email" url:"-"`
+	PhoneNumber       string                                            `json:"phone_number" url:"-"`
+	Gender            string                                            `json:"gender" url:"-"`
+	Dob               string                                            `json:"dob" url:"-"`
+	Address           *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"address,omitempty" url:"-"`
+	MedicalProxy      *GuarantorDetails                                 `json:"medical_proxy,omitempty" url:"-"`
+	Race              *Race                                             `json:"race,omitempty" url:"-"`
+	Ethnicity         *Ethnicity                                        `json:"ethnicity,omitempty" url:"-"`
+	SexualOrientation *SexualOrientation                                `json:"sexual_orientation,omitempty" url:"-"`
+	GenderIdentity    *GenderIdentity                                   `json:"gender_identity,omitempty" url:"-"`
 }

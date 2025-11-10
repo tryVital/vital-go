@@ -11257,13 +11257,13 @@ func (g GenderIdentity) Ptr() *GenderIdentity {
 }
 
 type GuarantorDetails struct {
-	FirstName       string                                                  `json:"first_name" url:"first_name"`
-	LastName        string                                                  `json:"last_name" url:"last_name"`
-	Address         *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
-	PhoneNumber     string                                                  `json:"phone_number" url:"phone_number"`
-	HouseholdIncome *int                                                    `json:"household_income,omitempty" url:"household_income,omitempty"`
-	HouseholdSize   *int                                                    `json:"household_size,omitempty" url:"household_size,omitempty"`
-	Email           *string                                                 `json:"email,omitempty" url:"email,omitempty"`
+	FirstName       string                                            `json:"first_name" url:"first_name"`
+	LastName        string                                            `json:"last_name" url:"last_name"`
+	Address         *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
+	PhoneNumber     string                                            `json:"phone_number" url:"phone_number"`
+	HouseholdIncome *int                                              `json:"household_income,omitempty" url:"household_income,omitempty"`
+	HouseholdSize   *int                                              `json:"household_size,omitempty" url:"household_size,omitempty"`
+	Email           *string                                           `json:"email,omitempty" url:"email,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -13354,58 +13354,12 @@ func (v *ValidationErrorLocItem) Accept(visitor ValidationErrorLocItemVisitor) e
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
 }
 
-type VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress struct {
-	FirstLine  string  `json:"first_line" url:"first_line"`
-	SecondLine *string `json:"second_line,omitempty" url:"second_line,omitempty"`
-	Country    string  `json:"country" url:"country"`
-	Zip        string  `json:"zip" url:"zip"`
-	City       string  `json:"city" url:"city"`
-	State      string  `json:"state" url:"state"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
 type VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails struct {
-	FirstName   string                                                  `json:"first_name" url:"first_name"`
-	LastName    string                                                  `json:"last_name" url:"last_name"`
-	Address     *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
-	PhoneNumber string                                                  `json:"phone_number" url:"phone_number"`
-	PhoneType   *string                                                 `json:"phone_type,omitempty" url:"phone_type,omitempty"`
+	FirstName   string                                            `json:"first_name" url:"first_name"`
+	LastName    string                                            `json:"last_name" url:"last_name"`
+	Address     *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
+	PhoneNumber string                                            `json:"phone_number" url:"phone_number"`
+	PhoneType   *string                                           `json:"phone_type,omitempty" url:"phone_type,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -13434,6 +13388,52 @@ func (v *VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails) Unmarshal
 }
 
 func (v *VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VitalCoreSchemasDbSchemasLabTestInsuranceAddress struct {
+	FirstLine  string  `json:"first_line" url:"first_line"`
+	SecondLine *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	Country    string  `json:"country" url:"country"`
+	Zip        string  `json:"zip" url:"zip"`
+	City       string  `json:"city" url:"city"`
+	State      string  `json:"state" url:"state"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestInsuranceAddress) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestInsuranceAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasDbSchemasLabTestInsuranceAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasDbSchemasLabTestInsuranceAddress(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestInsuranceAddress) String() string {
 	if len(v._rawJSON) > 0 {
 		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
 			return value
