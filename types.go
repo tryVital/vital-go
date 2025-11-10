@@ -9,52 +9,6 @@ import (
 	time "time"
 )
 
-type Address struct {
-	FirstLine  string  `json:"first_line" url:"first_line"`
-	SecondLine *string `json:"second_line,omitempty" url:"second_line,omitempty"`
-	Country    string  `json:"country" url:"country"`
-	Zip        string  `json:"zip" url:"zip"`
-	City       string  `json:"city" url:"city"`
-	State      string  `json:"state" url:"state"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (a *Address) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *Address) UnmarshalJSON(data []byte) error {
-	type unmarshaler Address
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = Address(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-
-	a._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *Address) String() string {
-	if len(a._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(a._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
 type Answer struct {
 	Id    int    `json:"id" url:"id"`
 	Code  string `json:"code" url:"code"`
@@ -306,11 +260,11 @@ func (c *ClientFacingActivityHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingAfibBurdenChanged struct {
-	EventType    ClientFacingAfibBurdenChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                 `json:"user_id" url:"user_id"`
-	ClientUserId string                                 `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                 `json:"team_id" url:"team_id"`
-	Data         *GroupedAFibBurden                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingAfibBurdenChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                            `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                            `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                            `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -621,11 +575,11 @@ func (c *ClientFacingAtHomePhlebotomyOrderDetails) String() string {
 }
 
 type ClientFacingBasalBodyTemperatureChanged struct {
-	EventType    ClientFacingBasalBodyTemperatureChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                           `json:"user_id" url:"user_id"`
-	ClientUserId string                                           `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                           `json:"team_id" url:"team_id"`
-	Data         *GroupedBasalBodyTemperature                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingBasalBodyTemperatureChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                      `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                      `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -758,11 +712,11 @@ func (c *ClientFacingBasalBodyTemperatureHistoricalPullCompleted) String() strin
 }
 
 type ClientFacingBloodOxygenChanged struct {
-	EventType    ClientFacingBloodOxygenChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                  `json:"user_id" url:"user_id"`
-	ClientUserId string                                  `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                  `json:"team_id" url:"team_id"`
-	Data         *GroupedBloodOxygen                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingBloodOxygenChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                 `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -895,11 +849,11 @@ func (c *ClientFacingBloodOxygenHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingBloodPressureChanged struct {
-	EventType    ClientFacingBloodPressureChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                    `json:"user_id" url:"user_id"`
-	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                    `json:"team_id" url:"team_id"`
-	Data         *GroupedBloodPressure                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingBloodPressureChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                   `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                   `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1169,11 +1123,11 @@ func (c *ClientFacingBodyHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingBodyMassIndexChanged struct {
-	EventType    ClientFacingBodyMassIndexChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                    `json:"user_id" url:"user_id"`
-	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                    `json:"team_id" url:"team_id"`
-	Data         *GroupedBodyMassIndex                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingBodyMassIndexChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                               `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                               `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                               `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1306,11 +1260,11 @@ func (c *ClientFacingBodyMassIndexHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingBodyTemperatureChanged struct {
-	EventType    ClientFacingBodyTemperatureChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                      `json:"user_id" url:"user_id"`
-	ClientUserId string                                      `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                      `json:"team_id" url:"team_id"`
-	Data         *GroupedBodyTemperature                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingBodyTemperatureChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                 `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1373,11 +1327,11 @@ func (c ClientFacingBodyTemperatureChangedEventType) Ptr() *ClientFacingBodyTemp
 }
 
 type ClientFacingBodyTemperatureDeltaChanged struct {
-	EventType    ClientFacingBodyTemperatureDeltaChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                           `json:"user_id" url:"user_id"`
-	ClientUserId string                                           `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                           `json:"team_id" url:"team_id"`
-	Data         *GroupedBodyTemperatureDelta                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingBodyTemperatureDeltaChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                      `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                      `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1580,11 +1534,11 @@ func (c *ClientFacingBodyTemperatureHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingCaffeineChanged struct {
-	EventType    ClientFacingCaffeineChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                               `json:"user_id" url:"user_id"`
-	ClientUserId string                               `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                               `json:"team_id" url:"team_id"`
-	Data         *GroupedCaffeine                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingCaffeineChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                              `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                              `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                              `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1717,11 +1671,11 @@ func (c *ClientFacingCaffeineHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingCaloriesActiveChanged struct {
-	EventType    ClientFacingCaloriesActiveChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                     `json:"user_id" url:"user_id"`
-	ClientUserId string                                     `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                     `json:"team_id" url:"team_id"`
-	Data         *GroupedCaloriesActive                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingCaloriesActiveChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                    `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                    `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                    `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1854,11 +1808,11 @@ func (c *ClientFacingCaloriesActiveHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingCaloriesBasalChanged struct {
-	EventType    ClientFacingCaloriesBasalChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                    `json:"user_id" url:"user_id"`
-	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                    `json:"team_id" url:"team_id"`
-	Data         *GroupedCaloriesBasal                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingCaloriesBasalChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                   `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                   `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -1991,11 +1945,11 @@ func (c *ClientFacingCaloriesBasalHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingCarbohydratesChanged struct {
-	EventType    ClientFacingCarbohydratesChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                    `json:"user_id" url:"user_id"`
-	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                    `json:"team_id" url:"team_id"`
-	Data         *GroupedCarbohydrates                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingCarbohydratesChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                               `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                               `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                               `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -2128,11 +2082,11 @@ func (c *ClientFacingCarbohydratesHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingCholesterolChanged struct {
-	EventType    ClientFacingCholesterolChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                  `json:"user_id" url:"user_id"`
-	ClientUserId string                                  `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                  `json:"team_id" url:"team_id"`
-	Data         *GroupedCholesterol                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingCholesterolChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                 `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -2482,11 +2436,11 @@ func (c *ClientFacingCriticalResultIdentified) String() string {
 }
 
 type ClientFacingDaylightExposureChanged struct {
-	EventType    ClientFacingDaylightExposureChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                       `json:"user_id" url:"user_id"`
-	ClientUserId string                                       `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                       `json:"team_id" url:"team_id"`
-	Data         *GroupedDaylightExposure                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingDaylightExposureChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                  `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                  `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                  `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -2686,11 +2640,11 @@ func (c ClientFacingDeviceChangedEventType) Ptr() *ClientFacingDeviceChangedEven
 }
 
 type ClientFacingDistanceChanged struct {
-	EventType    ClientFacingDistanceChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                               `json:"user_id" url:"user_id"`
-	ClientUserId string                               `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                               `json:"team_id" url:"team_id"`
-	Data         *GroupedDistance                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingDistanceChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                              `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                              `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                              `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -2960,11 +2914,11 @@ func (c *ClientFacingElectrocardiogramHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingElectrocardiogramVoltageChanged struct {
-	EventType    ClientFacingElectrocardiogramVoltageChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                               `json:"user_id" url:"user_id"`
-	ClientUserId string                                               `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                               `json:"team_id" url:"team_id"`
-	Data         *GroupedElectrocardiogramVoltage                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingElectrocardiogramVoltageChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                              `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                              `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                              `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3097,11 +3051,11 @@ func (c *ClientFacingElectrocardiogramVoltageHistoricalPullCompleted) String() s
 }
 
 type ClientFacingFallChanged struct {
-	EventType    ClientFacingFallChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                           `json:"user_id" url:"user_id"`
-	ClientUserId string                           `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                           `json:"team_id" url:"team_id"`
-	Data         *GroupedFall                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingFallChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                      `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                      `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3234,11 +3188,11 @@ func (c *ClientFacingFallHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingFatChanged struct {
-	EventType    ClientFacingFatChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                          `json:"user_id" url:"user_id"`
-	ClientUserId string                          `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                          `json:"team_id" url:"team_id"`
-	Data         *GroupedBodyFat                 `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingFatChangedEventType                                                                    `json:"event_type" url:"event_type"`
+	UserId       string                                                                                             `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                             `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                             `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3371,11 +3325,11 @@ func (c *ClientFacingFatHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingFloorsClimbedChanged struct {
-	EventType    ClientFacingFloorsClimbedChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                    `json:"user_id" url:"user_id"`
-	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                    `json:"team_id" url:"team_id"`
-	Data         *GroupedFloorsClimbed                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingFloorsClimbedChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                   `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                   `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                   `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3508,11 +3462,11 @@ func (c *ClientFacingFloorsClimbedHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingForcedExpiratoryVolume1Changed struct {
-	EventType    ClientFacingForcedExpiratoryVolume1ChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                              `json:"user_id" url:"user_id"`
-	ClientUserId string                                              `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                              `json:"team_id" url:"team_id"`
-	Data         *GroupedForcedExpiratoryVolume1                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingForcedExpiratoryVolume1ChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                         `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                         `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                         `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3645,11 +3599,11 @@ func (c *ClientFacingForcedExpiratoryVolume1HistoricalPullCompleted) String() st
 }
 
 type ClientFacingForcedVitalCapacityChanged struct {
-	EventType    ClientFacingForcedVitalCapacityChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                          `json:"user_id" url:"user_id"`
-	ClientUserId string                                          `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                          `json:"team_id" url:"team_id"`
-	Data         *GroupedForcedVitalCapacity                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingForcedVitalCapacityChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                     `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                     `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                     `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3782,11 +3736,11 @@ func (c *ClientFacingForcedVitalCapacityHistoricalPullCompleted) String() string
 }
 
 type ClientFacingGlucoseChanged struct {
-	EventType    ClientFacingGlucoseChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                              `json:"user_id" url:"user_id"`
-	ClientUserId string                              `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                              `json:"team_id" url:"team_id"`
-	Data         *GroupedGlucose                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingGlucoseChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                             `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                             `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                             `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -3919,11 +3873,11 @@ func (c *ClientFacingGlucoseHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingHandwashingChanged struct {
-	EventType    ClientFacingHandwashingChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                  `json:"user_id" url:"user_id"`
-	ClientUserId string                                  `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                  `json:"team_id" url:"team_id"`
-	Data         *GroupedHandwashing                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingHandwashingChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                             `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                             `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                             `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -4056,11 +4010,11 @@ func (c *ClientFacingHandwashingHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingHeartRateAlertChanged struct {
-	EventType    ClientFacingHeartRateAlertChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                     `json:"user_id" url:"user_id"`
-	ClientUserId string                                     `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                     `json:"team_id" url:"team_id"`
-	Data         *GroupedHeartRateAlert                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingHeartRateAlertChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -4193,11 +4147,11 @@ func (c *ClientFacingHeartRateAlertHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingHeartRateRecoveryOneMinuteChanged struct {
-	EventType    ClientFacingHeartRateRecoveryOneMinuteChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                                 `json:"user_id" url:"user_id"`
-	ClientUserId string                                                 `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                                 `json:"team_id" url:"team_id"`
-	Data         *GroupedHeartRateRecoveryOneMinute                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingHeartRateRecoveryOneMinuteChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                            `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                            `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                            `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -4400,11 +4354,11 @@ func (c *ClientFacingHeartRateTimeseries) String() string {
 }
 
 type ClientFacingHeartrateChanged struct {
-	EventType    ClientFacingHeartrateChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                `json:"user_id" url:"user_id"`
-	ClientUserId string                                `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                `json:"team_id" url:"team_id"`
-	Data         *GroupedHeartRate                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingHeartrateChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                               `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                               `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                               `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -4537,11 +4491,11 @@ func (c *ClientFacingHeartrateHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingHrvChanged struct {
-	EventType    ClientFacingHrvChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                          `json:"user_id" url:"user_id"`
-	ClientUserId string                          `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                          `json:"team_id" url:"team_id"`
-	Data         *GroupedHrv                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingHrvChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                         `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                         `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                         `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -4826,11 +4780,11 @@ func (c *ClientFacingHypnogramTimeseries) String() string {
 }
 
 type ClientFacingIgeChanged struct {
-	EventType    ClientFacingIgeChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                          `json:"user_id" url:"user_id"`
-	ClientUserId string                          `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                          `json:"team_id" url:"team_id"`
-	Data         *GroupedIge                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingIgeChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                         `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                         `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                         `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -4963,11 +4917,11 @@ func (c *ClientFacingIgeHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingIggChanged struct {
-	EventType    ClientFacingIggChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                          `json:"user_id" url:"user_id"`
-	ClientUserId string                          `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                          `json:"team_id" url:"team_id"`
-	Data         *GroupedIgg                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingIggChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                         `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                         `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                         `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -5100,11 +5054,11 @@ func (c *ClientFacingIggHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingInhalerUsageChanged struct {
-	EventType    ClientFacingInhalerUsageChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                   `json:"user_id" url:"user_id"`
-	ClientUserId string                                   `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                   `json:"team_id" url:"team_id"`
-	Data         *GroupedInhalerUsage                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingInhalerUsageChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                              `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                              `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                              `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -5237,11 +5191,11 @@ func (c *ClientFacingInhalerUsageHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingInsulinInjectionChanged struct {
-	EventType    ClientFacingInsulinInjectionChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                       `json:"user_id" url:"user_id"`
-	ClientUserId string                                       `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                       `json:"team_id" url:"team_id"`
-	Data         *GroupedInsulinInjection                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingInsulinInjectionChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                  `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                  `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                  `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -5485,11 +5439,11 @@ func (c *ClientFacingLabTest) String() string {
 }
 
 type ClientFacingLeanBodyMassChanged struct {
-	EventType    ClientFacingLeanBodyMassChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                   `json:"user_id" url:"user_id"`
-	ClientUserId string                                   `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                   `json:"team_id" url:"team_id"`
-	Data         *GroupedLeanBodyMass                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingLeanBodyMassChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                              `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                              `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                              `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -5950,11 +5904,11 @@ func (c *ClientFacingMenstrualCycleHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingMindfulnessMinutesChanged struct {
-	EventType    ClientFacingMindfulnessMinutesChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                         `json:"user_id" url:"user_id"`
-	ClientUserId string                                         `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                         `json:"team_id" url:"team_id"`
-	Data         *GroupedMindfulnessMinutes                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingMindfulnessMinutesChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                        `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                        `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                        `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -6087,11 +6041,11 @@ func (c *ClientFacingMindfulnessMinutesHistoricalPullCompleted) String() string 
 }
 
 type ClientFacingNoteChanged struct {
-	EventType    ClientFacingNoteChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                           `json:"user_id" url:"user_id"`
-	ClientUserId string                           `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                           `json:"team_id" url:"team_id"`
-	Data         *GroupedNote                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingNoteChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                      `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                      `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -6768,11 +6722,11 @@ func (c ClientFacingPayorCodeSource) Ptr() *ClientFacingPayorCodeSource {
 }
 
 type ClientFacingPeakExpiratoryFlowRateChanged struct {
-	EventType    ClientFacingPeakExpiratoryFlowRateChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                             `json:"user_id" url:"user_id"`
-	ClientUserId string                                             `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                             `json:"team_id" url:"team_id"`
-	Data         *GroupedPeakExpiratoryFlowRate                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingPeakExpiratoryFlowRateChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                        `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                        `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                        `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -7493,11 +7447,11 @@ func (c ClientFacingResource) Ptr() *ClientFacingResource {
 }
 
 type ClientFacingRespiratoryRateChanged struct {
-	EventType    ClientFacingRespiratoryRateChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                      `json:"user_id" url:"user_id"`
-	ClientUserId string                                      `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                      `json:"team_id" url:"team_id"`
-	Data         *GroupedRespiratoryRate                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingRespiratoryRateChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                     `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                     `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                     `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -7808,11 +7762,11 @@ func (c *ClientFacingShipment) String() string {
 }
 
 type ClientFacingSleepApneaAlertChanged struct {
-	EventType    ClientFacingSleepApneaAlertChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                      `json:"user_id" url:"user_id"`
-	ClientUserId string                                      `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                      `json:"team_id" url:"team_id"`
-	Data         *GroupedSleepApneaAlert                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingSleepApneaAlertChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                 `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -7945,11 +7899,11 @@ func (c *ClientFacingSleepApneaAlertHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingSleepBreathingDisturbanceChanged struct {
-	EventType    ClientFacingSleepBreathingDisturbanceChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                                `json:"user_id" url:"user_id"`
-	ClientUserId string                                                `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                                `json:"team_id" url:"team_id"`
-	Data         *GroupedSleepBreathingDisturbance                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingSleepBreathingDisturbanceChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                           `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                           `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                           `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -8422,11 +8376,11 @@ func (c *ClientFacingSource) String() string {
 }
 
 type ClientFacingStandDurationChanged struct {
-	EventType    ClientFacingStandDurationChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                    `json:"user_id" url:"user_id"`
-	ClientUserId string                                    `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                    `json:"team_id" url:"team_id"`
-	Data         *GroupedStandDuration                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingStandDurationChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                               `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                               `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                               `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -8559,11 +8513,11 @@ func (c *ClientFacingStandDurationHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingStandHourChanged struct {
-	EventType    ClientFacingStandHourChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                `json:"user_id" url:"user_id"`
-	ClientUserId string                                `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                `json:"team_id" url:"team_id"`
-	Data         *GroupedStandHour                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingStandHourChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                           `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                           `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                           `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -8696,11 +8650,11 @@ func (c *ClientFacingStandHourHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingStepsChanged struct {
-	EventType    ClientFacingStepsChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                            `json:"user_id" url:"user_id"`
-	ClientUserId string                            `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                            `json:"team_id" url:"team_id"`
-	Data         *GroupedSteps                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingStepsChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                           `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                           `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                           `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -8833,11 +8787,11 @@ func (c *ClientFacingStepsHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingStressLevelChanged struct {
-	EventType    ClientFacingStressLevelChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                  `json:"user_id" url:"user_id"`
-	ClientUserId string                                  `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                  `json:"team_id" url:"team_id"`
-	Data         *GroupedStressLevel                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingStressLevelChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                 `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -9159,11 +9113,11 @@ func (c *ClientFacingUser) String() string {
 }
 
 type ClientFacingUvExposureChanged struct {
-	EventType    ClientFacingUvExposureChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                 `json:"user_id" url:"user_id"`
-	ClientUserId string                                 `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                 `json:"team_id" url:"team_id"`
-	Data         *GroupedUvExposure                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingUvExposureChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                            `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                            `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                            `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -9296,11 +9250,11 @@ func (c *ClientFacingUvExposureHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingVo2MaxChanged struct {
-	EventType    ClientFacingVo2MaxChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                             `json:"user_id" url:"user_id"`
-	ClientUserId string                             `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                             `json:"team_id" url:"team_id"`
-	Data         *GroupedVo2Max                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingVo2MaxChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                            `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                            `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                            `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -9433,11 +9387,11 @@ func (c *ClientFacingVo2MaxHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingWaistCircumferenceChanged struct {
-	EventType    ClientFacingWaistCircumferenceChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                         `json:"user_id" url:"user_id"`
-	ClientUserId string                                         `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                         `json:"team_id" url:"team_id"`
-	Data         *GroupedWaistCircumference                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingWaistCircumferenceChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                    `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                    `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                    `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -9681,11 +9635,11 @@ func (c *ClientFacingWalkInTestOrder) String() string {
 }
 
 type ClientFacingWaterChanged struct {
-	EventType    ClientFacingWaterChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                            `json:"user_id" url:"user_id"`
-	ClientUserId string                            `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                            `json:"team_id" url:"team_id"`
-	Data         *GroupedWater                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingWaterChangedEventType                                                                `json:"event_type" url:"event_type"`
+	UserId       string                                                                                           `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                           `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                           `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -9818,11 +9772,11 @@ func (c *ClientFacingWaterHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingWeightChanged struct {
-	EventType    ClientFacingWeightChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                             `json:"user_id" url:"user_id"`
-	ClientUserId string                             `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                             `json:"team_id" url:"team_id"`
-	Data         *GroupedBodyWeight                 `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingWeightChangedEventType                                                                    `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -9955,11 +9909,11 @@ func (c *ClientFacingWeightHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingWheelchairPushChanged struct {
-	EventType    ClientFacingWheelchairPushChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                     `json:"user_id" url:"user_id"`
-	ClientUserId string                                     `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                     `json:"team_id" url:"team_id"`
-	Data         *GroupedWheelchairPush                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingWheelchairPushChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -10092,11 +10046,11 @@ func (c *ClientFacingWheelchairPushHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingWorkoutDistanceChanged struct {
-	EventType    ClientFacingWorkoutDistanceChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                      `json:"user_id" url:"user_id"`
-	ClientUserId string                                      `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                      `json:"team_id" url:"team_id"`
-	Data         *GroupedWorkoutDistance                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingWorkoutDistanceChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                 `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -10229,11 +10183,11 @@ func (c *ClientFacingWorkoutDistanceHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingWorkoutDurationChanged struct {
-	EventType    ClientFacingWorkoutDurationChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                      `json:"user_id" url:"user_id"`
-	ClientUserId string                                      `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                      `json:"team_id" url:"team_id"`
-	Data         *GroupedWorkoutDuration                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingWorkoutDurationChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                 `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                 `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                 `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -10503,11 +10457,11 @@ func (c *ClientFacingWorkoutStreamHistoricalPullCompleted) String() string {
 }
 
 type ClientFacingWorkoutSwimmingStrokeChanged struct {
-	EventType    ClientFacingWorkoutSwimmingStrokeChangedEventType `json:"event_type" url:"event_type"`
-	UserId       string                                            `json:"user_id" url:"user_id"`
-	ClientUserId string                                            `json:"client_user_id" url:"client_user_id"`
-	TeamId       string                                            `json:"team_id" url:"team_id"`
-	Data         *GroupedWorkoutSwimmingStroke                     `json:"data,omitempty" url:"data,omitempty"`
+	EventType    ClientFacingWorkoutSwimmingStrokeChangedEventType                                                            `json:"event_type" url:"event_type"`
+	UserId       string                                                                                                       `json:"user_id" url:"user_id"`
+	ClientUserId string                                                                                                       `json:"client_user_id" url:"client_user_id"`
+	TeamId       string                                                                                                       `json:"team_id" url:"team_id"`
+	Data         *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -11303,13 +11257,13 @@ func (g GenderIdentity) Ptr() *GenderIdentity {
 }
 
 type GuarantorDetails struct {
-	FirstName       string   `json:"first_name" url:"first_name"`
-	LastName        string   `json:"last_name" url:"last_name"`
-	Address         *Address `json:"address,omitempty" url:"address,omitempty"`
-	PhoneNumber     string   `json:"phone_number" url:"phone_number"`
-	HouseholdIncome *int     `json:"household_income,omitempty" url:"household_income,omitempty"`
-	HouseholdSize   *int     `json:"household_size,omitempty" url:"household_size,omitempty"`
-	Email           *string  `json:"email,omitempty" url:"email,omitempty"`
+	FirstName       string                                                  `json:"first_name" url:"first_name"`
+	LastName        string                                                  `json:"last_name" url:"last_name"`
+	Address         *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
+	PhoneNumber     string                                                  `json:"phone_number" url:"phone_number"`
+	HouseholdIncome *int                                                    `json:"household_income,omitempty" url:"household_income,omitempty"`
+	HouseholdSize   *int                                                    `json:"household_size,omitempty" url:"household_size,omitempty"`
+	Email           *string                                                 `json:"email,omitempty" url:"email,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage
@@ -13400,12 +13354,58 @@ func (v *ValidationErrorLocItem) Accept(visitor ValidationErrorLocItemVisitor) e
 	return fmt.Errorf("type %T does not include a non-empty union type", v)
 }
 
+type VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress struct {
+	FirstLine  string  `json:"first_line" url:"first_line"`
+	SecondLine *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	Country    string  `json:"country" url:"country"`
+	Zip        string  `json:"zip" url:"zip"`
+	City       string  `json:"city" url:"city"`
+	State      string  `json:"state" url:"state"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+
+	v._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress) String() string {
+	if len(v._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 type VitalCoreSchemasDbSchemasLabTestHealthInsurancePersonDetails struct {
-	FirstName   string   `json:"first_name" url:"first_name"`
-	LastName    string   `json:"last_name" url:"last_name"`
-	Address     *Address `json:"address,omitempty" url:"address,omitempty"`
-	PhoneNumber string   `json:"phone_number" url:"phone_number"`
-	PhoneType   *string  `json:"phone_type,omitempty" url:"phone_type,omitempty"`
+	FirstName   string                                                  `json:"first_name" url:"first_name"`
+	LastName    string                                                  `json:"last_name" url:"last_name"`
+	Address     *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"address,omitempty" url:"address,omitempty"`
+	PhoneNumber string                                                  `json:"phone_number" url:"phone_number"`
+	PhoneType   *string                                                 `json:"phone_type,omitempty" url:"phone_type,omitempty"`
 
 	extraProperties map[string]interface{}
 	_rawJSON        json.RawMessage

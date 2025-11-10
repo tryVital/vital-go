@@ -77,7 +77,7 @@ type ClientFacingPayorSearchResponse struct {
 	// Insurance name aliases returned for the insurance information.
 	Aliases []string `json:"aliases,omitempty" url:"aliases,omitempty"`
 	// Insurance business address returned for the insurance information.
-	OrgAddress *Address `json:"org_address,omitempty" url:"org_address,omitempty"`
+	OrgAddress *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"org_address,omitempty" url:"org_address,omitempty"`
 	// The source of the payor, can be one of (platform, team).
 	Source ClientFacingPayorCodeSource `json:"source" url:"source"`
 
@@ -127,7 +127,7 @@ type ClientFacingPayorSearchResponseDeprecated struct {
 	// Insurance name aliases returned for the insurance information.
 	Aliases []string `json:"aliases,omitempty" url:"aliases,omitempty"`
 	// Insurance business address returned for the insurance information.
-	OrgAddress *Address `json:"org_address,omitempty" url:"org_address,omitempty"`
+	OrgAddress *VitalCoreSchemasDbSchemasLabTestHealthInsuranceAddress `json:"org_address,omitempty" url:"org_address,omitempty"`
 	// The source of the payor, can be one of (platform, team).
 	Source ClientFacingPayorCodeSource `json:"source" url:"source"`
 
