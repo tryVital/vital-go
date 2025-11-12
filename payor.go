@@ -9,10 +9,10 @@ import (
 )
 
 type CreatePayorBody struct {
-	Name            string                                            `json:"name" url:"-"`
-	Address         *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"address,omitempty" url:"-"`
-	Provider        *PayorCodeExternalProvider                        `json:"provider,omitempty" url:"-"`
-	ProviderPayorId *string                                           `json:"provider_payor_id,omitempty" url:"-"`
+	Name            string                     `json:"name" url:"-"`
+	Address         *Address                   `json:"address,omitempty" url:"-"`
+	Provider        *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`
+	ProviderPayorId *string                    `json:"provider_payor_id,omitempty" url:"-"`
 }
 
 type ClientFacingPayor struct {
@@ -23,7 +23,7 @@ type ClientFacingPayor struct {
 	// Insurance name aliases returned for the insurance information.
 	Aliases []string `json:"aliases,omitempty" url:"aliases,omitempty"`
 	// Insurance business address returned for the insurance information.
-	OrgAddress *VitalCoreSchemasDbSchemasLabTestInsuranceAddress `json:"org_address,omitempty" url:"org_address,omitempty"`
+	OrgAddress *Address `json:"org_address,omitempty" url:"org_address,omitempty"`
 	// The source of the payor, can be one of (platform, team).
 	Source ClientFacingPayorCodeSource `json:"source" url:"source"`
 

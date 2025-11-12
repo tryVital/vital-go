@@ -5065,9 +5065,51 @@ func (c *ClientFacingWorkoutSwimmingStrokeSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type GroupedAFibBurden struct {
+	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingAFibBurdenSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedAFibBurden) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedAFibBurden) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedAFibBurden
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedAFibBurden(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedAFibBurden) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedAFibBurdenResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedAFibBurden `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5111,9 +5153,51 @@ func (g *GroupedAFibBurdenResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBasalBodyTemperature struct {
+	Source *ClientFacingSource                       `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBasalBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBasalBodyTemperature) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBasalBodyTemperature) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBasalBodyTemperature
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBasalBodyTemperature(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBasalBodyTemperature) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBasalBodyTemperatureResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBasalBodyTemperature `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5157,9 +5241,51 @@ func (g *GroupedBasalBodyTemperatureResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBloodOxygen struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBloodOxygenTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBloodOxygen) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBloodOxygen) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBloodOxygen
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBloodOxygen(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBloodOxygen) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBloodOxygenResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBloodOxygen `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5203,9 +5329,51 @@ func (g *GroupedBloodOxygenResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBloodPressure struct {
+	Source *ClientFacingSource                    `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBloodPressureTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBloodPressure) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBloodPressure) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBloodPressure
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBloodPressure(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBloodPressure) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBloodPressureResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBloodPressure `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5249,9 +5417,51 @@ func (g *GroupedBloodPressureResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBodyFat struct {
+	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBodyFatTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBodyFat) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBodyFat) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyFat
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyFat(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyFat) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBodyFatResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBodyFat `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5295,9 +5505,51 @@ func (g *GroupedBodyFatResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBodyMassIndex struct {
+	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBodyMassIndexSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBodyMassIndex) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBodyMassIndex) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyMassIndex
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyMassIndex(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyMassIndex) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBodyMassIndexResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBodyMassIndex `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5341,9 +5593,93 @@ func (g *GroupedBodyMassIndexResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBodyTemperature struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBodyTemperature) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBodyTemperature) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyTemperature
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyTemperature(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyTemperature) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedBodyTemperatureDelta struct {
+	Source *ClientFacingSource                       `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBodyTemperatureDeltaSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBodyTemperatureDelta) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBodyTemperatureDelta) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyTemperatureDelta
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyTemperatureDelta(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyTemperatureDelta) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBodyTemperatureDeltaResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBodyTemperatureDelta `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5389,7 +5725,7 @@ func (g *GroupedBodyTemperatureDeltaResponse) String() string {
 
 type GroupedBodyTemperatureResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBodyTemperature `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5433,9 +5769,51 @@ func (g *GroupedBodyTemperatureResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedBodyWeight struct {
+	Source *ClientFacingSource                 `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingBodyWeightTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedBodyWeight) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedBodyWeight) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedBodyWeight
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedBodyWeight(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedBodyWeight) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedBodyWeightResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedBodyWeight `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5479,9 +5857,51 @@ func (g *GroupedBodyWeightResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedCaffeine struct {
+	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingCaffeineTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedCaffeine) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedCaffeine) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaffeine
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaffeine(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaffeine) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedCaffeineResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedCaffeine `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5525,9 +5945,51 @@ func (g *GroupedCaffeineResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedCaloriesActive struct {
+	Source *ClientFacingSource                     `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingCaloriesActiveTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedCaloriesActive) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedCaloriesActive) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaloriesActive
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaloriesActive(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaloriesActive) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedCaloriesActiveResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedCaloriesActive `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5571,9 +6033,51 @@ func (g *GroupedCaloriesActiveResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedCaloriesBasal struct {
+	Source *ClientFacingSource                    `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingCaloriesBasalTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedCaloriesBasal) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedCaloriesBasal) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCaloriesBasal
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCaloriesBasal(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCaloriesBasal) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedCaloriesBasalResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedCaloriesBasal `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5617,9 +6121,51 @@ func (g *GroupedCaloriesBasalResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedCarbohydrates struct {
+	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingCarbohydratesSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedCarbohydrates) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedCarbohydrates) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCarbohydrates
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCarbohydrates(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCarbohydrates) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedCarbohydratesResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedCarbohydrates `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5663,9 +6209,51 @@ func (g *GroupedCarbohydratesResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedCholesterol struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingCholesterolTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedCholesterol) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedCholesterol) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedCholesterol
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedCholesterol(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedCholesterol) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedCholesterolResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedCholesterol `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5709,9 +6297,51 @@ func (g *GroupedCholesterolResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedDaylightExposure struct {
+	Source *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingDaylightExposureSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedDaylightExposure) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedDaylightExposure) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedDaylightExposure
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedDaylightExposure(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedDaylightExposure) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedDaylightExposureResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedDaylightExposure `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5755,9 +6385,51 @@ func (g *GroupedDaylightExposureResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedDistance struct {
+	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingDistanceTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedDistance) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedDistance) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedDistance
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedDistance(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedDistance) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedDistanceResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedDistance `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5801,9 +6473,51 @@ func (g *GroupedDistanceResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedElectrocardiogramVoltage struct {
+	Source *ClientFacingSource                               `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingElectrocardiogramVoltageTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedElectrocardiogramVoltage) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedElectrocardiogramVoltage) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedElectrocardiogramVoltage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedElectrocardiogramVoltage(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedElectrocardiogramVoltage) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedElectrocardiogramVoltageResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedElectrocardiogramVoltage `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5847,9 +6561,51 @@ func (g *GroupedElectrocardiogramVoltageResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedFall struct {
+	Source *ClientFacingSource       `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingFallSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedFall) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedFall) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedFall
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedFall(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedFall) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedFallResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedFall `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5893,9 +6649,51 @@ func (g *GroupedFallResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedFloorsClimbed struct {
+	Source *ClientFacingSource                    `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingFloorsClimbedTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedFloorsClimbed) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedFloorsClimbed) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedFloorsClimbed
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedFloorsClimbed(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedFloorsClimbed) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedFloorsClimbedResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedFloorsClimbed `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5939,9 +6737,51 @@ func (g *GroupedFloorsClimbedResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedForcedExpiratoryVolume1 struct {
+	Source *ClientFacingSource                          `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingForcedExpiratoryVolume1Sample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedForcedExpiratoryVolume1) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedForcedExpiratoryVolume1) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedForcedExpiratoryVolume1
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedForcedExpiratoryVolume1(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedForcedExpiratoryVolume1) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedForcedExpiratoryVolume1Response struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedForcedExpiratoryVolume1 `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -5985,9 +6825,51 @@ func (g *GroupedForcedExpiratoryVolume1Response) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedForcedVitalCapacity struct {
+	Source *ClientFacingSource                      `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingForcedVitalCapacitySample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedForcedVitalCapacity) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedForcedVitalCapacity) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedForcedVitalCapacity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedForcedVitalCapacity(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedForcedVitalCapacity) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedForcedVitalCapacityResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedForcedVitalCapacity `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6031,9 +6913,51 @@ func (g *GroupedForcedVitalCapacityResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedGlucose struct {
+	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingGlucoseTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedGlucose) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedGlucose) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedGlucose
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedGlucose(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedGlucose) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedGlucoseResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedGlucose `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6077,9 +7001,51 @@ func (g *GroupedGlucoseResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedHandwashing struct {
+	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingHandwashingSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHandwashing) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHandwashing) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHandwashing
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHandwashing(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHandwashing) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedHandwashingResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedHandwashing `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6123,9 +7089,93 @@ func (g *GroupedHandwashingResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedHeartRate struct {
+	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingHeartRateTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHeartRate) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHeartRate) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHeartRate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHeartRate(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHeartRate) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GroupedHeartRateAlert struct {
+	Source *ClientFacingSource                 `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingHeartRateAlertSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHeartRateAlert) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHeartRateAlert) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHeartRateAlert
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHeartRateAlert(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHeartRateAlert) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedHeartRateAlertResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedHeartRateAlert `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6169,9 +7219,51 @@ func (g *GroupedHeartRateAlertResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedHeartRateRecoveryOneMinute struct {
+	Source *ClientFacingSource                             `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingHeartRateRecoveryOneMinuteSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHeartRateRecoveryOneMinute) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHeartRateRecoveryOneMinute) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHeartRateRecoveryOneMinute
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHeartRateRecoveryOneMinute(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHeartRateRecoveryOneMinute) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedHeartRateRecoveryOneMinuteResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedHeartRateRecoveryOneMinute `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6217,7 +7309,7 @@ func (g *GroupedHeartRateRecoveryOneMinuteResponse) String() string {
 
 type GroupedHeartRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedHeartRate `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6261,9 +7353,51 @@ func (g *GroupedHeartRateResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedHrv struct {
+	Source *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingHrvTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedHrv) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedHrv) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedHrv
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedHrv(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedHrv) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedHrvResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedHrv `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6395,9 +7529,51 @@ func (g *GroupedHypnogramResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedIge struct {
+	Source *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingIgeTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedIge) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedIge) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedIge
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedIge(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedIge) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedIgeResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedIge `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6441,9 +7617,51 @@ func (g *GroupedIgeResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedIgg struct {
+	Source *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingIggTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedIgg) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedIgg) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedIgg
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedIgg(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedIgg) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedIggResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedIgg `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6487,9 +7705,51 @@ func (g *GroupedIggResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedInhalerUsage struct {
+	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingInhalerUsageSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedInhalerUsage) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedInhalerUsage) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedInhalerUsage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedInhalerUsage(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedInhalerUsage) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedInhalerUsageResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedInhalerUsage `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6533,9 +7793,51 @@ func (g *GroupedInhalerUsageResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedInsulinInjection struct {
+	Source *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingInsulinInjectionSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedInsulinInjection) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedInsulinInjection) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedInsulinInjection
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedInsulinInjection(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedInsulinInjection) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedInsulinInjectionResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedInsulinInjection `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6579,9 +7881,51 @@ func (g *GroupedInsulinInjectionResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedLeanBodyMass struct {
+	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingLeanBodyMassSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedLeanBodyMass) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedLeanBodyMass) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedLeanBodyMass
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedLeanBodyMass(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedLeanBodyMass) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedLeanBodyMassResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedLeanBodyMass `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6625,9 +7969,51 @@ func (g *GroupedLeanBodyMassResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedMindfulnessMinutes struct {
+	Source *ClientFacingSource                         `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingMindfulnessMinutesTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedMindfulnessMinutes) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedMindfulnessMinutes) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedMindfulnessMinutes
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedMindfulnessMinutes(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedMindfulnessMinutes) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedMindfulnessMinutesResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedMindfulnessMinutes `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6671,9 +8057,51 @@ func (g *GroupedMindfulnessMinutesResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedNote struct {
+	Source *ClientFacingSource       `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingNoteSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedNote) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedNote) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedNote
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedNote(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedNote) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedNoteResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedNote `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6717,9 +8145,51 @@ func (g *GroupedNoteResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedPeakExpiratoryFlowRate struct {
+	Source *ClientFacingSource                         `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingPeakExpiratoryFlowRateSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedPeakExpiratoryFlowRate) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedPeakExpiratoryFlowRate) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedPeakExpiratoryFlowRate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedPeakExpiratoryFlowRate(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedPeakExpiratoryFlowRate) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedPeakExpiratoryFlowRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedPeakExpiratoryFlowRate `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6763,9 +8233,51 @@ func (g *GroupedPeakExpiratoryFlowRateResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedRespiratoryRate struct {
+	Source *ClientFacingSource                      `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingRespiratoryRateTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedRespiratoryRate) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedRespiratoryRate) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedRespiratoryRate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedRespiratoryRate(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedRespiratoryRate) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedRespiratoryRateResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedRespiratoryRate `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6809,9 +8321,51 @@ func (g *GroupedRespiratoryRateResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedSleepApneaAlert struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingSleepApneaAlertSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedSleepApneaAlert) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedSleepApneaAlert) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSleepApneaAlert
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSleepApneaAlert(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSleepApneaAlert) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedSleepApneaAlertResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedSleepApneaAlert `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6855,9 +8409,51 @@ func (g *GroupedSleepApneaAlertResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedSleepBreathingDisturbance struct {
+	Source *ClientFacingSource                            `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingSleepBreathingDisturbanceSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedSleepBreathingDisturbance) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedSleepBreathingDisturbance) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSleepBreathingDisturbance
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSleepBreathingDisturbance(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSleepBreathingDisturbance) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedSleepBreathingDisturbanceResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedSleepBreathingDisturbance `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6901,9 +8497,51 @@ func (g *GroupedSleepBreathingDisturbanceResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedStandDuration struct {
+	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingStandDurationSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedStandDuration) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedStandDuration) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStandDuration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStandDuration(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStandDuration) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedStandDurationResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedStandDuration `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6947,9 +8585,51 @@ func (g *GroupedStandDurationResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedStandHour struct {
+	Source *ClientFacingSource            `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingStandHourSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedStandHour) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedStandHour) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStandHour
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStandHour(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStandHour) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedStandHourResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedStandHour `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -6993,9 +8673,51 @@ func (g *GroupedStandHourResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedSteps struct {
+	Source *ClientFacingSource            `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingStepsTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedSteps) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedSteps) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedSteps
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedSteps(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedSteps) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedStepsResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedSteps `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7039,9 +8761,51 @@ func (g *GroupedStepsResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedStressLevel struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingStressLevelTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedStressLevel) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedStressLevel) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedStressLevel
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedStressLevel(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedStressLevel) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedStressLevelResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedStressLevel `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7085,9 +8849,51 @@ func (g *GroupedStressLevelResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedUvExposure struct {
+	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingUvExposureSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedUvExposure) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedUvExposure) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedUvExposure
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedUvExposure(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedUvExposure) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedUvExposureResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedUvExposure `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7131,9 +8937,51 @@ func (g *GroupedUvExposureResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedVo2Max struct {
+	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingVo2MaxTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedVo2Max) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedVo2Max) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedVo2Max
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedVo2Max(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedVo2Max) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedVo2MaxResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedVo2Max `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7177,9 +9025,51 @@ func (g *GroupedVo2MaxResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedWaistCircumference struct {
+	Source *ClientFacingSource                     `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWaistCircumferenceSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWaistCircumference) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWaistCircumference) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWaistCircumference
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWaistCircumference(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWaistCircumference) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedWaistCircumferenceResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedWaistCircumference `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7223,9 +9113,51 @@ func (g *GroupedWaistCircumferenceResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedWater struct {
+	Source *ClientFacingSource            `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWaterTimeseries `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWater) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWater) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWater
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWater(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWater) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedWaterResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedWater `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7269,9 +9201,51 @@ func (g *GroupedWaterResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedWheelchairPush struct {
+	Source *ClientFacingSource                 `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWheelchairPushSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWheelchairPush) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWheelchairPush) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWheelchairPush
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWheelchairPush(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWheelchairPush) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedWheelchairPushResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedWheelchairPush `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7315,9 +9289,51 @@ func (g *GroupedWheelchairPushResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedWorkoutDistance struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWorkoutDistanceSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWorkoutDistance) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWorkoutDistance) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWorkoutDistance
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWorkoutDistance(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWorkoutDistance) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedWorkoutDistanceResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedWorkoutDistance `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7361,9 +9377,51 @@ func (g *GroupedWorkoutDistanceResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedWorkoutDuration struct {
+	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWorkoutDurationSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWorkoutDuration) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWorkoutDuration) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWorkoutDuration
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWorkoutDuration(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWorkoutDuration) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedWorkoutDurationResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedWorkoutDuration `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7407,9 +9465,51 @@ func (g *GroupedWorkoutDurationResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type GroupedWorkoutSwimmingStroke struct {
+	Source *ClientFacingSource                        `json:"source,omitempty" url:"source,omitempty"`
+	Data   []*ClientFacingWorkoutSwimmingStrokeSample `json:"data,omitempty" url:"data,omitempty"`
+
+	extraProperties map[string]interface{}
+	_rawJSON        json.RawMessage
+}
+
+func (g *GroupedWorkoutSwimmingStroke) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GroupedWorkoutSwimmingStroke) UnmarshalJSON(data []byte) error {
+	type unmarshaler GroupedWorkoutSwimmingStroke
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GroupedWorkoutSwimmingStroke(value)
+
+	extraProperties, err := core.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+
+	g._rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GroupedWorkoutSwimmingStroke) String() string {
+	if len(g._rawJSON) > 0 {
+		if value, err := core.StringifyJSON(g._rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := core.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
 type GroupedWorkoutSwimmingStrokeResponse struct {
 	// For each matching provider or lab, a list of grouped timeseries values.
-	Groups map[string][]*VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample `json:"groups,omitempty" url:"groups,omitempty"`
+	Groups map[string][]*GroupedWorkoutSwimmingStroke `json:"groups,omitempty" url:"groups,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
 	Next *string `json:"next,omitempty" url:"next,omitempty"`
 	// The cursor for fetching the next page, or `null` if there is no more data.
@@ -7451,2106 +9551,6 @@ func (g *GroupedWorkoutSwimmingStrokeResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample struct {
-	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingAFibBurdenSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingAFibBurdenSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample struct {
-	Source *ClientFacingSource                       `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBasalBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBasalBodyTemperatureSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries struct {
-	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBloodOxygenTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodOxygenTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries struct {
-	Source *ClientFacingSource                    `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBloodPressureTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBloodPressureTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries struct {
-	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBodyFatTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyFatTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample struct {
-	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBodyMassIndexSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyMassIndexSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample struct {
-	Source *ClientFacingSource                       `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBodyTemperatureDeltaSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureDeltaSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample struct {
-	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBodyTemperatureSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyTemperatureSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries struct {
-	Source *ClientFacingSource                 `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingBodyWeightTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingBodyWeightTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries struct {
-	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingCaffeineTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaffeineTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries struct {
-	Source *ClientFacingSource                     `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingCaloriesActiveTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesActiveTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries struct {
-	Source *ClientFacingSource                    `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingCaloriesBasalTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCaloriesBasalTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample struct {
-	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingCarbohydratesSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCarbohydratesSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries struct {
-	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingCholesterolTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingCholesterolTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample struct {
-	Source *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingDaylightExposureSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDaylightExposureSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries struct {
-	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingDistanceTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingDistanceTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries struct {
-	Source *ClientFacingSource                               `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingElectrocardiogramVoltageTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingElectrocardiogramVoltageTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample struct {
-	Source *ClientFacingSource       `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingFallSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFallSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries struct {
-	Source *ClientFacingSource                    `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingFloorsClimbedTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingFloorsClimbedTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample struct {
-	Source *ClientFacingSource                          `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingForcedExpiratoryVolume1Sample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedExpiratoryVolume1Sample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample struct {
-	Source *ClientFacingSource                      `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingForcedVitalCapacitySample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingForcedVitalCapacitySample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries struct {
-	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingGlucoseTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingGlucoseTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample struct {
-	Source *ClientFacingSource              `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingHandwashingSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHandwashingSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample struct {
-	Source *ClientFacingSource                 `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingHeartRateAlertSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateAlertSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample struct {
-	Source *ClientFacingSource                             `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingHeartRateRecoveryOneMinuteSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateRecoveryOneMinuteSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries struct {
-	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingHeartRateTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHeartRateTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries struct {
-	Source *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingHrvTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingHrvTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries struct {
-	Source *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingIgeTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIgeTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries struct {
-	Source *ClientFacingSource          `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingIggTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingIggTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample struct {
-	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingInhalerUsageSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInhalerUsageSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample struct {
-	Source *ClientFacingSource                   `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingInsulinInjectionSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingInsulinInjectionSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample struct {
-	Source *ClientFacingSource               `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingLeanBodyMassSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingLeanBodyMassSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries struct {
-	Source *ClientFacingSource                         `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingMindfulnessMinutesTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingMindfulnessMinutesTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample struct {
-	Source *ClientFacingSource       `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingNoteSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingNoteSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample struct {
-	Source *ClientFacingSource                         `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingPeakExpiratoryFlowRateSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingPeakExpiratoryFlowRateSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries struct {
-	Source *ClientFacingSource                      `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingRespiratoryRateTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingRespiratoryRateTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample struct {
-	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingSleepApneaAlertSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepApneaAlertSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample struct {
-	Source *ClientFacingSource                            `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingSleepBreathingDisturbanceSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingSleepBreathingDisturbanceSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample struct {
-	Source *ClientFacingSource                `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingStandDurationSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandDurationSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample struct {
-	Source *ClientFacingSource            `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingStandHourSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStandHourSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries struct {
-	Source *ClientFacingSource            `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingStepsTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStepsTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries struct {
-	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingStressLevelTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingStressLevelTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample struct {
-	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingUvExposureSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingUvExposureSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries struct {
-	Source *ClientFacingSource             `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingVo2MaxTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingVo2MaxTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample struct {
-	Source *ClientFacingSource                     `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingWaistCircumferenceSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaistCircumferenceSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries struct {
-	Source *ClientFacingSource            `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingWaterTimeseries `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWaterTimeseries) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample struct {
-	Source *ClientFacingSource                 `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingWheelchairPushSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWheelchairPushSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample struct {
-	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingWorkoutDistanceSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDistanceSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample struct {
-	Source *ClientFacingSource                  `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingWorkoutDurationSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutDurationSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-type VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample struct {
-	Source *ClientFacingSource                        `json:"source,omitempty" url:"source,omitempty"`
-	Data   []*ClientFacingWorkoutSwimmingStrokeSample `json:"data,omitempty" url:"data,omitempty"`
-
-	extraProperties map[string]interface{}
-	_rawJSON        json.RawMessage
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample) UnmarshalJSON(data []byte) error {
-	type unmarshaler VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample(value)
-
-	extraProperties, err := core.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-
-	v._rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VitalCoreSchemasResponseSchemasTimeseriesClientFacingTimeseriesGroupClientFacingWorkoutSwimmingStrokeSample) String() string {
-	if len(v._rawJSON) > 0 {
-		if value, err := core.StringifyJSON(v._rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := core.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
 }
 
 type VitalsUvExposureGroupedRequest struct {
