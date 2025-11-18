@@ -1,5 +1,8 @@
 {
   "cliVersion": "1.1.0",
   "generatorName": "fernapi/fern-go-sdk",
-  "generatorVersion": "1.15.1"
+  "generatorVersion": "1.15.1",
+  "generatorConfig": {
+    "enableWireTests": false
+  }
 }
