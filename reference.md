@@ -14810,6 +14810,116 @@ client.Payor.CreatePayor(
 </dl>
 </details>
 
+## LabReport
+<details><summary><code>client.LabReport.ParserCreateJob(request) -> *vitalgo.ParsingJob</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a parse job, uploads the file to provider, persists the job row,
+and starts the ParseLabReport. Returns a generated job_id.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &vitalgo.BodyCreateLabReportParserJob{}
+client.LabReport.ParserCreateJob(
+        context.TODO(),
+        strings.NewReader(
+            "",
+        ),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.LabReport.ParserGetJob(JobId) -> *vitalgo.ParsingJob</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the parse job status and stored result if completed.
+
+Returns:
+    ParseLabResultJobResponse with job status and parsed data (if complete)
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.LabReport.ParserGetJob(
+        context.TODO(),
+        "job_id",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**jobId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Aggregate
 <details><summary><code>client.Aggregate.QueryOne(UserId, request) -> *vitalgo.AggregationResponse</code></summary>
 <dl>

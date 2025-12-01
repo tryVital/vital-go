@@ -12,6 +12,7 @@ import (
 	insurance "github.com/tryVital/vital-go/insurance"
 	internal "github.com/tryVital/vital-go/internal"
 	introspect "github.com/tryVital/vital-go/introspect"
+	labreport "github.com/tryVital/vital-go/labreport"
 	labtests "github.com/tryVital/vital-go/labtests"
 	link "github.com/tryVital/vital-go/link"
 	meal "github.com/tryVital/vital-go/meal"
@@ -52,6 +53,7 @@ type Client struct {
 	Order             *order.Client
 	Insurance         *insurance.Client
 	Payor             *payor.Client
+	LabReport         *labreport.Client
 	Aggregate         *aggregate.Client
 
 	options *core.RequestOptions
@@ -83,6 +85,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Order:             order.NewClient(options),
 		Insurance:         insurance.NewClient(options),
 		Payor:             payor.NewClient(options),
+		LabReport:         labreport.NewClient(options),
 		Aggregate:         aggregate.NewClient(options),
 		options:           options,
 		baseURL:           options.BaseURL,

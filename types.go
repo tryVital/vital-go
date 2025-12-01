@@ -26534,6 +26534,7 @@ const (
 	InterpretationNormal   Interpretation = "normal"
 	InterpretationAbnormal Interpretation = "abnormal"
 	InterpretationCritical Interpretation = "critical"
+	InterpretationUnknown  Interpretation = "unknown"
 )
 
 func NewInterpretationFromString(s string) (Interpretation, error) {
@@ -26544,6 +26545,8 @@ func NewInterpretationFromString(s string) (Interpretation, error) {
 		return InterpretationAbnormal, nil
 	case "critical":
 		return InterpretationCritical, nil
+	case "unknown":
+		return InterpretationUnknown, nil
 	}
 	var t Interpretation
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
