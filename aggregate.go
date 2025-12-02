@@ -1848,7 +1848,7 @@ func (c *ContinuousQueryTaskHistoryResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// This has to match the `continuous_query_task_status` enum type in postgres. ℹ️ This enum is non-exhaustive.
+// ℹ️ This enum is non-exhaustive.
 type ContinuousQueryTaskStatus string
 
 const (
