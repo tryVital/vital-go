@@ -329,16 +329,16 @@ func (l LabReportResultType) Ptr() *LabReportResultType {
 var (
 	loincMatchFieldLoincCode       = big.NewInt(1 << 0)
 	loincMatchFieldLoincName       = big.NewInt(1 << 1)
-	loincMatchFieldLoincComponent  = big.NewInt(1 << 2)
-	loincMatchFieldSampleType      = big.NewInt(1 << 3)
+	loincMatchFieldDisplayName     = big.NewInt(1 << 2)
+	loincMatchFieldAliases         = big.NewInt(1 << 3)
 	loincMatchFieldConfidenceScore = big.NewInt(1 << 4)
 )
 
 type LoincMatch struct {
 	LoincCode       string   `json:"loinc_code" url:"loinc_code"`
 	LoincName       string   `json:"loinc_name" url:"loinc_name"`
-	LoincComponent  string   `json:"loinc_component" url:"loinc_component"`
-	SampleType      []string `json:"sample_type,omitempty" url:"sample_type,omitempty"`
+	DisplayName     *string  `json:"display_name,omitempty" url:"display_name,omitempty"`
+	Aliases         []string `json:"aliases,omitempty" url:"aliases,omitempty"`
 	ConfidenceScore float64  `json:"confidence_score" url:"confidence_score"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -362,18 +362,18 @@ func (l *LoincMatch) GetLoincName() string {
 	return l.LoincName
 }
 
-func (l *LoincMatch) GetLoincComponent() string {
-	if l == nil {
-		return ""
-	}
-	return l.LoincComponent
-}
-
-func (l *LoincMatch) GetSampleType() []string {
+func (l *LoincMatch) GetDisplayName() *string {
 	if l == nil {
 		return nil
 	}
-	return l.SampleType
+	return l.DisplayName
+}
+
+func (l *LoincMatch) GetAliases() []string {
+	if l == nil {
+		return nil
+	}
+	return l.Aliases
 }
 
 func (l *LoincMatch) GetConfidenceScore() float64 {
@@ -408,18 +408,18 @@ func (l *LoincMatch) SetLoincName(loincName string) {
 	l.require(loincMatchFieldLoincName)
 }
 
-// SetLoincComponent sets the LoincComponent field and marks it as non-optional;
+// SetDisplayName sets the DisplayName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LoincMatch) SetLoincComponent(loincComponent string) {
-	l.LoincComponent = loincComponent
-	l.require(loincMatchFieldLoincComponent)
+func (l *LoincMatch) SetDisplayName(displayName *string) {
+	l.DisplayName = displayName
+	l.require(loincMatchFieldDisplayName)
 }
 
-// SetSampleType sets the SampleType field and marks it as non-optional;
+// SetAliases sets the Aliases field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LoincMatch) SetSampleType(sampleType []string) {
-	l.SampleType = sampleType
-	l.require(loincMatchFieldSampleType)
+func (l *LoincMatch) SetAliases(aliases []string) {
+	l.Aliases = aliases
+	l.require(loincMatchFieldAliases)
 }
 
 // SetConfidenceScore sets the ConfidenceScore field and marks it as non-optional;
