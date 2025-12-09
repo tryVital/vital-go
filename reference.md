@@ -14839,7 +14839,9 @@ and starts the ParseLabReport. Returns a generated job_id.
 <dd>
 
 ```go
-request := &vitalgo.BodyCreateLabReportParserJob{}
+request := &vitalgo.BodyCreateLabReportParserJob{
+        UserId: "user_id",
+    }
 client.LabReport.ParserCreateJob(
         context.TODO(),
         strings.NewReader(

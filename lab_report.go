@@ -12,6 +12,7 @@ import (
 
 type BodyCreateLabReportParserJob struct {
 	File             io.Reader `json:"-" url:"-"`
+	UserId           string    `json:"user_id" url:"-"`
 	NeedsHumanReview *bool     `json:"needs_human_review,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -563,14 +564,16 @@ func (p *ParsedLabReportData) String() string {
 }
 
 var (
-	parsingJobFieldJobId            = big.NewInt(1 << 0)
-	parsingJobFieldStatus           = big.NewInt(1 << 1)
-	parsingJobFieldData             = big.NewInt(1 << 2)
-	parsingJobFieldNeedsHumanReview = big.NewInt(1 << 3)
-	parsingJobFieldIsReviewed       = big.NewInt(1 << 4)
+	parsingJobFieldId               = big.NewInt(1 << 0)
+	parsingJobFieldJobId            = big.NewInt(1 << 1)
+	parsingJobFieldStatus           = big.NewInt(1 << 2)
+	parsingJobFieldData             = big.NewInt(1 << 3)
+	parsingJobFieldNeedsHumanReview = big.NewInt(1 << 4)
+	parsingJobFieldIsReviewed       = big.NewInt(1 << 5)
 )
 
 type ParsingJob struct {
+	Id               string               `json:"id" url:"id"`
 	JobId            string               `json:"job_id" url:"job_id"`
 	Status           ParsingJobStatus     `json:"status" url:"status"`
 	Data             *ParsedLabReportData `json:"data,omitempty" url:"data,omitempty"`
@@ -582,6 +585,13 @@ type ParsingJob struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (p *ParsingJob) GetId() string {
+	if p == nil {
+		return ""
+	}
+	return p.Id
 }
 
 func (p *ParsingJob) GetJobId() string {
@@ -628,6 +638,13 @@ func (p *ParsingJob) require(field *big.Int) {
 		p.explicitFields = big.NewInt(0)
 	}
 	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ParsingJob) SetId(id string) {
+	p.Id = id
+	p.require(parsingJobFieldId)
 }
 
 // SetJobId sets the JobId field and marks it as non-optional;
