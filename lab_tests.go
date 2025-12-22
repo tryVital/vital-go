@@ -7412,9 +7412,10 @@ func (p *PscInfo) String() string {
 type ResultType string
 
 const (
-	ResultTypeNumeric ResultType = "numeric"
-	ResultTypeRange   ResultType = "range"
-	ResultTypeComment ResultType = "comment"
+	ResultTypeNumeric    ResultType = "numeric"
+	ResultTypeRange      ResultType = "range"
+	ResultTypeComment    ResultType = "comment"
+	ResultTypeCodedValue ResultType = "coded_value"
 )
 
 func NewResultTypeFromString(s string) (ResultType, error) {
@@ -7425,6 +7426,8 @@ func NewResultTypeFromString(s string) (ResultType, error) {
 		return ResultTypeRange, nil
 	case "comment":
 		return ResultTypeComment, nil
+	case "coded_value":
+		return ResultTypeCodedValue, nil
 	}
 	var t ResultType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

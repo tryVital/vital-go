@@ -51,6 +51,9 @@ func (r *RawClient) ParserCreateJob(
 	if err := writer.WriteFile("file", request.File); err != nil {
 		return nil, err
 	}
+	if err := writer.WriteField("user_id", request.UserId); err != nil {
+		return nil, err
+	}
 	if request.NeedsHumanReview != nil {
 		if err := writer.WriteField("needs_human_review", fmt.Sprintf("%v", *request.NeedsHumanReview)); err != nil {
 			return nil, err
