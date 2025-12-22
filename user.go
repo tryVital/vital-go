@@ -25,11 +25,11 @@ type UserCreateBody struct {
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty" url:"-"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
-	FallbackBirthDate *time.Time `json:"fallback_birth_date,omitempty" url:"-" format:"date"`
+	FallbackBirthDate *string `json:"fallback_birth_date,omitempty" url:"-"`
 	// Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
-	IngestionStart *time.Time `json:"ingestion_start,omitempty" url:"-" format:"date"`
+	IngestionStart *string `json:"ingestion_start,omitempty" url:"-"`
 	// Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
-	IngestionEnd *time.Time `json:"ingestion_end,omitempty" url:"-" format:"date"`
+	IngestionEnd *string `json:"ingestion_end,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -58,64 +58,35 @@ func (u *UserCreateBody) SetFallbackTimeZone(fallbackTimeZone *string) {
 
 // SetFallbackBirthDate sets the FallbackBirthDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserCreateBody) SetFallbackBirthDate(fallbackBirthDate *time.Time) {
+func (u *UserCreateBody) SetFallbackBirthDate(fallbackBirthDate *string) {
 	u.FallbackBirthDate = fallbackBirthDate
 	u.require(userCreateBodyFieldFallbackBirthDate)
 }
 
 // SetIngestionStart sets the IngestionStart field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserCreateBody) SetIngestionStart(ingestionStart *time.Time) {
+func (u *UserCreateBody) SetIngestionStart(ingestionStart *string) {
 	u.IngestionStart = ingestionStart
 	u.require(userCreateBodyFieldIngestionStart)
 }
 
 // SetIngestionEnd sets the IngestionEnd field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserCreateBody) SetIngestionEnd(ingestionEnd *time.Time) {
+func (u *UserCreateBody) SetIngestionEnd(ingestionEnd *string) {
 	u.IngestionEnd = ingestionEnd
 	u.require(userCreateBodyFieldIngestionEnd)
 }
 
-func (u *UserCreateBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserCreateBody
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*u = UserCreateBody(body)
-	return nil
-}
-
-func (u *UserCreateBody) MarshalJSON() ([]byte, error) {
-	type embed UserCreateBody
-	var marshaler = struct {
-		embed
-		FallbackBirthDate *internal.Date `json:"fallback_birth_date,omitempty"`
-		IngestionStart    *internal.Date `json:"ingestion_start,omitempty"`
-		IngestionEnd      *internal.Date `json:"ingestion_end,omitempty"`
-	}{
-		embed:             embed(*u),
-		FallbackBirthDate: internal.NewOptionalDate(u.FallbackBirthDate),
-		IngestionStart:    internal.NewOptionalDate(u.IngestionStart),
-		IngestionEnd:      internal.NewOptionalDate(u.IngestionEnd),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
 var (
-	createInsuranceRequestFieldUserId       = big.NewInt(1 << 0)
-	createInsuranceRequestFieldPayorCode    = big.NewInt(1 << 1)
-	createInsuranceRequestFieldMemberId     = big.NewInt(1 << 2)
-	createInsuranceRequestFieldGroupId      = big.NewInt(1 << 3)
-	createInsuranceRequestFieldRelationship = big.NewInt(1 << 4)
-	createInsuranceRequestFieldInsured      = big.NewInt(1 << 5)
-	createInsuranceRequestFieldGuarantor    = big.NewInt(1 << 6)
+	createInsuranceRequestFieldPayorCode    = big.NewInt(1 << 0)
+	createInsuranceRequestFieldMemberId     = big.NewInt(1 << 1)
+	createInsuranceRequestFieldGroupId      = big.NewInt(1 << 2)
+	createInsuranceRequestFieldRelationship = big.NewInt(1 << 3)
+	createInsuranceRequestFieldInsured      = big.NewInt(1 << 4)
+	createInsuranceRequestFieldGuarantor    = big.NewInt(1 << 5)
 )
 
 type CreateInsuranceRequest struct {
-	UserId       string                                                  `json:"-" url:"-"`
 	PayorCode    string                                                  `json:"payor_code" url:"-"`
 	MemberId     string                                                  `json:"member_id" url:"-"`
 	GroupId      *string                                                 `json:"group_id,omitempty" url:"-"`
@@ -132,13 +103,6 @@ func (c *CreateInsuranceRequest) require(field *big.Int) {
 		c.explicitFields = big.NewInt(0)
 	}
 	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateInsuranceRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(createInsuranceRequestFieldUserId)
 }
 
 // SetPayorCode sets the PayorCode field and marks it as non-optional;
@@ -184,13 +148,11 @@ func (c *CreateInsuranceRequest) SetGuarantor(guarantor *GuarantorDetails) {
 }
 
 var (
-	createUserPortalUrlBodyFieldUserId  = big.NewInt(1 << 0)
-	createUserPortalUrlBodyFieldContext = big.NewInt(1 << 1)
-	createUserPortalUrlBodyFieldOrderId = big.NewInt(1 << 2)
+	createUserPortalUrlBodyFieldContext = big.NewInt(1 << 0)
+	createUserPortalUrlBodyFieldOrderId = big.NewInt(1 << 1)
 )
 
 type CreateUserPortalUrlBody struct {
-	UserId string `json:"-" url:"-"`
 	// `launch`: Generates a short-lived (minutes) portal URL that is intended for launching a user from your
 	// authenticated web context directly into the Junction User Portal. This URL is not suitable for asynchronous
 	// communications due to its verbosity as well as short-lived nature.
@@ -213,13 +175,6 @@ func (c *CreateUserPortalUrlBody) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateUserPortalUrlBody) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(createUserPortalUrlBodyFieldUserId)
-}
-
 // SetContext sets the Context field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CreateUserPortalUrlBody) SetContext(context CreateUserPortalUrlBodyContext) {
@@ -235,96 +190,11 @@ func (c *CreateUserPortalUrlBody) SetOrderId(orderId *string) {
 }
 
 var (
-	deleteUserRequestFieldUserId = big.NewInt(1 << 0)
+	userGetAllRequestFieldOffset = big.NewInt(1 << 0)
+	userGetAllRequestFieldLimit  = big.NewInt(1 << 1)
 )
 
-type DeleteUserRequest struct {
-	UserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (d *DeleteUserRequest) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteUserRequest) SetUserId(userId string) {
-	d.UserId = userId
-	d.require(deleteUserRequestFieldUserId)
-}
-
-var (
-	deregisterProviderUserRequestFieldUserId   = big.NewInt(1 << 0)
-	deregisterProviderUserRequestFieldProvider = big.NewInt(1 << 1)
-)
-
-type DeregisterProviderUserRequest struct {
-	UserId string `json:"-" url:"-"`
-	// Provider slug. e.g., `oura`, `fitbit`, `garmin`.
-	Provider Providers `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (d *DeregisterProviderUserRequest) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeregisterProviderUserRequest) SetUserId(userId string) {
-	d.UserId = userId
-	d.require(deregisterProviderUserRequestFieldUserId)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeregisterProviderUserRequest) SetProvider(provider Providers) {
-	d.Provider = provider
-	d.require(deregisterProviderUserRequestFieldProvider)
-}
-
-var (
-	getUserRequestFieldUserId = big.NewInt(1 << 0)
-)
-
-type GetUserRequest struct {
-	UserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getUserRequestFieldUserId)
-}
-
-var (
-	getAllUserRequestFieldOffset = big.NewInt(1 << 0)
-	getAllUserRequestFieldLimit  = big.NewInt(1 << 1)
-)
-
-type GetAllUserRequest struct {
+type UserGetAllRequest struct {
 	Offset *int `json:"-" url:"offset,omitempty"`
 	Limit  *int `json:"-" url:"limit,omitempty"`
 
@@ -332,232 +202,45 @@ type GetAllUserRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetAllUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (u *UserGetAllRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetOffset sets the Offset field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAllUserRequest) SetOffset(offset *int) {
-	g.Offset = offset
-	g.require(getAllUserRequestFieldOffset)
+func (u *UserGetAllRequest) SetOffset(offset *int) {
+	u.Offset = offset
+	u.require(userGetAllRequestFieldOffset)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAllUserRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getAllUserRequestFieldLimit)
+func (u *UserGetAllRequest) SetLimit(limit *int) {
+	u.Limit = limit
+	u.require(userGetAllRequestFieldLimit)
 }
 
 var (
-	getByClientUserIdUserRequestFieldClientUserId = big.NewInt(1 << 0)
-)
-
-type GetByClientUserIdUserRequest struct {
-	// A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
-	ClientUserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetByClientUserIdUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetClientUserId sets the ClientUserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetByClientUserIdUserRequest) SetClientUserId(clientUserId string) {
-	g.ClientUserId = clientUserId
-	g.require(getByClientUserIdUserRequestFieldClientUserId)
-}
-
-var (
-	getConnectedProvidersUserRequestFieldUserId = big.NewInt(1 << 0)
-)
-
-type GetConnectedProvidersUserRequest struct {
-	UserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetConnectedProvidersUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetConnectedProvidersUserRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getConnectedProvidersUserRequestFieldUserId)
-}
-
-var (
-	getDeviceUserRequestFieldUserId   = big.NewInt(1 << 0)
-	getDeviceUserRequestFieldDeviceId = big.NewInt(1 << 1)
-)
-
-type GetDeviceUserRequest struct {
-	UserId   string `json:"-" url:"-"`
-	DeviceId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetDeviceUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetDeviceUserRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getDeviceUserRequestFieldUserId)
-}
-
-// SetDeviceId sets the DeviceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetDeviceUserRequest) SetDeviceId(deviceId string) {
-	g.DeviceId = deviceId
-	g.require(getDeviceUserRequestFieldDeviceId)
-}
-
-var (
-	getDevicesUserRequestFieldUserId = big.NewInt(1 << 0)
-)
-
-type GetDevicesUserRequest struct {
-	UserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetDevicesUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetDevicesUserRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getDevicesUserRequestFieldUserId)
-}
-
-var (
-	getLatestInsuranceUserRequestFieldUserId = big.NewInt(1 << 0)
-)
-
-type GetLatestInsuranceUserRequest struct {
-	UserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetLatestInsuranceUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLatestInsuranceUserRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getLatestInsuranceUserRequestFieldUserId)
-}
-
-var (
-	getLatestUserInfoUserRequestFieldUserId = big.NewInt(1 << 0)
-)
-
-type GetLatestUserInfoUserRequest struct {
-	UserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetLatestUserInfoUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLatestUserInfoUserRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getLatestUserInfoUserRequestFieldUserId)
-}
-
-var (
-	getUserSignInTokenUserRequestFieldUserId = big.NewInt(1 << 0)
-)
-
-type GetUserSignInTokenUserRequest struct {
-	UserId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetUserSignInTokenUserRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserSignInTokenUserRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getUserSignInTokenUserRequestFieldUserId)
-}
-
-var (
-	userPatchBodyFieldUserId            = big.NewInt(1 << 0)
-	userPatchBodyFieldFallbackTimeZone  = big.NewInt(1 << 1)
-	userPatchBodyFieldFallbackBirthDate = big.NewInt(1 << 2)
-	userPatchBodyFieldIngestionStart    = big.NewInt(1 << 3)
-	userPatchBodyFieldIngestionEnd      = big.NewInt(1 << 4)
-	userPatchBodyFieldClientUserId      = big.NewInt(1 << 5)
+	userPatchBodyFieldFallbackTimeZone  = big.NewInt(1 << 0)
+	userPatchBodyFieldFallbackBirthDate = big.NewInt(1 << 1)
+	userPatchBodyFieldIngestionStart    = big.NewInt(1 << 2)
+	userPatchBodyFieldIngestionEnd      = big.NewInt(1 << 3)
+	userPatchBodyFieldClientUserId      = big.NewInt(1 << 4)
 )
 
 type UserPatchBody struct {
-	UserId string `json:"-" url:"-"`
 	// Fallback time zone of the user, in the form of a valid IANA tzdatabase identifier (e.g., `Europe/London` or `America/Los_Angeles`).
 	// Used when pulling data from sources that are completely time zone agnostic (e.g., all time is relative to UTC clock, without any time zone attributions on data points).
 	FallbackTimeZone *string `json:"fallback_time_zone,omitempty" url:"-"`
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
-	FallbackBirthDate *time.Time `json:"fallback_birth_date,omitempty" url:"-" format:"date"`
+	FallbackBirthDate *string `json:"fallback_birth_date,omitempty" url:"-"`
 	// Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
-	IngestionStart *time.Time `json:"ingestion_start,omitempty" url:"-" format:"date"`
+	IngestionStart *string `json:"ingestion_start,omitempty" url:"-"`
 	// Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
-	IngestionEnd *time.Time `json:"ingestion_end,omitempty" url:"-" format:"date"`
+	IngestionEnd *string `json:"ingestion_end,omitempty" url:"-"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	ClientUserId *string `json:"client_user_id,omitempty" url:"-"`
 
@@ -572,13 +255,6 @@ func (u *UserPatchBody) require(field *big.Int) {
 	u.explicitFields.Or(u.explicitFields, field)
 }
 
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserPatchBody) SetUserId(userId string) {
-	u.UserId = userId
-	u.require(userPatchBodyFieldUserId)
-}
-
 // SetFallbackTimeZone sets the FallbackTimeZone field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (u *UserPatchBody) SetFallbackTimeZone(fallbackTimeZone *string) {
@@ -588,21 +264,21 @@ func (u *UserPatchBody) SetFallbackTimeZone(fallbackTimeZone *string) {
 
 // SetFallbackBirthDate sets the FallbackBirthDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserPatchBody) SetFallbackBirthDate(fallbackBirthDate *time.Time) {
+func (u *UserPatchBody) SetFallbackBirthDate(fallbackBirthDate *string) {
 	u.FallbackBirthDate = fallbackBirthDate
 	u.require(userPatchBodyFieldFallbackBirthDate)
 }
 
 // SetIngestionStart sets the IngestionStart field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserPatchBody) SetIngestionStart(ingestionStart *time.Time) {
+func (u *UserPatchBody) SetIngestionStart(ingestionStart *string) {
 	u.IngestionStart = ingestionStart
 	u.require(userPatchBodyFieldIngestionStart)
 }
 
 // SetIngestionEnd sets the IngestionEnd field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserPatchBody) SetIngestionEnd(ingestionEnd *time.Time) {
+func (u *UserPatchBody) SetIngestionEnd(ingestionEnd *string) {
 	u.IngestionEnd = ingestionEnd
 	u.require(userPatchBodyFieldIngestionEnd)
 }
@@ -614,65 +290,29 @@ func (u *UserPatchBody) SetClientUserId(clientUserId *string) {
 	u.require(userPatchBodyFieldClientUserId)
 }
 
-func (u *UserPatchBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserPatchBody
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*u = UserPatchBody(body)
-	return nil
-}
-
-func (u *UserPatchBody) MarshalJSON() ([]byte, error) {
-	type embed UserPatchBody
-	var marshaler = struct {
-		embed
-		FallbackBirthDate *internal.Date `json:"fallback_birth_date,omitempty"`
-		IngestionStart    *internal.Date `json:"ingestion_start,omitempty"`
-		IngestionEnd      *internal.Date `json:"ingestion_end,omitempty"`
-	}{
-		embed:             embed(*u),
-		FallbackBirthDate: internal.NewOptionalDate(u.FallbackBirthDate),
-		IngestionStart:    internal.NewOptionalDate(u.IngestionStart),
-		IngestionEnd:      internal.NewOptionalDate(u.IngestionEnd),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
 var (
-	refreshUserRequestFieldUserId  = big.NewInt(1 << 0)
-	refreshUserRequestFieldTimeout = big.NewInt(1 << 1)
+	userRefreshRequestFieldTimeout = big.NewInt(1 << 0)
 )
 
-type RefreshUserRequest struct {
-	UserId  string   `json:"-" url:"-"`
+type UserRefreshRequest struct {
 	Timeout *float64 `json:"-" url:"timeout,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (r *RefreshUserRequest) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
+func (u *UserRefreshRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
 	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RefreshUserRequest) SetUserId(userId string) {
-	r.UserId = userId
-	r.require(refreshUserRequestFieldUserId)
+	u.explicitFields.Or(u.explicitFields, field)
 }
 
 // SetTimeout sets the Timeout field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RefreshUserRequest) SetTimeout(timeout *float64) {
-	r.Timeout = timeout
-	r.require(refreshUserRequestFieldTimeout)
+func (u *UserRefreshRequest) SetTimeout(timeout *float64) {
+	u.Timeout = timeout
+	u.require(userRefreshRequestFieldTimeout)
 }
 
 // ℹ️ This enum is non-exhaustive.
@@ -2499,7 +2139,7 @@ type UserInfo struct {
 	Email             string             `json:"email" url:"email"`
 	PhoneNumber       string             `json:"phone_number" url:"phone_number"`
 	Gender            string             `json:"gender" url:"gender"`
-	Dob               time.Time          `json:"dob" url:"dob" format:"date"`
+	Dob               string             `json:"dob" url:"dob"`
 	Address           *Address           `json:"address" url:"address"`
 	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
 	Race              *Race              `json:"race,omitempty" url:"race,omitempty"`
@@ -2549,9 +2189,9 @@ func (u *UserInfo) GetGender() string {
 	return u.Gender
 }
 
-func (u *UserInfo) GetDob() time.Time {
+func (u *UserInfo) GetDob() string {
 	if u == nil {
-		return time.Time{}
+		return ""
 	}
 	return u.Dob
 }
@@ -2646,7 +2286,7 @@ func (u *UserInfo) SetGender(gender string) {
 
 // SetDob sets the Dob field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserInfo) SetDob(dob time.Time) {
+func (u *UserInfo) SetDob(dob string) {
 	u.Dob = dob
 	u.require(userInfoFieldDob)
 }
@@ -2694,18 +2334,12 @@ func (u *UserInfo) SetGenderIdentity(genderIdentity *GenderIdentity) {
 }
 
 func (u *UserInfo) UnmarshalJSON(data []byte) error {
-	type embed UserInfo
-	var unmarshaler = struct {
-		embed
-		Dob *internal.Date `json:"dob"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UserInfo
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UserInfo(unmarshaler.embed)
-	u.Dob = unmarshaler.Dob.Time()
+	*u = UserInfo(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
@@ -2719,10 +2353,8 @@ func (u *UserInfo) MarshalJSON() ([]byte, error) {
 	type embed UserInfo
 	var marshaler = struct {
 		embed
-		Dob *internal.Date `json:"dob"`
 	}{
 		embed: embed(*u),
-		Dob:   internal.NewDate(u.Dob),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -3068,13 +2700,13 @@ var (
 )
 
 type VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails struct {
-	FirstName   string    `json:"first_name" url:"first_name"`
-	LastName    string    `json:"last_name" url:"last_name"`
-	Gender      Gender    `json:"gender" url:"gender"`
-	Address     *Address  `json:"address" url:"address"`
-	Dob         time.Time `json:"dob" url:"dob" format:"date"`
-	Email       string    `json:"email" url:"email"`
-	PhoneNumber string    `json:"phone_number" url:"phone_number"`
+	FirstName   string   `json:"first_name" url:"first_name"`
+	LastName    string   `json:"last_name" url:"last_name"`
+	Gender      Gender   `json:"gender" url:"gender"`
+	Address     *Address `json:"address" url:"address"`
+	Dob         string   `json:"dob" url:"dob"`
+	Email       string   `json:"email" url:"email"`
+	PhoneNumber string   `json:"phone_number" url:"phone_number"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3111,9 +2743,9 @@ func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) GetAddress() *A
 	return v.Address
 }
 
-func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) GetDob() time.Time {
+func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) GetDob() string {
 	if v == nil {
-		return time.Time{}
+		return ""
 	}
 	return v.Dob
 }
@@ -3173,7 +2805,7 @@ func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) SetAddress(addr
 
 // SetDob sets the Dob field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) SetDob(dob time.Time) {
+func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) SetDob(dob string) {
 	v.Dob = dob
 	v.require(vitalCoreSchemasDbSchemasLabTestInsurancePersonDetailsFieldDob)
 }
@@ -3193,18 +2825,12 @@ func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) SetPhoneNumber(
 }
 
 func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) UnmarshalJSON(data []byte) error {
-	type embed VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails
-	var unmarshaler = struct {
-		embed
-		Dob *internal.Date `json:"dob"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails(unmarshaler.embed)
-	v.Dob = unmarshaler.Dob.Time()
+	*v = VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
@@ -3218,10 +2844,8 @@ func (v *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails) MarshalJSON() (
 	type embed VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails
 	var marshaler = struct {
 		embed
-		Dob *internal.Date `json:"dob"`
 	}{
 		embed: embed(*v),
-		Dob:   internal.NewDate(v.Dob),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -3269,11 +2893,11 @@ func (c CreateUserPortalUrlBodyContext) Ptr() *CreateUserPortalUrlBodyContext {
 }
 
 var (
-	undoDeleteUserRequestFieldUserId       = big.NewInt(1 << 0)
-	undoDeleteUserRequestFieldClientUserId = big.NewInt(1 << 1)
+	userUndoDeleteRequestFieldUserId       = big.NewInt(1 << 0)
+	userUndoDeleteRequestFieldClientUserId = big.NewInt(1 << 1)
 )
 
-type UndoDeleteUserRequest struct {
+type UserUndoDeleteRequest struct {
 	// User ID to undo deletion. Mutually exclusive with `client_user_id`.
 	UserId *string `json:"-" url:"user_id,omitempty"`
 	// Client User ID to undo deletion. Mutually exclusive with `user_id`.
@@ -3283,7 +2907,7 @@ type UndoDeleteUserRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UndoDeleteUserRequest) require(field *big.Int) {
+func (u *UserUndoDeleteRequest) require(field *big.Int) {
 	if u.explicitFields == nil {
 		u.explicitFields = big.NewInt(0)
 	}
@@ -3292,42 +2916,40 @@ func (u *UndoDeleteUserRequest) require(field *big.Int) {
 
 // SetUserId sets the UserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UndoDeleteUserRequest) SetUserId(userId *string) {
+func (u *UserUndoDeleteRequest) SetUserId(userId *string) {
 	u.UserId = userId
-	u.require(undoDeleteUserRequestFieldUserId)
+	u.require(userUndoDeleteRequestFieldUserId)
 }
 
 // SetClientUserId sets the ClientUserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UndoDeleteUserRequest) SetClientUserId(clientUserId *string) {
+func (u *UserUndoDeleteRequest) SetClientUserId(clientUserId *string) {
 	u.ClientUserId = clientUserId
-	u.require(undoDeleteUserRequestFieldClientUserId)
+	u.require(userUndoDeleteRequestFieldClientUserId)
 }
 
 var (
-	userInfoCreateRequestFieldUserId            = big.NewInt(1 << 0)
-	userInfoCreateRequestFieldFirstName         = big.NewInt(1 << 1)
-	userInfoCreateRequestFieldLastName          = big.NewInt(1 << 2)
-	userInfoCreateRequestFieldEmail             = big.NewInt(1 << 3)
-	userInfoCreateRequestFieldPhoneNumber       = big.NewInt(1 << 4)
-	userInfoCreateRequestFieldGender            = big.NewInt(1 << 5)
-	userInfoCreateRequestFieldDob               = big.NewInt(1 << 6)
-	userInfoCreateRequestFieldAddress           = big.NewInt(1 << 7)
-	userInfoCreateRequestFieldMedicalProxy      = big.NewInt(1 << 8)
-	userInfoCreateRequestFieldRace              = big.NewInt(1 << 9)
-	userInfoCreateRequestFieldEthnicity         = big.NewInt(1 << 10)
-	userInfoCreateRequestFieldSexualOrientation = big.NewInt(1 << 11)
-	userInfoCreateRequestFieldGenderIdentity    = big.NewInt(1 << 12)
+	userInfoCreateRequestFieldFirstName         = big.NewInt(1 << 0)
+	userInfoCreateRequestFieldLastName          = big.NewInt(1 << 1)
+	userInfoCreateRequestFieldEmail             = big.NewInt(1 << 2)
+	userInfoCreateRequestFieldPhoneNumber       = big.NewInt(1 << 3)
+	userInfoCreateRequestFieldGender            = big.NewInt(1 << 4)
+	userInfoCreateRequestFieldDob               = big.NewInt(1 << 5)
+	userInfoCreateRequestFieldAddress           = big.NewInt(1 << 6)
+	userInfoCreateRequestFieldMedicalProxy      = big.NewInt(1 << 7)
+	userInfoCreateRequestFieldRace              = big.NewInt(1 << 8)
+	userInfoCreateRequestFieldEthnicity         = big.NewInt(1 << 9)
+	userInfoCreateRequestFieldSexualOrientation = big.NewInt(1 << 10)
+	userInfoCreateRequestFieldGenderIdentity    = big.NewInt(1 << 11)
 )
 
 type UserInfoCreateRequest struct {
-	UserId            string             `json:"-" url:"-"`
 	FirstName         string             `json:"first_name" url:"-"`
 	LastName          string             `json:"last_name" url:"-"`
 	Email             string             `json:"email" url:"-"`
 	PhoneNumber       string             `json:"phone_number" url:"-"`
 	Gender            string             `json:"gender" url:"-"`
-	Dob               time.Time          `json:"dob" url:"-" format:"date"`
+	Dob               string             `json:"dob" url:"-"`
 	Address           *Address           `json:"address,omitempty" url:"-"`
 	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"-"`
 	Race              *Race              `json:"race,omitempty" url:"-"`
@@ -3344,13 +2966,6 @@ func (u *UserInfoCreateRequest) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserInfoCreateRequest) SetUserId(userId string) {
-	u.UserId = userId
-	u.require(userInfoCreateRequestFieldUserId)
 }
 
 // SetFirstName sets the FirstName field and marks it as non-optional;
@@ -3390,7 +3005,7 @@ func (u *UserInfoCreateRequest) SetGender(gender string) {
 
 // SetDob sets the Dob field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserInfoCreateRequest) SetDob(dob time.Time) {
+func (u *UserInfoCreateRequest) SetDob(dob string) {
 	u.Dob = dob
 	u.require(userInfoCreateRequestFieldDob)
 }
@@ -3435,27 +3050,4 @@ func (u *UserInfoCreateRequest) SetSexualOrientation(sexualOrientation *SexualOr
 func (u *UserInfoCreateRequest) SetGenderIdentity(genderIdentity *GenderIdentity) {
 	u.GenderIdentity = genderIdentity
 	u.require(userInfoCreateRequestFieldGenderIdentity)
-}
-
-func (u *UserInfoCreateRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserInfoCreateRequest
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*u = UserInfoCreateRequest(body)
-	return nil
-}
-
-func (u *UserInfoCreateRequest) MarshalJSON() ([]byte, error) {
-	type embed UserInfoCreateRequest
-	var marshaler = struct {
-		embed
-		Dob *internal.Date `json:"dob"`
-	}{
-		embed: embed(*u),
-		Dob:   internal.NewDate(u.Dob),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
 }

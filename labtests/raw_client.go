@@ -34,7 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.GetLabTestsRequest,
+	request *vitalgo.LabTestsGetRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingLabTest], error) {
 	options := core.NewRequestOptions(opts...)
@@ -125,7 +125,8 @@ func (r *RawClient) Create(
 
 func (r *RawClient) GetById(
 	ctx context.Context,
-	request *vitalgo.GetByIdLabTestsRequest,
+	labTestId string,
+	request *vitalgo.LabTestsGetByIdRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingLabTest], error) {
 	options := core.NewRequestOptions(opts...)
@@ -136,7 +137,7 @@ func (r *RawClient) GetById(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/lab_tests/%v",
-		request.LabTestId,
+		labTestId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -176,6 +177,7 @@ func (r *RawClient) GetById(
 
 func (r *RawClient) UpdateLabTest(
 	ctx context.Context,
+	labTestId string,
 	request *vitalgo.UpdateLabTestRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingLabTest], error) {
@@ -187,7 +189,7 @@ func (r *RawClient) UpdateLabTest(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/lab_tests/%v",
-		request.LabTestId,
+		labTestId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -222,7 +224,7 @@ func (r *RawClient) UpdateLabTest(
 
 func (r *RawClient) GetMarkers(
 	ctx context.Context,
-	request *vitalgo.GetMarkersLabTestsRequest,
+	request *vitalgo.LabTestsGetMarkersRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GetMarkersResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -270,7 +272,7 @@ func (r *RawClient) GetMarkers(
 
 func (r *RawClient) GetMarkersForOrderSet(
 	ctx context.Context,
-	request *vitalgo.GetMarkersForOrderSetLabTestsRequest,
+	request *vitalgo.LabTestsGetMarkersForOrderSetRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GetMarkersResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -320,7 +322,8 @@ func (r *RawClient) GetMarkersForOrderSet(
 
 func (r *RawClient) GetMarkersForLabTest(
 	ctx context.Context,
-	request *vitalgo.GetMarkersForLabTestLabTestsRequest,
+	labTestId string,
+	request *vitalgo.LabTestsGetMarkersForLabTestRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GetMarkersResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -331,7 +334,7 @@ func (r *RawClient) GetMarkersForLabTest(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/lab_tests/%v/markers",
-		request.LabTestId,
+		labTestId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -371,7 +374,9 @@ func (r *RawClient) GetMarkersForLabTest(
 
 func (r *RawClient) GetMarkersByLabAndProviderId(
 	ctx context.Context,
-	request *vitalgo.GetMarkersByLabAndProviderIdLabTestsRequest,
+	labId int,
+	providerId string,
+	request *vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingMarker], error) {
 	options := core.NewRequestOptions(opts...)
@@ -382,8 +387,8 @@ func (r *RawClient) GetMarkersByLabAndProviderId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/lab_tests/%v/markers/%v",
-		request.LabId,
-		request.ProviderId,
+		labId,
+		providerId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -462,7 +467,7 @@ func (r *RawClient) GetLabs(
 
 func (r *RawClient) GetPaginated(
 	ctx context.Context,
-	request *vitalgo.GetPaginatedLabTestsRequest,
+	request *vitalgo.LabTestsGetPaginatedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.LabTestResourcesResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -510,7 +515,7 @@ func (r *RawClient) GetPaginated(
 
 func (r *RawClient) GetLabTestCollectionInstructionPdf(
 	ctx context.Context,
-	request *vitalgo.GetLabTestCollectionInstructionPdfLabTestsRequest,
+	labTestId string,
 	opts ...option.RequestOption,
 ) (*core.Response[io.Reader], error) {
 	options := core.NewRequestOptions(opts...)
@@ -521,7 +526,7 @@ func (r *RawClient) GetLabTestCollectionInstructionPdf(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/lab_test/%v/collection_instruction_pdf",
-		request.LabTestId,
+		labTestId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -554,7 +559,7 @@ func (r *RawClient) GetLabTestCollectionInstructionPdf(
 
 func (r *RawClient) GetOrders(
 	ctx context.Context,
-	request *vitalgo.GetOrdersLabTestsRequest,
+	request *vitalgo.LabTestsGetOrdersRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GetOrdersResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -602,7 +607,7 @@ func (r *RawClient) GetOrders(
 
 func (r *RawClient) GetPhlebotomyAppointmentAvailability(
 	ctx context.Context,
-	request *vitalgo.GetPhlebotomyAppointmentAvailabilityLabTestsRequest,
+	request *vitalgo.LabTestsGetPhlebotomyAppointmentAvailabilityRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.AppointmentAvailabilitySlots], error) {
 	options := core.NewRequestOptions(opts...)
@@ -652,7 +657,9 @@ func (r *RawClient) GetPhlebotomyAppointmentAvailability(
 
 func (r *RawClient) BookPhlebotomyAppointment(
 	ctx context.Context,
-	request *vitalgo.BookPhlebotomyAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentBookingRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -663,13 +670,12 @@ func (r *RawClient) BookPhlebotomyAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/phlebotomy/appointment/book",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	headers.Add("Content-Type", "application/json")
 	var response *vitalgo.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
@@ -698,6 +704,8 @@ func (r *RawClient) BookPhlebotomyAppointment(
 
 func (r *RawClient) RequestPhlebotomyAppointment(
 	ctx context.Context,
+	// Your Order ID.
+	orderId string,
 	request *vitalgo.RequestAppointmentRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
@@ -709,7 +717,7 @@ func (r *RawClient) RequestPhlebotomyAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/phlebotomy/appointment/request",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -744,7 +752,9 @@ func (r *RawClient) RequestPhlebotomyAppointment(
 
 func (r *RawClient) ReschedulePhlebotomyAppointment(
 	ctx context.Context,
-	request *vitalgo.ReschedulePhlebotomyAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentRescheduleRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -755,13 +765,12 @@ func (r *RawClient) ReschedulePhlebotomyAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/phlebotomy/appointment/reschedule",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	headers.Add("Content-Type", "application/json")
 	var response *vitalgo.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
@@ -790,6 +799,8 @@ func (r *RawClient) ReschedulePhlebotomyAppointment(
 
 func (r *RawClient) CancelPhlebotomyAppointment(
 	ctx context.Context,
+	// Your Order ID.
+	orderId string,
 	request *vitalgo.ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
@@ -801,7 +812,7 @@ func (r *RawClient) CancelPhlebotomyAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/phlebotomy/appointment/cancel",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -875,7 +886,8 @@ func (r *RawClient) GetPhlebotomyAppointmentCancellationReason(
 
 func (r *RawClient) GetPhlebotomyAppointment(
 	ctx context.Context,
-	request *vitalgo.GetPhlebotomyAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -886,7 +898,7 @@ func (r *RawClient) GetPhlebotomyAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/phlebotomy/appointment",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -919,7 +931,7 @@ func (r *RawClient) GetPhlebotomyAppointment(
 
 func (r *RawClient) GetAreaInfo(
 	ctx context.Context,
-	request *vitalgo.GetAreaInfoLabTestsRequest,
+	request *vitalgo.LabTestsGetAreaInfoRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.AreaInfo], error) {
 	options := core.NewRequestOptions(opts...)
@@ -967,7 +979,7 @@ func (r *RawClient) GetAreaInfo(
 
 func (r *RawClient) GetPscInfo(
 	ctx context.Context,
-	request *vitalgo.GetPscInfoLabTestsRequest,
+	request *vitalgo.LabTestsGetPscInfoRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.PscInfo], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1015,7 +1027,9 @@ func (r *RawClient) GetPscInfo(
 
 func (r *RawClient) GetOrderPscInfo(
 	ctx context.Context,
-	request *vitalgo.GetOrderPscInfoLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.LabTestsGetOrderPscInfoRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.PscInfo], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1026,7 +1040,7 @@ func (r *RawClient) GetOrderPscInfo(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/psc/info",
-		request.OrderId,
+		orderId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1066,7 +1080,7 @@ func (r *RawClient) GetOrderPscInfo(
 
 func (r *RawClient) GetResultPdf(
 	ctx context.Context,
-	request *vitalgo.GetResultPdfLabTestsRequest,
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[io.Reader], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1077,7 +1091,7 @@ func (r *RawClient) GetResultPdf(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/result/pdf",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1110,7 +1124,7 @@ func (r *RawClient) GetResultPdf(
 
 func (r *RawClient) GetResultMetadata(
 	ctx context.Context,
-	request *vitalgo.GetResultMetadataLabTestsRequest,
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.LabResultsMetadata], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1121,7 +1135,7 @@ func (r *RawClient) GetResultMetadata(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/result/metadata",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1154,7 +1168,7 @@ func (r *RawClient) GetResultMetadata(
 
 func (r *RawClient) GetResultRaw(
 	ctx context.Context,
-	request *vitalgo.GetResultRawLabTestsRequest,
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.LabResultsRaw], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1165,7 +1179,7 @@ func (r *RawClient) GetResultRaw(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/result",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1198,7 +1212,8 @@ func (r *RawClient) GetResultRaw(
 
 func (r *RawClient) GetLabelsPdf(
 	ctx context.Context,
-	request *vitalgo.GetLabelsPdfLabTestsRequest,
+	orderId string,
+	request *vitalgo.LabTestsGetLabelsPdfRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[io.Reader], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1209,7 +1224,7 @@ func (r *RawClient) GetLabelsPdf(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/labels/pdf",
-		request.OrderId,
+		orderId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1249,7 +1264,7 @@ func (r *RawClient) GetLabelsPdf(
 
 func (r *RawClient) GetPscAppointmentAvailability(
 	ctx context.Context,
-	request *vitalgo.GetPscAppointmentAvailabilityLabTestsRequest,
+	request *vitalgo.LabTestsGetPscAppointmentAvailabilityRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.AppointmentAvailabilitySlots], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1297,7 +1312,9 @@ func (r *RawClient) GetPscAppointmentAvailability(
 
 func (r *RawClient) BookPscAppointment(
 	ctx context.Context,
-	request *vitalgo.BookPscAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentBookingRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1308,13 +1325,12 @@ func (r *RawClient) BookPscAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/psc/appointment/book",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	headers.Add("Content-Type", "application/json")
 	var response *vitalgo.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
@@ -1343,7 +1359,9 @@ func (r *RawClient) BookPscAppointment(
 
 func (r *RawClient) ReschedulePscAppointment(
 	ctx context.Context,
-	request *vitalgo.ReschedulePscAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentRescheduleRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1354,13 +1372,12 @@ func (r *RawClient) ReschedulePscAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/psc/appointment/reschedule",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	headers.Add("Content-Type", "application/json")
 	var response *vitalgo.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
@@ -1389,6 +1406,8 @@ func (r *RawClient) ReschedulePscAppointment(
 
 func (r *RawClient) CancelPscAppointment(
 	ctx context.Context,
+	// Your Order ID.
+	orderId string,
 	request *vitalgo.VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
@@ -1400,7 +1419,7 @@ func (r *RawClient) CancelPscAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/psc/appointment/cancel",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1474,7 +1493,8 @@ func (r *RawClient) GetPscAppointmentCancellationReason(
 
 func (r *RawClient) GetPscAppointment(
 	ctx context.Context,
-	request *vitalgo.GetPscAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1485,7 +1505,7 @@ func (r *RawClient) GetPscAppointment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/psc/appointment",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1518,7 +1538,8 @@ func (r *RawClient) GetPscAppointment(
 
 func (r *RawClient) GetOrderCollectionInstructionPdf(
 	ctx context.Context,
-	request *vitalgo.GetOrderCollectionInstructionPdfLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[io.Reader], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1529,7 +1550,7 @@ func (r *RawClient) GetOrderCollectionInstructionPdf(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/collection_instruction_pdf",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1562,7 +1583,8 @@ func (r *RawClient) GetOrderCollectionInstructionPdf(
 
 func (r *RawClient) GetOrderRequistionPdf(
 	ctx context.Context,
-	request *vitalgo.GetOrderRequistionPdfLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[io.Reader], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1573,7 +1595,7 @@ func (r *RawClient) GetOrderRequistionPdf(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/requisition/pdf",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1606,7 +1628,8 @@ func (r *RawClient) GetOrderRequistionPdf(
 
 func (r *RawClient) GetOrderAbnPdf(
 	ctx context.Context,
-	request *vitalgo.GetOrderAbnPdfLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[io.Reader], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1617,7 +1640,7 @@ func (r *RawClient) GetOrderAbnPdf(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/abn_pdf",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1650,7 +1673,8 @@ func (r *RawClient) GetOrderAbnPdf(
 
 func (r *RawClient) GetOrder(
 	ctx context.Context,
-	request *vitalgo.GetOrderLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingOrder], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1661,7 +1685,7 @@ func (r *RawClient) GetOrder(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1786,7 +1810,8 @@ func (r *RawClient) ImportOrder(
 
 func (r *RawClient) CancelOrder(
 	ctx context.Context,
-	request *vitalgo.CancelOrderLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1797,7 +1822,7 @@ func (r *RawClient) CancelOrder(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/cancel",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -1830,7 +1855,8 @@ func (r *RawClient) CancelOrder(
 
 func (r *RawClient) SimulateOrderProcess(
 	ctx context.Context,
-	request *vitalgo.SimulateOrderProcessLabTestsRequest,
+	orderId string,
+	request *vitalgo.LabTestsSimulateOrderProcessRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1841,7 +1867,7 @@ func (r *RawClient) SimulateOrderProcess(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/test",
-		request.OrderId,
+		orderId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1883,7 +1909,8 @@ func (r *RawClient) SimulateOrderProcess(
 
 func (r *RawClient) UpdateOnSiteCollectionOrderDrawCompleted(
 	ctx context.Context,
-	request *vitalgo.UpdateOnSiteCollectionOrderDrawCompletedLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1894,7 +1921,7 @@ func (r *RawClient) UpdateOnSiteCollectionOrderDrawCompleted(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/order/%v/draw_completed",
-		request.OrderId,
+		orderId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

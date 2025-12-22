@@ -34,7 +34,7 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) SearchGetPayorInfo(
 	ctx context.Context,
-	request *vitalgo.SearchGetPayorInfoInsuranceRequest,
+	request *vitalgo.InsuranceSearchGetPayorInfoRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingPayorSearchResponse, error) {
 	response, err := c.WithRawResponse.SearchGetPayorInfo(
@@ -66,7 +66,7 @@ func (c *Client) SearchPayorInfo(
 
 func (c *Client) SearchDiagnosis(
 	ctx context.Context,
-	request *vitalgo.SearchDiagnosisInsuranceRequest,
+	request *vitalgo.InsuranceSearchDiagnosisRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingDiagnosisInformation, error) {
 	response, err := c.WithRawResponse.SearchDiagnosis(

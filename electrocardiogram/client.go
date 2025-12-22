@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get electrocardiogram summary for user_id
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetElectrocardiogramRequest,
+	userId string,
+	request *vitalgo.ElectrocardiogramGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingElectrocardiogramResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)

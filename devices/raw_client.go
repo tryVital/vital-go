@@ -32,7 +32,8 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawDevicesRequest,
+	userId string,
+	request *vitalgo.DevicesGetRawRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.RawDevices], error) {
 	options := core.NewRequestOptions(opts...)
@@ -43,7 +44,7 @@ func (r *RawClient) GetRaw(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/devices/%v/raw",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
