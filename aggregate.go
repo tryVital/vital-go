@@ -11,105 +11,46 @@ import (
 )
 
 var (
-	getResultTableForContinuousQueryAggregateRequestFieldUserId        = big.NewInt(1 << 0)
-	getResultTableForContinuousQueryAggregateRequestFieldQueryIdOrSlug = big.NewInt(1 << 1)
+	aggregateGetTaskHistoryForContinuousQueryRequestFieldNextCursor = big.NewInt(1 << 0)
+	aggregateGetTaskHistoryForContinuousQueryRequestFieldLimit      = big.NewInt(1 << 1)
 )
 
-type GetResultTableForContinuousQueryAggregateRequest struct {
-	UserId        string `json:"-" url:"-"`
-	QueryIdOrSlug string `json:"-" url:"-"`
-	accept        string
+type AggregateGetTaskHistoryForContinuousQueryRequest struct {
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	Limit      *int    `json:"-" url:"limit,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetResultTableForContinuousQueryAggregateRequest) Accept() string {
-	return g.accept
-}
-
-func (g *GetResultTableForContinuousQueryAggregateRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (a *AggregateGetTaskHistoryForContinuousQueryRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetResultTableForContinuousQueryAggregateRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getResultTableForContinuousQueryAggregateRequestFieldUserId)
-}
-
-// SetQueryIdOrSlug sets the QueryIdOrSlug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetResultTableForContinuousQueryAggregateRequest) SetQueryIdOrSlug(queryIdOrSlug string) {
-	g.QueryIdOrSlug = queryIdOrSlug
-	g.require(getResultTableForContinuousQueryAggregateRequestFieldQueryIdOrSlug)
-}
-
-var (
-	getTaskHistoryForContinuousQueryAggregateRequestFieldUserId        = big.NewInt(1 << 0)
-	getTaskHistoryForContinuousQueryAggregateRequestFieldQueryIdOrSlug = big.NewInt(1 << 1)
-	getTaskHistoryForContinuousQueryAggregateRequestFieldNextCursor    = big.NewInt(1 << 2)
-	getTaskHistoryForContinuousQueryAggregateRequestFieldLimit         = big.NewInt(1 << 3)
-)
-
-type GetTaskHistoryForContinuousQueryAggregateRequest struct {
-	UserId        string  `json:"-" url:"-"`
-	QueryIdOrSlug string  `json:"-" url:"-"`
-	NextCursor    *string `json:"-" url:"next_cursor,omitempty"`
-	Limit         *int    `json:"-" url:"limit,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldUserId)
-}
-
-// SetQueryIdOrSlug sets the QueryIdOrSlug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetQueryIdOrSlug(queryIdOrSlug string) {
-	g.QueryIdOrSlug = queryIdOrSlug
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldQueryIdOrSlug)
+	a.explicitFields.Or(a.explicitFields, field)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldNextCursor)
+func (a *AggregateGetTaskHistoryForContinuousQueryRequest) SetNextCursor(nextCursor *string) {
+	a.NextCursor = nextCursor
+	a.require(aggregateGetTaskHistoryForContinuousQueryRequestFieldNextCursor)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldLimit)
+func (a *AggregateGetTaskHistoryForContinuousQueryRequest) SetLimit(limit *int) {
+	a.Limit = limit
+	a.require(aggregateGetTaskHistoryForContinuousQueryRequestFieldLimit)
 }
 
 var (
-	queryBatchFieldUserId    = big.NewInt(1 << 0)
-	queryBatchFieldTimeframe = big.NewInt(1 << 1)
-	queryBatchFieldQueries   = big.NewInt(1 << 2)
-	queryBatchFieldConfig    = big.NewInt(1 << 3)
+	queryBatchFieldTimeframe = big.NewInt(1 << 0)
+	queryBatchFieldQueries   = big.NewInt(1 << 1)
+	queryBatchFieldConfig    = big.NewInt(1 << 2)
 )
 
 type QueryBatch struct {
-	UserId    string               `json:"-" url:"-"`
 	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
 	Queries   []*Query             `json:"queries,omitempty" url:"-"`
 	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
@@ -128,13 +69,6 @@ func (q *QueryBatch) require(field *big.Int) {
 		q.explicitFields = big.NewInt(0)
 	}
 	q.explicitFields.Or(q.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryBatch) SetUserId(userId string) {
-	q.UserId = userId
-	q.require(queryBatchFieldUserId)
 }
 
 // SetTimeframe sets the Timeframe field and marks it as non-optional;
@@ -451,7 +385,6 @@ type AggregateExprArg struct {
 	WorkoutColumnExpr             *WorkoutColumnExpr
 	BodyColumnExpr                *BodyColumnExpr
 	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
 	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
 	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
@@ -501,13 +434,6 @@ func (a *AggregateExprArg) GetMealColumnExpr() *MealColumnExpr {
 		return nil
 	}
 	return a.MealColumnExpr
-}
-
-func (a *AggregateExprArg) GetProfileColumnExpr() *ProfileColumnExpr {
-	if a == nil {
-		return nil
-	}
-	return a.ProfileColumnExpr
 }
 
 func (a *AggregateExprArg) GetSleepScoreValueMacroExpr() *SleepScoreValueMacroExpr {
@@ -625,12 +551,6 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.MealColumnExpr = valueMealColumnExpr
 		return nil
 	}
-	valueProfileColumnExpr := new(ProfileColumnExpr)
-	if err := json.Unmarshal(data, &valueProfileColumnExpr); err == nil {
-		a.typ = "ProfileColumnExpr"
-		a.ProfileColumnExpr = valueProfileColumnExpr
-		return nil
-	}
 	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
 	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
 		a.typ = "SleepScoreValueMacroExpr"
@@ -722,9 +642,6 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.typ == "MealColumnExpr" || a.MealColumnExpr != nil {
 		return json.Marshal(a.MealColumnExpr)
 	}
-	if a.typ == "ProfileColumnExpr" || a.ProfileColumnExpr != nil {
-		return json.Marshal(a.ProfileColumnExpr)
-	}
 	if a.typ == "SleepScoreValueMacroExpr" || a.SleepScoreValueMacroExpr != nil {
 		return json.Marshal(a.SleepScoreValueMacroExpr)
 	}
@@ -770,7 +687,6 @@ type AggregateExprArgVisitor interface {
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitMealColumnExpr(*MealColumnExpr) error
-	VisitProfileColumnExpr(*ProfileColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
@@ -800,9 +716,6 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.typ == "MealColumnExpr" || a.MealColumnExpr != nil {
 		return visitor.VisitMealColumnExpr(a.MealColumnExpr)
-	}
-	if a.typ == "ProfileColumnExpr" || a.ProfileColumnExpr != nil {
-		return visitor.VisitProfileColumnExpr(a.ProfileColumnExpr)
 	}
 	if a.typ == "SleepScoreValueMacroExpr" || a.SleepScoreValueMacroExpr != nil {
 		return visitor.VisitSleepScoreValueMacroExpr(a.SleepScoreValueMacroExpr)
@@ -1869,7 +1782,7 @@ func (c *ContinuousQueryTaskHistoryResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// ℹ️ This enum is non-exhaustive.
+// This has to match the `continuous_query_task_status` enum type in postgres. ℹ️ This enum is non-exhaustive.
 type ContinuousQueryTaskStatus string
 
 const (
@@ -2673,7 +2586,6 @@ const (
 	IndexColumnExprIndexWorkout    IndexColumnExprIndex = "workout"
 	IndexColumnExprIndexBody       IndexColumnExprIndex = "body"
 	IndexColumnExprIndexMeal       IndexColumnExprIndex = "meal"
-	IndexColumnExprIndexProfile    IndexColumnExprIndex = "profile"
 	IndexColumnExprIndexTimeseries IndexColumnExprIndex = "timeseries"
 )
 
@@ -2689,8 +2601,6 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 		return IndexColumnExprIndexBody, nil
 	case "meal":
 		return IndexColumnExprIndexMeal, nil
-	case "profile":
-		return IndexColumnExprIndexProfile, nil
 	case "timeseries":
 		return IndexColumnExprIndexTimeseries, nil
 	}
@@ -3546,135 +3456,6 @@ func (p *Placeholder) String() string {
 }
 
 var (
-	profileColumnExprFieldProfile = big.NewInt(1 << 0)
-)
-
-type ProfileColumnExpr struct {
-	// ℹ️ This enum is non-exhaustive.
-	Profile ProfileColumnExprProfile `json:"profile" url:"profile"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *ProfileColumnExpr) GetProfile() ProfileColumnExprProfile {
-	if p == nil {
-		return ""
-	}
-	return p.Profile
-}
-
-func (p *ProfileColumnExpr) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *ProfileColumnExpr) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetProfile sets the Profile field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ProfileColumnExpr) SetProfile(profile ProfileColumnExprProfile) {
-	p.Profile = profile
-	p.require(profileColumnExprFieldProfile)
-}
-
-func (p *ProfileColumnExpr) UnmarshalJSON(data []byte) error {
-	type unmarshaler ProfileColumnExpr
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = ProfileColumnExpr(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *ProfileColumnExpr) MarshalJSON() ([]byte, error) {
-	type embed ProfileColumnExpr
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *ProfileColumnExpr) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-// ℹ️ This enum is non-exhaustive.
-type ProfileColumnExprProfile string
-
-const (
-	ProfileColumnExprProfileHeightCentimeter ProfileColumnExprProfile = "height_centimeter"
-	ProfileColumnExprProfileBirthDate        ProfileColumnExprProfile = "birth_date"
-	ProfileColumnExprProfileWheelchairUse    ProfileColumnExprProfile = "wheelchair_use"
-	ProfileColumnExprProfileGender           ProfileColumnExprProfile = "gender"
-	ProfileColumnExprProfileSex              ProfileColumnExprProfile = "sex"
-	ProfileColumnExprProfileSourceType       ProfileColumnExprProfile = "source_type"
-	ProfileColumnExprProfileSourceProvider   ProfileColumnExprProfile = "source_provider"
-	ProfileColumnExprProfileSourceAppId      ProfileColumnExprProfile = "source_app_id"
-	ProfileColumnExprProfileSourceDeviceId   ProfileColumnExprProfile = "source_device_id"
-	ProfileColumnExprProfileCreatedAt        ProfileColumnExprProfile = "created_at"
-	ProfileColumnExprProfileUpdatedAt        ProfileColumnExprProfile = "updated_at"
-)
-
-func NewProfileColumnExprProfileFromString(s string) (ProfileColumnExprProfile, error) {
-	switch s {
-	case "height_centimeter":
-		return ProfileColumnExprProfileHeightCentimeter, nil
-	case "birth_date":
-		return ProfileColumnExprProfileBirthDate, nil
-	case "wheelchair_use":
-		return ProfileColumnExprProfileWheelchairUse, nil
-	case "gender":
-		return ProfileColumnExprProfileGender, nil
-	case "sex":
-		return ProfileColumnExprProfileSex, nil
-	case "source_type":
-		return ProfileColumnExprProfileSourceType, nil
-	case "source_provider":
-		return ProfileColumnExprProfileSourceProvider, nil
-	case "source_app_id":
-		return ProfileColumnExprProfileSourceAppId, nil
-	case "source_device_id":
-		return ProfileColumnExprProfileSourceDeviceId, nil
-	case "created_at":
-		return ProfileColumnExprProfileCreatedAt, nil
-	case "updated_at":
-		return ProfileColumnExprProfileUpdatedAt, nil
-	}
-	var t ProfileColumnExprProfile
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (p ProfileColumnExprProfile) Ptr() *ProfileColumnExprProfile {
-	return &p
-}
-
-var (
 	queryFieldSelect  = big.NewInt(1 << 0)
 	queryFieldGroupBy = big.NewInt(1 << 1)
 	queryFieldWhere   = big.NewInt(1 << 2)
@@ -3937,7 +3718,6 @@ type QueryGroupByItem struct {
 	WorkoutColumnExpr             *WorkoutColumnExpr
 	BodyColumnExpr                *BodyColumnExpr
 	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
 	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
 	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
@@ -4001,13 +3781,6 @@ func (q *QueryGroupByItem) GetMealColumnExpr() *MealColumnExpr {
 		return nil
 	}
 	return q.MealColumnExpr
-}
-
-func (q *QueryGroupByItem) GetProfileColumnExpr() *ProfileColumnExpr {
-	if q == nil {
-		return nil
-	}
-	return q.ProfileColumnExpr
 }
 
 func (q *QueryGroupByItem) GetSleepScoreValueMacroExpr() *SleepScoreValueMacroExpr {
@@ -4137,12 +3910,6 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 		q.MealColumnExpr = valueMealColumnExpr
 		return nil
 	}
-	valueProfileColumnExpr := new(ProfileColumnExpr)
-	if err := json.Unmarshal(data, &valueProfileColumnExpr); err == nil {
-		q.typ = "ProfileColumnExpr"
-		q.ProfileColumnExpr = valueProfileColumnExpr
-		return nil
-	}
 	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
 	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
 		q.typ = "SleepScoreValueMacroExpr"
@@ -4240,9 +4007,6 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return json.Marshal(q.MealColumnExpr)
 	}
-	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
-		return json.Marshal(q.ProfileColumnExpr)
-	}
 	if q.typ == "SleepScoreValueMacroExpr" || q.SleepScoreValueMacroExpr != nil {
 		return json.Marshal(q.SleepScoreValueMacroExpr)
 	}
@@ -4290,7 +4054,6 @@ type QueryGroupByItemVisitor interface {
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitMealColumnExpr(*MealColumnExpr) error
-	VisitProfileColumnExpr(*ProfileColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
@@ -4326,9 +4089,6 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	}
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return visitor.VisitMealColumnExpr(q.MealColumnExpr)
-	}
-	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
-		return visitor.VisitProfileColumnExpr(q.ProfileColumnExpr)
 	}
 	if q.typ == "SleepScoreValueMacroExpr" || q.SleepScoreValueMacroExpr != nil {
 		return visitor.VisitSleepScoreValueMacroExpr(q.SleepScoreValueMacroExpr)
@@ -4377,7 +4137,6 @@ type QuerySelectItem struct {
 	WorkoutColumnExpr             *WorkoutColumnExpr
 	BodyColumnExpr                *BodyColumnExpr
 	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
 	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
 	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
 	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
@@ -4442,13 +4201,6 @@ func (q *QuerySelectItem) GetMealColumnExpr() *MealColumnExpr {
 		return nil
 	}
 	return q.MealColumnExpr
-}
-
-func (q *QuerySelectItem) GetProfileColumnExpr() *ProfileColumnExpr {
-	if q == nil {
-		return nil
-	}
-	return q.ProfileColumnExpr
 }
 
 func (q *QuerySelectItem) GetSleepScoreValueMacroExpr() *SleepScoreValueMacroExpr {
@@ -4585,12 +4337,6 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.MealColumnExpr = valueMealColumnExpr
 		return nil
 	}
-	valueProfileColumnExpr := new(ProfileColumnExpr)
-	if err := json.Unmarshal(data, &valueProfileColumnExpr); err == nil {
-		q.typ = "ProfileColumnExpr"
-		q.ProfileColumnExpr = valueProfileColumnExpr
-		return nil
-	}
 	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
 	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
 		q.typ = "SleepScoreValueMacroExpr"
@@ -4694,9 +4440,6 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return json.Marshal(q.MealColumnExpr)
 	}
-	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
-		return json.Marshal(q.ProfileColumnExpr)
-	}
 	if q.typ == "SleepScoreValueMacroExpr" || q.SleepScoreValueMacroExpr != nil {
 		return json.Marshal(q.SleepScoreValueMacroExpr)
 	}
@@ -4747,7 +4490,6 @@ type QuerySelectItemVisitor interface {
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitMealColumnExpr(*MealColumnExpr) error
-	VisitProfileColumnExpr(*ProfileColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
@@ -4784,9 +4526,6 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return visitor.VisitMealColumnExpr(q.MealColumnExpr)
-	}
-	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
-		return visitor.VisitProfileColumnExpr(q.ProfileColumnExpr)
 	}
 	if q.typ == "SleepScoreValueMacroExpr" || q.SleepScoreValueMacroExpr != nil {
 		return visitor.VisitSleepScoreValueMacroExpr(q.SleepScoreValueMacroExpr)
@@ -4836,8 +4575,8 @@ var (
 )
 
 type RelativeTimeframe struct {
-	Anchor time.Time `json:"anchor" url:"anchor" format:"date"`
-	Past   *Period   `json:"past" url:"past"`
+	Anchor string  `json:"anchor" url:"anchor"`
+	Past   *Period `json:"past" url:"past"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4847,9 +4586,9 @@ type RelativeTimeframe struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RelativeTimeframe) GetAnchor() time.Time {
+func (r *RelativeTimeframe) GetAnchor() string {
 	if r == nil {
-		return time.Time{}
+		return ""
 	}
 	return r.Anchor
 }
@@ -4878,7 +4617,7 @@ func (r *RelativeTimeframe) require(field *big.Int) {
 
 // SetAnchor sets the Anchor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RelativeTimeframe) SetAnchor(anchor time.Time) {
+func (r *RelativeTimeframe) SetAnchor(anchor string) {
 	r.Anchor = anchor
 	r.require(relativeTimeframeFieldAnchor)
 }
@@ -4894,8 +4633,7 @@ func (r *RelativeTimeframe) UnmarshalJSON(data []byte) error {
 	type embed RelativeTimeframe
 	var unmarshaler = struct {
 		embed
-		Anchor *internal.Date `json:"anchor"`
-		Type   string         `json:"type"`
+		Type string `json:"type"`
 	}{
 		embed: embed(*r),
 	}
@@ -4903,7 +4641,6 @@ func (r *RelativeTimeframe) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*r = RelativeTimeframe(unmarshaler.embed)
-	r.Anchor = unmarshaler.Anchor.Time()
 	if unmarshaler.Type != "relative" {
 		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "relative", unmarshaler.Type)
 	}
@@ -4921,12 +4658,10 @@ func (r *RelativeTimeframe) MarshalJSON() ([]byte, error) {
 	type embed RelativeTimeframe
 	var marshaler = struct {
 		embed
-		Anchor *internal.Date `json:"anchor"`
-		Type   string         `json:"type"`
+		Type string `json:"type"`
 	}{
-		embed:  embed(*r),
-		Anchor: internal.NewDate(r.Anchor),
-		Type:   "relative",
+		embed: embed(*r),
+		Type:  "relative",
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)

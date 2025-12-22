@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get sleep summary for user_id
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetSleepRequest,
+	userId string,
+	request *vitalgo.SleepGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientSleepResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -52,11 +54,13 @@ func (c *Client) Get(
 // Get raw sleep summary for user_id
 func (c *Client) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawSleepRequest,
+	userId string,
+	request *vitalgo.SleepGetRawRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.RawSleep, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -69,12 +73,13 @@ func (c *Client) GetRaw(
 // Get Sleep stream for a user_id
 func (c *Client) GetStreamBySleepId(
 	ctx context.Context,
-	request *vitalgo.GetStreamBySleepIdSleepRequest,
+	// The Vital Sleep ID
+	sleepId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingSleepStream, error) {
 	response, err := c.WithRawResponse.GetStreamBySleepId(
 		ctx,
-		request,
+		sleepId,
 		opts...,
 	)
 	if err != nil {

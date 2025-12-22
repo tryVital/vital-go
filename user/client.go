@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // GET All users for team.
 func (c *Client) GetAll(
 	ctx context.Context,
-	request *vitalgo.GetAllUserRequest,
+	request *vitalgo.UserGetAllRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.PaginatedUsersResponse, error) {
 	response, err := c.WithRawResponse.GetAll(
@@ -84,12 +84,12 @@ func (c *Client) GetTeamMetrics(
 // GET Users connected providers
 func (c *Client) GetConnectedProviders(
 	ctx context.Context,
-	request *vitalgo.GetConnectedProvidersUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (map[string][]*vitalgo.ClientFacingProviderWithStatus, error) {
 	response, err := c.WithRawResponse.GetConnectedProviders(
 		ctx,
-		request,
+		userId,
 		opts...,
 	)
 	if err != nil {
@@ -100,12 +100,12 @@ func (c *Client) GetConnectedProviders(
 
 func (c *Client) GetLatestUserInfo(
 	ctx context.Context,
-	request *vitalgo.GetLatestUserInfoUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserInfo, error) {
 	response, err := c.WithRawResponse.GetLatestUserInfo(
 		ctx,
-		request,
+		userId,
 		opts...,
 	)
 	if err != nil {
@@ -116,11 +116,13 @@ func (c *Client) GetLatestUserInfo(
 
 func (c *Client) CreateInsurance(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.CreateInsuranceRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingInsurance, error) {
 	response, err := c.WithRawResponse.CreateInsurance(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -132,12 +134,12 @@ func (c *Client) CreateInsurance(
 
 func (c *Client) GetLatestInsurance(
 	ctx context.Context,
-	request *vitalgo.GetLatestInsuranceUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingInsurance, error) {
 	response, err := c.WithRawResponse.GetLatestInsurance(
 		ctx,
-		request,
+		userId,
 		opts...,
 	)
 	if err != nil {
@@ -148,11 +150,13 @@ func (c *Client) GetLatestInsurance(
 
 func (c *Client) UpsertUserInfo(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.UserInfoCreateRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserInfo, error) {
 	response, err := c.WithRawResponse.UpsertUserInfo(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -165,12 +169,13 @@ func (c *Client) UpsertUserInfo(
 // GET user_id from client_user_id.
 func (c *Client) GetByClientUserId(
 	ctx context.Context,
-	request *vitalgo.GetByClientUserIdUserRequest,
+	// A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
+	clientUserId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingUser, error) {
 	response, err := c.WithRawResponse.GetByClientUserId(
 		ctx,
-		request,
+		clientUserId,
 		opts...,
 	)
 	if err != nil {
@@ -181,12 +186,15 @@ func (c *Client) GetByClientUserId(
 
 func (c *Client) DeregisterProvider(
 	ctx context.Context,
-	request *vitalgo.DeregisterProviderUserRequest,
+	userId string,
+	// Provider slug. e.g., `oura`, `fitbit`, `garmin`.
+	provider *vitalgo.Providers,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserSuccessResponse, error) {
 	response, err := c.WithRawResponse.DeregisterProvider(
 		ctx,
-		request,
+		userId,
+		provider,
 		opts...,
 	)
 	if err != nil {
@@ -197,12 +205,12 @@ func (c *Client) DeregisterProvider(
 
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingUser, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
-		request,
+		userId,
 		opts...,
 	)
 	if err != nil {
@@ -213,12 +221,12 @@ func (c *Client) Get(
 
 func (c *Client) Delete(
 	ctx context.Context,
-	request *vitalgo.DeleteUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserSuccessResponse, error) {
 	response, err := c.WithRawResponse.Delete(
 		ctx,
-		request,
+		userId,
 		opts...,
 	)
 	if err != nil {
@@ -229,11 +237,13 @@ func (c *Client) Delete(
 
 func (c *Client) Patch(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.UserPatchBody,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.Patch(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -245,7 +255,7 @@ func (c *Client) Patch(
 
 func (c *Client) UndoDelete(
 	ctx context.Context,
-	request *vitalgo.UndoDeleteUserRequest,
+	request *vitalgo.UserUndoDeleteRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserSuccessResponse, error) {
 	response, err := c.WithRawResponse.UndoDelete(
@@ -262,11 +272,13 @@ func (c *Client) UndoDelete(
 // Trigger a manual refresh for a specific user
 func (c *Client) Refresh(
 	ctx context.Context,
-	request *vitalgo.RefreshUserRequest,
+	userId string,
+	request *vitalgo.UserRefreshRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserRefreshSuccessResponse, error) {
 	response, err := c.WithRawResponse.Refresh(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -278,12 +290,12 @@ func (c *Client) Refresh(
 
 func (c *Client) GetDevices(
 	ctx context.Context,
-	request *vitalgo.GetDevicesUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingDevice, error) {
 	response, err := c.WithRawResponse.GetDevices(
 		ctx,
-		request,
+		userId,
 		opts...,
 	)
 	if err != nil {
@@ -294,12 +306,14 @@ func (c *Client) GetDevices(
 
 func (c *Client) GetDevice(
 	ctx context.Context,
-	request *vitalgo.GetDeviceUserRequest,
+	userId string,
+	deviceId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingDevice, error) {
 	response, err := c.WithRawResponse.GetDevice(
 		ctx,
-		request,
+		userId,
+		deviceId,
 		opts...,
 	)
 	if err != nil {
@@ -310,12 +324,12 @@ func (c *Client) GetDevice(
 
 func (c *Client) GetUserSignInToken(
 	ctx context.Context,
-	request *vitalgo.GetUserSignInTokenUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserSignInTokenResponse, error) {
 	response, err := c.WithRawResponse.GetUserSignInToken(
 		ctx,
-		request,
+		userId,
 		opts...,
 	)
 	if err != nil {
@@ -326,11 +340,13 @@ func (c *Client) GetUserSignInToken(
 
 func (c *Client) CreatePortalUrl(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.CreateUserPortalUrlBody,
 	opts ...option.RequestOption,
 ) (*vitalgo.CreateUserPortalUrlResponse, error) {
 	response, err := c.WithRawResponse.CreatePortalUrl(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)

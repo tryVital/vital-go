@@ -11,120 +11,11 @@ import (
 )
 
 var (
-	bookPhlebotomyAppointmentLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type BookPhlebotomyAppointmentLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string                     `json:"-" url:"-"`
-	Body    *AppointmentBookingRequest `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (b *BookPhlebotomyAppointmentLabTestsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BookPhlebotomyAppointmentLabTestsRequest) SetOrderId(orderId string) {
-	b.OrderId = orderId
-	b.require(bookPhlebotomyAppointmentLabTestsRequestFieldOrderId)
-}
-
-func (b *BookPhlebotomyAppointmentLabTestsRequest) UnmarshalJSON(data []byte) error {
-	body := new(AppointmentBookingRequest)
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	b.Body = body
-	return nil
-}
-
-func (b *BookPhlebotomyAppointmentLabTestsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(b.Body)
-}
-
-var (
-	bookPscAppointmentLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type BookPscAppointmentLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string                     `json:"-" url:"-"`
-	Body    *AppointmentBookingRequest `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (b *BookPscAppointmentLabTestsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BookPscAppointmentLabTestsRequest) SetOrderId(orderId string) {
-	b.OrderId = orderId
-	b.require(bookPscAppointmentLabTestsRequestFieldOrderId)
-}
-
-func (b *BookPscAppointmentLabTestsRequest) UnmarshalJSON(data []byte) error {
-	body := new(AppointmentBookingRequest)
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	b.Body = body
-	return nil
-}
-
-func (b *BookPscAppointmentLabTestsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(b.Body)
-}
-
-var (
-	cancelOrderLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type CancelOrderLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (c *CancelOrderLabTestsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CancelOrderLabTestsRequest) SetOrderId(orderId string) {
-	c.OrderId = orderId
-	c.require(cancelOrderLabTestsRequestFieldOrderId)
-}
-
-var (
-	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldOrderId              = big.NewInt(1 << 0)
-	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldCancellationReasonId = big.NewInt(1 << 1)
-	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldNotes                = big.NewInt(1 << 2)
+	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldCancellationReasonId = big.NewInt(1 << 0)
+	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldNotes                = big.NewInt(1 << 1)
 )
 
 type ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest struct {
-	// Your Order ID.
-	OrderId              string  `json:"-" url:"-"`
 	CancellationReasonId string  `json:"cancellation_reason_id" url:"-"`
 	Notes                *string `json:"notes,omitempty" url:"-"`
 
@@ -137,13 +28,6 @@ func (a *ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelReques
 		a.explicitFields = big.NewInt(0)
 	}
 	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest) SetOrderId(orderId string) {
-	a.OrderId = orderId
-	a.require(apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldOrderId)
 }
 
 // SetCancellationReasonId sets the CancellationReasonId field and marks it as non-optional;
@@ -161,14 +45,11 @@ func (a *ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelReques
 }
 
 var (
-	vitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequestFieldOrderId              = big.NewInt(1 << 0)
-	vitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequestFieldCancellationReasonId = big.NewInt(1 << 1)
-	vitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequestFieldNote                 = big.NewInt(1 << 2)
+	vitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequestFieldCancellationReasonId = big.NewInt(1 << 0)
+	vitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequestFieldNote                 = big.NewInt(1 << 1)
 )
 
 type VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest struct {
-	// Your Order ID.
-	OrderId              string  `json:"-" url:"-"`
 	CancellationReasonId string  `json:"cancellationReasonId" url:"-"`
 	Note                 *string `json:"note,omitempty" url:"-"`
 
@@ -181,13 +62,6 @@ func (v *VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest) require(f
 		v.explicitFields = big.NewInt(0)
 	}
 	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest) SetOrderId(orderId string) {
-	v.OrderId = orderId
-	v.require(vitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequestFieldOrderId)
 }
 
 // SetCancellationReasonId sets the CancellationReasonId field and marks it as non-optional;
@@ -311,7 +185,7 @@ type CreateOrderRequestCompatible struct {
 	IcdCodes    []string   `json:"icd_codes,omitempty" url:"-"`
 	Consents    []*Consent `json:"consents,omitempty" url:"-"`
 	// Schedule an Order to be processed in a future date.
-	ActivateBy      *time.Time                    `json:"activate_by,omitempty" url:"-" format:"date"`
+	ActivateBy      *string                       `json:"activate_by,omitempty" url:"-"`
 	AoeAnswers      []*AoEAnswer                  `json:"aoe_answers,omitempty" url:"-"`
 	Passthrough     *string                       `json:"passthrough,omitempty" url:"-"`
 	LabAccountId    *string                       `json:"lab_account_id,omitempty" url:"-"`
@@ -416,7 +290,7 @@ func (c *CreateOrderRequestCompatible) SetConsents(consents []*Consent) {
 
 // SetActivateBy sets the ActivateBy field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateOrderRequestCompatible) SetActivateBy(activateBy *time.Time) {
+func (c *CreateOrderRequestCompatible) SetActivateBy(activateBy *string) {
 	c.ActivateBy = activateBy
 	c.require(createOrderRequestCompatibleFieldActivateBy)
 }
@@ -463,42 +337,19 @@ func (c *CreateOrderRequestCompatible) SetPatientAddress(patientAddress *Patient
 	c.require(createOrderRequestCompatibleFieldPatientAddress)
 }
 
-func (c *CreateOrderRequestCompatible) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateOrderRequestCompatible
-	var body unmarshaler
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	*c = CreateOrderRequestCompatible(body)
-	return nil
-}
-
-func (c *CreateOrderRequestCompatible) MarshalJSON() ([]byte, error) {
-	type embed CreateOrderRequestCompatible
-	var marshaler = struct {
-		embed
-		ActivateBy *internal.Date `json:"activate_by,omitempty"`
-	}{
-		embed:      embed(*c),
-		ActivateBy: internal.NewOptionalDate(c.ActivateBy),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
 var (
-	getLabTestsRequestFieldGenerationMethod = big.NewInt(1 << 0)
-	getLabTestsRequestFieldLabSlug          = big.NewInt(1 << 1)
-	getLabTestsRequestFieldCollectionMethod = big.NewInt(1 << 2)
-	getLabTestsRequestFieldStatus           = big.NewInt(1 << 3)
-	getLabTestsRequestFieldMarkerIds        = big.NewInt(1 << 4)
-	getLabTestsRequestFieldProviderIds      = big.NewInt(1 << 5)
-	getLabTestsRequestFieldName             = big.NewInt(1 << 6)
-	getLabTestsRequestFieldOrderKey         = big.NewInt(1 << 7)
-	getLabTestsRequestFieldOrderDirection   = big.NewInt(1 << 8)
+	labTestsGetRequestFieldGenerationMethod = big.NewInt(1 << 0)
+	labTestsGetRequestFieldLabSlug          = big.NewInt(1 << 1)
+	labTestsGetRequestFieldCollectionMethod = big.NewInt(1 << 2)
+	labTestsGetRequestFieldStatus           = big.NewInt(1 << 3)
+	labTestsGetRequestFieldMarkerIds        = big.NewInt(1 << 4)
+	labTestsGetRequestFieldProviderIds      = big.NewInt(1 << 5)
+	labTestsGetRequestFieldName             = big.NewInt(1 << 6)
+	labTestsGetRequestFieldOrderKey         = big.NewInt(1 << 7)
+	labTestsGetRequestFieldOrderDirection   = big.NewInt(1 << 8)
 )
 
-type GetLabTestsRequest struct {
+type LabTestsGetRequest struct {
 	// Filter on whether auto-generated lab tests created by Vital, manually created lab tests, or all lab tests should be returned.
 	GenerationMethod *LabTestGenerationMethodFilter `json:"-" url:"generation_method,omitempty"`
 	// Filter by the slug of the lab for these lab tests.
@@ -508,97 +359,97 @@ type GetLabTestsRequest struct {
 	// Filter by the status of these lab tests.
 	Status *LabTestStatus `json:"-" url:"status,omitempty"`
 	// Filter to only include lab tests containing these marker IDs.
-	MarkerIds []int `json:"-" url:"marker_ids,omitempty"`
+	MarkerIds []*int `json:"-" url:"marker_ids,omitempty"`
 	// Filter to only include lab tests containing these provider IDs.
-	ProviderIds []string `json:"-" url:"provider_ids,omitempty"`
+	ProviderIds []*string `json:"-" url:"provider_ids,omitempty"`
 	// Filter by the name of the lab test (a case-insensitive substring search).
 	Name           *string                           `json:"-" url:"name,omitempty"`
-	OrderKey       *GetLabTestsRequestOrderKey       `json:"-" url:"order_key,omitempty"`
-	OrderDirection *GetLabTestsRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
+	OrderKey       *LabTestsGetRequestOrderKey       `json:"-" url:"order_key,omitempty"`
+	OrderDirection *LabTestsGetRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetGenerationMethod sets the GenerationMethod field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetGenerationMethod(generationMethod *LabTestGenerationMethodFilter) {
-	g.GenerationMethod = generationMethod
-	g.require(getLabTestsRequestFieldGenerationMethod)
+func (l *LabTestsGetRequest) SetGenerationMethod(generationMethod *LabTestGenerationMethodFilter) {
+	l.GenerationMethod = generationMethod
+	l.require(labTestsGetRequestFieldGenerationMethod)
 }
 
 // SetLabSlug sets the LabSlug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetLabSlug(labSlug *string) {
-	g.LabSlug = labSlug
-	g.require(getLabTestsRequestFieldLabSlug)
+func (l *LabTestsGetRequest) SetLabSlug(labSlug *string) {
+	l.LabSlug = labSlug
+	l.require(labTestsGetRequestFieldLabSlug)
 }
 
 // SetCollectionMethod sets the CollectionMethod field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetCollectionMethod(collectionMethod *LabTestCollectionMethod) {
-	g.CollectionMethod = collectionMethod
-	g.require(getLabTestsRequestFieldCollectionMethod)
+func (l *LabTestsGetRequest) SetCollectionMethod(collectionMethod *LabTestCollectionMethod) {
+	l.CollectionMethod = collectionMethod
+	l.require(labTestsGetRequestFieldCollectionMethod)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetStatus(status *LabTestStatus) {
-	g.Status = status
-	g.require(getLabTestsRequestFieldStatus)
+func (l *LabTestsGetRequest) SetStatus(status *LabTestStatus) {
+	l.Status = status
+	l.require(labTestsGetRequestFieldStatus)
 }
 
 // SetMarkerIds sets the MarkerIds field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetMarkerIds(markerIds []int) {
-	g.MarkerIds = markerIds
-	g.require(getLabTestsRequestFieldMarkerIds)
+func (l *LabTestsGetRequest) SetMarkerIds(markerIds []*int) {
+	l.MarkerIds = markerIds
+	l.require(labTestsGetRequestFieldMarkerIds)
 }
 
 // SetProviderIds sets the ProviderIds field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetProviderIds(providerIds []string) {
-	g.ProviderIds = providerIds
-	g.require(getLabTestsRequestFieldProviderIds)
+func (l *LabTestsGetRequest) SetProviderIds(providerIds []*string) {
+	l.ProviderIds = providerIds
+	l.require(labTestsGetRequestFieldProviderIds)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetName(name *string) {
-	g.Name = name
-	g.require(getLabTestsRequestFieldName)
+func (l *LabTestsGetRequest) SetName(name *string) {
+	l.Name = name
+	l.require(labTestsGetRequestFieldName)
 }
 
 // SetOrderKey sets the OrderKey field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetOrderKey(orderKey *GetLabTestsRequestOrderKey) {
-	g.OrderKey = orderKey
-	g.require(getLabTestsRequestFieldOrderKey)
+func (l *LabTestsGetRequest) SetOrderKey(orderKey *LabTestsGetRequestOrderKey) {
+	l.OrderKey = orderKey
+	l.require(labTestsGetRequestFieldOrderKey)
 }
 
 // SetOrderDirection sets the OrderDirection field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestsRequest) SetOrderDirection(orderDirection *GetLabTestsRequestOrderDirection) {
-	g.OrderDirection = orderDirection
-	g.require(getLabTestsRequestFieldOrderDirection)
+func (l *LabTestsGetRequest) SetOrderDirection(orderDirection *LabTestsGetRequestOrderDirection) {
+	l.OrderDirection = orderDirection
+	l.require(labTestsGetRequestFieldOrderDirection)
 }
 
 var (
-	getAreaInfoLabTestsRequestFieldZipCode      = big.NewInt(1 << 0)
-	getAreaInfoLabTestsRequestFieldRadius       = big.NewInt(1 << 1)
-	getAreaInfoLabTestsRequestFieldLab          = big.NewInt(1 << 2)
-	getAreaInfoLabTestsRequestFieldLabs         = big.NewInt(1 << 3)
-	getAreaInfoLabTestsRequestFieldLabAccountId = big.NewInt(1 << 4)
+	labTestsGetAreaInfoRequestFieldZipCode      = big.NewInt(1 << 0)
+	labTestsGetAreaInfoRequestFieldRadius       = big.NewInt(1 << 1)
+	labTestsGetAreaInfoRequestFieldLab          = big.NewInt(1 << 2)
+	labTestsGetAreaInfoRequestFieldLabs         = big.NewInt(1 << 3)
+	labTestsGetAreaInfoRequestFieldLabAccountId = big.NewInt(1 << 4)
 )
 
-type GetAreaInfoLabTestsRequest struct {
+type LabTestsGetAreaInfoRequest struct {
 	// Zip code of the area to check
 	ZipCode string `json:"-" url:"zip_code"`
 	// Radius in which to search in miles
@@ -606,7 +457,7 @@ type GetAreaInfoLabTestsRequest struct {
 	// Lab to check for PSCs
 	Lab *ClientFacingLabs `json:"-" url:"lab,omitempty"`
 	// List of labs to check for PSCs
-	Labs []ClientFacingLabs `json:"-" url:"labs,omitempty"`
+	Labs []*ClientFacingLabs `json:"-" url:"labs,omitempty"`
 	// Lab Account ID to use for availability checks
 	LabAccountId *string `json:"-" url:"lab_account_id,omitempty"`
 
@@ -614,55 +465,53 @@ type GetAreaInfoLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetAreaInfoLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetAreaInfoRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetZipCode sets the ZipCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAreaInfoLabTestsRequest) SetZipCode(zipCode string) {
-	g.ZipCode = zipCode
-	g.require(getAreaInfoLabTestsRequestFieldZipCode)
+func (l *LabTestsGetAreaInfoRequest) SetZipCode(zipCode string) {
+	l.ZipCode = zipCode
+	l.require(labTestsGetAreaInfoRequestFieldZipCode)
 }
 
 // SetRadius sets the Radius field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAreaInfoLabTestsRequest) SetRadius(radius *AllowedRadius) {
-	g.Radius = radius
-	g.require(getAreaInfoLabTestsRequestFieldRadius)
+func (l *LabTestsGetAreaInfoRequest) SetRadius(radius *AllowedRadius) {
+	l.Radius = radius
+	l.require(labTestsGetAreaInfoRequestFieldRadius)
 }
 
 // SetLab sets the Lab field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAreaInfoLabTestsRequest) SetLab(lab *ClientFacingLabs) {
-	g.Lab = lab
-	g.require(getAreaInfoLabTestsRequestFieldLab)
+func (l *LabTestsGetAreaInfoRequest) SetLab(lab *ClientFacingLabs) {
+	l.Lab = lab
+	l.require(labTestsGetAreaInfoRequestFieldLab)
 }
 
 // SetLabs sets the Labs field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAreaInfoLabTestsRequest) SetLabs(labs []ClientFacingLabs) {
-	g.Labs = labs
-	g.require(getAreaInfoLabTestsRequestFieldLabs)
+func (l *LabTestsGetAreaInfoRequest) SetLabs(labs []*ClientFacingLabs) {
+	l.Labs = labs
+	l.require(labTestsGetAreaInfoRequestFieldLabs)
 }
 
 // SetLabAccountId sets the LabAccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAreaInfoLabTestsRequest) SetLabAccountId(labAccountId *string) {
-	g.LabAccountId = labAccountId
-	g.require(getAreaInfoLabTestsRequestFieldLabAccountId)
+func (l *LabTestsGetAreaInfoRequest) SetLabAccountId(labAccountId *string) {
+	l.LabAccountId = labAccountId
+	l.require(labTestsGetAreaInfoRequestFieldLabAccountId)
 }
 
 var (
-	getByIdLabTestsRequestFieldLabTestId    = big.NewInt(1 << 0)
-	getByIdLabTestsRequestFieldLabAccountId = big.NewInt(1 << 1)
+	labTestsGetByIdRequestFieldLabAccountId = big.NewInt(1 << 0)
 )
 
-type GetByIdLabTestsRequest struct {
-	LabTestId string `json:"-" url:"-"`
+type LabTestsGetByIdRequest struct {
 	// The lab account ID. This lab account is used to determine the availability of markers and lab tests.
 	LabAccountId *string `json:"-" url:"lab_account_id,omitempty"`
 
@@ -670,60 +519,26 @@ type GetByIdLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetByIdLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetByIdRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetLabTestId sets the LabTestId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetByIdLabTestsRequest) SetLabTestId(labTestId string) {
-	g.LabTestId = labTestId
-	g.require(getByIdLabTestsRequestFieldLabTestId)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLabAccountId sets the LabAccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetByIdLabTestsRequest) SetLabAccountId(labAccountId *string) {
-	g.LabAccountId = labAccountId
-	g.require(getByIdLabTestsRequestFieldLabAccountId)
+func (l *LabTestsGetByIdRequest) SetLabAccountId(labAccountId *string) {
+	l.LabAccountId = labAccountId
+	l.require(labTestsGetByIdRequestFieldLabAccountId)
 }
 
 var (
-	getLabTestCollectionInstructionPdfLabTestsRequestFieldLabTestId = big.NewInt(1 << 0)
+	labTestsGetLabelsPdfRequestFieldNumberOfLabels = big.NewInt(1 << 0)
+	labTestsGetLabelsPdfRequestFieldCollectionDate = big.NewInt(1 << 1)
 )
 
-type GetLabTestCollectionInstructionPdfLabTestsRequest struct {
-	LabTestId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetLabTestCollectionInstructionPdfLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetLabTestId sets the LabTestId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabTestCollectionInstructionPdfLabTestsRequest) SetLabTestId(labTestId string) {
-	g.LabTestId = labTestId
-	g.require(getLabTestCollectionInstructionPdfLabTestsRequestFieldLabTestId)
-}
-
-var (
-	getLabelsPdfLabTestsRequestFieldOrderId        = big.NewInt(1 << 0)
-	getLabelsPdfLabTestsRequestFieldNumberOfLabels = big.NewInt(1 << 1)
-	getLabelsPdfLabTestsRequestFieldCollectionDate = big.NewInt(1 << 2)
-)
-
-type GetLabelsPdfLabTestsRequest struct {
-	OrderId string `json:"-" url:"-"`
+type LabTestsGetLabelsPdfRequest struct {
 	// Number of labels to generate
 	NumberOfLabels *int `json:"-" url:"number_of_labels,omitempty"`
 	// Collection date
@@ -733,46 +548,39 @@ type GetLabelsPdfLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetLabelsPdfLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetLabelsPdfRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabelsPdfLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getLabelsPdfLabTestsRequestFieldOrderId)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetNumberOfLabels sets the NumberOfLabels field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabelsPdfLabTestsRequest) SetNumberOfLabels(numberOfLabels *int) {
-	g.NumberOfLabels = numberOfLabels
-	g.require(getLabelsPdfLabTestsRequestFieldNumberOfLabels)
+func (l *LabTestsGetLabelsPdfRequest) SetNumberOfLabels(numberOfLabels *int) {
+	l.NumberOfLabels = numberOfLabels
+	l.require(labTestsGetLabelsPdfRequestFieldNumberOfLabels)
 }
 
 // SetCollectionDate sets the CollectionDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLabelsPdfLabTestsRequest) SetCollectionDate(collectionDate time.Time) {
-	g.CollectionDate = collectionDate
-	g.require(getLabelsPdfLabTestsRequestFieldCollectionDate)
+func (l *LabTestsGetLabelsPdfRequest) SetCollectionDate(collectionDate time.Time) {
+	l.CollectionDate = collectionDate
+	l.require(labTestsGetLabelsPdfRequestFieldCollectionDate)
 }
 
 var (
-	getMarkersLabTestsRequestFieldLabId           = big.NewInt(1 << 0)
-	getMarkersLabTestsRequestFieldName            = big.NewInt(1 << 1)
-	getMarkersLabTestsRequestFieldALaCarteEnabled = big.NewInt(1 << 2)
-	getMarkersLabTestsRequestFieldLabAccountId    = big.NewInt(1 << 3)
-	getMarkersLabTestsRequestFieldPage            = big.NewInt(1 << 4)
-	getMarkersLabTestsRequestFieldSize            = big.NewInt(1 << 5)
+	labTestsGetMarkersRequestFieldLabId           = big.NewInt(1 << 0)
+	labTestsGetMarkersRequestFieldName            = big.NewInt(1 << 1)
+	labTestsGetMarkersRequestFieldALaCarteEnabled = big.NewInt(1 << 2)
+	labTestsGetMarkersRequestFieldLabAccountId    = big.NewInt(1 << 3)
+	labTestsGetMarkersRequestFieldPage            = big.NewInt(1 << 4)
+	labTestsGetMarkersRequestFieldSize            = big.NewInt(1 << 5)
 )
 
-type GetMarkersLabTestsRequest struct {
+type LabTestsGetMarkersRequest struct {
 	// The identifier Vital assigned to a lab partner.
-	LabId []int `json:"-" url:"lab_id,omitempty"`
+	LabId []*int `json:"-" url:"lab_id,omitempty"`
 	// The name or test code of an individual biomarker or a panel.
 	Name            *string `json:"-" url:"name,omitempty"`
 	ALaCarteEnabled *bool   `json:"-" url:"a_la_carte_enabled,omitempty"`
@@ -785,64 +593,60 @@ type GetMarkersLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetMarkersLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetMarkersRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLabId sets the LabId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersLabTestsRequest) SetLabId(labId []int) {
-	g.LabId = labId
-	g.require(getMarkersLabTestsRequestFieldLabId)
+func (l *LabTestsGetMarkersRequest) SetLabId(labId []*int) {
+	l.LabId = labId
+	l.require(labTestsGetMarkersRequestFieldLabId)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersLabTestsRequest) SetName(name *string) {
-	g.Name = name
-	g.require(getMarkersLabTestsRequestFieldName)
+func (l *LabTestsGetMarkersRequest) SetName(name *string) {
+	l.Name = name
+	l.require(labTestsGetMarkersRequestFieldName)
 }
 
 // SetALaCarteEnabled sets the ALaCarteEnabled field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersLabTestsRequest) SetALaCarteEnabled(aLaCarteEnabled *bool) {
-	g.ALaCarteEnabled = aLaCarteEnabled
-	g.require(getMarkersLabTestsRequestFieldALaCarteEnabled)
+func (l *LabTestsGetMarkersRequest) SetALaCarteEnabled(aLaCarteEnabled *bool) {
+	l.ALaCarteEnabled = aLaCarteEnabled
+	l.require(labTestsGetMarkersRequestFieldALaCarteEnabled)
 }
 
 // SetLabAccountId sets the LabAccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersLabTestsRequest) SetLabAccountId(labAccountId *string) {
-	g.LabAccountId = labAccountId
-	g.require(getMarkersLabTestsRequestFieldLabAccountId)
+func (l *LabTestsGetMarkersRequest) SetLabAccountId(labAccountId *string) {
+	l.LabAccountId = labAccountId
+	l.require(labTestsGetMarkersRequestFieldLabAccountId)
 }
 
 // SetPage sets the Page field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersLabTestsRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getMarkersLabTestsRequestFieldPage)
+func (l *LabTestsGetMarkersRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(labTestsGetMarkersRequestFieldPage)
 }
 
 // SetSize sets the Size field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersLabTestsRequest) SetSize(size *int) {
-	g.Size = size
-	g.require(getMarkersLabTestsRequestFieldSize)
+func (l *LabTestsGetMarkersRequest) SetSize(size *int) {
+	l.Size = size
+	l.require(labTestsGetMarkersRequestFieldSize)
 }
 
 var (
-	getMarkersByLabAndProviderIdLabTestsRequestFieldLabId        = big.NewInt(1 << 0)
-	getMarkersByLabAndProviderIdLabTestsRequestFieldProviderId   = big.NewInt(1 << 1)
-	getMarkersByLabAndProviderIdLabTestsRequestFieldLabAccountId = big.NewInt(1 << 2)
+	labTestsGetMarkersByLabAndProviderIdRequestFieldLabAccountId = big.NewInt(1 << 0)
 )
 
-type GetMarkersByLabAndProviderIdLabTestsRequest struct {
-	LabId      int    `json:"-" url:"-"`
-	ProviderId string `json:"-" url:"-"`
+type LabTestsGetMarkersByLabAndProviderIdRequest struct {
 	// The lab account ID. This lab account is used to determine the availability of markers and lab tests.
 	LabAccountId *string `json:"-" url:"lab_account_id,omitempty"`
 
@@ -850,43 +654,27 @@ type GetMarkersByLabAndProviderIdLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetMarkersByLabAndProviderIdLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetMarkersByLabAndProviderIdRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetLabId sets the LabId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersByLabAndProviderIdLabTestsRequest) SetLabId(labId int) {
-	g.LabId = labId
-	g.require(getMarkersByLabAndProviderIdLabTestsRequestFieldLabId)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersByLabAndProviderIdLabTestsRequest) SetProviderId(providerId string) {
-	g.ProviderId = providerId
-	g.require(getMarkersByLabAndProviderIdLabTestsRequestFieldProviderId)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLabAccountId sets the LabAccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersByLabAndProviderIdLabTestsRequest) SetLabAccountId(labAccountId *string) {
-	g.LabAccountId = labAccountId
-	g.require(getMarkersByLabAndProviderIdLabTestsRequestFieldLabAccountId)
+func (l *LabTestsGetMarkersByLabAndProviderIdRequest) SetLabAccountId(labAccountId *string) {
+	l.LabAccountId = labAccountId
+	l.require(labTestsGetMarkersByLabAndProviderIdRequestFieldLabAccountId)
 }
 
 var (
-	getMarkersForLabTestLabTestsRequestFieldLabTestId    = big.NewInt(1 << 0)
-	getMarkersForLabTestLabTestsRequestFieldLabAccountId = big.NewInt(1 << 1)
-	getMarkersForLabTestLabTestsRequestFieldPage         = big.NewInt(1 << 2)
-	getMarkersForLabTestLabTestsRequestFieldSize         = big.NewInt(1 << 3)
+	labTestsGetMarkersForLabTestRequestFieldLabAccountId = big.NewInt(1 << 0)
+	labTestsGetMarkersForLabTestRequestFieldPage         = big.NewInt(1 << 1)
+	labTestsGetMarkersForLabTestRequestFieldSize         = big.NewInt(1 << 2)
 )
 
-type GetMarkersForLabTestLabTestsRequest struct {
-	LabTestId string `json:"-" url:"-"`
+type LabTestsGetMarkersForLabTestRequest struct {
 	// The lab account ID. This lab account is used to determine the availability of markers and lab tests.
 	LabAccountId *string `json:"-" url:"lab_account_id,omitempty"`
 	Page         *int    `json:"-" url:"page,omitempty"`
@@ -896,47 +684,40 @@ type GetMarkersForLabTestLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetMarkersForLabTestLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetMarkersForLabTestRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetLabTestId sets the LabTestId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersForLabTestLabTestsRequest) SetLabTestId(labTestId string) {
-	g.LabTestId = labTestId
-	g.require(getMarkersForLabTestLabTestsRequestFieldLabTestId)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLabAccountId sets the LabAccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersForLabTestLabTestsRequest) SetLabAccountId(labAccountId *string) {
-	g.LabAccountId = labAccountId
-	g.require(getMarkersForLabTestLabTestsRequestFieldLabAccountId)
+func (l *LabTestsGetMarkersForLabTestRequest) SetLabAccountId(labAccountId *string) {
+	l.LabAccountId = labAccountId
+	l.require(labTestsGetMarkersForLabTestRequestFieldLabAccountId)
 }
 
 // SetPage sets the Page field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersForLabTestLabTestsRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getMarkersForLabTestLabTestsRequestFieldPage)
+func (l *LabTestsGetMarkersForLabTestRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(labTestsGetMarkersForLabTestRequestFieldPage)
 }
 
 // SetSize sets the Size field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersForLabTestLabTestsRequest) SetSize(size *int) {
-	g.Size = size
-	g.require(getMarkersForLabTestLabTestsRequestFieldSize)
+func (l *LabTestsGetMarkersForLabTestRequest) SetSize(size *int) {
+	l.Size = size
+	l.require(labTestsGetMarkersForLabTestRequestFieldSize)
 }
 
 var (
-	getMarkersForOrderSetLabTestsRequestFieldPage = big.NewInt(1 << 0)
-	getMarkersForOrderSetLabTestsRequestFieldSize = big.NewInt(1 << 1)
+	labTestsGetMarkersForOrderSetRequestFieldPage = big.NewInt(1 << 0)
+	labTestsGetMarkersForOrderSetRequestFieldSize = big.NewInt(1 << 1)
 )
 
-type GetMarkersForOrderSetLabTestsRequest struct {
+type LabTestsGetMarkersForOrderSetRequest struct {
 	Page *int             `json:"-" url:"page,omitempty"`
 	Size *int             `json:"-" url:"size,omitempty"`
 	Body *OrderSetRequest `json:"-" url:"-"`
@@ -945,212 +726,98 @@ type GetMarkersForOrderSetLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetMarkersForOrderSetLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetMarkersForOrderSetRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetPage sets the Page field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersForOrderSetLabTestsRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getMarkersForOrderSetLabTestsRequestFieldPage)
+func (l *LabTestsGetMarkersForOrderSetRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(labTestsGetMarkersForOrderSetRequestFieldPage)
 }
 
 // SetSize sets the Size field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMarkersForOrderSetLabTestsRequest) SetSize(size *int) {
-	g.Size = size
-	g.require(getMarkersForOrderSetLabTestsRequestFieldSize)
+func (l *LabTestsGetMarkersForOrderSetRequest) SetSize(size *int) {
+	l.Size = size
+	l.require(labTestsGetMarkersForOrderSetRequestFieldSize)
 }
 
-func (g *GetMarkersForOrderSetLabTestsRequest) UnmarshalJSON(data []byte) error {
+func (l *LabTestsGetMarkersForOrderSetRequest) UnmarshalJSON(data []byte) error {
 	body := new(OrderSetRequest)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	g.Body = body
+	l.Body = body
 	return nil
 }
 
-func (g *GetMarkersForOrderSetLabTestsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(g.Body)
+func (l *LabTestsGetMarkersForOrderSetRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
 }
 
 var (
-	getOrderLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
+	labTestsGetOrderPscInfoRequestFieldRadius       = big.NewInt(1 << 0)
+	labTestsGetOrderPscInfoRequestFieldCapabilities = big.NewInt(1 << 1)
 )
 
-type GetOrderLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetOrderLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrderLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getOrderLabTestsRequestFieldOrderId)
-}
-
-var (
-	getOrderAbnPdfLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type GetOrderAbnPdfLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetOrderAbnPdfLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrderAbnPdfLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getOrderAbnPdfLabTestsRequestFieldOrderId)
-}
-
-var (
-	getOrderCollectionInstructionPdfLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type GetOrderCollectionInstructionPdfLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetOrderCollectionInstructionPdfLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrderCollectionInstructionPdfLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getOrderCollectionInstructionPdfLabTestsRequestFieldOrderId)
-}
-
-var (
-	getOrderPscInfoLabTestsRequestFieldOrderId      = big.NewInt(1 << 0)
-	getOrderPscInfoLabTestsRequestFieldRadius       = big.NewInt(1 << 1)
-	getOrderPscInfoLabTestsRequestFieldCapabilities = big.NewInt(1 << 2)
-)
-
-type GetOrderPscInfoLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
+type LabTestsGetOrderPscInfoRequest struct {
 	// Radius in which to search in miles
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 	// Filter for only locations with certain capabilities
-	Capabilities []LabLocationCapability `json:"-" url:"capabilities,omitempty"`
+	Capabilities []*LabLocationCapability `json:"-" url:"capabilities,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetOrderPscInfoLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetOrderPscInfoRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrderPscInfoLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getOrderPscInfoLabTestsRequestFieldOrderId)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetRadius sets the Radius field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrderPscInfoLabTestsRequest) SetRadius(radius *AllowedRadius) {
-	g.Radius = radius
-	g.require(getOrderPscInfoLabTestsRequestFieldRadius)
+func (l *LabTestsGetOrderPscInfoRequest) SetRadius(radius *AllowedRadius) {
+	l.Radius = radius
+	l.require(labTestsGetOrderPscInfoRequestFieldRadius)
 }
 
 // SetCapabilities sets the Capabilities field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrderPscInfoLabTestsRequest) SetCapabilities(capabilities []LabLocationCapability) {
-	g.Capabilities = capabilities
-	g.require(getOrderPscInfoLabTestsRequestFieldCapabilities)
+func (l *LabTestsGetOrderPscInfoRequest) SetCapabilities(capabilities []*LabLocationCapability) {
+	l.Capabilities = capabilities
+	l.require(labTestsGetOrderPscInfoRequestFieldCapabilities)
 }
 
 var (
-	getOrderRequistionPdfLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
+	labTestsGetOrdersRequestFieldSearchInput           = big.NewInt(1 << 0)
+	labTestsGetOrdersRequestFieldStartDate             = big.NewInt(1 << 1)
+	labTestsGetOrdersRequestFieldEndDate               = big.NewInt(1 << 2)
+	labTestsGetOrdersRequestFieldUpdatedStartDate      = big.NewInt(1 << 3)
+	labTestsGetOrdersRequestFieldUpdatedEndDate        = big.NewInt(1 << 4)
+	labTestsGetOrdersRequestFieldStatus                = big.NewInt(1 << 5)
+	labTestsGetOrdersRequestFieldOrderKey              = big.NewInt(1 << 6)
+	labTestsGetOrdersRequestFieldOrderDirection        = big.NewInt(1 << 7)
+	labTestsGetOrdersRequestFieldOrderType             = big.NewInt(1 << 8)
+	labTestsGetOrdersRequestFieldIsCritical            = big.NewInt(1 << 9)
+	labTestsGetOrdersRequestFieldInterpretation        = big.NewInt(1 << 10)
+	labTestsGetOrdersRequestFieldOrderActivationTypes  = big.NewInt(1 << 11)
+	labTestsGetOrdersRequestFieldUserId                = big.NewInt(1 << 12)
+	labTestsGetOrdersRequestFieldPatientName           = big.NewInt(1 << 13)
+	labTestsGetOrdersRequestFieldShippingRecipientName = big.NewInt(1 << 14)
+	labTestsGetOrdersRequestFieldOrderIds              = big.NewInt(1 << 15)
+	labTestsGetOrdersRequestFieldPage                  = big.NewInt(1 << 16)
+	labTestsGetOrdersRequestFieldSize                  = big.NewInt(1 << 17)
 )
 
-type GetOrderRequistionPdfLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetOrderRequistionPdfLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrderRequistionPdfLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getOrderRequistionPdfLabTestsRequestFieldOrderId)
-}
-
-var (
-	getOrdersLabTestsRequestFieldSearchInput           = big.NewInt(1 << 0)
-	getOrdersLabTestsRequestFieldStartDate             = big.NewInt(1 << 1)
-	getOrdersLabTestsRequestFieldEndDate               = big.NewInt(1 << 2)
-	getOrdersLabTestsRequestFieldUpdatedStartDate      = big.NewInt(1 << 3)
-	getOrdersLabTestsRequestFieldUpdatedEndDate        = big.NewInt(1 << 4)
-	getOrdersLabTestsRequestFieldStatus                = big.NewInt(1 << 5)
-	getOrdersLabTestsRequestFieldOrderKey              = big.NewInt(1 << 6)
-	getOrdersLabTestsRequestFieldOrderDirection        = big.NewInt(1 << 7)
-	getOrdersLabTestsRequestFieldOrderType             = big.NewInt(1 << 8)
-	getOrdersLabTestsRequestFieldIsCritical            = big.NewInt(1 << 9)
-	getOrdersLabTestsRequestFieldInterpretation        = big.NewInt(1 << 10)
-	getOrdersLabTestsRequestFieldOrderActivationTypes  = big.NewInt(1 << 11)
-	getOrdersLabTestsRequestFieldUserId                = big.NewInt(1 << 12)
-	getOrdersLabTestsRequestFieldPatientName           = big.NewInt(1 << 13)
-	getOrdersLabTestsRequestFieldShippingRecipientName = big.NewInt(1 << 14)
-	getOrdersLabTestsRequestFieldOrderIds              = big.NewInt(1 << 15)
-	getOrdersLabTestsRequestFieldPage                  = big.NewInt(1 << 16)
-	getOrdersLabTestsRequestFieldSize                  = big.NewInt(1 << 17)
-)
-
-type GetOrdersLabTestsRequest struct {
+type LabTestsGetOrdersRequest struct {
 	// Search by order id, user id, patient name, shipping dob, or shipping recipient name.
 	SearchInput *string `json:"-" url:"search_input,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1162,19 +829,19 @@ type GetOrdersLabTestsRequest struct {
 	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
 	UpdatedEndDate *time.Time `json:"-" url:"updated_end_date,omitempty"`
 	// Filter by low level status.
-	Status []OrderLowLevelStatus `json:"-" url:"status,omitempty"`
+	Status []*OrderLowLevelStatus `json:"-" url:"status,omitempty"`
 	// Order key to sort by.
-	OrderKey *GetOrdersLabTestsRequestOrderKey `json:"-" url:"order_key,omitempty"`
+	OrderKey *LabTestsGetOrdersRequestOrderKey `json:"-" url:"order_key,omitempty"`
 	// Order direction to sort by.
-	OrderDirection *GetOrdersLabTestsRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
+	OrderDirection *LabTestsGetOrdersRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
 	// Filter by method used to perform the lab test.
-	OrderType []LabTestCollectionMethod `json:"-" url:"order_type,omitempty"`
+	OrderType []*LabTestCollectionMethod `json:"-" url:"order_type,omitempty"`
 	// Filter by critical order status.
 	IsCritical *bool `json:"-" url:"is_critical,omitempty"`
 	// Filter by result interpretation of the lab test.
 	Interpretation *Interpretation `json:"-" url:"interpretation,omitempty"`
 	// Filter by activation type.
-	OrderActivationTypes []OrderActivationType `json:"-" url:"order_activation_types,omitempty"`
+	OrderActivationTypes []*OrderActivationType `json:"-" url:"order_activation_types,omitempty"`
 	// Filter by user ID.
 	UserId *string `json:"-" url:"user_id,omitempty"`
 	// Filter by patient name.
@@ -1182,162 +849,162 @@ type GetOrdersLabTestsRequest struct {
 	// Filter by shipping recipient name.
 	ShippingRecipientName *string `json:"-" url:"shipping_recipient_name,omitempty"`
 	// Filter by order ids.
-	OrderIds []string `json:"-" url:"order_ids,omitempty"`
-	Page     *int     `json:"-" url:"page,omitempty"`
-	Size     *int     `json:"-" url:"size,omitempty"`
+	OrderIds []*string `json:"-" url:"order_ids,omitempty"`
+	Page     *int      `json:"-" url:"page,omitempty"`
+	Size     *int      `json:"-" url:"size,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetOrdersLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetOrdersRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetSearchInput sets the SearchInput field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetSearchInput(searchInput *string) {
-	g.SearchInput = searchInput
-	g.require(getOrdersLabTestsRequestFieldSearchInput)
+func (l *LabTestsGetOrdersRequest) SetSearchInput(searchInput *string) {
+	l.SearchInput = searchInput
+	l.require(labTestsGetOrdersRequestFieldSearchInput)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetStartDate(startDate *time.Time) {
-	g.StartDate = startDate
-	g.require(getOrdersLabTestsRequestFieldStartDate)
+func (l *LabTestsGetOrdersRequest) SetStartDate(startDate *time.Time) {
+	l.StartDate = startDate
+	l.require(labTestsGetOrdersRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetEndDate(endDate *time.Time) {
-	g.EndDate = endDate
-	g.require(getOrdersLabTestsRequestFieldEndDate)
+func (l *LabTestsGetOrdersRequest) SetEndDate(endDate *time.Time) {
+	l.EndDate = endDate
+	l.require(labTestsGetOrdersRequestFieldEndDate)
 }
 
 // SetUpdatedStartDate sets the UpdatedStartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetUpdatedStartDate(updatedStartDate *time.Time) {
-	g.UpdatedStartDate = updatedStartDate
-	g.require(getOrdersLabTestsRequestFieldUpdatedStartDate)
+func (l *LabTestsGetOrdersRequest) SetUpdatedStartDate(updatedStartDate *time.Time) {
+	l.UpdatedStartDate = updatedStartDate
+	l.require(labTestsGetOrdersRequestFieldUpdatedStartDate)
 }
 
 // SetUpdatedEndDate sets the UpdatedEndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetUpdatedEndDate(updatedEndDate *time.Time) {
-	g.UpdatedEndDate = updatedEndDate
-	g.require(getOrdersLabTestsRequestFieldUpdatedEndDate)
+func (l *LabTestsGetOrdersRequest) SetUpdatedEndDate(updatedEndDate *time.Time) {
+	l.UpdatedEndDate = updatedEndDate
+	l.require(labTestsGetOrdersRequestFieldUpdatedEndDate)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetStatus(status []OrderLowLevelStatus) {
-	g.Status = status
-	g.require(getOrdersLabTestsRequestFieldStatus)
+func (l *LabTestsGetOrdersRequest) SetStatus(status []*OrderLowLevelStatus) {
+	l.Status = status
+	l.require(labTestsGetOrdersRequestFieldStatus)
 }
 
 // SetOrderKey sets the OrderKey field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetOrderKey(orderKey *GetOrdersLabTestsRequestOrderKey) {
-	g.OrderKey = orderKey
-	g.require(getOrdersLabTestsRequestFieldOrderKey)
+func (l *LabTestsGetOrdersRequest) SetOrderKey(orderKey *LabTestsGetOrdersRequestOrderKey) {
+	l.OrderKey = orderKey
+	l.require(labTestsGetOrdersRequestFieldOrderKey)
 }
 
 // SetOrderDirection sets the OrderDirection field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetOrderDirection(orderDirection *GetOrdersLabTestsRequestOrderDirection) {
-	g.OrderDirection = orderDirection
-	g.require(getOrdersLabTestsRequestFieldOrderDirection)
+func (l *LabTestsGetOrdersRequest) SetOrderDirection(orderDirection *LabTestsGetOrdersRequestOrderDirection) {
+	l.OrderDirection = orderDirection
+	l.require(labTestsGetOrdersRequestFieldOrderDirection)
 }
 
 // SetOrderType sets the OrderType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetOrderType(orderType []LabTestCollectionMethod) {
-	g.OrderType = orderType
-	g.require(getOrdersLabTestsRequestFieldOrderType)
+func (l *LabTestsGetOrdersRequest) SetOrderType(orderType []*LabTestCollectionMethod) {
+	l.OrderType = orderType
+	l.require(labTestsGetOrdersRequestFieldOrderType)
 }
 
 // SetIsCritical sets the IsCritical field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetIsCritical(isCritical *bool) {
-	g.IsCritical = isCritical
-	g.require(getOrdersLabTestsRequestFieldIsCritical)
+func (l *LabTestsGetOrdersRequest) SetIsCritical(isCritical *bool) {
+	l.IsCritical = isCritical
+	l.require(labTestsGetOrdersRequestFieldIsCritical)
 }
 
 // SetInterpretation sets the Interpretation field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetInterpretation(interpretation *Interpretation) {
-	g.Interpretation = interpretation
-	g.require(getOrdersLabTestsRequestFieldInterpretation)
+func (l *LabTestsGetOrdersRequest) SetInterpretation(interpretation *Interpretation) {
+	l.Interpretation = interpretation
+	l.require(labTestsGetOrdersRequestFieldInterpretation)
 }
 
 // SetOrderActivationTypes sets the OrderActivationTypes field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetOrderActivationTypes(orderActivationTypes []OrderActivationType) {
-	g.OrderActivationTypes = orderActivationTypes
-	g.require(getOrdersLabTestsRequestFieldOrderActivationTypes)
+func (l *LabTestsGetOrdersRequest) SetOrderActivationTypes(orderActivationTypes []*OrderActivationType) {
+	l.OrderActivationTypes = orderActivationTypes
+	l.require(labTestsGetOrdersRequestFieldOrderActivationTypes)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetUserId(userId *string) {
-	g.UserId = userId
-	g.require(getOrdersLabTestsRequestFieldUserId)
+func (l *LabTestsGetOrdersRequest) SetUserId(userId *string) {
+	l.UserId = userId
+	l.require(labTestsGetOrdersRequestFieldUserId)
 }
 
 // SetPatientName sets the PatientName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetPatientName(patientName *string) {
-	g.PatientName = patientName
-	g.require(getOrdersLabTestsRequestFieldPatientName)
+func (l *LabTestsGetOrdersRequest) SetPatientName(patientName *string) {
+	l.PatientName = patientName
+	l.require(labTestsGetOrdersRequestFieldPatientName)
 }
 
 // SetShippingRecipientName sets the ShippingRecipientName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetShippingRecipientName(shippingRecipientName *string) {
-	g.ShippingRecipientName = shippingRecipientName
-	g.require(getOrdersLabTestsRequestFieldShippingRecipientName)
+func (l *LabTestsGetOrdersRequest) SetShippingRecipientName(shippingRecipientName *string) {
+	l.ShippingRecipientName = shippingRecipientName
+	l.require(labTestsGetOrdersRequestFieldShippingRecipientName)
 }
 
 // SetOrderIds sets the OrderIds field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetOrderIds(orderIds []string) {
-	g.OrderIds = orderIds
-	g.require(getOrdersLabTestsRequestFieldOrderIds)
+func (l *LabTestsGetOrdersRequest) SetOrderIds(orderIds []*string) {
+	l.OrderIds = orderIds
+	l.require(labTestsGetOrdersRequestFieldOrderIds)
 }
 
 // SetPage sets the Page field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetPage(page *int) {
-	g.Page = page
-	g.require(getOrdersLabTestsRequestFieldPage)
+func (l *LabTestsGetOrdersRequest) SetPage(page *int) {
+	l.Page = page
+	l.require(labTestsGetOrdersRequestFieldPage)
 }
 
 // SetSize sets the Size field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetOrdersLabTestsRequest) SetSize(size *int) {
-	g.Size = size
-	g.require(getOrdersLabTestsRequestFieldSize)
+func (l *LabTestsGetOrdersRequest) SetSize(size *int) {
+	l.Size = size
+	l.require(labTestsGetOrdersRequestFieldSize)
 }
 
 var (
-	getPaginatedLabTestsRequestFieldLabTestLimit     = big.NewInt(1 << 0)
-	getPaginatedLabTestsRequestFieldNextCursor       = big.NewInt(1 << 1)
-	getPaginatedLabTestsRequestFieldGenerationMethod = big.NewInt(1 << 2)
-	getPaginatedLabTestsRequestFieldLabSlug          = big.NewInt(1 << 3)
-	getPaginatedLabTestsRequestFieldCollectionMethod = big.NewInt(1 << 4)
-	getPaginatedLabTestsRequestFieldStatus           = big.NewInt(1 << 5)
-	getPaginatedLabTestsRequestFieldMarkerIds        = big.NewInt(1 << 6)
-	getPaginatedLabTestsRequestFieldProviderIds      = big.NewInt(1 << 7)
-	getPaginatedLabTestsRequestFieldName             = big.NewInt(1 << 8)
-	getPaginatedLabTestsRequestFieldOrderKey         = big.NewInt(1 << 9)
-	getPaginatedLabTestsRequestFieldOrderDirection   = big.NewInt(1 << 10)
+	labTestsGetPaginatedRequestFieldLabTestLimit     = big.NewInt(1 << 0)
+	labTestsGetPaginatedRequestFieldNextCursor       = big.NewInt(1 << 1)
+	labTestsGetPaginatedRequestFieldGenerationMethod = big.NewInt(1 << 2)
+	labTestsGetPaginatedRequestFieldLabSlug          = big.NewInt(1 << 3)
+	labTestsGetPaginatedRequestFieldCollectionMethod = big.NewInt(1 << 4)
+	labTestsGetPaginatedRequestFieldStatus           = big.NewInt(1 << 5)
+	labTestsGetPaginatedRequestFieldMarkerIds        = big.NewInt(1 << 6)
+	labTestsGetPaginatedRequestFieldProviderIds      = big.NewInt(1 << 7)
+	labTestsGetPaginatedRequestFieldName             = big.NewInt(1 << 8)
+	labTestsGetPaginatedRequestFieldOrderKey         = big.NewInt(1 << 9)
+	labTestsGetPaginatedRequestFieldOrderDirection   = big.NewInt(1 << 10)
 )
 
-type GetPaginatedLabTestsRequest struct {
+type LabTestsGetPaginatedRequest struct {
 	LabTestLimit *int    `json:"-" url:"lab_test_limit,omitempty"`
 	NextCursor   *string `json:"-" url:"next_cursor,omitempty"`
 	// Filter on whether auto-generated lab tests created by Vital, manually created lab tests, or all lab tests should be returned.
@@ -1349,209 +1016,157 @@ type GetPaginatedLabTestsRequest struct {
 	// Filter by the status of these lab tests.
 	Status *LabTestStatus `json:"-" url:"status,omitempty"`
 	// Filter to only include lab tests containing these marker IDs.
-	MarkerIds []int `json:"-" url:"marker_ids,omitempty"`
+	MarkerIds []*int `json:"-" url:"marker_ids,omitempty"`
 	// Filter to only include lab tests containing these provider IDs.
-	ProviderIds []string `json:"-" url:"provider_ids,omitempty"`
+	ProviderIds []*string `json:"-" url:"provider_ids,omitempty"`
 	// Filter by the name of the lab test (a case-insensitive substring search).
 	Name           *string                                    `json:"-" url:"name,omitempty"`
-	OrderKey       *GetPaginatedLabTestsRequestOrderKey       `json:"-" url:"order_key,omitempty"`
-	OrderDirection *GetPaginatedLabTestsRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
+	OrderKey       *LabTestsGetPaginatedRequestOrderKey       `json:"-" url:"order_key,omitempty"`
+	OrderDirection *LabTestsGetPaginatedRequestOrderDirection `json:"-" url:"order_direction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetPaginatedLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetPaginatedRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLabTestLimit sets the LabTestLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetLabTestLimit(labTestLimit *int) {
-	g.LabTestLimit = labTestLimit
-	g.require(getPaginatedLabTestsRequestFieldLabTestLimit)
+func (l *LabTestsGetPaginatedRequest) SetLabTestLimit(labTestLimit *int) {
+	l.LabTestLimit = labTestLimit
+	l.require(labTestsGetPaginatedRequestFieldLabTestLimit)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getPaginatedLabTestsRequestFieldNextCursor)
+func (l *LabTestsGetPaginatedRequest) SetNextCursor(nextCursor *string) {
+	l.NextCursor = nextCursor
+	l.require(labTestsGetPaginatedRequestFieldNextCursor)
 }
 
 // SetGenerationMethod sets the GenerationMethod field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetGenerationMethod(generationMethod *LabTestGenerationMethodFilter) {
-	g.GenerationMethod = generationMethod
-	g.require(getPaginatedLabTestsRequestFieldGenerationMethod)
+func (l *LabTestsGetPaginatedRequest) SetGenerationMethod(generationMethod *LabTestGenerationMethodFilter) {
+	l.GenerationMethod = generationMethod
+	l.require(labTestsGetPaginatedRequestFieldGenerationMethod)
 }
 
 // SetLabSlug sets the LabSlug field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetLabSlug(labSlug *string) {
-	g.LabSlug = labSlug
-	g.require(getPaginatedLabTestsRequestFieldLabSlug)
+func (l *LabTestsGetPaginatedRequest) SetLabSlug(labSlug *string) {
+	l.LabSlug = labSlug
+	l.require(labTestsGetPaginatedRequestFieldLabSlug)
 }
 
 // SetCollectionMethod sets the CollectionMethod field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetCollectionMethod(collectionMethod *LabTestCollectionMethod) {
-	g.CollectionMethod = collectionMethod
-	g.require(getPaginatedLabTestsRequestFieldCollectionMethod)
+func (l *LabTestsGetPaginatedRequest) SetCollectionMethod(collectionMethod *LabTestCollectionMethod) {
+	l.CollectionMethod = collectionMethod
+	l.require(labTestsGetPaginatedRequestFieldCollectionMethod)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetStatus(status *LabTestStatus) {
-	g.Status = status
-	g.require(getPaginatedLabTestsRequestFieldStatus)
+func (l *LabTestsGetPaginatedRequest) SetStatus(status *LabTestStatus) {
+	l.Status = status
+	l.require(labTestsGetPaginatedRequestFieldStatus)
 }
 
 // SetMarkerIds sets the MarkerIds field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetMarkerIds(markerIds []int) {
-	g.MarkerIds = markerIds
-	g.require(getPaginatedLabTestsRequestFieldMarkerIds)
+func (l *LabTestsGetPaginatedRequest) SetMarkerIds(markerIds []*int) {
+	l.MarkerIds = markerIds
+	l.require(labTestsGetPaginatedRequestFieldMarkerIds)
 }
 
 // SetProviderIds sets the ProviderIds field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetProviderIds(providerIds []string) {
-	g.ProviderIds = providerIds
-	g.require(getPaginatedLabTestsRequestFieldProviderIds)
+func (l *LabTestsGetPaginatedRequest) SetProviderIds(providerIds []*string) {
+	l.ProviderIds = providerIds
+	l.require(labTestsGetPaginatedRequestFieldProviderIds)
 }
 
 // SetName sets the Name field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetName(name *string) {
-	g.Name = name
-	g.require(getPaginatedLabTestsRequestFieldName)
+func (l *LabTestsGetPaginatedRequest) SetName(name *string) {
+	l.Name = name
+	l.require(labTestsGetPaginatedRequestFieldName)
 }
 
 // SetOrderKey sets the OrderKey field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetOrderKey(orderKey *GetPaginatedLabTestsRequestOrderKey) {
-	g.OrderKey = orderKey
-	g.require(getPaginatedLabTestsRequestFieldOrderKey)
+func (l *LabTestsGetPaginatedRequest) SetOrderKey(orderKey *LabTestsGetPaginatedRequestOrderKey) {
+	l.OrderKey = orderKey
+	l.require(labTestsGetPaginatedRequestFieldOrderKey)
 }
 
 // SetOrderDirection sets the OrderDirection field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaginatedLabTestsRequest) SetOrderDirection(orderDirection *GetPaginatedLabTestsRequestOrderDirection) {
-	g.OrderDirection = orderDirection
-	g.require(getPaginatedLabTestsRequestFieldOrderDirection)
+func (l *LabTestsGetPaginatedRequest) SetOrderDirection(orderDirection *LabTestsGetPaginatedRequestOrderDirection) {
+	l.OrderDirection = orderDirection
+	l.require(labTestsGetPaginatedRequestFieldOrderDirection)
 }
 
 var (
-	getPhlebotomyAppointmentLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
+	labTestsGetPhlebotomyAppointmentAvailabilityRequestFieldStartDate = big.NewInt(1 << 0)
 )
 
-type GetPhlebotomyAppointmentLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetPhlebotomyAppointmentLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPhlebotomyAppointmentLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getPhlebotomyAppointmentLabTestsRequestFieldOrderId)
-}
-
-var (
-	getPhlebotomyAppointmentAvailabilityLabTestsRequestFieldStartDate = big.NewInt(1 << 0)
-)
-
-type GetPhlebotomyAppointmentAvailabilityLabTestsRequest struct {
+type LabTestsGetPhlebotomyAppointmentAvailabilityRequest struct {
 	// Start date for appointment availability
-	StartDate *time.Time `json:"-" url:"start_date,omitempty" format:"date"`
+	StartDate *string    `json:"-" url:"start_date,omitempty"`
 	Body      *UsAddress `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetPhlebotomyAppointmentAvailabilityLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPhlebotomyAppointmentAvailabilityLabTestsRequest) SetStartDate(startDate *time.Time) {
-	g.StartDate = startDate
-	g.require(getPhlebotomyAppointmentAvailabilityLabTestsRequestFieldStartDate)
+func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) SetStartDate(startDate *string) {
+	l.StartDate = startDate
+	l.require(labTestsGetPhlebotomyAppointmentAvailabilityRequestFieldStartDate)
 }
 
-func (g *GetPhlebotomyAppointmentAvailabilityLabTestsRequest) UnmarshalJSON(data []byte) error {
+func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) UnmarshalJSON(data []byte) error {
 	body := new(UsAddress)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	g.Body = body
+	l.Body = body
 	return nil
 }
 
-func (g *GetPhlebotomyAppointmentAvailabilityLabTestsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(g.Body)
+func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
 }
 
 var (
-	getPscAppointmentLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
+	labTestsGetPscAppointmentAvailabilityRequestFieldLab       = big.NewInt(1 << 0)
+	labTestsGetPscAppointmentAvailabilityRequestFieldStartDate = big.NewInt(1 << 1)
+	labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes = big.NewInt(1 << 2)
+	labTestsGetPscAppointmentAvailabilityRequestFieldZipCode   = big.NewInt(1 << 3)
+	labTestsGetPscAppointmentAvailabilityRequestFieldRadius    = big.NewInt(1 << 4)
 )
 
-type GetPscAppointmentLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetPscAppointmentLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscAppointmentLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getPscAppointmentLabTestsRequestFieldOrderId)
-}
-
-var (
-	getPscAppointmentAvailabilityLabTestsRequestFieldLab       = big.NewInt(1 << 0)
-	getPscAppointmentAvailabilityLabTestsRequestFieldStartDate = big.NewInt(1 << 1)
-	getPscAppointmentAvailabilityLabTestsRequestFieldSiteCodes = big.NewInt(1 << 2)
-	getPscAppointmentAvailabilityLabTestsRequestFieldZipCode   = big.NewInt(1 << 3)
-	getPscAppointmentAvailabilityLabTestsRequestFieldRadius    = big.NewInt(1 << 4)
-)
-
-type GetPscAppointmentAvailabilityLabTestsRequest struct {
+type LabTestsGetPscAppointmentAvailabilityRequest struct {
 	// Lab to check for availability
 	Lab AppointmentPscLabs `json:"-" url:"lab"`
 	// Start date for appointment availability
-	StartDate *time.Time `json:"-" url:"start_date,omitempty" format:"date"`
+	StartDate *string `json:"-" url:"start_date,omitempty"`
 	// List of site codes to fetch availability for
-	SiteCodes []string `json:"-" url:"site_codes,omitempty"`
+	SiteCodes []*string `json:"-" url:"site_codes,omitempty"`
 	// Zip code of the area to check
 	ZipCode *string `json:"-" url:"zip_code,omitempty"`
 	// Radius in which to search. (meters)
@@ -1561,57 +1176,57 @@ type GetPscAppointmentAvailabilityLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetPscAppointmentAvailabilityLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetLab sets the Lab field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscAppointmentAvailabilityLabTestsRequest) SetLab(lab AppointmentPscLabs) {
-	g.Lab = lab
-	g.require(getPscAppointmentAvailabilityLabTestsRequestFieldLab)
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetLab(lab AppointmentPscLabs) {
+	l.Lab = lab
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldLab)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscAppointmentAvailabilityLabTestsRequest) SetStartDate(startDate *time.Time) {
-	g.StartDate = startDate
-	g.require(getPscAppointmentAvailabilityLabTestsRequestFieldStartDate)
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetStartDate(startDate *string) {
+	l.StartDate = startDate
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldStartDate)
 }
 
 // SetSiteCodes sets the SiteCodes field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscAppointmentAvailabilityLabTestsRequest) SetSiteCodes(siteCodes []string) {
-	g.SiteCodes = siteCodes
-	g.require(getPscAppointmentAvailabilityLabTestsRequestFieldSiteCodes)
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetSiteCodes(siteCodes []*string) {
+	l.SiteCodes = siteCodes
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes)
 }
 
 // SetZipCode sets the ZipCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscAppointmentAvailabilityLabTestsRequest) SetZipCode(zipCode *string) {
-	g.ZipCode = zipCode
-	g.require(getPscAppointmentAvailabilityLabTestsRequestFieldZipCode)
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetZipCode(zipCode *string) {
+	l.ZipCode = zipCode
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldZipCode)
 }
 
 // SetRadius sets the Radius field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscAppointmentAvailabilityLabTestsRequest) SetRadius(radius *AllowedRadius) {
-	g.Radius = radius
-	g.require(getPscAppointmentAvailabilityLabTestsRequestFieldRadius)
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetRadius(radius *AllowedRadius) {
+	l.Radius = radius
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldRadius)
 }
 
 var (
-	getPscInfoLabTestsRequestFieldZipCode      = big.NewInt(1 << 0)
-	getPscInfoLabTestsRequestFieldLabId        = big.NewInt(1 << 1)
-	getPscInfoLabTestsRequestFieldRadius       = big.NewInt(1 << 2)
-	getPscInfoLabTestsRequestFieldCapabilities = big.NewInt(1 << 3)
-	getPscInfoLabTestsRequestFieldLabAccountId = big.NewInt(1 << 4)
+	labTestsGetPscInfoRequestFieldZipCode      = big.NewInt(1 << 0)
+	labTestsGetPscInfoRequestFieldLabId        = big.NewInt(1 << 1)
+	labTestsGetPscInfoRequestFieldRadius       = big.NewInt(1 << 2)
+	labTestsGetPscInfoRequestFieldCapabilities = big.NewInt(1 << 3)
+	labTestsGetPscInfoRequestFieldLabAccountId = big.NewInt(1 << 4)
 )
 
-type GetPscInfoLabTestsRequest struct {
+type LabTestsGetPscInfoRequest struct {
 	// Zip code of the area to check
 	ZipCode string `json:"-" url:"zip_code"`
 	// Lab ID to check for PSCs
@@ -1619,7 +1234,7 @@ type GetPscInfoLabTestsRequest struct {
 	// Radius in which to search in miles. Note that we limit to 30 PSCs.
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
 	// Filter for only locations with certain capabilities
-	Capabilities []LabLocationCapability `json:"-" url:"capabilities,omitempty"`
+	Capabilities []*LabLocationCapability `json:"-" url:"capabilities,omitempty"`
 	// Lab Account ID to use for availability checks
 	LabAccountId *string `json:"-" url:"lab_account_id,omitempty"`
 
@@ -1627,121 +1242,46 @@ type GetPscInfoLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetPscInfoLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LabTestsGetPscInfoRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetZipCode sets the ZipCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscInfoLabTestsRequest) SetZipCode(zipCode string) {
-	g.ZipCode = zipCode
-	g.require(getPscInfoLabTestsRequestFieldZipCode)
+func (l *LabTestsGetPscInfoRequest) SetZipCode(zipCode string) {
+	l.ZipCode = zipCode
+	l.require(labTestsGetPscInfoRequestFieldZipCode)
 }
 
 // SetLabId sets the LabId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscInfoLabTestsRequest) SetLabId(labId int) {
-	g.LabId = labId
-	g.require(getPscInfoLabTestsRequestFieldLabId)
+func (l *LabTestsGetPscInfoRequest) SetLabId(labId int) {
+	l.LabId = labId
+	l.require(labTestsGetPscInfoRequestFieldLabId)
 }
 
 // SetRadius sets the Radius field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscInfoLabTestsRequest) SetRadius(radius *AllowedRadius) {
-	g.Radius = radius
-	g.require(getPscInfoLabTestsRequestFieldRadius)
+func (l *LabTestsGetPscInfoRequest) SetRadius(radius *AllowedRadius) {
+	l.Radius = radius
+	l.require(labTestsGetPscInfoRequestFieldRadius)
 }
 
 // SetCapabilities sets the Capabilities field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscInfoLabTestsRequest) SetCapabilities(capabilities []LabLocationCapability) {
-	g.Capabilities = capabilities
-	g.require(getPscInfoLabTestsRequestFieldCapabilities)
+func (l *LabTestsGetPscInfoRequest) SetCapabilities(capabilities []*LabLocationCapability) {
+	l.Capabilities = capabilities
+	l.require(labTestsGetPscInfoRequestFieldCapabilities)
 }
 
 // SetLabAccountId sets the LabAccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPscInfoLabTestsRequest) SetLabAccountId(labAccountId *string) {
-	g.LabAccountId = labAccountId
-	g.require(getPscInfoLabTestsRequestFieldLabAccountId)
-}
-
-var (
-	getResultMetadataLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type GetResultMetadataLabTestsRequest struct {
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetResultMetadataLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetResultMetadataLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getResultMetadataLabTestsRequestFieldOrderId)
-}
-
-var (
-	getResultPdfLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type GetResultPdfLabTestsRequest struct {
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetResultPdfLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetResultPdfLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getResultPdfLabTestsRequestFieldOrderId)
-}
-
-var (
-	getResultRawLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type GetResultRawLabTestsRequest struct {
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetResultRawLabTestsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetResultRawLabTestsRequest) SetOrderId(orderId string) {
-	g.OrderId = orderId
-	g.require(getResultRawLabTestsRequestFieldOrderId)
+func (l *LabTestsGetPscInfoRequest) SetLabAccountId(labAccountId *string) {
+	l.LabAccountId = labAccountId
+	l.require(labTestsGetPscInfoRequestFieldLabAccountId)
 }
 
 var (
@@ -1842,14 +1382,11 @@ func (i *ImportOrderBody) SetLabAccountId(labAccountId *string) {
 }
 
 var (
-	requestAppointmentRequestFieldOrderId  = big.NewInt(1 << 0)
-	requestAppointmentRequestFieldAddress  = big.NewInt(1 << 1)
-	requestAppointmentRequestFieldProvider = big.NewInt(1 << 2)
+	requestAppointmentRequestFieldAddress  = big.NewInt(1 << 0)
+	requestAppointmentRequestFieldProvider = big.NewInt(1 << 1)
 )
 
 type RequestAppointmentRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
 	// At-home phlebotomy appointment address.
 	Address  *UsAddress          `json:"address,omitempty" url:"-"`
 	Provider AppointmentProvider `json:"provider" url:"-"`
@@ -1863,13 +1400,6 @@ func (r *RequestAppointmentRequest) require(field *big.Int) {
 		r.explicitFields = big.NewInt(0)
 	}
 	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestAppointmentRequest) SetOrderId(orderId string) {
-	r.OrderId = orderId
-	r.require(requestAppointmentRequestFieldOrderId)
 }
 
 // SetAddress sets the Address field and marks it as non-optional;
@@ -1887,93 +1417,11 @@ func (r *RequestAppointmentRequest) SetProvider(provider AppointmentProvider) {
 }
 
 var (
-	reschedulePhlebotomyAppointmentLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
+	labTestsSimulateOrderProcessRequestFieldFinalStatus = big.NewInt(1 << 0)
+	labTestsSimulateOrderProcessRequestFieldDelay       = big.NewInt(1 << 1)
 )
 
-type ReschedulePhlebotomyAppointmentLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string                        `json:"-" url:"-"`
-	Body    *AppointmentRescheduleRequest `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (r *ReschedulePhlebotomyAppointmentLabTestsRequest) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
-	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ReschedulePhlebotomyAppointmentLabTestsRequest) SetOrderId(orderId string) {
-	r.OrderId = orderId
-	r.require(reschedulePhlebotomyAppointmentLabTestsRequestFieldOrderId)
-}
-
-func (r *ReschedulePhlebotomyAppointmentLabTestsRequest) UnmarshalJSON(data []byte) error {
-	body := new(AppointmentRescheduleRequest)
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	r.Body = body
-	return nil
-}
-
-func (r *ReschedulePhlebotomyAppointmentLabTestsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(r.Body)
-}
-
-var (
-	reschedulePscAppointmentLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type ReschedulePscAppointmentLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string                        `json:"-" url:"-"`
-	Body    *AppointmentRescheduleRequest `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (r *ReschedulePscAppointmentLabTestsRequest) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
-	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ReschedulePscAppointmentLabTestsRequest) SetOrderId(orderId string) {
-	r.OrderId = orderId
-	r.require(reschedulePscAppointmentLabTestsRequestFieldOrderId)
-}
-
-func (r *ReschedulePscAppointmentLabTestsRequest) UnmarshalJSON(data []byte) error {
-	body := new(AppointmentRescheduleRequest)
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	r.Body = body
-	return nil
-}
-
-func (r *ReschedulePscAppointmentLabTestsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(r.Body)
-}
-
-var (
-	simulateOrderProcessLabTestsRequestFieldOrderId     = big.NewInt(1 << 0)
-	simulateOrderProcessLabTestsRequestFieldFinalStatus = big.NewInt(1 << 1)
-	simulateOrderProcessLabTestsRequestFieldDelay       = big.NewInt(1 << 2)
-)
-
-type SimulateOrderProcessLabTestsRequest struct {
-	OrderId     string           `json:"-" url:"-"`
+type LabTestsSimulateOrderProcessRequest struct {
 	FinalStatus *OrderStatus     `json:"-" url:"final_status,omitempty"`
 	Delay       *int             `json:"-" url:"delay,omitempty"`
 	Body        *SimulationFlags `json:"-" url:"-"`
@@ -1982,45 +1430,38 @@ type SimulateOrderProcessLabTestsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *SimulateOrderProcessLabTestsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (l *LabTestsSimulateOrderProcessRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SimulateOrderProcessLabTestsRequest) SetOrderId(orderId string) {
-	s.OrderId = orderId
-	s.require(simulateOrderProcessLabTestsRequestFieldOrderId)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetFinalStatus sets the FinalStatus field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SimulateOrderProcessLabTestsRequest) SetFinalStatus(finalStatus *OrderStatus) {
-	s.FinalStatus = finalStatus
-	s.require(simulateOrderProcessLabTestsRequestFieldFinalStatus)
+func (l *LabTestsSimulateOrderProcessRequest) SetFinalStatus(finalStatus *OrderStatus) {
+	l.FinalStatus = finalStatus
+	l.require(labTestsSimulateOrderProcessRequestFieldFinalStatus)
 }
 
 // SetDelay sets the Delay field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SimulateOrderProcessLabTestsRequest) SetDelay(delay *int) {
-	s.Delay = delay
-	s.require(simulateOrderProcessLabTestsRequestFieldDelay)
+func (l *LabTestsSimulateOrderProcessRequest) SetDelay(delay *int) {
+	l.Delay = delay
+	l.require(labTestsSimulateOrderProcessRequestFieldDelay)
 }
 
-func (s *SimulateOrderProcessLabTestsRequest) UnmarshalJSON(data []byte) error {
+func (l *LabTestsSimulateOrderProcessRequest) UnmarshalJSON(data []byte) error {
 	var body SimulationFlags
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	s.Body = &body
+	l.Body = &body
 	return nil
 }
 
-func (s *SimulateOrderProcessLabTestsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.Body)
+func (l *LabTestsSimulateOrderProcessRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
 }
 
 var (
@@ -4809,7 +4250,7 @@ var (
 
 type DaySlots struct {
 	Location *AppointmentLocation `json:"location,omitempty" url:"location,omitempty"`
-	Date     time.Time            `json:"date" url:"date" format:"date"`
+	Date     string               `json:"date" url:"date"`
 	Slots    []*TimeSlot          `json:"slots" url:"slots"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -4826,9 +4267,9 @@ func (d *DaySlots) GetLocation() *AppointmentLocation {
 	return d.Location
 }
 
-func (d *DaySlots) GetDate() time.Time {
+func (d *DaySlots) GetDate() string {
 	if d == nil {
-		return time.Time{}
+		return ""
 	}
 	return d.Date
 }
@@ -4860,7 +4301,7 @@ func (d *DaySlots) SetLocation(location *AppointmentLocation) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DaySlots) SetDate(date time.Time) {
+func (d *DaySlots) SetDate(date string) {
 	d.Date = date
 	d.require(daySlotsFieldDate)
 }
@@ -4873,18 +4314,12 @@ func (d *DaySlots) SetSlots(slots []*TimeSlot) {
 }
 
 func (d *DaySlots) UnmarshalJSON(data []byte) error {
-	type embed DaySlots
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*d),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler DaySlots
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*d = DaySlots(unmarshaler.embed)
-	d.Date = unmarshaler.Date.Time()
+	*d = DaySlots(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *d)
 	if err != nil {
 		return err
@@ -4898,10 +4333,8 @@ func (d *DaySlots) MarshalJSON() ([]byte, error) {
 	type embed DaySlots
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*d),
-		Date:  internal.NewDate(d.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -7979,10 +7412,9 @@ func (p *PscInfo) String() string {
 type ResultType string
 
 const (
-	ResultTypeNumeric    ResultType = "numeric"
-	ResultTypeRange      ResultType = "range"
-	ResultTypeComment    ResultType = "comment"
-	ResultTypeCodedValue ResultType = "coded_value"
+	ResultTypeNumeric ResultType = "numeric"
+	ResultTypeRange   ResultType = "range"
+	ResultTypeComment ResultType = "comment"
 )
 
 func NewResultTypeFromString(s string) (ResultType, error) {
@@ -7993,8 +7425,6 @@ func NewResultTypeFromString(s string) (ResultType, error) {
 		return ResultTypeRange, nil
 	case "comment":
 		return ResultTypeComment, nil
-	case "coded_value":
-		return ResultTypeCodedValue, nil
 	}
 	var t ResultType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -9053,157 +8483,155 @@ func (v *ValidateIcdCodesResponse) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
-type GetLabTestsRequestOrderDirection string
+type LabTestsGetOrdersRequestOrderDirection string
 
 const (
-	GetLabTestsRequestOrderDirectionAsc  GetLabTestsRequestOrderDirection = "asc"
-	GetLabTestsRequestOrderDirectionDesc GetLabTestsRequestOrderDirection = "desc"
+	LabTestsGetOrdersRequestOrderDirectionAsc  LabTestsGetOrdersRequestOrderDirection = "asc"
+	LabTestsGetOrdersRequestOrderDirectionDesc LabTestsGetOrdersRequestOrderDirection = "desc"
 )
 
-func NewGetLabTestsRequestOrderDirectionFromString(s string) (GetLabTestsRequestOrderDirection, error) {
+func NewLabTestsGetOrdersRequestOrderDirectionFromString(s string) (LabTestsGetOrdersRequestOrderDirection, error) {
 	switch s {
 	case "asc":
-		return GetLabTestsRequestOrderDirectionAsc, nil
+		return LabTestsGetOrdersRequestOrderDirectionAsc, nil
 	case "desc":
-		return GetLabTestsRequestOrderDirectionDesc, nil
+		return LabTestsGetOrdersRequestOrderDirectionDesc, nil
 	}
-	var t GetLabTestsRequestOrderDirection
+	var t LabTestsGetOrdersRequestOrderDirection
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (g GetLabTestsRequestOrderDirection) Ptr() *GetLabTestsRequestOrderDirection {
-	return &g
+func (l LabTestsGetOrdersRequestOrderDirection) Ptr() *LabTestsGetOrdersRequestOrderDirection {
+	return &l
 }
 
-type GetLabTestsRequestOrderKey string
+type LabTestsGetOrdersRequestOrderKey string
 
 const (
-	GetLabTestsRequestOrderKeyPrice     GetLabTestsRequestOrderKey = "price"
-	GetLabTestsRequestOrderKeyCreatedAt GetLabTestsRequestOrderKey = "created_at"
-	GetLabTestsRequestOrderKeyUpdatedAt GetLabTestsRequestOrderKey = "updated_at"
+	LabTestsGetOrdersRequestOrderKeyCreatedAt   LabTestsGetOrdersRequestOrderKey = "created_at"
+	LabTestsGetOrdersRequestOrderKeyPatientName LabTestsGetOrdersRequestOrderKey = "patient_name"
+	LabTestsGetOrdersRequestOrderKeyLastStatus  LabTestsGetOrdersRequestOrderKey = "last_status"
 )
 
-func NewGetLabTestsRequestOrderKeyFromString(s string) (GetLabTestsRequestOrderKey, error) {
-	switch s {
-	case "price":
-		return GetLabTestsRequestOrderKeyPrice, nil
-	case "created_at":
-		return GetLabTestsRequestOrderKeyCreatedAt, nil
-	case "updated_at":
-		return GetLabTestsRequestOrderKeyUpdatedAt, nil
-	}
-	var t GetLabTestsRequestOrderKey
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (g GetLabTestsRequestOrderKey) Ptr() *GetLabTestsRequestOrderKey {
-	return &g
-}
-
-type GetOrdersLabTestsRequestOrderDirection string
-
-const (
-	GetOrdersLabTestsRequestOrderDirectionAsc  GetOrdersLabTestsRequestOrderDirection = "asc"
-	GetOrdersLabTestsRequestOrderDirectionDesc GetOrdersLabTestsRequestOrderDirection = "desc"
-)
-
-func NewGetOrdersLabTestsRequestOrderDirectionFromString(s string) (GetOrdersLabTestsRequestOrderDirection, error) {
-	switch s {
-	case "asc":
-		return GetOrdersLabTestsRequestOrderDirectionAsc, nil
-	case "desc":
-		return GetOrdersLabTestsRequestOrderDirectionDesc, nil
-	}
-	var t GetOrdersLabTestsRequestOrderDirection
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (g GetOrdersLabTestsRequestOrderDirection) Ptr() *GetOrdersLabTestsRequestOrderDirection {
-	return &g
-}
-
-type GetOrdersLabTestsRequestOrderKey string
-
-const (
-	GetOrdersLabTestsRequestOrderKeyCreatedAt   GetOrdersLabTestsRequestOrderKey = "created_at"
-	GetOrdersLabTestsRequestOrderKeyPatientName GetOrdersLabTestsRequestOrderKey = "patient_name"
-	GetOrdersLabTestsRequestOrderKeyLastStatus  GetOrdersLabTestsRequestOrderKey = "last_status"
-)
-
-func NewGetOrdersLabTestsRequestOrderKeyFromString(s string) (GetOrdersLabTestsRequestOrderKey, error) {
+func NewLabTestsGetOrdersRequestOrderKeyFromString(s string) (LabTestsGetOrdersRequestOrderKey, error) {
 	switch s {
 	case "created_at":
-		return GetOrdersLabTestsRequestOrderKeyCreatedAt, nil
+		return LabTestsGetOrdersRequestOrderKeyCreatedAt, nil
 	case "patient_name":
-		return GetOrdersLabTestsRequestOrderKeyPatientName, nil
+		return LabTestsGetOrdersRequestOrderKeyPatientName, nil
 	case "last_status":
-		return GetOrdersLabTestsRequestOrderKeyLastStatus, nil
+		return LabTestsGetOrdersRequestOrderKeyLastStatus, nil
 	}
-	var t GetOrdersLabTestsRequestOrderKey
+	var t LabTestsGetOrdersRequestOrderKey
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (g GetOrdersLabTestsRequestOrderKey) Ptr() *GetOrdersLabTestsRequestOrderKey {
-	return &g
+func (l LabTestsGetOrdersRequestOrderKey) Ptr() *LabTestsGetOrdersRequestOrderKey {
+	return &l
 }
 
-type GetPaginatedLabTestsRequestOrderDirection string
+type LabTestsGetPaginatedRequestOrderDirection string
 
 const (
-	GetPaginatedLabTestsRequestOrderDirectionAsc  GetPaginatedLabTestsRequestOrderDirection = "asc"
-	GetPaginatedLabTestsRequestOrderDirectionDesc GetPaginatedLabTestsRequestOrderDirection = "desc"
+	LabTestsGetPaginatedRequestOrderDirectionAsc  LabTestsGetPaginatedRequestOrderDirection = "asc"
+	LabTestsGetPaginatedRequestOrderDirectionDesc LabTestsGetPaginatedRequestOrderDirection = "desc"
 )
 
-func NewGetPaginatedLabTestsRequestOrderDirectionFromString(s string) (GetPaginatedLabTestsRequestOrderDirection, error) {
+func NewLabTestsGetPaginatedRequestOrderDirectionFromString(s string) (LabTestsGetPaginatedRequestOrderDirection, error) {
 	switch s {
 	case "asc":
-		return GetPaginatedLabTestsRequestOrderDirectionAsc, nil
+		return LabTestsGetPaginatedRequestOrderDirectionAsc, nil
 	case "desc":
-		return GetPaginatedLabTestsRequestOrderDirectionDesc, nil
+		return LabTestsGetPaginatedRequestOrderDirectionDesc, nil
 	}
-	var t GetPaginatedLabTestsRequestOrderDirection
+	var t LabTestsGetPaginatedRequestOrderDirection
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (g GetPaginatedLabTestsRequestOrderDirection) Ptr() *GetPaginatedLabTestsRequestOrderDirection {
-	return &g
+func (l LabTestsGetPaginatedRequestOrderDirection) Ptr() *LabTestsGetPaginatedRequestOrderDirection {
+	return &l
 }
 
-type GetPaginatedLabTestsRequestOrderKey string
+type LabTestsGetPaginatedRequestOrderKey string
 
 const (
-	GetPaginatedLabTestsRequestOrderKeyPrice     GetPaginatedLabTestsRequestOrderKey = "price"
-	GetPaginatedLabTestsRequestOrderKeyCreatedAt GetPaginatedLabTestsRequestOrderKey = "created_at"
-	GetPaginatedLabTestsRequestOrderKeyUpdatedAt GetPaginatedLabTestsRequestOrderKey = "updated_at"
+	LabTestsGetPaginatedRequestOrderKeyPrice     LabTestsGetPaginatedRequestOrderKey = "price"
+	LabTestsGetPaginatedRequestOrderKeyCreatedAt LabTestsGetPaginatedRequestOrderKey = "created_at"
+	LabTestsGetPaginatedRequestOrderKeyUpdatedAt LabTestsGetPaginatedRequestOrderKey = "updated_at"
 )
 
-func NewGetPaginatedLabTestsRequestOrderKeyFromString(s string) (GetPaginatedLabTestsRequestOrderKey, error) {
+func NewLabTestsGetPaginatedRequestOrderKeyFromString(s string) (LabTestsGetPaginatedRequestOrderKey, error) {
 	switch s {
 	case "price":
-		return GetPaginatedLabTestsRequestOrderKeyPrice, nil
+		return LabTestsGetPaginatedRequestOrderKeyPrice, nil
 	case "created_at":
-		return GetPaginatedLabTestsRequestOrderKeyCreatedAt, nil
+		return LabTestsGetPaginatedRequestOrderKeyCreatedAt, nil
 	case "updated_at":
-		return GetPaginatedLabTestsRequestOrderKeyUpdatedAt, nil
+		return LabTestsGetPaginatedRequestOrderKeyUpdatedAt, nil
 	}
-	var t GetPaginatedLabTestsRequestOrderKey
+	var t LabTestsGetPaginatedRequestOrderKey
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (g GetPaginatedLabTestsRequestOrderKey) Ptr() *GetPaginatedLabTestsRequestOrderKey {
-	return &g
+func (l LabTestsGetPaginatedRequestOrderKey) Ptr() *LabTestsGetPaginatedRequestOrderKey {
+	return &l
+}
+
+type LabTestsGetRequestOrderDirection string
+
+const (
+	LabTestsGetRequestOrderDirectionAsc  LabTestsGetRequestOrderDirection = "asc"
+	LabTestsGetRequestOrderDirectionDesc LabTestsGetRequestOrderDirection = "desc"
+)
+
+func NewLabTestsGetRequestOrderDirectionFromString(s string) (LabTestsGetRequestOrderDirection, error) {
+	switch s {
+	case "asc":
+		return LabTestsGetRequestOrderDirectionAsc, nil
+	case "desc":
+		return LabTestsGetRequestOrderDirectionDesc, nil
+	}
+	var t LabTestsGetRequestOrderDirection
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetRequestOrderDirection) Ptr() *LabTestsGetRequestOrderDirection {
+	return &l
+}
+
+type LabTestsGetRequestOrderKey string
+
+const (
+	LabTestsGetRequestOrderKeyPrice     LabTestsGetRequestOrderKey = "price"
+	LabTestsGetRequestOrderKeyCreatedAt LabTestsGetRequestOrderKey = "created_at"
+	LabTestsGetRequestOrderKeyUpdatedAt LabTestsGetRequestOrderKey = "updated_at"
+)
+
+func NewLabTestsGetRequestOrderKeyFromString(s string) (LabTestsGetRequestOrderKey, error) {
+	switch s {
+	case "price":
+		return LabTestsGetRequestOrderKeyPrice, nil
+	case "created_at":
+		return LabTestsGetRequestOrderKeyCreatedAt, nil
+	case "updated_at":
+		return LabTestsGetRequestOrderKeyUpdatedAt, nil
+	}
+	var t LabTestsGetRequestOrderKey
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LabTestsGetRequestOrderKey) Ptr() *LabTestsGetRequestOrderKey {
+	return &l
 }
 
 var (
-	updateLabTestRequestFieldLabTestId = big.NewInt(1 << 0)
-	updateLabTestRequestFieldName      = big.NewInt(1 << 1)
-	updateLabTestRequestFieldActive    = big.NewInt(1 << 2)
+	updateLabTestRequestFieldName   = big.NewInt(1 << 0)
+	updateLabTestRequestFieldActive = big.NewInt(1 << 1)
 )
 
 type UpdateLabTestRequest struct {
-	LabTestId string  `json:"-" url:"-"`
-	Name      *string `json:"name,omitempty" url:"-"`
-	Active    *bool   `json:"active,omitempty" url:"-"`
+	Name   *string `json:"name,omitempty" url:"-"`
+	Active *bool   `json:"active,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9214,13 +8642,6 @@ func (u *UpdateLabTestRequest) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetLabTestId sets the LabTestId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateLabTestRequest) SetLabTestId(labTestId string) {
-	u.LabTestId = labTestId
-	u.require(updateLabTestRequestFieldLabTestId)
 }
 
 // SetName sets the Name field and marks it as non-optional;
@@ -9235,32 +8656,6 @@ func (u *UpdateLabTestRequest) SetName(name *string) {
 func (u *UpdateLabTestRequest) SetActive(active *bool) {
 	u.Active = active
 	u.require(updateLabTestRequestFieldActive)
-}
-
-var (
-	updateOnSiteCollectionOrderDrawCompletedLabTestsRequestFieldOrderId = big.NewInt(1 << 0)
-)
-
-type UpdateOnSiteCollectionOrderDrawCompletedLabTestsRequest struct {
-	// Your Order ID.
-	OrderId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (u *UpdateOnSiteCollectionOrderDrawCompletedLabTestsRequest) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
-	}
-	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateOnSiteCollectionOrderDrawCompletedLabTestsRequest) SetOrderId(orderId string) {
-	u.OrderId = orderId
-	u.require(updateOnSiteCollectionOrderDrawCompletedLabTestsRequestFieldOrderId)
 }
 
 var (

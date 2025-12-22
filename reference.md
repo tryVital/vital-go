@@ -13,7 +13,15 @@
 <dd>
 
 ```go
-request := &vitalgo.ListBulkOpsLinkRequest{}
+request := &vitalgo.LinkListBulkOpsRequest{
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        PageSize: vitalgo.Int(
+            1,
+        ),
+        TeamId: vitalgo.LinkListBulkOpsRequestTeamIdInferFromContext.Ptr(),
+    }
 client.Link.ListBulkOps(
         context.TODO(),
         request,
@@ -49,7 +57,7 @@ client.Link.ListBulkOps(
 <dl>
 <dd>
 
-**teamId:** `*vitalgo.ListBulkOpsLinkRequestTeamId` 
+**teamId:** `*vitalgo.LinkListBulkOpsRequestTeamId` 
     
 </dd>
 </dl>
@@ -75,6 +83,7 @@ client.Link.ListBulkOps(
 
 ```go
 request := &vitalgo.BulkImportConnectionsBody{
+        TeamId: vitalgo.LinkBulkImportRequestTeamIdInferFromContext.Ptr(),
         Provider: vitalgo.OAuthProvidersOura,
         Connections: []*vitalgo.ConnectionRecipe{
             &vitalgo.ConnectionRecipe{
@@ -105,7 +114,7 @@ client.Link.BulkImport(
 <dl>
 <dd>
 
-**teamId:** `*vitalgo.BulkImportLinkRequestTeamId` 
+**teamId:** `*vitalgo.LinkBulkImportRequestTeamId` 
     
 </dd>
 </dl>
@@ -163,6 +172,7 @@ the [List Bulk Ops](https://docs.tryvital.io/api-reference/link/list-bulk-ops) e
 
 ```go
 request := &vitalgo.BulkTriggerHistoricalPullBody{
+        TeamId: vitalgo.LinkBulkTriggerHistoricalPullRequestTeamIdInferFromContext.Ptr(),
         UserIds: []string{
             "user_ids",
         },
@@ -187,7 +197,7 @@ client.Link.BulkTriggerHistoricalPull(
 <dl>
 <dd>
 
-**teamId:** `*vitalgo.BulkTriggerHistoricalPullLinkRequestTeamId` 
+**teamId:** `*vitalgo.LinkBulkTriggerHistoricalPullRequestTeamId` 
     
 </dd>
 </dl>
@@ -245,6 +255,7 @@ the [List Bulk Ops](https://docs.tryvital.io/api-reference/link/list-bulk-ops) e
 
 ```go
 request := &vitalgo.BulkExportConnectionsBody{
+        TeamId: vitalgo.LinkBulkExportRequestTeamIdInferFromContext.Ptr(),
         Provider: vitalgo.OAuthProvidersOura,
     }
 client.Link.BulkExport(
@@ -266,7 +277,7 @@ client.Link.BulkExport(
 <dl>
 <dd>
 
-**teamId:** `*vitalgo.BulkExportLinkRequestTeamId` 
+**teamId:** `*vitalgo.LinkBulkExportRequestTeamId` 
     
 </dd>
 </dl>
@@ -316,6 +327,7 @@ client.Link.BulkExport(
 
 ```go
 request := &vitalgo.BulkPauseConnectionsBody{
+        TeamId: vitalgo.LinkBulkPauseRequestTeamIdInferFromContext.Ptr(),
         UserIds: []string{
             "user_ids",
         },
@@ -340,7 +352,7 @@ client.Link.BulkPause(
 <dl>
 <dd>
 
-**teamId:** `*vitalgo.BulkPauseLinkRequestTeamId` 
+**teamId:** `*vitalgo.LinkBulkPauseRequestTeamId` 
     
 </dd>
 </dl>
@@ -568,8 +580,13 @@ Generate a token to invite a user of Vital mobile app to your team
 <dd>
 
 ```go
-request := &vitalgo.CodeCreateLinkRequest{
+request := &vitalgo.LinkCodeCreateRequest{
         UserId: "user_id",
+        ExpiresAt: vitalgo.Time(
+            vitalgo.MustParseDateTime(
+                "2024-01-15T09:30:00Z",
+            ),
+        ),
     }
 client.Link.CodeCreate(
         context.TODO(),
@@ -709,7 +726,11 @@ Check link token state - can be hit continuously used as heartbeat
 <dd>
 
 ```go
-request := &vitalgo.TokenStateLinkRequest{}
+request := &vitalgo.LinkTokenStateRequest{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
+    }
 client.Link.TokenState(
         context.TODO(),
         request,
@@ -769,6 +790,9 @@ Deprecated. Use `POST /v2/link/provider/email/{provider}` instead.
 
 ```go
 request := &vitalgo.EmailAuthLink{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
         Email: "email",
         Provider: vitalgo.ProvidersOura,
         AuthType: vitalgo.AuthTypePassword,
@@ -864,6 +888,9 @@ Deprecated. Use `POST /v2/link/provider/password/{provider}` instead.
 
 ```go
 request := &vitalgo.PasswordAuthLink{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
         Username: "username",
         Password: "password",
         Provider: vitalgo.ProvidersOura,
@@ -959,7 +986,11 @@ This endpoint generates an OAuth link for oauth provider
 <dd>
 
 ```go
-request := &vitalgo.GenerateOauthLinkLinkRequest{}
+request := &vitalgo.LinkGenerateOauthLinkRequest{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
+    }
 client.Link.GenerateOauthLink(
         context.TODO(),
         vitalgo.OAuthProvidersOura.Ptr(),
@@ -1028,6 +1059,9 @@ This connects auth providers that are password based.
 
 ```go
 request := &vitalgo.IndividualProviderData{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
         Username: "username",
         Password: "password",
     }
@@ -1123,6 +1157,9 @@ This connects auth providers that are password based.
 
 ```go
 request := &vitalgo.CompletePasswordProviderMfaBody{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
         MfaCode: "mfa_code",
     }
 client.Link.CompletePasswordProviderMfa(
@@ -1201,6 +1238,9 @@ This connects auth providers that are email based.
 
 ```go
 request := &vitalgo.EmailProviderAuthLink{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
         Email: "email",
     }
 client.Link.ConnectEmailAuthProvider(
@@ -1296,7 +1336,11 @@ GET List of all available providers given the generated link token.
 <dd>
 
 ```go
-request := &vitalgo.GetAllProvidersLinkRequest{}
+request := &vitalgo.LinkGetAllProvidersRequest{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
+    }
 client.Link.GetAllProviders(
         context.TODO(),
         request,
@@ -1490,9 +1534,13 @@ Get electrocardiogram summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetElectrocardiogramRequest{
-        StartDate: vitalgo.MustParseDateTime(
-            "2023-01-15",
+request := &vitalgo.ElectrocardiogramGetRequest{
+        StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
+        Provider: vitalgo.String(
+            "provider",
         ),
     }
 client.Electrocardiogram.Get(
@@ -1523,7 +1571,7 @@ client.Electrocardiogram.Get(
 <dl>
 <dd>
 
-**startDate:** `time.Time` 
+**startDate:** `string` 
     
 </dd>
 </dl>
@@ -1531,7 +1579,7 @@ client.Electrocardiogram.Get(
 <dl>
 <dd>
 
-**endDate:** `*time.Time` 
+**endDate:** `*string` 
     
 </dd>
 </dl>
@@ -1579,9 +1627,13 @@ Get sleep cycle for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetSleepCycleRequest{
-        StartDate: vitalgo.MustParseDateTime(
-            "2023-01-15",
+request := &vitalgo.SleepCycleGetRequest{
+        StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
+        Provider: vitalgo.String(
+            "provider",
         ),
     }
 client.SleepCycle.Get(
@@ -1612,7 +1664,7 @@ client.SleepCycle.Get(
 <dl>
 <dd>
 
-**startDate:** `time.Time` 
+**startDate:** `string` 
     
 </dd>
 </dl>
@@ -1620,7 +1672,7 @@ client.SleepCycle.Get(
 <dl>
 <dd>
 
-**endDate:** `*time.Time` 
+**endDate:** `*string` 
     
 </dd>
 </dl>
@@ -1668,7 +1720,11 @@ Get profile for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetProfileRequest{}
+request := &vitalgo.ProfileGetRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
+    }
 client.Profile.Get(
         context.TODO(),
         "user_id",
@@ -1736,7 +1792,11 @@ Get raw profile for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetRawProfileRequest{}
+request := &vitalgo.ProfileGetRawRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
+    }
 client.Profile.GetRaw(
         context.TODO(),
         "user_id",
@@ -1805,7 +1865,11 @@ Get Devices for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetRawDevicesRequest{}
+request := &vitalgo.DevicesGetRawRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
+    }
 client.Devices.GetRaw(
         context.TODO(),
         "user_id",
@@ -1874,8 +1938,14 @@ Get activity summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetActivityRequest{
+request := &vitalgo.ActivityGetRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Activity.Get(
         context.TODO(),
@@ -1960,8 +2030,14 @@ Get raw activity summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetRawActivityRequest{
+request := &vitalgo.ActivityGetRawRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Activity.GetRaw(
         context.TODO(),
@@ -2047,8 +2123,14 @@ Get workout summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetWorkoutsRequest{
+request := &vitalgo.WorkoutsGetRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Workouts.Get(
         context.TODO(),
@@ -2133,8 +2215,14 @@ Get raw workout summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetRawWorkoutsRequest{
+request := &vitalgo.WorkoutsGetRawRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Workouts.GetRaw(
         context.TODO(),
@@ -2264,8 +2352,14 @@ Get sleep summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetSleepRequest{
+request := &vitalgo.SleepGetRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Sleep.Get(
         context.TODO(),
@@ -2350,8 +2444,14 @@ Get raw sleep summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetRawSleepRequest{
+request := &vitalgo.SleepGetRawRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Sleep.GetRaw(
         context.TODO(),
@@ -2495,8 +2595,14 @@ Get Body summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetBodyRequest{
+request := &vitalgo.BodyGetRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Body.Get(
         context.TODO(),
@@ -2581,8 +2687,14 @@ Get raw Body summary for user_id
 <dd>
 
 ```go
-request := &vitalgo.GetRawBodyRequest{
+request := &vitalgo.BodyGetRawRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Body.GetRaw(
         context.TODO(),
@@ -2668,8 +2780,14 @@ Get user's meals
 <dd>
 
 ```go
-request := &vitalgo.GetMealRequest{
+request := &vitalgo.MealGetRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Meal.Get(
         context.TODO(),
@@ -2741,9 +2859,13 @@ client.Meal.Get(
 <dd>
 
 ```go
-request := &vitalgo.GetMenstrualCycleRequest{
-        StartDate: vitalgo.MustParseDateTime(
-            "2023-01-15",
+request := &vitalgo.MenstrualCycleGetRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
+        StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
         ),
     }
 client.MenstrualCycle.Get(
@@ -2782,7 +2904,7 @@ client.MenstrualCycle.Get(
 <dl>
 <dd>
 
-**startDate:** `time.Time` 
+**startDate:** `string` 
     
 </dd>
 </dl>
@@ -2790,7 +2912,7 @@ client.MenstrualCycle.Get(
 <dl>
 <dd>
 
-**endDate:** `*time.Time` 
+**endDate:** `*string` 
     
 </dd>
 </dl>
@@ -2816,8 +2938,20 @@ client.MenstrualCycle.Get(
 <dd>
 
 ```go
-request := &vitalgo.WorkoutSwimmingStrokeGroupedVitalsRequest{
+request := &vitalgo.VitalsWorkoutSwimmingStrokeGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.WorkoutSwimmingStrokeGrouped(
         context.TODO(),
@@ -2904,8 +3038,20 @@ client.Vitals.WorkoutSwimmingStrokeGrouped(
 <dd>
 
 ```go
-request := &vitalgo.WorkoutDistanceGroupedVitalsRequest{
+request := &vitalgo.VitalsWorkoutDistanceGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.WorkoutDistanceGrouped(
         context.TODO(),
@@ -2992,8 +3138,20 @@ client.Vitals.WorkoutDistanceGrouped(
 <dd>
 
 ```go
-request := &vitalgo.HeartRateRecoveryOneMinuteGroupedVitalsRequest{
+request := &vitalgo.VitalsHeartRateRecoveryOneMinuteGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.HeartRateRecoveryOneMinuteGrouped(
         context.TODO(),
@@ -3080,8 +3238,20 @@ client.Vitals.HeartRateRecoveryOneMinuteGrouped(
 <dd>
 
 ```go
-request := &vitalgo.WaistCircumferenceGroupedVitalsRequest{
+request := &vitalgo.VitalsWaistCircumferenceGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.WaistCircumferenceGrouped(
         context.TODO(),
@@ -3168,8 +3338,20 @@ client.Vitals.WaistCircumferenceGrouped(
 <dd>
 
 ```go
-request := &vitalgo.LeanBodyMassGroupedVitalsRequest{
+request := &vitalgo.VitalsLeanBodyMassGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.LeanBodyMassGrouped(
         context.TODO(),
@@ -3256,8 +3438,20 @@ client.Vitals.LeanBodyMassGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BodyMassIndexGroupedVitalsRequest{
+request := &vitalgo.VitalsBodyMassIndexGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BodyMassIndexGrouped(
         context.TODO(),
@@ -3344,8 +3538,20 @@ client.Vitals.BodyMassIndexGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BasalBodyTemperatureGroupedVitalsRequest{
+request := &vitalgo.VitalsBasalBodyTemperatureGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BasalBodyTemperatureGrouped(
         context.TODO(),
@@ -3432,8 +3638,20 @@ client.Vitals.BasalBodyTemperatureGrouped(
 <dd>
 
 ```go
-request := &vitalgo.HandwashingGroupedVitalsRequest{
+request := &vitalgo.VitalsHandwashingGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.HandwashingGrouped(
         context.TODO(),
@@ -3520,8 +3738,20 @@ client.Vitals.HandwashingGrouped(
 <dd>
 
 ```go
-request := &vitalgo.DaylightExposureGroupedVitalsRequest{
+request := &vitalgo.VitalsDaylightExposureGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.DaylightExposureGrouped(
         context.TODO(),
@@ -3608,8 +3838,20 @@ client.Vitals.DaylightExposureGrouped(
 <dd>
 
 ```go
-request := &vitalgo.UvExposureGroupedVitalsRequest{
+request := &vitalgo.VitalsUvExposureGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.UvExposureGrouped(
         context.TODO(),
@@ -3696,8 +3938,20 @@ client.Vitals.UvExposureGrouped(
 <dd>
 
 ```go
-request := &vitalgo.FallGroupedVitalsRequest{
+request := &vitalgo.VitalsFallGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.FallGrouped(
         context.TODO(),
@@ -3784,8 +4038,20 @@ client.Vitals.FallGrouped(
 <dd>
 
 ```go
-request := &vitalgo.InhalerUsageGroupedVitalsRequest{
+request := &vitalgo.VitalsInhalerUsageGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.InhalerUsageGrouped(
         context.TODO(),
@@ -3872,8 +4138,20 @@ client.Vitals.InhalerUsageGrouped(
 <dd>
 
 ```go
-request := &vitalgo.PeakExpiratoryFlowRateGroupedVitalsRequest{
+request := &vitalgo.VitalsPeakExpiratoryFlowRateGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.PeakExpiratoryFlowRateGrouped(
         context.TODO(),
@@ -3960,8 +4238,20 @@ client.Vitals.PeakExpiratoryFlowRateGrouped(
 <dd>
 
 ```go
-request := &vitalgo.ForcedVitalCapacityGroupedVitalsRequest{
+request := &vitalgo.VitalsForcedVitalCapacityGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.ForcedVitalCapacityGrouped(
         context.TODO(),
@@ -4048,8 +4338,20 @@ client.Vitals.ForcedVitalCapacityGrouped(
 <dd>
 
 ```go
-request := &vitalgo.ForcedExpiratoryVolume1GroupedVitalsRequest{
+request := &vitalgo.VitalsForcedExpiratoryVolume1GroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.ForcedExpiratoryVolume1Grouped(
         context.TODO(),
@@ -4136,8 +4438,20 @@ client.Vitals.ForcedExpiratoryVolume1Grouped(
 <dd>
 
 ```go
-request := &vitalgo.WheelchairPushGroupedVitalsRequest{
+request := &vitalgo.VitalsWheelchairPushGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.WheelchairPushGrouped(
         context.TODO(),
@@ -4224,8 +4538,20 @@ client.Vitals.WheelchairPushGrouped(
 <dd>
 
 ```go
-request := &vitalgo.SleepBreathingDisturbanceGroupedVitalsRequest{
+request := &vitalgo.VitalsSleepBreathingDisturbanceGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.SleepBreathingDisturbanceGrouped(
         context.TODO(),
@@ -4312,8 +4638,20 @@ client.Vitals.SleepBreathingDisturbanceGrouped(
 <dd>
 
 ```go
-request := &vitalgo.SleepApneaAlertGroupedVitalsRequest{
+request := &vitalgo.VitalsSleepApneaAlertGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.SleepApneaAlertGrouped(
         context.TODO(),
@@ -4400,8 +4738,20 @@ client.Vitals.SleepApneaAlertGrouped(
 <dd>
 
 ```go
-request := &vitalgo.StandDurationGroupedVitalsRequest{
+request := &vitalgo.VitalsStandDurationGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.StandDurationGrouped(
         context.TODO(),
@@ -4488,8 +4838,20 @@ client.Vitals.StandDurationGrouped(
 <dd>
 
 ```go
-request := &vitalgo.StandHourGroupedVitalsRequest{
+request := &vitalgo.VitalsStandHourGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.StandHourGrouped(
         context.TODO(),
@@ -4576,8 +4938,20 @@ client.Vitals.StandHourGrouped(
 <dd>
 
 ```go
-request := &vitalgo.HeartRateAlertGroupedVitalsRequest{
+request := &vitalgo.VitalsHeartRateAlertGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.HeartRateAlertGrouped(
         context.TODO(),
@@ -4664,8 +5038,20 @@ client.Vitals.HeartRateAlertGrouped(
 <dd>
 
 ```go
-request := &vitalgo.AfibBurdenGroupedVitalsRequest{
+request := &vitalgo.VitalsAfibBurdenGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.AfibBurdenGrouped(
         context.TODO(),
@@ -4752,8 +5138,20 @@ client.Vitals.AfibBurdenGrouped(
 <dd>
 
 ```go
-request := &vitalgo.WorkoutDurationGroupedVitalsRequest{
+request := &vitalgo.VitalsWorkoutDurationGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.WorkoutDurationGrouped(
         context.TODO(),
@@ -4840,8 +5238,20 @@ client.Vitals.WorkoutDurationGrouped(
 <dd>
 
 ```go
-request := &vitalgo.Vo2MaxGroupedVitalsRequest{
+request := &vitalgo.VitalsVo2MaxGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Vo2MaxGrouped(
         context.TODO(),
@@ -4928,8 +5338,20 @@ client.Vitals.Vo2MaxGrouped(
 <dd>
 
 ```go
-request := &vitalgo.StressLevelGroupedVitalsRequest{
+request := &vitalgo.VitalsStressLevelGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.StressLevelGrouped(
         context.TODO(),
@@ -5016,8 +5438,20 @@ client.Vitals.StressLevelGrouped(
 <dd>
 
 ```go
-request := &vitalgo.MindfulnessMinutesGroupedVitalsRequest{
+request := &vitalgo.VitalsMindfulnessMinutesGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.MindfulnessMinutesGrouped(
         context.TODO(),
@@ -5104,8 +5538,20 @@ client.Vitals.MindfulnessMinutesGrouped(
 <dd>
 
 ```go
-request := &vitalgo.CaffeineGroupedVitalsRequest{
+request := &vitalgo.VitalsCaffeineGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CaffeineGrouped(
         context.TODO(),
@@ -5192,8 +5638,20 @@ client.Vitals.CaffeineGrouped(
 <dd>
 
 ```go
-request := &vitalgo.WaterGroupedVitalsRequest{
+request := &vitalgo.VitalsWaterGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.WaterGrouped(
         context.TODO(),
@@ -5280,8 +5738,20 @@ client.Vitals.WaterGrouped(
 <dd>
 
 ```go
-request := &vitalgo.StepsGroupedVitalsRequest{
+request := &vitalgo.VitalsStepsGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.StepsGrouped(
         context.TODO(),
@@ -5368,8 +5838,20 @@ client.Vitals.StepsGrouped(
 <dd>
 
 ```go
-request := &vitalgo.FloorsClimbedGroupedVitalsRequest{
+request := &vitalgo.VitalsFloorsClimbedGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.FloorsClimbedGrouped(
         context.TODO(),
@@ -5456,8 +5938,20 @@ client.Vitals.FloorsClimbedGrouped(
 <dd>
 
 ```go
-request := &vitalgo.DistanceGroupedVitalsRequest{
+request := &vitalgo.VitalsDistanceGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.DistanceGrouped(
         context.TODO(),
@@ -5544,8 +6038,20 @@ client.Vitals.DistanceGrouped(
 <dd>
 
 ```go
-request := &vitalgo.CaloriesBasalGroupedVitalsRequest{
+request := &vitalgo.VitalsCaloriesBasalGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CaloriesBasalGrouped(
         context.TODO(),
@@ -5632,8 +6138,20 @@ client.Vitals.CaloriesBasalGrouped(
 <dd>
 
 ```go
-request := &vitalgo.CaloriesActiveGroupedVitalsRequest{
+request := &vitalgo.VitalsCaloriesActiveGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CaloriesActiveGrouped(
         context.TODO(),
@@ -5720,8 +6238,20 @@ client.Vitals.CaloriesActiveGrouped(
 <dd>
 
 ```go
-request := &vitalgo.RespiratoryRateGroupedVitalsRequest{
+request := &vitalgo.VitalsRespiratoryRateGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.RespiratoryRateGrouped(
         context.TODO(),
@@ -5808,8 +6338,20 @@ client.Vitals.RespiratoryRateGrouped(
 <dd>
 
 ```go
-request := &vitalgo.NoteGroupedVitalsRequest{
+request := &vitalgo.VitalsNoteGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.NoteGrouped(
         context.TODO(),
@@ -5896,8 +6438,20 @@ client.Vitals.NoteGrouped(
 <dd>
 
 ```go
-request := &vitalgo.InsulinInjectionGroupedVitalsRequest{
+request := &vitalgo.VitalsInsulinInjectionGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.InsulinInjectionGrouped(
         context.TODO(),
@@ -5984,8 +6538,20 @@ client.Vitals.InsulinInjectionGrouped(
 <dd>
 
 ```go
-request := &vitalgo.IgeGroupedVitalsRequest{
+request := &vitalgo.VitalsIgeGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.IgeGrouped(
         context.TODO(),
@@ -6072,8 +6638,20 @@ client.Vitals.IgeGrouped(
 <dd>
 
 ```go
-request := &vitalgo.IggGroupedVitalsRequest{
+request := &vitalgo.VitalsIggGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.IggGrouped(
         context.TODO(),
@@ -6160,8 +6738,20 @@ client.Vitals.IggGrouped(
 <dd>
 
 ```go
-request := &vitalgo.HypnogramGroupedVitalsRequest{
+request := &vitalgo.VitalsHypnogramGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.HypnogramGrouped(
         context.TODO(),
@@ -6248,8 +6838,20 @@ client.Vitals.HypnogramGrouped(
 <dd>
 
 ```go
-request := &vitalgo.HrvGroupedVitalsRequest{
+request := &vitalgo.VitalsHrvGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.HrvGrouped(
         context.TODO(),
@@ -6336,8 +6938,20 @@ client.Vitals.HrvGrouped(
 <dd>
 
 ```go
-request := &vitalgo.HeartrateGroupedVitalsRequest{
+request := &vitalgo.VitalsHeartrateGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.HeartrateGrouped(
         context.TODO(),
@@ -6424,8 +7038,20 @@ client.Vitals.HeartrateGrouped(
 <dd>
 
 ```go
-request := &vitalgo.GlucoseGroupedVitalsRequest{
+request := &vitalgo.VitalsGlucoseGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.GlucoseGrouped(
         context.TODO(),
@@ -6512,8 +7138,20 @@ client.Vitals.GlucoseGrouped(
 <dd>
 
 ```go
-request := &vitalgo.CholesterolGroupedVitalsRequest{
+request := &vitalgo.VitalsCholesterolGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CholesterolGrouped(
         context.TODO(),
@@ -6600,8 +7238,20 @@ client.Vitals.CholesterolGrouped(
 <dd>
 
 ```go
-request := &vitalgo.CarbohydratesGroupedVitalsRequest{
+request := &vitalgo.VitalsCarbohydratesGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CarbohydratesGrouped(
         context.TODO(),
@@ -6688,8 +7338,20 @@ client.Vitals.CarbohydratesGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BodyTemperatureDeltaGroupedVitalsRequest{
+request := &vitalgo.VitalsBodyTemperatureDeltaGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BodyTemperatureDeltaGrouped(
         context.TODO(),
@@ -6776,8 +7438,20 @@ client.Vitals.BodyTemperatureDeltaGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BodyTemperatureGroupedVitalsRequest{
+request := &vitalgo.VitalsBodyTemperatureGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BodyTemperatureGrouped(
         context.TODO(),
@@ -6864,8 +7538,20 @@ client.Vitals.BodyTemperatureGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BodyWeightGroupedVitalsRequest{
+request := &vitalgo.VitalsBodyWeightGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BodyWeightGrouped(
         context.TODO(),
@@ -6952,8 +7638,20 @@ client.Vitals.BodyWeightGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BodyFatGroupedVitalsRequest{
+request := &vitalgo.VitalsBodyFatGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BodyFatGrouped(
         context.TODO(),
@@ -7040,8 +7738,20 @@ client.Vitals.BodyFatGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BloodOxygenGroupedVitalsRequest{
+request := &vitalgo.VitalsBloodOxygenGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BloodOxygenGrouped(
         context.TODO(),
@@ -7128,8 +7838,20 @@ client.Vitals.BloodOxygenGrouped(
 <dd>
 
 ```go
-request := &vitalgo.ElectrocardiogramVoltageGroupedVitalsRequest{
+request := &vitalgo.VitalsElectrocardiogramVoltageGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.ElectrocardiogramVoltageGrouped(
         context.TODO(),
@@ -7216,8 +7938,20 @@ client.Vitals.ElectrocardiogramVoltageGrouped(
 <dd>
 
 ```go
-request := &vitalgo.BloodPressureGroupedVitalsRequest{
+request := &vitalgo.VitalsBloodPressureGroupedRequest{
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BloodPressureGrouped(
         context.TODO(),
@@ -7304,8 +8038,14 @@ client.Vitals.BloodPressureGrouped(
 <dd>
 
 ```go
-request := &vitalgo.Vo2MaxVitalsRequest{
+request := &vitalgo.VitalsVo2MaxRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Vo2Max(
         context.TODO(),
@@ -7376,8 +8116,14 @@ client.Vitals.Vo2Max(
 <dd>
 
 ```go
-request := &vitalgo.StressLevelVitalsRequest{
+request := &vitalgo.VitalsStressLevelRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.StressLevel(
         context.TODO(),
@@ -7448,8 +8194,14 @@ client.Vitals.StressLevel(
 <dd>
 
 ```go
-request := &vitalgo.MindfulnessMinutesVitalsRequest{
+request := &vitalgo.VitalsMindfulnessMinutesRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.MindfulnessMinutes(
         context.TODO(),
@@ -7520,8 +8272,14 @@ client.Vitals.MindfulnessMinutes(
 <dd>
 
 ```go
-request := &vitalgo.CaffeineVitalsRequest{
+request := &vitalgo.VitalsCaffeineRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Caffeine(
         context.TODO(),
@@ -7592,8 +8350,14 @@ client.Vitals.Caffeine(
 <dd>
 
 ```go
-request := &vitalgo.WaterVitalsRequest{
+request := &vitalgo.VitalsWaterRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Water(
         context.TODO(),
@@ -7664,8 +8428,14 @@ client.Vitals.Water(
 <dd>
 
 ```go
-request := &vitalgo.StepsVitalsRequest{
+request := &vitalgo.VitalsStepsRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Steps(
         context.TODO(),
@@ -7736,8 +8506,14 @@ client.Vitals.Steps(
 <dd>
 
 ```go
-request := &vitalgo.FloorsClimbedVitalsRequest{
+request := &vitalgo.VitalsFloorsClimbedRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.FloorsClimbed(
         context.TODO(),
@@ -7808,8 +8584,14 @@ client.Vitals.FloorsClimbed(
 <dd>
 
 ```go
-request := &vitalgo.DistanceVitalsRequest{
+request := &vitalgo.VitalsDistanceRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Distance(
         context.TODO(),
@@ -7880,8 +8662,14 @@ client.Vitals.Distance(
 <dd>
 
 ```go
-request := &vitalgo.CaloriesBasalVitalsRequest{
+request := &vitalgo.VitalsCaloriesBasalRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CaloriesBasal(
         context.TODO(),
@@ -7952,8 +8740,14 @@ client.Vitals.CaloriesBasal(
 <dd>
 
 ```go
-request := &vitalgo.CaloriesActiveVitalsRequest{
+request := &vitalgo.VitalsCaloriesActiveRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CaloriesActive(
         context.TODO(),
@@ -8024,8 +8818,14 @@ client.Vitals.CaloriesActive(
 <dd>
 
 ```go
-request := &vitalgo.RespiratoryRateVitalsRequest{
+request := &vitalgo.VitalsRespiratoryRateRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.RespiratoryRate(
         context.TODO(),
@@ -8096,8 +8896,14 @@ client.Vitals.RespiratoryRate(
 <dd>
 
 ```go
-request := &vitalgo.IgeVitalsRequest{
+request := &vitalgo.VitalsIgeRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Ige(
         context.TODO(),
@@ -8168,8 +8974,14 @@ client.Vitals.Ige(
 <dd>
 
 ```go
-request := &vitalgo.IggVitalsRequest{
+request := &vitalgo.VitalsIggRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Igg(
         context.TODO(),
@@ -8240,8 +9052,14 @@ client.Vitals.Igg(
 <dd>
 
 ```go
-request := &vitalgo.HypnogramVitalsRequest{
+request := &vitalgo.VitalsHypnogramRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Hypnogram(
         context.TODO(),
@@ -8312,8 +9130,14 @@ client.Vitals.Hypnogram(
 <dd>
 
 ```go
-request := &vitalgo.HrvVitalsRequest{
+request := &vitalgo.VitalsHrvRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Hrv(
         context.TODO(),
@@ -8384,8 +9208,14 @@ client.Vitals.Hrv(
 <dd>
 
 ```go
-request := &vitalgo.HeartrateVitalsRequest{
+request := &vitalgo.VitalsHeartrateRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Heartrate(
         context.TODO(),
@@ -8456,8 +9286,14 @@ client.Vitals.Heartrate(
 <dd>
 
 ```go
-request := &vitalgo.GlucoseVitalsRequest{
+request := &vitalgo.VitalsGlucoseRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Glucose(
         context.TODO(),
@@ -8528,8 +9364,14 @@ client.Vitals.Glucose(
 <dd>
 
 ```go
-request := &vitalgo.CholesterolTriglyceridesVitalsRequest{
+request := &vitalgo.VitalsCholesterolTriglyceridesRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CholesterolTriglycerides(
         context.TODO(),
@@ -8600,8 +9442,14 @@ client.Vitals.CholesterolTriglycerides(
 <dd>
 
 ```go
-request := &vitalgo.CholesterolTotalVitalsRequest{
+request := &vitalgo.VitalsCholesterolTotalRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CholesterolTotal(
         context.TODO(),
@@ -8672,8 +9520,14 @@ client.Vitals.CholesterolTotal(
 <dd>
 
 ```go
-request := &vitalgo.CholesterolLdlVitalsRequest{
+request := &vitalgo.VitalsCholesterolLdlRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CholesterolLdl(
         context.TODO(),
@@ -8744,8 +9598,14 @@ client.Vitals.CholesterolLdl(
 <dd>
 
 ```go
-request := &vitalgo.CholesterolHdlVitalsRequest{
+request := &vitalgo.VitalsCholesterolHdlRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.CholesterolHdl(
         context.TODO(),
@@ -8816,8 +9676,14 @@ client.Vitals.CholesterolHdl(
 <dd>
 
 ```go
-request := &vitalgo.CholesterolVitalsRequest{
+request := &vitalgo.VitalsCholesterolRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.Cholesterol(
         context.TODO(),
@@ -8888,8 +9754,14 @@ client.Vitals.Cholesterol(
 <dd>
 
 ```go
-request := &vitalgo.BodyWeightVitalsRequest{
+request := &vitalgo.VitalsBodyWeightRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BodyWeight(
         context.TODO(),
@@ -8960,8 +9832,14 @@ client.Vitals.BodyWeight(
 <dd>
 
 ```go
-request := &vitalgo.BodyFatVitalsRequest{
+request := &vitalgo.VitalsBodyFatRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BodyFat(
         context.TODO(),
@@ -9032,8 +9910,14 @@ client.Vitals.BodyFat(
 <dd>
 
 ```go
-request := &vitalgo.BloodOxygenVitalsRequest{
+request := &vitalgo.VitalsBloodOxygenRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BloodOxygen(
         context.TODO(),
@@ -9104,8 +9988,14 @@ client.Vitals.BloodOxygen(
 <dd>
 
 ```go
-request := &vitalgo.ElectrocardiogramVoltageVitalsRequest{
+request := &vitalgo.VitalsElectrocardiogramVoltageRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.ElectrocardiogramVoltage(
         context.TODO(),
@@ -9176,8 +10066,14 @@ client.Vitals.ElectrocardiogramVoltage(
 <dd>
 
 ```go
-request := &vitalgo.BloodPressureVitalsRequest{
+request := &vitalgo.VitalsBloodPressureRequest{
+        Provider: vitalgo.String(
+            "provider",
+        ),
         StartDate: "start_date",
+        EndDate: vitalgo.String(
+            "end_date",
+        ),
     }
 client.Vitals.BloodPressure(
         context.TODO(),
@@ -9263,7 +10159,14 @@ GET All users for team.
 <dd>
 
 ```go
-request := &vitalgo.GetAllUserRequest{}
+request := &vitalgo.UserGetAllRequest{
+        Offset: vitalgo.Int(
+            1,
+        ),
+        Limit: vitalgo.Int(
+            1,
+        ),
+    }
 client.User.GetAll(
         context.TODO(),
         request,
@@ -9373,7 +10276,7 @@ client.User.Create(
 <dl>
 <dd>
 
-**fallbackBirthDate:** `*time.Time` — Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+**fallbackBirthDate:** `*string` — Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
     
 </dd>
 </dl>
@@ -9381,7 +10284,7 @@ client.User.Create(
 <dl>
 <dd>
 
-**ingestionStart:** `*time.Time` — Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
+**ingestionStart:** `*string` — Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
     
 </dd>
 </dl>
@@ -9389,7 +10292,7 @@ client.User.Create(
 <dl>
 <dd>
 
-**ingestionEnd:** `*time.Time` — Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
+**ingestionEnd:** `*string` — Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
     
 </dd>
 </dl>
@@ -9573,9 +10476,7 @@ request := &vitalgo.CreateInsuranceRequest{
                 City: "city",
                 State: "state",
             },
-            Dob: vitalgo.MustParseDateTime(
-                "2023-01-15",
-            ),
+            Dob: "dob",
             Email: "email",
             PhoneNumber: "phone_number",
         },
@@ -9723,9 +10624,7 @@ request := &vitalgo.UserInfoCreateRequest{
         Email: "email",
         PhoneNumber: "phone_number",
         Gender: "gender",
-        Dob: vitalgo.MustParseDateTime(
-            "2023-01-15",
-        ),
+        Dob: "dob",
         Address: &vitalgo.Address{
             FirstLine: "first_line",
             Country: "country",
@@ -9802,7 +10701,7 @@ client.User.UpsertUserInfo(
 <dl>
 <dd>
 
-**dob:** `time.Time` 
+**dob:** `string` 
     
 </dd>
 </dl>
@@ -10116,7 +11015,7 @@ client.User.Patch(
 <dl>
 <dd>
 
-**fallbackBirthDate:** `*time.Time` — Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
+**fallbackBirthDate:** `*string` — Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
     
 </dd>
 </dl>
@@ -10124,7 +11023,7 @@ client.User.Patch(
 <dl>
 <dd>
 
-**ingestionStart:** `*time.Time` — Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
+**ingestionStart:** `*string` — Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
     
 </dd>
 </dl>
@@ -10132,7 +11031,7 @@ client.User.Patch(
 <dl>
 <dd>
 
-**ingestionEnd:** `*time.Time` — Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
+**ingestionEnd:** `*string` — Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
     
 </dd>
 </dl>
@@ -10165,7 +11064,14 @@ client.User.Patch(
 <dd>
 
 ```go
-request := &vitalgo.UndoDeleteUserRequest{}
+request := &vitalgo.UserUndoDeleteRequest{
+        UserId: vitalgo.String(
+            "user_id",
+        ),
+        ClientUserId: vitalgo.String(
+            "client_user_id",
+        ),
+    }
 client.User.UndoDelete(
         context.TODO(),
         request,
@@ -10232,7 +11138,11 @@ Trigger a manual refresh for a specific user
 <dd>
 
 ```go
-request := &vitalgo.RefreshUserRequest{}
+request := &vitalgo.UserRefreshRequest{
+        Timeout: vitalgo.Float64(
+            1.1,
+        ),
+    }
 client.User.Refresh(
         context.TODO(),
         "user_id",
@@ -10514,7 +11424,11 @@ Post teams.
 <dd>
 
 ```go
-request := &vitalgo.GetLinkConfigTeamRequest{}
+request := &vitalgo.TeamGetLinkConfigRequest{
+        VitalLinkToken: vitalgo.String(
+            "x-vital-link-token",
+        ),
+    }
 client.Team.GetLinkConfig(
         context.TODO(),
         request,
@@ -10631,7 +11545,11 @@ Search team users by user_id
 <dd>
 
 ```go
-request := &vitalgo.GetUserByIdTeamRequest{}
+request := &vitalgo.TeamGetUserByIdRequest{
+        QueryId: vitalgo.String(
+            "query_id",
+        ),
+    }
 client.Team.GetUserById(
         context.TODO(),
         request,
@@ -10718,7 +11636,9 @@ GET source priorities.
 <dd>
 
 ```go
-request := &vitalgo.GetSourcePrioritiesTeamRequest{}
+request := &vitalgo.TeamGetSourcePrioritiesRequest{
+        DataType: vitalgo.PriorityResourceWorkouts.Ptr(),
+    }
 client.Team.GetSourcePriorities(
         context.TODO(),
         request,
@@ -10864,7 +11784,11 @@ Get Provider list
 <dd>
 
 ```go
-request := &vitalgo.GetAllProvidersRequest{}
+request := &vitalgo.ProvidersGetAllRequest{
+        SourceType: vitalgo.String(
+            "source_type",
+        ),
+    }
 client.Providers.GetAll(
         context.TODO(),
         request,
@@ -10910,7 +11834,21 @@ client.Providers.GetAll(
 <dd>
 
 ```go
-request := &vitalgo.GetUserResourcesIntrospectRequest{}
+request := &vitalgo.IntrospectGetUserResourcesRequest{
+        UserId: vitalgo.String(
+            "user_id",
+        ),
+        Provider: vitalgo.ProvidersOura.Ptr(),
+        UserLimit: vitalgo.Int(
+            1,
+        ),
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+    }
 client.Introspect.GetUserResources(
         context.TODO(),
         request,
@@ -10987,7 +11925,21 @@ client.Introspect.GetUserResources(
 <dd>
 
 ```go
-request := &vitalgo.GetUserHistoricalPullsIntrospectRequest{}
+request := &vitalgo.IntrospectGetUserHistoricalPullsRequest{
+        UserId: vitalgo.String(
+            "user_id",
+        ),
+        Provider: vitalgo.ProvidersOura.Ptr(),
+        UserLimit: vitalgo.Int(
+            1,
+        ),
+        Cursor: vitalgo.String(
+            "cursor",
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+    }
 client.Introspect.GetUserHistoricalPulls(
         context.TODO(),
         request,
@@ -11015,7 +11967,7 @@ client.Introspect.GetUserHistoricalPulls(
 <dl>
 <dd>
 
-**provider:** `*vitalgo.GetUserHistoricalPullsIntrospectRequestProvider` 
+**provider:** `*vitalgo.Providers` 
     
 </dd>
 </dl>
@@ -11079,7 +12031,19 @@ GET all the lab tests the team has access to.
 <dd>
 
 ```go
-request := &vitalgo.GetLabTestsRequest{}
+request := &vitalgo.LabTestsGetRequest{
+        GenerationMethod: vitalgo.LabTestGenerationMethodFilterAuto.Ptr(),
+        LabSlug: vitalgo.String(
+            "lab_slug",
+        ),
+        CollectionMethod: vitalgo.LabTestCollectionMethodTestkit.Ptr(),
+        Status: vitalgo.LabTestStatusActive.Ptr(),
+        Name: vitalgo.String(
+            "name",
+        ),
+        OrderKey: vitalgo.LabTestsGetRequestOrderKeyPrice.Ptr(),
+        OrderDirection: vitalgo.LabTestsGetRequestOrderDirectionAsc.Ptr(),
+    }
 client.LabTests.Get(
         context.TODO(),
         request,
@@ -11131,7 +12095,7 @@ client.LabTests.Get(
 <dl>
 <dd>
 
-**markerIds:** `[]int` — Filter to only include lab tests containing these marker IDs.
+**markerIds:** `*int` — Filter to only include lab tests containing these marker IDs.
     
 </dd>
 </dl>
@@ -11139,7 +12103,7 @@ client.LabTests.Get(
 <dl>
 <dd>
 
-**providerIds:** `[]string` — Filter to only include lab tests containing these provider IDs.
+**providerIds:** `*string` — Filter to only include lab tests containing these provider IDs.
     
 </dd>
 </dl>
@@ -11155,7 +12119,7 @@ client.LabTests.Get(
 <dl>
 <dd>
 
-**orderKey:** `*vitalgo.GetLabTestsRequestOrderKey` 
+**orderKey:** `*vitalgo.LabTestsGetRequestOrderKey` 
     
 </dd>
 </dl>
@@ -11163,7 +12127,7 @@ client.LabTests.Get(
 <dl>
 <dd>
 
-**orderDirection:** `*vitalgo.GetLabTestsRequestOrderDirection` 
+**orderDirection:** `*vitalgo.LabTestsGetRequestOrderDirection` 
     
 </dd>
 </dl>
@@ -11291,7 +12255,11 @@ GET all the lab tests the team has access to.
 <dd>
 
 ```go
-request := &vitalgo.GetByIdLabTestsRequest{}
+request := &vitalgo.LabTestsGetByIdRequest{
+        LabAccountId: vitalgo.String(
+            "lab_account_id",
+        ),
+    }
 client.LabTests.GetById(
         context.TODO(),
         "lab_test_id",
@@ -11421,7 +12389,23 @@ GET all the markers for the given lab.
 <dd>
 
 ```go
-request := &vitalgo.GetMarkersLabTestsRequest{}
+request := &vitalgo.LabTestsGetMarkersRequest{
+        Name: vitalgo.String(
+            "name",
+        ),
+        ALaCarteEnabled: vitalgo.Bool(
+            true,
+        ),
+        LabAccountId: vitalgo.String(
+            "lab_account_id",
+        ),
+        Page: vitalgo.Int(
+            1,
+        ),
+        Size: vitalgo.Int(
+            1,
+        ),
+    }
 client.LabTests.GetMarkers(
         context.TODO(),
         request,
@@ -11441,7 +12425,7 @@ client.LabTests.GetMarkers(
 <dl>
 <dd>
 
-**labId:** `[]int` — The identifier Vital assigned to a lab partner.
+**labId:** `*int` — The identifier Vital assigned to a lab partner.
     
 </dd>
 </dl>
@@ -11506,7 +12490,13 @@ client.LabTests.GetMarkers(
 <dd>
 
 ```go
-request := &vitalgo.GetMarkersForOrderSetLabTestsRequest{
+request := &vitalgo.LabTestsGetMarkersForOrderSetRequest{
+        Page: vitalgo.Int(
+            1,
+        ),
+        Size: vitalgo.Int(
+            1,
+        ),
         Body: &vitalgo.OrderSetRequest{},
     }
 client.LabTests.GetMarkersForOrderSet(
@@ -11569,7 +12559,17 @@ client.LabTests.GetMarkersForOrderSet(
 <dd>
 
 ```go
-request := &vitalgo.GetMarkersForLabTestLabTestsRequest{}
+request := &vitalgo.LabTestsGetMarkersForLabTestRequest{
+        LabAccountId: vitalgo.String(
+            "lab_account_id",
+        ),
+        Page: vitalgo.Int(
+            1,
+        ),
+        Size: vitalgo.Int(
+            1,
+        ),
+    }
 client.LabTests.GetMarkersForLabTest(
         context.TODO(),
         "lab_test_id",
@@ -11653,7 +12653,11 @@ GET a specific marker for the given lab and provider_id
 <dd>
 
 ```go
-request := &vitalgo.GetMarkersByLabAndProviderIdLabTestsRequest{}
+request := &vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest{
+        LabAccountId: vitalgo.String(
+            "lab_account_id",
+        ),
+    }
 client.LabTests.GetMarkersByLabAndProviderId(
         context.TODO(),
         1,
@@ -11772,7 +12776,25 @@ GET lab tests the team has access to as a paginated list.
 <dd>
 
 ```go
-request := &vitalgo.GetPaginatedLabTestsRequest{}
+request := &vitalgo.LabTestsGetPaginatedRequest{
+        LabTestLimit: vitalgo.Int(
+            1,
+        ),
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        GenerationMethod: vitalgo.LabTestGenerationMethodFilterAuto.Ptr(),
+        LabSlug: vitalgo.String(
+            "lab_slug",
+        ),
+        CollectionMethod: vitalgo.LabTestCollectionMethodTestkit.Ptr(),
+        Status: vitalgo.LabTestStatusActive.Ptr(),
+        Name: vitalgo.String(
+            "name",
+        ),
+        OrderKey: vitalgo.LabTestsGetPaginatedRequestOrderKeyPrice.Ptr(),
+        OrderDirection: vitalgo.LabTestsGetPaginatedRequestOrderDirectionAsc.Ptr(),
+    }
 client.LabTests.GetPaginated(
         context.TODO(),
         request,
@@ -11840,7 +12862,7 @@ client.LabTests.GetPaginated(
 <dl>
 <dd>
 
-**markerIds:** `[]int` — Filter to only include lab tests containing these marker IDs.
+**markerIds:** `*int` — Filter to only include lab tests containing these marker IDs.
     
 </dd>
 </dl>
@@ -11848,7 +12870,7 @@ client.LabTests.GetPaginated(
 <dl>
 <dd>
 
-**providerIds:** `[]string` — Filter to only include lab tests containing these provider IDs.
+**providerIds:** `*string` — Filter to only include lab tests containing these provider IDs.
     
 </dd>
 </dl>
@@ -11864,7 +12886,7 @@ client.LabTests.GetPaginated(
 <dl>
 <dd>
 
-**orderKey:** `*vitalgo.GetPaginatedLabTestsRequestOrderKey` 
+**orderKey:** `*vitalgo.LabTestsGetPaginatedRequestOrderKey` 
     
 </dd>
 </dl>
@@ -11872,7 +12894,7 @@ client.LabTests.GetPaginated(
 <dl>
 <dd>
 
-**orderDirection:** `*vitalgo.GetPaginatedLabTestsRequestOrderDirection` 
+**orderDirection:** `*vitalgo.LabTestsGetPaginatedRequestOrderDirection` 
     
 </dd>
 </dl>
@@ -11955,7 +12977,52 @@ GET many orders with filters.
 <dd>
 
 ```go
-request := &vitalgo.GetOrdersLabTestsRequest{}
+request := &vitalgo.LabTestsGetOrdersRequest{
+        SearchInput: vitalgo.String(
+            "search_input",
+        ),
+        StartDate: vitalgo.Time(
+            vitalgo.MustParseDateTime(
+                "2024-01-15T09:30:00Z",
+            ),
+        ),
+        EndDate: vitalgo.Time(
+            vitalgo.MustParseDateTime(
+                "2024-01-15T09:30:00Z",
+            ),
+        ),
+        UpdatedStartDate: vitalgo.Time(
+            vitalgo.MustParseDateTime(
+                "2024-01-15T09:30:00Z",
+            ),
+        ),
+        UpdatedEndDate: vitalgo.Time(
+            vitalgo.MustParseDateTime(
+                "2024-01-15T09:30:00Z",
+            ),
+        ),
+        OrderKey: vitalgo.LabTestsGetOrdersRequestOrderKeyCreatedAt.Ptr(),
+        OrderDirection: vitalgo.LabTestsGetOrdersRequestOrderDirectionAsc.Ptr(),
+        IsCritical: vitalgo.Bool(
+            true,
+        ),
+        Interpretation: vitalgo.InterpretationNormal.Ptr(),
+        UserId: vitalgo.String(
+            "user_id",
+        ),
+        PatientName: vitalgo.String(
+            "patient_name",
+        ),
+        ShippingRecipientName: vitalgo.String(
+            "shipping_recipient_name",
+        ),
+        Page: vitalgo.Int(
+            1,
+        ),
+        Size: vitalgo.Int(
+            1,
+        ),
+    }
 client.LabTests.GetOrders(
         context.TODO(),
         request,
@@ -12015,7 +13082,7 @@ client.LabTests.GetOrders(
 <dl>
 <dd>
 
-**status:** `[]*vitalgo.OrderLowLevelStatus` — Filter by low level status.
+**status:** `*vitalgo.OrderLowLevelStatus` — Filter by low level status.
     
 </dd>
 </dl>
@@ -12023,7 +13090,7 @@ client.LabTests.GetOrders(
 <dl>
 <dd>
 
-**orderKey:** `*vitalgo.GetOrdersLabTestsRequestOrderKey` — Order key to sort by.
+**orderKey:** `*vitalgo.LabTestsGetOrdersRequestOrderKey` — Order key to sort by.
     
 </dd>
 </dl>
@@ -12031,7 +13098,7 @@ client.LabTests.GetOrders(
 <dl>
 <dd>
 
-**orderDirection:** `*vitalgo.GetOrdersLabTestsRequestOrderDirection` — Order direction to sort by.
+**orderDirection:** `*vitalgo.LabTestsGetOrdersRequestOrderDirection` — Order direction to sort by.
     
 </dd>
 </dl>
@@ -12039,7 +13106,7 @@ client.LabTests.GetOrders(
 <dl>
 <dd>
 
-**orderType:** `[]*vitalgo.LabTestCollectionMethod` — Filter by method used to perform the lab test.
+**orderType:** `*vitalgo.LabTestCollectionMethod` — Filter by method used to perform the lab test.
     
 </dd>
 </dl>
@@ -12063,7 +13130,7 @@ client.LabTests.GetOrders(
 <dl>
 <dd>
 
-**orderActivationTypes:** `[]*vitalgo.OrderActivationType` — Filter by activation type.
+**orderActivationTypes:** `*vitalgo.OrderActivationType` — Filter by activation type.
     
 </dd>
 </dl>
@@ -12095,7 +13162,7 @@ client.LabTests.GetOrders(
 <dl>
 <dd>
 
-**orderIds:** `[]string` — Filter by order ids.
+**orderIds:** `*string` — Filter by order ids.
     
 </dd>
 </dl>
@@ -12151,7 +13218,10 @@ for the given address and order.
 <dd>
 
 ```go
-request := &vitalgo.GetPhlebotomyAppointmentAvailabilityLabTestsRequest{
+request := &vitalgo.LabTestsGetPhlebotomyAppointmentAvailabilityRequest{
+        StartDate: vitalgo.String(
+            "start_date",
+        ),
         Body: &vitalgo.UsAddress{
             FirstLine: "first_line",
             City: "city",
@@ -12178,7 +13248,7 @@ client.LabTests.GetPhlebotomyAppointmentAvailability(
 <dl>
 <dd>
 
-**startDate:** `*time.Time` — Start date for appointment availability
+**startDate:** `*string` — Start date for appointment availability
     
 </dd>
 </dl>
@@ -12225,10 +13295,8 @@ Book an at-home phlebotomy appointment.
 <dd>
 
 ```go
-request := &vitalgo.BookPhlebotomyAppointmentLabTestsRequest{
-        Body: &vitalgo.AppointmentBookingRequest{
-            BookingKey: "booking_key",
-        },
+request := &vitalgo.AppointmentBookingRequest{
+        BookingKey: "booking_key",
     }
 client.LabTests.BookPhlebotomyAppointment(
         context.TODO(),
@@ -12381,10 +13449,8 @@ Reschedule a previously booked at-home phlebotomy appointment.
 <dd>
 
 ```go
-request := &vitalgo.ReschedulePhlebotomyAppointmentLabTestsRequest{
-        Body: &vitalgo.AppointmentRescheduleRequest{
-            BookingKey: "booking_key",
-        },
+request := &vitalgo.AppointmentRescheduleRequest{
+        BookingKey: "booking_key",
     }
 client.LabTests.ReschedulePhlebotomyAppointment(
         context.TODO(),
@@ -12635,8 +13701,13 @@ Information returned:
 <dd>
 
 ```go
-request := &vitalgo.GetAreaInfoLabTestsRequest{
+request := &vitalgo.LabTestsGetAreaInfoRequest{
         ZipCode: "zip_code",
+        Radius: vitalgo.AllowedRadiusTen.Ptr(),
+        Lab: vitalgo.ClientFacingLabsQuest.Ptr(),
+        LabAccountId: vitalgo.String(
+            "lab_account_id",
+        ),
     }
 client.LabTests.GetAreaInfo(
         context.TODO(),
@@ -12681,7 +13752,7 @@ client.LabTests.GetAreaInfo(
 <dl>
 <dd>
 
-**labs:** `[]*vitalgo.ClientFacingLabs` — List of labs to check for PSCs
+**labs:** `*vitalgo.ClientFacingLabs` — List of labs to check for PSCs
     
 </dd>
 </dl>
@@ -12714,9 +13785,13 @@ client.LabTests.GetAreaInfo(
 <dd>
 
 ```go
-request := &vitalgo.GetPscInfoLabTestsRequest{
+request := &vitalgo.LabTestsGetPscInfoRequest{
         ZipCode: "zip_code",
         LabId: 1,
+        Radius: vitalgo.AllowedRadiusTen.Ptr(),
+        LabAccountId: vitalgo.String(
+            "lab_account_id",
+        ),
     }
 client.LabTests.GetPscInfo(
         context.TODO(),
@@ -12761,7 +13836,7 @@ client.LabTests.GetPscInfo(
 <dl>
 <dd>
 
-**capabilities:** `[]*vitalgo.LabLocationCapability` — Filter for only locations with certain capabilities
+**capabilities:** `*vitalgo.LabLocationCapability` — Filter for only locations with certain capabilities
     
 </dd>
 </dl>
@@ -12794,7 +13869,9 @@ client.LabTests.GetPscInfo(
 <dd>
 
 ```go
-request := &vitalgo.GetOrderPscInfoLabTestsRequest{}
+request := &vitalgo.LabTestsGetOrderPscInfoRequest{
+        Radius: vitalgo.AllowedRadiusTen.Ptr(),
+    }
 client.LabTests.GetOrderPscInfo(
         context.TODO(),
         "order_id",
@@ -12831,7 +13908,7 @@ client.LabTests.GetOrderPscInfo(
 <dl>
 <dd>
 
-**capabilities:** `[]*vitalgo.LabLocationCapability` — Filter for only locations with certain capabilities
+**capabilities:** `*vitalgo.LabLocationCapability` — Filter for only locations with certain capabilities
     
 </dd>
 </dl>
@@ -13045,7 +14122,7 @@ This endpoint returns the printed labels for the order.
 <dd>
 
 ```go
-request := &vitalgo.GetLabelsPdfLabTestsRequest{
+request := &vitalgo.LabTestsGetLabelsPdfRequest{
         CollectionDate: vitalgo.MustParseDateTime(
             "2024-01-15T09:30:00Z",
         ),
@@ -13111,10 +14188,17 @@ client.LabTests.GetLabelsPdf(
 <dd>
 
 ```go
-request := &vitalgo.GetPscAppointmentAvailabilityLabTestsRequest{
+request := &vitalgo.LabTestsGetPscAppointmentAvailabilityRequest{
         Lab: vitalgo.AppointmentPscLabs(
             "quest",
         ),
+        StartDate: vitalgo.String(
+            "start_date",
+        ),
+        ZipCode: vitalgo.String(
+            "zip_code",
+        ),
+        Radius: vitalgo.AllowedRadiusTen.Ptr(),
     }
 client.LabTests.GetPscAppointmentAvailability(
         context.TODO(),
@@ -13143,7 +14227,7 @@ client.LabTests.GetPscAppointmentAvailability(
 <dl>
 <dd>
 
-**startDate:** `*time.Time` — Start date for appointment availability
+**startDate:** `*string` — Start date for appointment availability
     
 </dd>
 </dl>
@@ -13151,7 +14235,7 @@ client.LabTests.GetPscAppointmentAvailability(
 <dl>
 <dd>
 
-**siteCodes:** `[]string` — List of site codes to fetch availability for
+**siteCodes:** `*string` — List of site codes to fetch availability for
     
 </dd>
 </dl>
@@ -13192,10 +14276,8 @@ client.LabTests.GetPscAppointmentAvailability(
 <dd>
 
 ```go
-request := &vitalgo.BookPscAppointmentLabTestsRequest{
-        Body: &vitalgo.AppointmentBookingRequest{
-            BookingKey: "booking_key",
-        },
+request := &vitalgo.AppointmentBookingRequest{
+        BookingKey: "booking_key",
     }
 client.LabTests.BookPscAppointment(
         context.TODO(),
@@ -13250,10 +14332,8 @@ client.LabTests.BookPscAppointment(
 <dd>
 
 ```go
-request := &vitalgo.ReschedulePscAppointmentLabTestsRequest{
-        Body: &vitalgo.AppointmentRescheduleRequest{
-            BookingKey: "booking_key",
-        },
+request := &vitalgo.AppointmentRescheduleRequest{
+        BookingKey: "booking_key",
     }
 client.LabTests.ReschedulePscAppointment(
         context.TODO(),
@@ -13691,13 +14771,14 @@ client.LabTests.GetOrder(
 
 ```go
 request := &vitalgo.CreateOrderRequestCompatible{
+        IdempotencyKey: vitalgo.String(
+            "X-Idempotency-Key",
+        ),
         UserId: "user_id",
         PatientDetails: &vitalgo.PatientDetailsWithValidation{
             FirstName: "first_name",
             LastName: "last_name",
-            Dob: vitalgo.MustParseDateTime(
-                "2023-01-15",
-            ),
+            Dob: "dob",
             Gender: vitalgo.GenderFemale,
             PhoneNumber: "phone_number",
             Email: "email",
@@ -13825,7 +14906,7 @@ client.LabTests.CreateOrder(
 <dl>
 <dd>
 
-**activateBy:** `*time.Time` — Schedule an Order to be processed in a future date.
+**activateBy:** `*string` — Schedule an Order to be processed in a future date.
     
 </dd>
 </dl>
@@ -13906,9 +14987,7 @@ request := &vitalgo.ImportOrderBody{
         PatientDetails: &vitalgo.PatientDetailsWithValidation{
             FirstName: "first_name",
             LastName: "last_name",
-            Dob: vitalgo.MustParseDateTime(
-                "2023-01-15",
-            ),
+            Dob: "dob",
             Gender: vitalgo.GenderFemale,
             PhoneNumber: "phone_number",
             Email: "email",
@@ -14103,7 +15182,11 @@ Get available test kits.
 <dd>
 
 ```go
-request := &vitalgo.SimulateOrderProcessLabTestsRequest{
+request := &vitalgo.LabTestsSimulateOrderProcessRequest{
+        FinalStatus: vitalgo.OrderStatusReceivedWalkInTestOrdered.Ptr(),
+        Delay: vitalgo.Int(
+            1,
+        ),
         Body: &vitalgo.SimulationFlags{},
     }
 client.LabTests.SimulateOrderProcess(
@@ -14288,9 +15371,7 @@ request := &vitalgo.RegisterTestkitRequest{
         PatientDetails: &vitalgo.PatientDetailsWithValidation{
             FirstName: "first_name",
             LastName: "last_name",
-            Dob: vitalgo.MustParseDateTime(
-                "2023-01-15",
-            ),
+            Dob: "dob",
             Gender: vitalgo.GenderFemale,
             PhoneNumber: "phone_number",
             Email: "email",
@@ -14575,7 +15656,15 @@ client.Order.ResendEvents(
 <dd>
 
 ```go
-request := &vitalgo.SearchGetPayorInfoInsuranceRequest{}
+request := &vitalgo.InsuranceSearchGetPayorInfoRequest{
+        InsuranceName: vitalgo.String(
+            "insurance_name",
+        ),
+        Provider: vitalgo.PayorCodeExternalProviderChangeHealthcare.Ptr(),
+        ProviderPayorId: vitalgo.String(
+            "provider_payor_id",
+        ),
+    }
 client.Insurance.SearchGetPayorInfo(
         context.TODO(),
         request,
@@ -14697,7 +15786,7 @@ client.Insurance.SearchPayorInfo(
 <dd>
 
 ```go
-request := &vitalgo.SearchDiagnosisInsuranceRequest{
+request := &vitalgo.InsuranceSearchDiagnosisRequest{
         DiagnosisQuery: "diagnosis_query",
     }
 client.Insurance.SearchDiagnosis(
@@ -14839,14 +15928,9 @@ and starts the ParseLabReport. Returns a generated job_id.
 <dd>
 
 ```go
-request := &vitalgo.BodyCreateLabReportParserJob{
-        UserId: "user_id",
-    }
+request := &vitalgo.BodyCreateLabReportParserJob{}
 client.LabReport.ParserCreateJob(
         context.TODO(),
-        strings.NewReader(
-            "",
-        ),
         request,
     )
 }
@@ -14939,9 +16023,7 @@ client.LabReport.ParserGetJob(
 request := &vitalgo.QueryBatch{
         Timeframe: &vitalgo.QueryBatchTimeframe{
             RelativeTimeframe: &vitalgo.RelativeTimeframe{
-                Anchor: vitalgo.MustParseDateTime(
-                    "2023-01-15",
-                ),
+                Anchor: "anchor",
                 Past: &vitalgo.Period{
                     Unit: vitalgo.PeriodUnitMinute,
                 },
@@ -15041,12 +16123,10 @@ client.Aggregate.QueryOne(
 <dd>
 
 ```go
-request := &vitalgo.GetResultTableForContinuousQueryAggregateRequest{}
 client.Aggregate.GetResultTableForContinuousQuery(
         context.TODO(),
         "user_id",
         "query_id_or_slug",
-        request,
     )
 }
 ```
@@ -15104,7 +16184,14 @@ client.Aggregate.GetResultTableForContinuousQuery(
 <dd>
 
 ```go
-request := &vitalgo.GetTaskHistoryForContinuousQueryAggregateRequest{}
+request := &vitalgo.AggregateGetTaskHistoryForContinuousQueryRequest{
+        NextCursor: vitalgo.String(
+            "next_cursor",
+        ),
+        Limit: vitalgo.Int(
+            1,
+        ),
+    }
 client.Aggregate.GetTaskHistoryForContinuousQuery(
         context.TODO(),
         "user_id",

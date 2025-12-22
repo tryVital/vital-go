@@ -12,7 +12,6 @@ import (
 
 type BodyCreateLabReportParserJob struct {
 	File             io.Reader `json:"-" url:"-"`
-	UserId           string    `json:"user_id" url:"-"`
 	NeedsHumanReview *bool     `json:"needs_human_review,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -24,31 +23,6 @@ func (b *BodyCreateLabReportParserJob) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
-}
-
-var (
-	parserGetJobLabReportRequestFieldJobId = big.NewInt(1 << 0)
-)
-
-type ParserGetJobLabReportRequest struct {
-	JobId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (p *ParserGetJobLabReportRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetJobId sets the JobId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParserGetJobLabReportRequest) SetJobId(jobId string) {
-	p.JobId = jobId
-	p.require(parserGetJobLabReportRequestFieldJobId)
 }
 
 var (
@@ -330,16 +304,16 @@ func (l LabReportResultType) Ptr() *LabReportResultType {
 var (
 	loincMatchFieldLoincCode       = big.NewInt(1 << 0)
 	loincMatchFieldLoincName       = big.NewInt(1 << 1)
-	loincMatchFieldDisplayName     = big.NewInt(1 << 2)
-	loincMatchFieldAliases         = big.NewInt(1 << 3)
+	loincMatchFieldLoincComponent  = big.NewInt(1 << 2)
+	loincMatchFieldSampleType      = big.NewInt(1 << 3)
 	loincMatchFieldConfidenceScore = big.NewInt(1 << 4)
 )
 
 type LoincMatch struct {
 	LoincCode       string   `json:"loinc_code" url:"loinc_code"`
 	LoincName       string   `json:"loinc_name" url:"loinc_name"`
-	DisplayName     *string  `json:"display_name,omitempty" url:"display_name,omitempty"`
-	Aliases         []string `json:"aliases,omitempty" url:"aliases,omitempty"`
+	LoincComponent  string   `json:"loinc_component" url:"loinc_component"`
+	SampleType      []string `json:"sample_type,omitempty" url:"sample_type,omitempty"`
 	ConfidenceScore float64  `json:"confidence_score" url:"confidence_score"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -363,18 +337,18 @@ func (l *LoincMatch) GetLoincName() string {
 	return l.LoincName
 }
 
-func (l *LoincMatch) GetDisplayName() *string {
+func (l *LoincMatch) GetLoincComponent() string {
 	if l == nil {
-		return nil
+		return ""
 	}
-	return l.DisplayName
+	return l.LoincComponent
 }
 
-func (l *LoincMatch) GetAliases() []string {
+func (l *LoincMatch) GetSampleType() []string {
 	if l == nil {
 		return nil
 	}
-	return l.Aliases
+	return l.SampleType
 }
 
 func (l *LoincMatch) GetConfidenceScore() float64 {
@@ -409,18 +383,18 @@ func (l *LoincMatch) SetLoincName(loincName string) {
 	l.require(loincMatchFieldLoincName)
 }
 
-// SetDisplayName sets the DisplayName field and marks it as non-optional;
+// SetLoincComponent sets the LoincComponent field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LoincMatch) SetDisplayName(displayName *string) {
-	l.DisplayName = displayName
-	l.require(loincMatchFieldDisplayName)
+func (l *LoincMatch) SetLoincComponent(loincComponent string) {
+	l.LoincComponent = loincComponent
+	l.require(loincMatchFieldLoincComponent)
 }
 
-// SetAliases sets the Aliases field and marks it as non-optional;
+// SetSampleType sets the SampleType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LoincMatch) SetAliases(aliases []string) {
-	l.Aliases = aliases
-	l.require(loincMatchFieldAliases)
+func (l *LoincMatch) SetSampleType(sampleType []string) {
+	l.SampleType = sampleType
+	l.require(loincMatchFieldSampleType)
 }
 
 // SetConfidenceScore sets the ConfidenceScore field and marks it as non-optional;
@@ -564,16 +538,14 @@ func (p *ParsedLabReportData) String() string {
 }
 
 var (
-	parsingJobFieldId               = big.NewInt(1 << 0)
-	parsingJobFieldJobId            = big.NewInt(1 << 1)
-	parsingJobFieldStatus           = big.NewInt(1 << 2)
-	parsingJobFieldData             = big.NewInt(1 << 3)
-	parsingJobFieldNeedsHumanReview = big.NewInt(1 << 4)
-	parsingJobFieldIsReviewed       = big.NewInt(1 << 5)
+	parsingJobFieldJobId            = big.NewInt(1 << 0)
+	parsingJobFieldStatus           = big.NewInt(1 << 1)
+	parsingJobFieldData             = big.NewInt(1 << 2)
+	parsingJobFieldNeedsHumanReview = big.NewInt(1 << 3)
+	parsingJobFieldIsReviewed       = big.NewInt(1 << 4)
 )
 
 type ParsingJob struct {
-	Id               string               `json:"id" url:"id"`
 	JobId            string               `json:"job_id" url:"job_id"`
 	Status           ParsingJobStatus     `json:"status" url:"status"`
 	Data             *ParsedLabReportData `json:"data,omitempty" url:"data,omitempty"`
@@ -585,13 +557,6 @@ type ParsingJob struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (p *ParsingJob) GetId() string {
-	if p == nil {
-		return ""
-	}
-	return p.Id
 }
 
 func (p *ParsingJob) GetJobId() string {
@@ -638,13 +603,6 @@ func (p *ParsingJob) require(field *big.Int) {
 		p.explicitFields = big.NewInt(0)
 	}
 	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetId sets the Id field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParsingJob) SetId(id string) {
-	p.Id = id
-	p.require(parsingJobFieldId)
 }
 
 // SetJobId sets the JobId field and marks it as non-optional;
