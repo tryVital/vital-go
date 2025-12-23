@@ -309,6 +309,13 @@ func (r *RawClient) GetLatestInsurance(
 		baseURL+"/v2/user/%v/insurance/latest",
 		request.UserId,
 	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),

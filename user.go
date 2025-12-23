@@ -112,6 +112,7 @@ var (
 	createInsuranceRequestFieldRelationship = big.NewInt(1 << 4)
 	createInsuranceRequestFieldInsured      = big.NewInt(1 << 5)
 	createInsuranceRequestFieldGuarantor    = big.NewInt(1 << 6)
+	createInsuranceRequestFieldIsPrimary    = big.NewInt(1 << 7)
 )
 
 type CreateInsuranceRequest struct {
@@ -122,6 +123,7 @@ type CreateInsuranceRequest struct {
 	Relationship ResponsibleRelationship                                 `json:"relationship" url:"-"`
 	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty" url:"-"`
 	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"-"`
+	IsPrimary    *bool                                                   `json:"is_primary,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -181,6 +183,13 @@ func (c *CreateInsuranceRequest) SetInsured(insured *VitalCoreSchemasDbSchemasLa
 func (c *CreateInsuranceRequest) SetGuarantor(guarantor *GuarantorDetails) {
 	c.Guarantor = guarantor
 	c.require(createInsuranceRequestFieldGuarantor)
+}
+
+// SetIsPrimary sets the IsPrimary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateInsuranceRequest) SetIsPrimary(isPrimary *bool) {
+	c.IsPrimary = isPrimary
+	c.require(createInsuranceRequestFieldIsPrimary)
 }
 
 var (
@@ -464,11 +473,13 @@ func (g *GetDevicesUserRequest) SetUserId(userId string) {
 }
 
 var (
-	getLatestInsuranceUserRequestFieldUserId = big.NewInt(1 << 0)
+	getLatestInsuranceUserRequestFieldUserId    = big.NewInt(1 << 0)
+	getLatestInsuranceUserRequestFieldIsPrimary = big.NewInt(1 << 1)
 )
 
 type GetLatestInsuranceUserRequest struct {
-	UserId string `json:"-" url:"-"`
+	UserId    string `json:"-" url:"-"`
+	IsPrimary *bool  `json:"-" url:"is_primary,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -486,6 +497,13 @@ func (g *GetLatestInsuranceUserRequest) require(field *big.Int) {
 func (g *GetLatestInsuranceUserRequest) SetUserId(userId string) {
 	g.UserId = userId
 	g.require(getLatestInsuranceUserRequestFieldUserId)
+}
+
+// SetIsPrimary sets the IsPrimary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetLatestInsuranceUserRequest) SetIsPrimary(isPrimary *bool) {
+	g.IsPrimary = isPrimary
+	g.require(getLatestInsuranceUserRequestFieldIsPrimary)
 }
 
 var (
@@ -1135,6 +1153,7 @@ var (
 	clientFacingInsuranceFieldCompany      = big.NewInt(1 << 4)
 	clientFacingInsuranceFieldGroupId      = big.NewInt(1 << 5)
 	clientFacingInsuranceFieldGuarantor    = big.NewInt(1 << 6)
+	clientFacingInsuranceFieldIsPrimary    = big.NewInt(1 << 7)
 )
 
 type ClientFacingInsurance struct {
@@ -1145,6 +1164,7 @@ type ClientFacingInsurance struct {
 	Company      *CompanyDetails                                         `json:"company" url:"company"`
 	GroupId      *string                                                 `json:"group_id,omitempty" url:"group_id,omitempty"`
 	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"guarantor,omitempty"`
+	IsPrimary    *bool                                                   `json:"is_primary,omitempty" url:"is_primary,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1200,6 +1220,13 @@ func (c *ClientFacingInsurance) GetGuarantor() *GuarantorDetails {
 		return nil
 	}
 	return c.Guarantor
+}
+
+func (c *ClientFacingInsurance) GetIsPrimary() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsPrimary
 }
 
 func (c *ClientFacingInsurance) GetExtraProperties() map[string]interface{} {
@@ -1260,6 +1287,13 @@ func (c *ClientFacingInsurance) SetGroupId(groupId *string) {
 func (c *ClientFacingInsurance) SetGuarantor(guarantor *GuarantorDetails) {
 	c.Guarantor = guarantor
 	c.require(clientFacingInsuranceFieldGuarantor)
+}
+
+// SetIsPrimary sets the IsPrimary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingInsurance) SetIsPrimary(isPrimary *bool) {
+	c.IsPrimary = isPrimary
+	c.require(clientFacingInsuranceFieldIsPrimary)
 }
 
 func (c *ClientFacingInsurance) UnmarshalJSON(data []byte) error {

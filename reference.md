@@ -9652,6 +9652,14 @@ client.User.CreateInsurance(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**isPrimary:** `*bool` 
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -9673,9 +9681,11 @@ client.User.CreateInsurance(
 <dd>
 
 ```go
+request := &vitalgo.GetLatestInsuranceUserRequest{}
 client.User.GetLatestInsurance(
         context.TODO(),
         "user_id",
+        request,
     )
 }
 ```
@@ -9693,6 +9703,14 @@ client.User.GetLatestInsurance(
 <dd>
 
 **userId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**isPrimary:** `*bool` 
     
 </dd>
 </dl>
