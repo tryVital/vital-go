@@ -135,11 +135,13 @@ func (c *Client) CreateInsurance(
 func (c *Client) GetLatestInsurance(
 	ctx context.Context,
 	userId string,
+	request *vitalgo.UserGetLatestInsuranceRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingInsurance, error) {
 	response, err := c.WithRawResponse.GetLatestInsurance(
 		ctx,
 		userId,
+		request,
 		opts...,
 	)
 	if err != nil {

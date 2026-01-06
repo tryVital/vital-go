@@ -298,6 +298,7 @@ func (r *RawClient) CreateInsurance(
 func (r *RawClient) GetLatestInsurance(
 	ctx context.Context,
 	userId string,
+	request *vitalgo.UserGetLatestInsuranceRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingInsurance], error) {
 	options := core.NewRequestOptions(opts...)
@@ -310,6 +311,13 @@ func (r *RawClient) GetLatestInsurance(
 		baseURL+"/v2/user/%v/insurance/latest",
 		userId,
 	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
