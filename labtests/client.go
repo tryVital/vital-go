@@ -36,7 +36,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // GET all the lab tests the team has access to.
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetLabTestsRequest,
+	request *vitalgo.LabTestsGetRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingLabTest, error) {
 	response, err := c.WithRawResponse.Get(
@@ -69,11 +69,13 @@ func (c *Client) Create(
 // GET all the lab tests the team has access to.
 func (c *Client) GetById(
 	ctx context.Context,
-	request *vitalgo.GetByIdLabTestsRequest,
+	labTestId string,
+	request *vitalgo.LabTestsGetByIdRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingLabTest, error) {
 	response, err := c.WithRawResponse.GetById(
 		ctx,
+		labTestId,
 		request,
 		opts...,
 	)
@@ -85,11 +87,13 @@ func (c *Client) GetById(
 
 func (c *Client) UpdateLabTest(
 	ctx context.Context,
+	labTestId string,
 	request *vitalgo.UpdateLabTestRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingLabTest, error) {
 	response, err := c.WithRawResponse.UpdateLabTest(
 		ctx,
+		labTestId,
 		request,
 		opts...,
 	)
@@ -102,7 +106,7 @@ func (c *Client) UpdateLabTest(
 // GET all the markers for the given lab.
 func (c *Client) GetMarkers(
 	ctx context.Context,
-	request *vitalgo.GetMarkersLabTestsRequest,
+	request *vitalgo.LabTestsGetMarkersRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GetMarkersResponse, error) {
 	response, err := c.WithRawResponse.GetMarkers(
@@ -118,7 +122,7 @@ func (c *Client) GetMarkers(
 
 func (c *Client) GetMarkersForOrderSet(
 	ctx context.Context,
-	request *vitalgo.GetMarkersForOrderSetLabTestsRequest,
+	request *vitalgo.LabTestsGetMarkersForOrderSetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GetMarkersResponse, error) {
 	response, err := c.WithRawResponse.GetMarkersForOrderSet(
@@ -134,11 +138,13 @@ func (c *Client) GetMarkersForOrderSet(
 
 func (c *Client) GetMarkersForLabTest(
 	ctx context.Context,
-	request *vitalgo.GetMarkersForLabTestLabTestsRequest,
+	labTestId string,
+	request *vitalgo.LabTestsGetMarkersForLabTestRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GetMarkersResponse, error) {
 	response, err := c.WithRawResponse.GetMarkersForLabTest(
 		ctx,
+		labTestId,
 		request,
 		opts...,
 	)
@@ -151,11 +157,15 @@ func (c *Client) GetMarkersForLabTest(
 // GET a specific marker for the given lab and provider_id
 func (c *Client) GetMarkersByLabAndProviderId(
 	ctx context.Context,
-	request *vitalgo.GetMarkersByLabAndProviderIdLabTestsRequest,
+	labId int,
+	providerId string,
+	request *vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingMarker, error) {
 	response, err := c.WithRawResponse.GetMarkersByLabAndProviderId(
 		ctx,
+		labId,
+		providerId,
 		request,
 		opts...,
 	)
@@ -183,7 +193,7 @@ func (c *Client) GetLabs(
 // GET lab tests the team has access to as a paginated list.
 func (c *Client) GetPaginated(
 	ctx context.Context,
-	request *vitalgo.GetPaginatedLabTestsRequest,
+	request *vitalgo.LabTestsGetPaginatedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.LabTestResourcesResponse, error) {
 	response, err := c.WithRawResponse.GetPaginated(
@@ -199,12 +209,12 @@ func (c *Client) GetPaginated(
 
 func (c *Client) GetLabTestCollectionInstructionPdf(
 	ctx context.Context,
-	request *vitalgo.GetLabTestCollectionInstructionPdfLabTestsRequest,
+	labTestId string,
 	opts ...option.RequestOption,
 ) (io.Reader, error) {
 	response, err := c.WithRawResponse.GetLabTestCollectionInstructionPdf(
 		ctx,
-		request,
+		labTestId,
 		opts...,
 	)
 	if err != nil {
@@ -216,7 +226,7 @@ func (c *Client) GetLabTestCollectionInstructionPdf(
 // GET many orders with filters.
 func (c *Client) GetOrders(
 	ctx context.Context,
-	request *vitalgo.GetOrdersLabTestsRequest,
+	request *vitalgo.LabTestsGetOrdersRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GetOrdersResponse, error) {
 	response, err := c.WithRawResponse.GetOrders(
@@ -234,7 +244,7 @@ func (c *Client) GetOrders(
 // for the given address and order.
 func (c *Client) GetPhlebotomyAppointmentAvailability(
 	ctx context.Context,
-	request *vitalgo.GetPhlebotomyAppointmentAvailabilityLabTestsRequest,
+	request *vitalgo.LabTestsGetPhlebotomyAppointmentAvailabilityRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.AppointmentAvailabilitySlots, error) {
 	response, err := c.WithRawResponse.GetPhlebotomyAppointmentAvailability(
@@ -251,11 +261,14 @@ func (c *Client) GetPhlebotomyAppointmentAvailability(
 // Book an at-home phlebotomy appointment.
 func (c *Client) BookPhlebotomyAppointment(
 	ctx context.Context,
-	request *vitalgo.BookPhlebotomyAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentBookingRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.BookPhlebotomyAppointment(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -268,11 +281,14 @@ func (c *Client) BookPhlebotomyAppointment(
 // Request an at-home phlebotomy appointment.
 func (c *Client) RequestPhlebotomyAppointment(
 	ctx context.Context,
+	// Your Order ID.
+	orderId string,
 	request *vitalgo.RequestAppointmentRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.RequestPhlebotomyAppointment(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -285,11 +301,14 @@ func (c *Client) RequestPhlebotomyAppointment(
 // Reschedule a previously booked at-home phlebotomy appointment.
 func (c *Client) ReschedulePhlebotomyAppointment(
 	ctx context.Context,
-	request *vitalgo.ReschedulePhlebotomyAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentRescheduleRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.ReschedulePhlebotomyAppointment(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -302,11 +321,14 @@ func (c *Client) ReschedulePhlebotomyAppointment(
 // Cancel a previously booked at-home phlebotomy appointment.
 func (c *Client) CancelPhlebotomyAppointment(
 	ctx context.Context,
+	// Your Order ID.
+	orderId string,
 	request *vitalgo.ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.CancelPhlebotomyAppointment(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -334,12 +356,13 @@ func (c *Client) GetPhlebotomyAppointmentCancellationReason(
 // Get the appointment associated with an order.
 func (c *Client) GetPhlebotomyAppointment(
 	ctx context.Context,
-	request *vitalgo.GetPhlebotomyAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.GetPhlebotomyAppointment(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -355,7 +378,7 @@ func (c *Client) GetPhlebotomyAppointment(
 // * List of Lab locations in the area.
 func (c *Client) GetAreaInfo(
 	ctx context.Context,
-	request *vitalgo.GetAreaInfoLabTestsRequest,
+	request *vitalgo.LabTestsGetAreaInfoRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.AreaInfo, error) {
 	response, err := c.WithRawResponse.GetAreaInfo(
@@ -371,7 +394,7 @@ func (c *Client) GetAreaInfo(
 
 func (c *Client) GetPscInfo(
 	ctx context.Context,
-	request *vitalgo.GetPscInfoLabTestsRequest,
+	request *vitalgo.LabTestsGetPscInfoRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.PscInfo, error) {
 	response, err := c.WithRawResponse.GetPscInfo(
@@ -387,11 +410,14 @@ func (c *Client) GetPscInfo(
 
 func (c *Client) GetOrderPscInfo(
 	ctx context.Context,
-	request *vitalgo.GetOrderPscInfoLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.LabTestsGetOrderPscInfoRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.PscInfo, error) {
 	response, err := c.WithRawResponse.GetOrderPscInfo(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -404,12 +430,12 @@ func (c *Client) GetOrderPscInfo(
 // This endpoint returns the lab results for the order.
 func (c *Client) GetResultPdf(
 	ctx context.Context,
-	request *vitalgo.GetResultPdfLabTestsRequest,
+	orderId string,
 	opts ...option.RequestOption,
 ) (io.Reader, error) {
 	response, err := c.WithRawResponse.GetResultPdf(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -422,12 +448,12 @@ func (c *Client) GetResultPdf(
 // provider and sample dates.
 func (c *Client) GetResultMetadata(
 	ctx context.Context,
-	request *vitalgo.GetResultMetadataLabTestsRequest,
+	orderId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.LabResultsMetadata, error) {
 	response, err := c.WithRawResponse.GetResultMetadata(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -439,12 +465,12 @@ func (c *Client) GetResultMetadata(
 // Return both metadata and raw json test data
 func (c *Client) GetResultRaw(
 	ctx context.Context,
-	request *vitalgo.GetResultRawLabTestsRequest,
+	orderId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.LabResultsRaw, error) {
 	response, err := c.WithRawResponse.GetResultRaw(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -456,11 +482,13 @@ func (c *Client) GetResultRaw(
 // This endpoint returns the printed labels for the order.
 func (c *Client) GetLabelsPdf(
 	ctx context.Context,
-	request *vitalgo.GetLabelsPdfLabTestsRequest,
+	orderId string,
+	request *vitalgo.LabTestsGetLabelsPdfRequest,
 	opts ...option.RequestOption,
 ) (io.Reader, error) {
 	response, err := c.WithRawResponse.GetLabelsPdf(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -472,7 +500,7 @@ func (c *Client) GetLabelsPdf(
 
 func (c *Client) GetPscAppointmentAvailability(
 	ctx context.Context,
-	request *vitalgo.GetPscAppointmentAvailabilityLabTestsRequest,
+	request *vitalgo.LabTestsGetPscAppointmentAvailabilityRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.AppointmentAvailabilitySlots, error) {
 	response, err := c.WithRawResponse.GetPscAppointmentAvailability(
@@ -488,11 +516,14 @@ func (c *Client) GetPscAppointmentAvailability(
 
 func (c *Client) BookPscAppointment(
 	ctx context.Context,
-	request *vitalgo.BookPscAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentBookingRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.BookPscAppointment(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -504,11 +535,14 @@ func (c *Client) BookPscAppointment(
 
 func (c *Client) ReschedulePscAppointment(
 	ctx context.Context,
-	request *vitalgo.ReschedulePscAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
+	request *vitalgo.AppointmentRescheduleRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.ReschedulePscAppointment(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -520,11 +554,14 @@ func (c *Client) ReschedulePscAppointment(
 
 func (c *Client) CancelPscAppointment(
 	ctx context.Context,
+	// Your Order ID.
+	orderId string,
 	request *vitalgo.VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.CancelPscAppointment(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -551,12 +588,13 @@ func (c *Client) GetPscAppointmentCancellationReason(
 // Get the appointment associated with an order.
 func (c *Client) GetPscAppointment(
 	ctx context.Context,
-	request *vitalgo.GetPscAppointmentLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.GetPscAppointment(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -568,12 +606,13 @@ func (c *Client) GetPscAppointment(
 // GET collection instructions for an order
 func (c *Client) GetOrderCollectionInstructionPdf(
 	ctx context.Context,
-	request *vitalgo.GetOrderCollectionInstructionPdfLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (io.Reader, error) {
 	response, err := c.WithRawResponse.GetOrderCollectionInstructionPdf(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -585,12 +624,13 @@ func (c *Client) GetOrderCollectionInstructionPdf(
 // GET requisition pdf for an order
 func (c *Client) GetOrderRequistionPdf(
 	ctx context.Context,
-	request *vitalgo.GetOrderRequistionPdfLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (io.Reader, error) {
 	response, err := c.WithRawResponse.GetOrderRequistionPdf(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -602,12 +642,13 @@ func (c *Client) GetOrderRequistionPdf(
 // GET ABN pdf for an order
 func (c *Client) GetOrderAbnPdf(
 	ctx context.Context,
-	request *vitalgo.GetOrderAbnPdfLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (io.Reader, error) {
 	response, err := c.WithRawResponse.GetOrderAbnPdf(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -619,12 +660,13 @@ func (c *Client) GetOrderAbnPdf(
 // GET individual order by ID.
 func (c *Client) GetOrder(
 	ctx context.Context,
-	request *vitalgo.GetOrderLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingOrder, error) {
 	response, err := c.WithRawResponse.GetOrder(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -668,12 +710,13 @@ func (c *Client) ImportOrder(
 // POST cancel order
 func (c *Client) CancelOrder(
 	ctx context.Context,
-	request *vitalgo.CancelOrderLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.PostOrderResponse, error) {
 	response, err := c.WithRawResponse.CancelOrder(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {
@@ -685,11 +728,13 @@ func (c *Client) CancelOrder(
 // Get available test kits.
 func (c *Client) SimulateOrderProcess(
 	ctx context.Context,
-	request *vitalgo.SimulateOrderProcessLabTestsRequest,
+	orderId string,
+	request *vitalgo.LabTestsSimulateOrderProcessRequest,
 	opts ...option.RequestOption,
 ) (any, error) {
 	response, err := c.WithRawResponse.SimulateOrderProcess(
 		ctx,
+		orderId,
 		request,
 		opts...,
 	)
@@ -702,12 +747,13 @@ func (c *Client) SimulateOrderProcess(
 // PATCH update on site collection order when draw is completed
 func (c *Client) UpdateOnSiteCollectionOrderDrawCompleted(
 	ctx context.Context,
-	request *vitalgo.UpdateOnSiteCollectionOrderDrawCompletedLabTestsRequest,
+	// Your Order ID.
+	orderId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.PostOrderResponse, error) {
 	response, err := c.WithRawResponse.UpdateOnSiteCollectionOrderDrawCompleted(
 		ctx,
-		request,
+		orderId,
 		opts...,
 	)
 	if err != nil {

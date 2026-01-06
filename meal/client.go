@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get user's meals
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetMealRequest,
+	userId string,
+	request *vitalgo.MealGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingMealResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)

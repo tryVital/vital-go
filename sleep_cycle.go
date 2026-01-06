@@ -11,16 +11,14 @@ import (
 )
 
 var (
-	getSleepCycleRequestFieldUserId    = big.NewInt(1 << 0)
-	getSleepCycleRequestFieldStartDate = big.NewInt(1 << 1)
-	getSleepCycleRequestFieldEndDate   = big.NewInt(1 << 2)
-	getSleepCycleRequestFieldProvider  = big.NewInt(1 << 3)
+	sleepCycleGetRequestFieldStartDate = big.NewInt(1 << 0)
+	sleepCycleGetRequestFieldEndDate   = big.NewInt(1 << 1)
+	sleepCycleGetRequestFieldProvider  = big.NewInt(1 << 2)
 )
 
-type GetSleepCycleRequest struct {
-	UserId    string     `json:"-" url:"-"`
-	StartDate time.Time  `json:"-" url:"start_date" format:"date"`
-	EndDate   *time.Time `json:"-" url:"end_date,omitempty" format:"date"`
+type SleepCycleGetRequest struct {
+	StartDate string  `json:"-" url:"start_date"`
+	EndDate   *string `json:"-" url:"end_date,omitempty"`
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 
@@ -28,39 +26,32 @@ type GetSleepCycleRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetSleepCycleRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (s *SleepCycleGetRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepCycleRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getSleepCycleRequestFieldUserId)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepCycleRequest) SetStartDate(startDate time.Time) {
-	g.StartDate = startDate
-	g.require(getSleepCycleRequestFieldStartDate)
+func (s *SleepCycleGetRequest) SetStartDate(startDate string) {
+	s.StartDate = startDate
+	s.require(sleepCycleGetRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepCycleRequest) SetEndDate(endDate *time.Time) {
-	g.EndDate = endDate
-	g.require(getSleepCycleRequestFieldEndDate)
+func (s *SleepCycleGetRequest) SetEndDate(endDate *string) {
+	s.EndDate = endDate
+	s.require(sleepCycleGetRequestFieldEndDate)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepCycleRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getSleepCycleRequestFieldProvider)
+func (s *SleepCycleGetRequest) SetProvider(provider *string) {
+	s.Provider = provider
+	s.require(sleepCycleGetRequestFieldProvider)
 }
 
 var (
