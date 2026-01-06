@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetAll(
 	ctx context.Context,
-	request *vitalgo.GetAllProvidersRequest,
+	request *vitalgo.ProvidersGetAllRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingProviderDetailed], error) {
 	options := core.NewRequestOptions(opts...)

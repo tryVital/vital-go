@@ -11,14 +11,12 @@ import (
 )
 
 var (
-	getMealRequestFieldUserId    = big.NewInt(1 << 0)
-	getMealRequestFieldProvider  = big.NewInt(1 << 1)
-	getMealRequestFieldStartDate = big.NewInt(1 << 2)
-	getMealRequestFieldEndDate   = big.NewInt(1 << 3)
+	mealGetRequestFieldProvider  = big.NewInt(1 << 0)
+	mealGetRequestFieldStartDate = big.NewInt(1 << 1)
+	mealGetRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type GetMealRequest struct {
-	UserId string `json:"-" url:"-"`
+type MealGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -30,39 +28,32 @@ type GetMealRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetMealRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (m *MealGetRequest) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMealRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getMealRequestFieldUserId)
+	m.explicitFields.Or(m.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMealRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getMealRequestFieldProvider)
+func (m *MealGetRequest) SetProvider(provider *string) {
+	m.Provider = provider
+	m.require(mealGetRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMealRequest) SetStartDate(startDate string) {
-	g.StartDate = startDate
-	g.require(getMealRequestFieldStartDate)
+func (m *MealGetRequest) SetStartDate(startDate string) {
+	m.StartDate = startDate
+	m.require(mealGetRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMealRequest) SetEndDate(endDate *string) {
-	g.EndDate = endDate
-	g.require(getMealRequestFieldEndDate)
+func (m *MealGetRequest) SetEndDate(endDate *string) {
+	m.EndDate = endDate
+	m.require(mealGetRequestFieldEndDate)
 }
 
 var (

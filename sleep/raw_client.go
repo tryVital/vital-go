@@ -32,7 +32,8 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.GetSleepRequest,
+	userId string,
+	request *vitalgo.SleepGetRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientSleepResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -43,7 +44,7 @@ func (r *RawClient) Get(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/sleep/%v",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -83,7 +84,8 @@ func (r *RawClient) Get(
 
 func (r *RawClient) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawSleepRequest,
+	userId string,
+	request *vitalgo.SleepGetRawRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.RawSleep], error) {
 	options := core.NewRequestOptions(opts...)
@@ -94,7 +96,7 @@ func (r *RawClient) GetRaw(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/sleep/%v/raw",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -134,7 +136,8 @@ func (r *RawClient) GetRaw(
 
 func (r *RawClient) GetStreamBySleepId(
 	ctx context.Context,
-	request *vitalgo.GetStreamBySleepIdSleepRequest,
+	// The Vital Sleep ID
+	sleepId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingSleepStream], error) {
 	options := core.NewRequestOptions(opts...)
@@ -145,7 +148,7 @@ func (r *RawClient) GetStreamBySleepId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/sleep/%v/stream",
-		request.SleepId,
+		sleepId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

@@ -34,7 +34,7 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) GetUserResources(
 	ctx context.Context,
-	request *vitalgo.GetUserResourcesIntrospectRequest,
+	request *vitalgo.IntrospectGetUserResourcesRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserResourcesResponse, error) {
 	response, err := c.WithRawResponse.GetUserResources(
@@ -50,7 +50,7 @@ func (c *Client) GetUserResources(
 
 func (c *Client) GetUserHistoricalPulls(
 	ctx context.Context,
-	request *vitalgo.GetUserHistoricalPullsIntrospectRequest,
+	request *vitalgo.IntrospectGetUserHistoricalPullsRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.UserHistoricalPullsResponse, error) {
 	response, err := c.WithRawResponse.GetUserHistoricalPulls(

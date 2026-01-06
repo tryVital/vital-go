@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListBulkOps(
 	ctx context.Context,
-	request *vitalgo.ListBulkOpsLinkRequest,
+	request *vitalgo.LinkListBulkOpsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.BulkOpsResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -366,7 +366,7 @@ func (r *RawClient) IsTokenValid(
 
 func (r *RawClient) CodeCreate(
 	ctx context.Context,
-	request *vitalgo.CodeCreateLinkRequest,
+	request *vitalgo.LinkCodeCreateRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.VitalTokenCreatedResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -457,7 +457,7 @@ func (r *RawClient) StartConnect(
 
 func (r *RawClient) TokenState(
 	ctx context.Context,
-	request *vitalgo.TokenStateLinkRequest,
+	request *vitalgo.LinkTokenStateRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -594,7 +594,8 @@ func (r *RawClient) PasswordAuth(
 
 func (r *RawClient) GenerateOauthLink(
 	ctx context.Context,
-	request *vitalgo.GenerateOauthLinkLinkRequest,
+	oauthProvider *vitalgo.OAuthProviders,
+	request *vitalgo.LinkGenerateOauthLinkRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.Source], error) {
 	options := core.NewRequestOptions(opts...)
@@ -605,7 +606,7 @@ func (r *RawClient) GenerateOauthLink(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/link/provider/oauth/%v",
-		request.OauthProvider,
+		oauthProvider,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -642,6 +643,7 @@ func (r *RawClient) GenerateOauthLink(
 
 func (r *RawClient) ConnectPasswordProvider(
 	ctx context.Context,
+	provider *vitalgo.PasswordProviders,
 	request *vitalgo.IndividualProviderData,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ProviderLinkResponse], error) {
@@ -653,7 +655,7 @@ func (r *RawClient) ConnectPasswordProvider(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/link/provider/password/%v",
-		request.Provider,
+		provider,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -691,6 +693,7 @@ func (r *RawClient) ConnectPasswordProvider(
 
 func (r *RawClient) CompletePasswordProviderMfa(
 	ctx context.Context,
+	provider *vitalgo.PasswordProviders,
 	request *vitalgo.CompletePasswordProviderMfaBody,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ProviderLinkResponse], error) {
@@ -702,7 +705,7 @@ func (r *RawClient) CompletePasswordProviderMfa(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/link/provider/password/%v/complete_mfa",
-		request.Provider,
+		provider,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -740,6 +743,7 @@ func (r *RawClient) CompletePasswordProviderMfa(
 
 func (r *RawClient) ConnectEmailAuthProvider(
 	ctx context.Context,
+	provider vitalgo.EmailProviders,
 	request *vitalgo.EmailProviderAuthLink,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
@@ -751,7 +755,7 @@ func (r *RawClient) ConnectEmailAuthProvider(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/link/provider/email/%v",
-		request.Provider,
+		provider,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -789,7 +793,7 @@ func (r *RawClient) ConnectEmailAuthProvider(
 
 func (r *RawClient) GetAllProviders(
 	ctx context.Context,
-	request *vitalgo.GetAllProvidersLinkRequest,
+	request *vitalgo.LinkGetAllProvidersRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.SourceLink], error) {
 	options := core.NewRequestOptions(opts...)
@@ -834,6 +838,7 @@ func (r *RawClient) GetAllProviders(
 
 func (r *RawClient) ConnectManualProvider(
 	ctx context.Context,
+	provider *vitalgo.ManualProviders,
 	request *vitalgo.ManualConnectionData,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]bool], error) {
@@ -845,7 +850,7 @@ func (r *RawClient) ConnectManualProvider(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/link/provider/manual/%v",
-		request.Provider,
+		provider,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

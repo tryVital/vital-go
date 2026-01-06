@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetLinkConfig(
 	ctx context.Context,
-	request *vitalgo.GetLinkConfigTeamRequest,
+	request *vitalgo.TeamGetLinkConfigRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -77,7 +77,7 @@ func (r *RawClient) GetLinkConfig(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.GetTeamRequest,
+	teamId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingTeam], error) {
 	options := core.NewRequestOptions(opts...)
@@ -88,7 +88,7 @@ func (r *RawClient) Get(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/team/%v",
-		request.TeamId,
+		teamId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -121,7 +121,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) GetUserById(
 	ctx context.Context,
-	request *vitalgo.GetUserByIdTeamRequest,
+	request *vitalgo.TeamGetUserByIdRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingUser], error) {
 	options := core.NewRequestOptions(opts...)
@@ -208,7 +208,7 @@ func (r *RawClient) GetSvixUrl(
 
 func (r *RawClient) GetSourcePriorities(
 	ctx context.Context,
-	request *vitalgo.GetSourcePrioritiesTeamRequest,
+	request *vitalgo.TeamGetSourcePrioritiesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -295,7 +295,7 @@ func (r *RawClient) UpdateSourcePriorities(
 
 func (r *RawClient) GetPhysicians(
 	ctx context.Context,
-	request *vitalgo.GetPhysiciansTeamRequest,
+	teamId string,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingPhysician], error) {
 	options := core.NewRequestOptions(opts...)
@@ -306,7 +306,7 @@ func (r *RawClient) GetPhysicians(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/team/%v/physicians",
-		request.TeamId,
+		teamId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

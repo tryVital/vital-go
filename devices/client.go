@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get Devices for user_id
 func (c *Client) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawDevicesRequest,
+	userId string,
+	request *vitalgo.DevicesGetRawRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.RawDevices, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
