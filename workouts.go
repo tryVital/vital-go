@@ -11,14 +11,12 @@ import (
 )
 
 var (
-	getWorkoutsRequestFieldUserId    = big.NewInt(1 << 0)
-	getWorkoutsRequestFieldProvider  = big.NewInt(1 << 1)
-	getWorkoutsRequestFieldStartDate = big.NewInt(1 << 2)
-	getWorkoutsRequestFieldEndDate   = big.NewInt(1 << 3)
+	workoutsGetRequestFieldProvider  = big.NewInt(1 << 0)
+	workoutsGetRequestFieldStartDate = big.NewInt(1 << 1)
+	workoutsGetRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type GetWorkoutsRequest struct {
-	UserId string `json:"-" url:"-"`
+type WorkoutsGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -30,76 +28,41 @@ type GetWorkoutsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetWorkoutsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WorkoutsGetRequest) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWorkoutsRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getWorkoutsRequestFieldUserId)
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWorkoutsRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getWorkoutsRequestFieldProvider)
+func (w *WorkoutsGetRequest) SetProvider(provider *string) {
+	w.Provider = provider
+	w.require(workoutsGetRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWorkoutsRequest) SetStartDate(startDate string) {
-	g.StartDate = startDate
-	g.require(getWorkoutsRequestFieldStartDate)
+func (w *WorkoutsGetRequest) SetStartDate(startDate string) {
+	w.StartDate = startDate
+	w.require(workoutsGetRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetWorkoutsRequest) SetEndDate(endDate *string) {
-	g.EndDate = endDate
-	g.require(getWorkoutsRequestFieldEndDate)
+func (w *WorkoutsGetRequest) SetEndDate(endDate *string) {
+	w.EndDate = endDate
+	w.require(workoutsGetRequestFieldEndDate)
 }
 
 var (
-	getByWorkoutIdWorkoutsRequestFieldWorkoutId = big.NewInt(1 << 0)
+	workoutsGetRawRequestFieldProvider  = big.NewInt(1 << 0)
+	workoutsGetRawRequestFieldStartDate = big.NewInt(1 << 1)
+	workoutsGetRawRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type GetByWorkoutIdWorkoutsRequest struct {
-	// The Vital ID for the workout
-	WorkoutId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetByWorkoutIdWorkoutsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetWorkoutId sets the WorkoutId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetByWorkoutIdWorkoutsRequest) SetWorkoutId(workoutId string) {
-	g.WorkoutId = workoutId
-	g.require(getByWorkoutIdWorkoutsRequestFieldWorkoutId)
-}
-
-var (
-	getRawWorkoutsRequestFieldUserId    = big.NewInt(1 << 0)
-	getRawWorkoutsRequestFieldProvider  = big.NewInt(1 << 1)
-	getRawWorkoutsRequestFieldStartDate = big.NewInt(1 << 2)
-	getRawWorkoutsRequestFieldEndDate   = big.NewInt(1 << 3)
-)
-
-type GetRawWorkoutsRequest struct {
-	UserId string `json:"-" url:"-"`
+type WorkoutsGetRawRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -111,39 +74,32 @@ type GetRawWorkoutsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetRawWorkoutsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (w *WorkoutsGetRawRequest) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawWorkoutsRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getRawWorkoutsRequestFieldUserId)
+	w.explicitFields.Or(w.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawWorkoutsRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getRawWorkoutsRequestFieldProvider)
+func (w *WorkoutsGetRawRequest) SetProvider(provider *string) {
+	w.Provider = provider
+	w.require(workoutsGetRawRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawWorkoutsRequest) SetStartDate(startDate string) {
-	g.StartDate = startDate
-	g.require(getRawWorkoutsRequestFieldStartDate)
+func (w *WorkoutsGetRawRequest) SetStartDate(startDate string) {
+	w.StartDate = startDate
+	w.require(workoutsGetRawRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawWorkoutsRequest) SetEndDate(endDate *string) {
-	g.EndDate = endDate
-	g.require(getRawWorkoutsRequestFieldEndDate)
+func (w *WorkoutsGetRawRequest) SetEndDate(endDate *string) {
+	w.EndDate = endDate
+	w.require(workoutsGetRawRequestFieldEndDate)
 }
 
 var (
@@ -1185,7 +1141,7 @@ type ClientFacingWorkout struct {
 	// Distance travelled during workout::meters
 	Distance *float64 `json:"distance,omitempty" url:"distance,omitempty"`
 	// Date of the workout summary in the YYYY-mm-dd format. This generally matches the workout start date.
-	CalendarDate time.Time `json:"calendar_date" url:"calendar_date" format:"date"`
+	CalendarDate string `json:"calendar_date" url:"calendar_date"`
 	// Start time of the workout::time
 	TimeStart time.Time `json:"time_start" url:"time_start"`
 	// End time of the workout::time
@@ -1283,9 +1239,9 @@ func (c *ClientFacingWorkout) GetDistance() *float64 {
 	return c.Distance
 }
 
-func (c *ClientFacingWorkout) GetCalendarDate() time.Time {
+func (c *ClientFacingWorkout) GetCalendarDate() string {
 	if c == nil {
-		return time.Time{}
+		return ""
 	}
 	return c.CalendarDate
 }
@@ -1499,7 +1455,7 @@ func (c *ClientFacingWorkout) SetDistance(distance *float64) {
 
 // SetCalendarDate sets the CalendarDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingWorkout) SetCalendarDate(calendarDate time.Time) {
+func (c *ClientFacingWorkout) SetCalendarDate(calendarDate string) {
 	c.CalendarDate = calendarDate
 	c.require(clientFacingWorkoutFieldCalendarDate)
 }
@@ -1655,11 +1611,10 @@ func (c *ClientFacingWorkout) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingWorkout
 	var unmarshaler = struct {
 		embed
-		CalendarDate *internal.Date     `json:"calendar_date"`
-		TimeStart    *internal.DateTime `json:"time_start"`
-		TimeEnd      *internal.DateTime `json:"time_end"`
-		CreatedAt    *internal.DateTime `json:"created_at"`
-		UpdatedAt    *internal.DateTime `json:"updated_at"`
+		TimeStart *internal.DateTime `json:"time_start"`
+		TimeEnd   *internal.DateTime `json:"time_end"`
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*c),
 	}
@@ -1667,7 +1622,6 @@ func (c *ClientFacingWorkout) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = ClientFacingWorkout(unmarshaler.embed)
-	c.CalendarDate = unmarshaler.CalendarDate.Time()
 	c.TimeStart = unmarshaler.TimeStart.Time()
 	c.TimeEnd = unmarshaler.TimeEnd.Time()
 	c.CreatedAt = unmarshaler.CreatedAt.Time()
@@ -1685,18 +1639,16 @@ func (c *ClientFacingWorkout) MarshalJSON() ([]byte, error) {
 	type embed ClientFacingWorkout
 	var marshaler = struct {
 		embed
-		CalendarDate *internal.Date     `json:"calendar_date"`
-		TimeStart    *internal.DateTime `json:"time_start"`
-		TimeEnd      *internal.DateTime `json:"time_end"`
-		CreatedAt    *internal.DateTime `json:"created_at"`
-		UpdatedAt    *internal.DateTime `json:"updated_at"`
+		TimeStart *internal.DateTime `json:"time_start"`
+		TimeEnd   *internal.DateTime `json:"time_end"`
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
-		embed:        embed(*c),
-		CalendarDate: internal.NewDate(c.CalendarDate),
-		TimeStart:    internal.NewDateTime(c.TimeStart),
-		TimeEnd:      internal.NewDateTime(c.TimeEnd),
-		CreatedAt:    internal.NewDateTime(c.CreatedAt),
-		UpdatedAt:    internal.NewDateTime(c.UpdatedAt),
+		embed:     embed(*c),
+		TimeStart: internal.NewDateTime(c.TimeStart),
+		TimeEnd:   internal.NewDateTime(c.TimeEnd),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)

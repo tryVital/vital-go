@@ -10,28 +10,28 @@ import (
 )
 
 var (
-	getAllProvidersRequestFieldSourceType = big.NewInt(1 << 0)
+	providersGetAllRequestFieldSourceType = big.NewInt(1 << 0)
 )
 
-type GetAllProvidersRequest struct {
+type ProvidersGetAllRequest struct {
 	SourceType *string `json:"-" url:"source_type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetAllProvidersRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (p *ProvidersGetAllRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	p.explicitFields.Or(p.explicitFields, field)
 }
 
 // SetSourceType sets the SourceType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAllProvidersRequest) SetSourceType(sourceType *string) {
-	g.SourceType = sourceType
-	g.require(getAllProvidersRequestFieldSourceType)
+func (p *ProvidersGetAllRequest) SetSourceType(sourceType *string) {
+	p.SourceType = sourceType
+	p.require(providersGetAllRequestFieldSourceType)
 }
 
 var (

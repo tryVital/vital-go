@@ -18,7 +18,7 @@ var (
 )
 
 type BulkExportConnectionsBody struct {
-	TeamId    *BulkExportLinkRequestTeamId `json:"-" url:"team_id,omitempty"`
+	TeamId    *LinkBulkExportRequestTeamId `json:"-" url:"team_id,omitempty"`
 	UserIds   []string                     `json:"user_ids,omitempty" url:"-"`
 	Provider  OAuthProviders               `json:"provider" url:"-"`
 	NextToken *string                      `json:"next_token,omitempty" url:"-"`
@@ -36,7 +36,7 @@ func (b *BulkExportConnectionsBody) require(field *big.Int) {
 
 // SetTeamId sets the TeamId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkExportConnectionsBody) SetTeamId(teamId *BulkExportLinkRequestTeamId) {
+func (b *BulkExportConnectionsBody) SetTeamId(teamId *LinkBulkExportRequestTeamId) {
 	b.TeamId = teamId
 	b.require(bulkExportConnectionsBodyFieldTeamId)
 }
@@ -70,7 +70,7 @@ var (
 )
 
 type BulkImportConnectionsBody struct {
-	TeamId      *BulkImportLinkRequestTeamId `json:"-" url:"team_id,omitempty"`
+	TeamId      *LinkBulkImportRequestTeamId `json:"-" url:"team_id,omitempty"`
 	Provider    OAuthProviders               `json:"provider" url:"-"`
 	Connections []*ConnectionRecipe          `json:"connections,omitempty" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
@@ -94,7 +94,7 @@ func (b *BulkImportConnectionsBody) require(field *big.Int) {
 
 // SetTeamId sets the TeamId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkImportConnectionsBody) SetTeamId(teamId *BulkImportLinkRequestTeamId) {
+func (b *BulkImportConnectionsBody) SetTeamId(teamId *LinkBulkImportRequestTeamId) {
 	b.TeamId = teamId
 	b.require(bulkImportConnectionsBodyFieldTeamId)
 }
@@ -127,7 +127,7 @@ var (
 )
 
 type BulkPauseConnectionsBody struct {
-	TeamId   *BulkPauseLinkRequestTeamId `json:"-" url:"team_id,omitempty"`
+	TeamId   *LinkBulkPauseRequestTeamId `json:"-" url:"team_id,omitempty"`
 	UserIds  []string                    `json:"user_ids,omitempty" url:"-"`
 	Provider OAuthProviders              `json:"provider" url:"-"`
 
@@ -144,7 +144,7 @@ func (b *BulkPauseConnectionsBody) require(field *big.Int) {
 
 // SetTeamId sets the TeamId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkPauseConnectionsBody) SetTeamId(teamId *BulkPauseLinkRequestTeamId) {
+func (b *BulkPauseConnectionsBody) SetTeamId(teamId *LinkBulkPauseRequestTeamId) {
 	b.TeamId = teamId
 	b.require(bulkPauseConnectionsBodyFieldTeamId)
 }
@@ -171,7 +171,7 @@ var (
 )
 
 type BulkTriggerHistoricalPullBody struct {
-	TeamId   *BulkTriggerHistoricalPullLinkRequestTeamId `json:"-" url:"team_id,omitempty"`
+	TeamId   *LinkBulkTriggerHistoricalPullRequestTeamId `json:"-" url:"team_id,omitempty"`
 	UserIds  []string                                    `json:"user_ids,omitempty" url:"-"`
 	Provider OAuthProviders                              `json:"provider" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
@@ -195,7 +195,7 @@ func (b *BulkTriggerHistoricalPullBody) require(field *big.Int) {
 
 // SetTeamId sets the TeamId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkTriggerHistoricalPullBody) SetTeamId(teamId *BulkTriggerHistoricalPullLinkRequestTeamId) {
+func (b *BulkTriggerHistoricalPullBody) SetTeamId(teamId *LinkBulkTriggerHistoricalPullRequestTeamId) {
 	b.TeamId = teamId
 	b.require(bulkTriggerHistoricalPullBodyFieldTeamId)
 }
@@ -222,11 +222,11 @@ func (b *BulkTriggerHistoricalPullBody) SetWaitForCompletion(waitForCompletion *
 }
 
 var (
-	codeCreateLinkRequestFieldUserId    = big.NewInt(1 << 0)
-	codeCreateLinkRequestFieldExpiresAt = big.NewInt(1 << 1)
+	linkCodeCreateRequestFieldUserId    = big.NewInt(1 << 0)
+	linkCodeCreateRequestFieldExpiresAt = big.NewInt(1 << 1)
 )
 
-type CodeCreateLinkRequest struct {
+type LinkCodeCreateRequest struct {
 	UserId string `json:"-" url:"user_id"`
 	// When the link code should expire. Defaults to server time plus 1 hour.
 	ExpiresAt *time.Time `json:"-" url:"expires_at,omitempty"`
@@ -235,37 +235,35 @@ type CodeCreateLinkRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CodeCreateLinkRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (l *LinkCodeCreateRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CodeCreateLinkRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(codeCreateLinkRequestFieldUserId)
+func (l *LinkCodeCreateRequest) SetUserId(userId string) {
+	l.UserId = userId
+	l.require(linkCodeCreateRequestFieldUserId)
 }
 
 // SetExpiresAt sets the ExpiresAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CodeCreateLinkRequest) SetExpiresAt(expiresAt *time.Time) {
-	c.ExpiresAt = expiresAt
-	c.require(codeCreateLinkRequestFieldExpiresAt)
+func (l *LinkCodeCreateRequest) SetExpiresAt(expiresAt *time.Time) {
+	l.ExpiresAt = expiresAt
+	l.require(linkCodeCreateRequestFieldExpiresAt)
 }
 
 var (
 	completePasswordProviderMfaBodyFieldVitalLinkToken = big.NewInt(1 << 0)
-	completePasswordProviderMfaBodyFieldProvider       = big.NewInt(1 << 1)
-	completePasswordProviderMfaBodyFieldMfaCode        = big.NewInt(1 << 2)
+	completePasswordProviderMfaBodyFieldMfaCode        = big.NewInt(1 << 1)
 )
 
 type CompletePasswordProviderMfaBody struct {
-	VitalLinkToken *string           `json:"-" url:"-"`
-	Provider       PasswordProviders `json:"-" url:"-"`
-	MfaCode        string            `json:"mfa_code" url:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
+	MfaCode        string  `json:"mfa_code" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -283,13 +281,6 @@ func (c *CompletePasswordProviderMfaBody) require(field *big.Int) {
 func (c *CompletePasswordProviderMfaBody) SetVitalLinkToken(vitalLinkToken *string) {
 	c.VitalLinkToken = vitalLinkToken
 	c.require(completePasswordProviderMfaBodyFieldVitalLinkToken)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CompletePasswordProviderMfaBody) SetProvider(provider PasswordProviders) {
-	c.Provider = provider
-	c.require(completePasswordProviderMfaBodyFieldProvider)
 }
 
 // SetMfaCode sets the MfaCode field and marks it as non-optional;
@@ -337,18 +328,16 @@ func (d *DemoConnectionCreationPayload) SetProvider(provider DemoProviders) {
 
 var (
 	emailProviderAuthLinkFieldVitalLinkToken                = big.NewInt(1 << 0)
-	emailProviderAuthLinkFieldProvider                      = big.NewInt(1 << 1)
-	emailProviderAuthLinkFieldEmail                         = big.NewInt(1 << 2)
-	emailProviderAuthLinkFieldEmailProviderAuthLinkProvider = big.NewInt(1 << 3)
-	emailProviderAuthLinkFieldRegion                        = big.NewInt(1 << 4)
+	emailProviderAuthLinkFieldEmail                         = big.NewInt(1 << 1)
+	emailProviderAuthLinkFieldEmailProviderAuthLinkProvider = big.NewInt(1 << 2)
+	emailProviderAuthLinkFieldRegion                        = big.NewInt(1 << 3)
 )
 
 type EmailProviderAuthLink struct {
-	VitalLinkToken                *string        `json:"-" url:"-"`
-	Provider                      EmailProviders `json:"-" url:"-"`
-	Email                         string         `json:"email" url:"-"`
-	EmailProviderAuthLinkProvider *Providers     `json:"provider,omitempty" url:"-"`
-	Region                        *Region        `json:"region,omitempty" url:"-"`
+	VitalLinkToken                *string    `json:"-" url:"-"`
+	Email                         string     `json:"email" url:"-"`
+	EmailProviderAuthLinkProvider *Providers `json:"provider,omitempty" url:"-"`
+	Region                        *Region    `json:"region,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -366,13 +355,6 @@ func (e *EmailProviderAuthLink) require(field *big.Int) {
 func (e *EmailProviderAuthLink) SetVitalLinkToken(vitalLinkToken *string) {
 	e.VitalLinkToken = vitalLinkToken
 	e.require(emailProviderAuthLinkFieldVitalLinkToken)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EmailProviderAuthLink) SetProvider(provider EmailProviders) {
-	e.Provider = provider
-	e.require(emailProviderAuthLinkFieldProvider)
 }
 
 // SetEmail sets the Email field and marks it as non-optional;
@@ -397,15 +379,13 @@ func (e *EmailProviderAuthLink) SetRegion(region *Region) {
 }
 
 var (
-	manualConnectionDataFieldProvider   = big.NewInt(1 << 0)
-	manualConnectionDataFieldUserId     = big.NewInt(1 << 1)
-	manualConnectionDataFieldProviderId = big.NewInt(1 << 2)
+	manualConnectionDataFieldUserId     = big.NewInt(1 << 0)
+	manualConnectionDataFieldProviderId = big.NewInt(1 << 1)
 )
 
 type ManualConnectionData struct {
-	Provider   ManualProviders `json:"-" url:"-"`
-	UserId     string          `json:"user_id" url:"-"`
-	ProviderId *string         `json:"provider_id,omitempty" url:"-"`
+	UserId     string  `json:"user_id" url:"-"`
+	ProviderId *string `json:"provider_id,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -416,13 +396,6 @@ func (m *ManualConnectionData) require(field *big.Int) {
 		m.explicitFields = big.NewInt(0)
 	}
 	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ManualConnectionData) SetProvider(provider ManualProviders) {
-	m.Provider = provider
-	m.require(manualConnectionDataFieldProvider)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
@@ -441,15 +414,13 @@ func (m *ManualConnectionData) SetProviderId(providerId *string) {
 
 var (
 	individualProviderDataFieldVitalLinkToken = big.NewInt(1 << 0)
-	individualProviderDataFieldProvider       = big.NewInt(1 << 1)
-	individualProviderDataFieldUsername       = big.NewInt(1 << 2)
-	individualProviderDataFieldPassword       = big.NewInt(1 << 3)
-	individualProviderDataFieldRegion         = big.NewInt(1 << 4)
+	individualProviderDataFieldUsername       = big.NewInt(1 << 1)
+	individualProviderDataFieldPassword       = big.NewInt(1 << 2)
+	individualProviderDataFieldRegion         = big.NewInt(1 << 3)
 )
 
 type IndividualProviderData struct {
-	VitalLinkToken *string           `json:"-" url:"-"`
-	Provider       PasswordProviders `json:"-" url:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
 	// Username for provider
 	Username string `json:"username" url:"-"`
 	// Password for provider
@@ -473,13 +444,6 @@ func (i *IndividualProviderData) require(field *big.Int) {
 func (i *IndividualProviderData) SetVitalLinkToken(vitalLinkToken *string) {
 	i.VitalLinkToken = vitalLinkToken
 	i.require(individualProviderDataFieldVitalLinkToken)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IndividualProviderData) SetProvider(provider PasswordProviders) {
-	i.Provider = provider
-	i.require(individualProviderDataFieldProvider)
 }
 
 // SetUsername sets the Username field and marks it as non-optional;
@@ -565,62 +529,53 @@ func (e *EmailAuthLink) SetRegion(region *Region) {
 }
 
 var (
-	generateOauthLinkLinkRequestFieldVitalLinkToken = big.NewInt(1 << 0)
-	generateOauthLinkLinkRequestFieldOauthProvider  = big.NewInt(1 << 1)
+	linkGenerateOauthLinkRequestFieldVitalLinkToken = big.NewInt(1 << 0)
 )
 
-type GenerateOauthLinkLinkRequest struct {
-	VitalLinkToken *string        `json:"-" url:"-"`
-	OauthProvider  OAuthProviders `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GenerateOauthLinkLinkRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GenerateOauthLinkLinkRequest) SetVitalLinkToken(vitalLinkToken *string) {
-	g.VitalLinkToken = vitalLinkToken
-	g.require(generateOauthLinkLinkRequestFieldVitalLinkToken)
-}
-
-// SetOauthProvider sets the OauthProvider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GenerateOauthLinkLinkRequest) SetOauthProvider(oauthProvider OAuthProviders) {
-	g.OauthProvider = oauthProvider
-	g.require(generateOauthLinkLinkRequestFieldOauthProvider)
-}
-
-var (
-	getAllProvidersLinkRequestFieldVitalLinkToken = big.NewInt(1 << 0)
-)
-
-type GetAllProvidersLinkRequest struct {
+type LinkGenerateOauthLinkRequest struct {
 	VitalLinkToken *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetAllProvidersLinkRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (l *LinkGenerateOauthLinkRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetAllProvidersLinkRequest) SetVitalLinkToken(vitalLinkToken *string) {
-	g.VitalLinkToken = vitalLinkToken
-	g.require(getAllProvidersLinkRequestFieldVitalLinkToken)
+func (l *LinkGenerateOauthLinkRequest) SetVitalLinkToken(vitalLinkToken *string) {
+	l.VitalLinkToken = vitalLinkToken
+	l.require(linkGenerateOauthLinkRequestFieldVitalLinkToken)
+}
+
+var (
+	linkGetAllProvidersRequestFieldVitalLinkToken = big.NewInt(1 << 0)
+)
+
+type LinkGetAllProvidersRequest struct {
+	VitalLinkToken *string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *LinkGetAllProvidersRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LinkGetAllProvidersRequest) SetVitalLinkToken(vitalLinkToken *string) {
+	l.VitalLinkToken = vitalLinkToken
+	l.require(linkGetAllProvidersRequestFieldVitalLinkToken)
 }
 
 var (
@@ -649,21 +604,21 @@ func (l *LinkTokenValidationRequest) SetToken(token string) {
 }
 
 var (
-	listBulkOpsLinkRequestFieldNextCursor = big.NewInt(1 << 0)
-	listBulkOpsLinkRequestFieldPageSize   = big.NewInt(1 << 1)
-	listBulkOpsLinkRequestFieldTeamId     = big.NewInt(1 << 2)
+	linkListBulkOpsRequestFieldNextCursor = big.NewInt(1 << 0)
+	linkListBulkOpsRequestFieldPageSize   = big.NewInt(1 << 1)
+	linkListBulkOpsRequestFieldTeamId     = big.NewInt(1 << 2)
 )
 
-type ListBulkOpsLinkRequest struct {
+type LinkListBulkOpsRequest struct {
 	NextCursor *string                       `json:"-" url:"next_cursor,omitempty"`
 	PageSize   *int                          `json:"-" url:"page_size,omitempty"`
-	TeamId     *ListBulkOpsLinkRequestTeamId `json:"-" url:"team_id,omitempty"`
+	TeamId     *LinkListBulkOpsRequestTeamId `json:"-" url:"team_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (l *ListBulkOpsLinkRequest) require(field *big.Int) {
+func (l *LinkListBulkOpsRequest) require(field *big.Int) {
 	if l.explicitFields == nil {
 		l.explicitFields = big.NewInt(0)
 	}
@@ -672,23 +627,23 @@ func (l *ListBulkOpsLinkRequest) require(field *big.Int) {
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListBulkOpsLinkRequest) SetNextCursor(nextCursor *string) {
+func (l *LinkListBulkOpsRequest) SetNextCursor(nextCursor *string) {
 	l.NextCursor = nextCursor
-	l.require(listBulkOpsLinkRequestFieldNextCursor)
+	l.require(linkListBulkOpsRequestFieldNextCursor)
 }
 
 // SetPageSize sets the PageSize field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListBulkOpsLinkRequest) SetPageSize(pageSize *int) {
+func (l *LinkListBulkOpsRequest) SetPageSize(pageSize *int) {
 	l.PageSize = pageSize
-	l.require(listBulkOpsLinkRequestFieldPageSize)
+	l.require(linkListBulkOpsRequestFieldPageSize)
 }
 
 // SetTeamId sets the TeamId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListBulkOpsLinkRequest) SetTeamId(teamId *ListBulkOpsLinkRequestTeamId) {
+func (l *LinkListBulkOpsRequest) SetTeamId(teamId *LinkListBulkOpsRequestTeamId) {
 	l.TeamId = teamId
-	l.require(listBulkOpsLinkRequestFieldTeamId)
+	l.require(linkListBulkOpsRequestFieldTeamId)
 }
 
 var (
@@ -875,28 +830,28 @@ func (l *LinkTokenExchange) SetOnClose(onClose *string) {
 }
 
 var (
-	tokenStateLinkRequestFieldVitalLinkToken = big.NewInt(1 << 0)
+	linkTokenStateRequestFieldVitalLinkToken = big.NewInt(1 << 0)
 )
 
-type TokenStateLinkRequest struct {
+type LinkTokenStateRequest struct {
 	VitalLinkToken *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (t *TokenStateLinkRequest) require(field *big.Int) {
-	if t.explicitFields == nil {
-		t.explicitFields = big.NewInt(0)
+func (l *LinkTokenStateRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
 	}
-	t.explicitFields.Or(t.explicitFields, field)
+	l.explicitFields.Or(l.explicitFields, field)
 }
 
 // SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TokenStateLinkRequest) SetVitalLinkToken(vitalLinkToken *string) {
-	t.VitalLinkToken = vitalLinkToken
-	t.require(tokenStateLinkRequestFieldVitalLinkToken)
+func (l *LinkTokenStateRequest) SetVitalLinkToken(vitalLinkToken *string) {
+	l.VitalLinkToken = vitalLinkToken
+	l.require(linkTokenStateRequestFieldVitalLinkToken)
 }
 
 // ℹ️ This enum is non-exhaustive.
@@ -3138,97 +3093,97 @@ func (v *VitalTokenCreatedResponse) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
-type BulkExportLinkRequestTeamId string
+type LinkBulkExportRequestTeamId string
 
 const (
-	BulkExportLinkRequestTeamIdInferFromContext BulkExportLinkRequestTeamId = "infer_from_context"
+	LinkBulkExportRequestTeamIdInferFromContext LinkBulkExportRequestTeamId = "infer_from_context"
 )
 
-func NewBulkExportLinkRequestTeamIdFromString(s string) (BulkExportLinkRequestTeamId, error) {
+func NewLinkBulkExportRequestTeamIdFromString(s string) (LinkBulkExportRequestTeamId, error) {
 	switch s {
 	case "infer_from_context":
-		return BulkExportLinkRequestTeamIdInferFromContext, nil
+		return LinkBulkExportRequestTeamIdInferFromContext, nil
 	}
-	var t BulkExportLinkRequestTeamId
+	var t LinkBulkExportRequestTeamId
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (b BulkExportLinkRequestTeamId) Ptr() *BulkExportLinkRequestTeamId {
-	return &b
+func (l LinkBulkExportRequestTeamId) Ptr() *LinkBulkExportRequestTeamId {
+	return &l
 }
 
-type BulkImportLinkRequestTeamId string
+type LinkBulkImportRequestTeamId string
 
 const (
-	BulkImportLinkRequestTeamIdInferFromContext BulkImportLinkRequestTeamId = "infer_from_context"
+	LinkBulkImportRequestTeamIdInferFromContext LinkBulkImportRequestTeamId = "infer_from_context"
 )
 
-func NewBulkImportLinkRequestTeamIdFromString(s string) (BulkImportLinkRequestTeamId, error) {
+func NewLinkBulkImportRequestTeamIdFromString(s string) (LinkBulkImportRequestTeamId, error) {
 	switch s {
 	case "infer_from_context":
-		return BulkImportLinkRequestTeamIdInferFromContext, nil
+		return LinkBulkImportRequestTeamIdInferFromContext, nil
 	}
-	var t BulkImportLinkRequestTeamId
+	var t LinkBulkImportRequestTeamId
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (b BulkImportLinkRequestTeamId) Ptr() *BulkImportLinkRequestTeamId {
-	return &b
+func (l LinkBulkImportRequestTeamId) Ptr() *LinkBulkImportRequestTeamId {
+	return &l
 }
 
-type BulkPauseLinkRequestTeamId string
+type LinkBulkPauseRequestTeamId string
 
 const (
-	BulkPauseLinkRequestTeamIdInferFromContext BulkPauseLinkRequestTeamId = "infer_from_context"
+	LinkBulkPauseRequestTeamIdInferFromContext LinkBulkPauseRequestTeamId = "infer_from_context"
 )
 
-func NewBulkPauseLinkRequestTeamIdFromString(s string) (BulkPauseLinkRequestTeamId, error) {
+func NewLinkBulkPauseRequestTeamIdFromString(s string) (LinkBulkPauseRequestTeamId, error) {
 	switch s {
 	case "infer_from_context":
-		return BulkPauseLinkRequestTeamIdInferFromContext, nil
+		return LinkBulkPauseRequestTeamIdInferFromContext, nil
 	}
-	var t BulkPauseLinkRequestTeamId
+	var t LinkBulkPauseRequestTeamId
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (b BulkPauseLinkRequestTeamId) Ptr() *BulkPauseLinkRequestTeamId {
-	return &b
+func (l LinkBulkPauseRequestTeamId) Ptr() *LinkBulkPauseRequestTeamId {
+	return &l
 }
 
-type BulkTriggerHistoricalPullLinkRequestTeamId string
+type LinkBulkTriggerHistoricalPullRequestTeamId string
 
 const (
-	BulkTriggerHistoricalPullLinkRequestTeamIdInferFromContext BulkTriggerHistoricalPullLinkRequestTeamId = "infer_from_context"
+	LinkBulkTriggerHistoricalPullRequestTeamIdInferFromContext LinkBulkTriggerHistoricalPullRequestTeamId = "infer_from_context"
 )
 
-func NewBulkTriggerHistoricalPullLinkRequestTeamIdFromString(s string) (BulkTriggerHistoricalPullLinkRequestTeamId, error) {
+func NewLinkBulkTriggerHistoricalPullRequestTeamIdFromString(s string) (LinkBulkTriggerHistoricalPullRequestTeamId, error) {
 	switch s {
 	case "infer_from_context":
-		return BulkTriggerHistoricalPullLinkRequestTeamIdInferFromContext, nil
+		return LinkBulkTriggerHistoricalPullRequestTeamIdInferFromContext, nil
 	}
-	var t BulkTriggerHistoricalPullLinkRequestTeamId
+	var t LinkBulkTriggerHistoricalPullRequestTeamId
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (b BulkTriggerHistoricalPullLinkRequestTeamId) Ptr() *BulkTriggerHistoricalPullLinkRequestTeamId {
-	return &b
+func (l LinkBulkTriggerHistoricalPullRequestTeamId) Ptr() *LinkBulkTriggerHistoricalPullRequestTeamId {
+	return &l
 }
 
-type ListBulkOpsLinkRequestTeamId string
+type LinkListBulkOpsRequestTeamId string
 
 const (
-	ListBulkOpsLinkRequestTeamIdInferFromContext ListBulkOpsLinkRequestTeamId = "infer_from_context"
+	LinkListBulkOpsRequestTeamIdInferFromContext LinkListBulkOpsRequestTeamId = "infer_from_context"
 )
 
-func NewListBulkOpsLinkRequestTeamIdFromString(s string) (ListBulkOpsLinkRequestTeamId, error) {
+func NewLinkListBulkOpsRequestTeamIdFromString(s string) (LinkListBulkOpsRequestTeamId, error) {
 	switch s {
 	case "infer_from_context":
-		return ListBulkOpsLinkRequestTeamIdInferFromContext, nil
+		return LinkListBulkOpsRequestTeamIdInferFromContext, nil
 	}
-	var t ListBulkOpsLinkRequestTeamId
+	var t LinkListBulkOpsRequestTeamId
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (l ListBulkOpsLinkRequestTeamId) Ptr() *ListBulkOpsLinkRequestTeamId {
+func (l LinkListBulkOpsRequestTeamId) Ptr() *LinkListBulkOpsRequestTeamId {
 	return &l
 }

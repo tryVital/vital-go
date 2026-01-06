@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetUserResources(
 	ctx context.Context,
-	request *vitalgo.GetUserResourcesIntrospectRequest,
+	request *vitalgo.IntrospectGetUserResourcesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserResourcesResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -80,7 +80,7 @@ func (r *RawClient) GetUserResources(
 
 func (r *RawClient) GetUserHistoricalPulls(
 	ctx context.Context,
-	request *vitalgo.GetUserHistoricalPullsIntrospectRequest,
+	request *vitalgo.IntrospectGetUserHistoricalPullsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserHistoricalPullsResponse], error) {
 	options := core.NewRequestOptions(opts...)

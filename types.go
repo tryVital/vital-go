@@ -14680,10 +14680,10 @@ type ClientFacingOrder struct {
 	// Shipping Details. For unregistered testkit orders.
 	ShippingDetails *ShippingAddress `json:"shipping_details,omitempty" url:"shipping_details,omitempty"`
 	// Schedule an Order to be processed in a future date.
-	ActivateBy  *time.Time `json:"activate_by,omitempty" url:"activate_by,omitempty" format:"date"`
-	Passthrough *string    `json:"passthrough,omitempty" url:"passthrough,omitempty"`
-	BillingType *Billing   `json:"billing_type,omitempty" url:"billing_type,omitempty"`
-	IcdCodes    []string   `json:"icd_codes,omitempty" url:"icd_codes,omitempty"`
+	ActivateBy  *string  `json:"activate_by,omitempty" url:"activate_by,omitempty"`
+	Passthrough *string  `json:"passthrough,omitempty" url:"passthrough,omitempty"`
+	BillingType *Billing `json:"billing_type,omitempty" url:"billing_type,omitempty"`
+	IcdCodes    []string `json:"icd_codes,omitempty" url:"icd_codes,omitempty"`
 	// Defines whether the order has an Advanced Beneficiary Notice (ABN) form or not.
 	HasAbn bool `json:"has_abn" url:"has_abn"`
 	// Interpretation of the order result. Can be one of (normal, abnormal, critical).
@@ -14691,9 +14691,9 @@ type ClientFacingOrder struct {
 	// Defines whether the order result has missing biomarkers.
 	HasMissingResults *bool `json:"has_missing_results,omitempty" url:"has_missing_results,omitempty"`
 	// The common-case date by which the order result is expected to be available.
-	ExpectedResultByDate *time.Time `json:"expected_result_by_date,omitempty" url:"expected_result_by_date,omitempty" format:"date"`
+	ExpectedResultByDate *string `json:"expected_result_by_date,omitempty" url:"expected_result_by_date,omitempty"`
 	// The latest date by which the order result is expected to be available.
-	WorstCaseResultByDate *time.Time `json:"worst_case_result_by_date,omitempty" url:"worst_case_result_by_date,omitempty" format:"date"`
+	WorstCaseResultByDate *string `json:"worst_case_result_by_date,omitempty" url:"worst_case_result_by_date,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -14828,7 +14828,7 @@ func (c *ClientFacingOrder) GetShippingDetails() *ShippingAddress {
 	return c.ShippingDetails
 }
 
-func (c *ClientFacingOrder) GetActivateBy() *time.Time {
+func (c *ClientFacingOrder) GetActivateBy() *string {
 	if c == nil {
 		return nil
 	}
@@ -14877,14 +14877,14 @@ func (c *ClientFacingOrder) GetHasMissingResults() *bool {
 	return c.HasMissingResults
 }
 
-func (c *ClientFacingOrder) GetExpectedResultByDate() *time.Time {
+func (c *ClientFacingOrder) GetExpectedResultByDate() *string {
 	if c == nil {
 		return nil
 	}
 	return c.ExpectedResultByDate
 }
 
-func (c *ClientFacingOrder) GetWorstCaseResultByDate() *time.Time {
+func (c *ClientFacingOrder) GetWorstCaseResultByDate() *string {
 	if c == nil {
 		return nil
 	}
@@ -15030,7 +15030,7 @@ func (c *ClientFacingOrder) SetShippingDetails(shippingDetails *ShippingAddress)
 
 // SetActivateBy sets the ActivateBy field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingOrder) SetActivateBy(activateBy *time.Time) {
+func (c *ClientFacingOrder) SetActivateBy(activateBy *string) {
 	c.ActivateBy = activateBy
 	c.require(clientFacingOrderFieldActivateBy)
 }
@@ -15079,14 +15079,14 @@ func (c *ClientFacingOrder) SetHasMissingResults(hasMissingResults *bool) {
 
 // SetExpectedResultByDate sets the ExpectedResultByDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingOrder) SetExpectedResultByDate(expectedResultByDate *time.Time) {
+func (c *ClientFacingOrder) SetExpectedResultByDate(expectedResultByDate *string) {
 	c.ExpectedResultByDate = expectedResultByDate
 	c.require(clientFacingOrderFieldExpectedResultByDate)
 }
 
 // SetWorstCaseResultByDate sets the WorstCaseResultByDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingOrder) SetWorstCaseResultByDate(worstCaseResultByDate *time.Time) {
+func (c *ClientFacingOrder) SetWorstCaseResultByDate(worstCaseResultByDate *string) {
 	c.WorstCaseResultByDate = worstCaseResultByDate
 	c.require(clientFacingOrderFieldWorstCaseResultByDate)
 }
@@ -15095,11 +15095,8 @@ func (c *ClientFacingOrder) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingOrder
 	var unmarshaler = struct {
 		embed
-		CreatedAt             *internal.DateTime `json:"created_at"`
-		UpdatedAt             *internal.DateTime `json:"updated_at"`
-		ActivateBy            *internal.Date     `json:"activate_by,omitempty"`
-		ExpectedResultByDate  *internal.Date     `json:"expected_result_by_date,omitempty"`
-		WorstCaseResultByDate *internal.Date     `json:"worst_case_result_by_date,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*c),
 	}
@@ -15109,9 +15106,6 @@ func (c *ClientFacingOrder) UnmarshalJSON(data []byte) error {
 	*c = ClientFacingOrder(unmarshaler.embed)
 	c.CreatedAt = unmarshaler.CreatedAt.Time()
 	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
-	c.ActivateBy = unmarshaler.ActivateBy.TimePtr()
-	c.ExpectedResultByDate = unmarshaler.ExpectedResultByDate.TimePtr()
-	c.WorstCaseResultByDate = unmarshaler.WorstCaseResultByDate.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -15125,18 +15119,12 @@ func (c *ClientFacingOrder) MarshalJSON() ([]byte, error) {
 	type embed ClientFacingOrder
 	var marshaler = struct {
 		embed
-		CreatedAt             *internal.DateTime `json:"created_at"`
-		UpdatedAt             *internal.DateTime `json:"updated_at"`
-		ActivateBy            *internal.Date     `json:"activate_by,omitempty"`
-		ExpectedResultByDate  *internal.Date     `json:"expected_result_by_date,omitempty"`
-		WorstCaseResultByDate *internal.Date     `json:"worst_case_result_by_date,omitempty"`
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
-		embed:                 embed(*c),
-		CreatedAt:             internal.NewDateTime(c.CreatedAt),
-		UpdatedAt:             internal.NewDateTime(c.UpdatedAt),
-		ActivateBy:            internal.NewOptionalDate(c.ActivateBy),
-		ExpectedResultByDate:  internal.NewOptionalDate(c.ExpectedResultByDate),
-		WorstCaseResultByDate: internal.NewOptionalDate(c.WorstCaseResultByDate),
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -20977,9 +20965,9 @@ type ClientFacingUser struct {
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
 	FallbackBirthDate *FallbackBirthDate `json:"fallback_birth_date,omitempty" url:"fallback_birth_date,omitempty"`
 	// Starting bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
-	IngestionStart *time.Time `json:"ingestion_start,omitempty" url:"ingestion_start,omitempty" format:"date"`
+	IngestionStart *string `json:"ingestion_start,omitempty" url:"ingestion_start,omitempty"`
 	// Ending bound for user [data ingestion bounds](https://docs.tryvital.io/wearables/providers/data-ingestion-bounds).
-	IngestionEnd *time.Time `json:"ingestion_end,omitempty" url:"ingestion_end,omitempty" format:"date"`
+	IngestionEnd *string `json:"ingestion_end,omitempty" url:"ingestion_end,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -21037,14 +21025,14 @@ func (c *ClientFacingUser) GetFallbackBirthDate() *FallbackBirthDate {
 	return c.FallbackBirthDate
 }
 
-func (c *ClientFacingUser) GetIngestionStart() *time.Time {
+func (c *ClientFacingUser) GetIngestionStart() *string {
 	if c == nil {
 		return nil
 	}
 	return c.IngestionStart
 }
 
-func (c *ClientFacingUser) GetIngestionEnd() *time.Time {
+func (c *ClientFacingUser) GetIngestionEnd() *string {
 	if c == nil {
 		return nil
 	}
@@ -21113,14 +21101,14 @@ func (c *ClientFacingUser) SetFallbackBirthDate(fallbackBirthDate *FallbackBirth
 
 // SetIngestionStart sets the IngestionStart field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingUser) SetIngestionStart(ingestionStart *time.Time) {
+func (c *ClientFacingUser) SetIngestionStart(ingestionStart *string) {
 	c.IngestionStart = ingestionStart
 	c.require(clientFacingUserFieldIngestionStart)
 }
 
 // SetIngestionEnd sets the IngestionEnd field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingUser) SetIngestionEnd(ingestionEnd *time.Time) {
+func (c *ClientFacingUser) SetIngestionEnd(ingestionEnd *string) {
 	c.IngestionEnd = ingestionEnd
 	c.require(clientFacingUserFieldIngestionEnd)
 }
@@ -21129,9 +21117,7 @@ func (c *ClientFacingUser) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingUser
 	var unmarshaler = struct {
 		embed
-		CreatedOn      *internal.DateTime `json:"created_on"`
-		IngestionStart *internal.Date     `json:"ingestion_start,omitempty"`
-		IngestionEnd   *internal.Date     `json:"ingestion_end,omitempty"`
+		CreatedOn *internal.DateTime `json:"created_on"`
 	}{
 		embed: embed(*c),
 	}
@@ -21140,8 +21126,6 @@ func (c *ClientFacingUser) UnmarshalJSON(data []byte) error {
 	}
 	*c = ClientFacingUser(unmarshaler.embed)
 	c.CreatedOn = unmarshaler.CreatedOn.Time()
-	c.IngestionStart = unmarshaler.IngestionStart.TimePtr()
-	c.IngestionEnd = unmarshaler.IngestionEnd.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -21155,14 +21139,10 @@ func (c *ClientFacingUser) MarshalJSON() ([]byte, error) {
 	type embed ClientFacingUser
 	var marshaler = struct {
 		embed
-		CreatedOn      *internal.DateTime `json:"created_on"`
-		IngestionStart *internal.Date     `json:"ingestion_start,omitempty"`
-		IngestionEnd   *internal.Date     `json:"ingestion_end,omitempty"`
+		CreatedOn *internal.DateTime `json:"created_on"`
 	}{
-		embed:          embed(*c),
-		CreatedOn:      internal.NewDateTime(c.CreatedOn),
-		IngestionStart: internal.NewOptionalDate(c.IngestionStart),
-		IngestionEnd:   internal.NewOptionalDate(c.IngestionEnd),
+		embed:     embed(*c),
+		CreatedOn: internal.NewDateTime(c.CreatedOn),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -25399,7 +25379,7 @@ var (
 
 type FallbackBirthDate struct {
 	// Fallback date of birth of the user, in YYYY-mm-dd format. Used for calculating max heartrate for providers that don not provide users' age.
-	Value time.Time `json:"value" url:"value" format:"date"`
+	Value string `json:"value" url:"value"`
 	// Slug for designated source
 	SourceSlug string    `json:"source_slug" url:"source_slug"`
 	UpdatedAt  time.Time `json:"updated_at" url:"updated_at"`
@@ -25411,9 +25391,9 @@ type FallbackBirthDate struct {
 	rawJSON         json.RawMessage
 }
 
-func (f *FallbackBirthDate) GetValue() time.Time {
+func (f *FallbackBirthDate) GetValue() string {
 	if f == nil {
-		return time.Time{}
+		return ""
 	}
 	return f.Value
 }
@@ -25445,7 +25425,7 @@ func (f *FallbackBirthDate) require(field *big.Int) {
 
 // SetValue sets the Value field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FallbackBirthDate) SetValue(value time.Time) {
+func (f *FallbackBirthDate) SetValue(value string) {
 	f.Value = value
 	f.require(fallbackBirthDateFieldValue)
 }
@@ -25468,7 +25448,6 @@ func (f *FallbackBirthDate) UnmarshalJSON(data []byte) error {
 	type embed FallbackBirthDate
 	var unmarshaler = struct {
 		embed
-		Value     *internal.Date     `json:"value"`
 		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*f),
@@ -25477,7 +25456,6 @@ func (f *FallbackBirthDate) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*f = FallbackBirthDate(unmarshaler.embed)
-	f.Value = unmarshaler.Value.Time()
 	f.UpdatedAt = unmarshaler.UpdatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *f)
 	if err != nil {
@@ -25492,11 +25470,9 @@ func (f *FallbackBirthDate) MarshalJSON() ([]byte, error) {
 	type embed FallbackBirthDate
 	var marshaler = struct {
 		embed
-		Value     *internal.Date     `json:"value"`
 		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
 		embed:     embed(*f),
-		Value:     internal.NewDate(f.Value),
 		UpdatedAt: internal.NewDateTime(f.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
@@ -27532,12 +27508,12 @@ var (
 )
 
 type PatientDetailsWithValidation struct {
-	FirstName   string    `json:"first_name" url:"first_name"`
-	LastName    string    `json:"last_name" url:"last_name"`
-	Dob         time.Time `json:"dob" url:"dob" format:"date"`
-	Gender      Gender    `json:"gender" url:"gender"`
-	PhoneNumber string    `json:"phone_number" url:"phone_number"`
-	Email       string    `json:"email" url:"email"`
+	FirstName   string `json:"first_name" url:"first_name"`
+	LastName    string `json:"last_name" url:"last_name"`
+	Dob         string `json:"dob" url:"dob"`
+	Gender      Gender `json:"gender" url:"gender"`
+	PhoneNumber string `json:"phone_number" url:"phone_number"`
+	Email       string `json:"email" url:"email"`
 	// Parent/medical_proxy details. Required if patient is a minor.
 	MedicalProxy *GuarantorDetails `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
 	// If not provided, will be set to 'Not Specified'
@@ -27574,9 +27550,9 @@ func (p *PatientDetailsWithValidation) GetLastName() string {
 	return p.LastName
 }
 
-func (p *PatientDetailsWithValidation) GetDob() time.Time {
+func (p *PatientDetailsWithValidation) GetDob() string {
 	if p == nil {
-		return time.Time{}
+		return ""
 	}
 	return p.Dob
 }
@@ -27678,7 +27654,7 @@ func (p *PatientDetailsWithValidation) SetLastName(lastName string) {
 
 // SetDob sets the Dob field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatientDetailsWithValidation) SetDob(dob time.Time) {
+func (p *PatientDetailsWithValidation) SetDob(dob string) {
 	p.Dob = dob
 	p.require(patientDetailsWithValidationFieldDob)
 }
@@ -27754,18 +27730,12 @@ func (p *PatientDetailsWithValidation) SetHouseholdSize(householdSize *int) {
 }
 
 func (p *PatientDetailsWithValidation) UnmarshalJSON(data []byte) error {
-	type embed PatientDetailsWithValidation
-	var unmarshaler = struct {
-		embed
-		Dob *internal.Date `json:"dob"`
-	}{
-		embed: embed(*p),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler PatientDetailsWithValidation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PatientDetailsWithValidation(unmarshaler.embed)
-	p.Dob = unmarshaler.Dob.Time()
+	*p = PatientDetailsWithValidation(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -27779,10 +27749,8 @@ func (p *PatientDetailsWithValidation) MarshalJSON() ([]byte, error) {
 	type embed PatientDetailsWithValidation
 	var marshaler = struct {
 		embed
-		Dob *internal.Date `json:"dob"`
 	}{
 		embed: embed(*p),
-		Dob:   internal.NewDate(p.Dob),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
 	return json.Marshal(explicitMarshaler)

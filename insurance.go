@@ -10,37 +10,37 @@ import (
 )
 
 var (
-	searchDiagnosisInsuranceRequestFieldDiagnosisQuery = big.NewInt(1 << 0)
+	insuranceSearchDiagnosisRequestFieldDiagnosisQuery = big.NewInt(1 << 0)
 )
 
-type SearchDiagnosisInsuranceRequest struct {
+type InsuranceSearchDiagnosisRequest struct {
 	DiagnosisQuery string `json:"-" url:"diagnosis_query"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *SearchDiagnosisInsuranceRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (i *InsuranceSearchDiagnosisRequest) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	i.explicitFields.Or(i.explicitFields, field)
 }
 
 // SetDiagnosisQuery sets the DiagnosisQuery field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SearchDiagnosisInsuranceRequest) SetDiagnosisQuery(diagnosisQuery string) {
-	s.DiagnosisQuery = diagnosisQuery
-	s.require(searchDiagnosisInsuranceRequestFieldDiagnosisQuery)
+func (i *InsuranceSearchDiagnosisRequest) SetDiagnosisQuery(diagnosisQuery string) {
+	i.DiagnosisQuery = diagnosisQuery
+	i.require(insuranceSearchDiagnosisRequestFieldDiagnosisQuery)
 }
 
 var (
-	searchGetPayorInfoInsuranceRequestFieldInsuranceName   = big.NewInt(1 << 0)
-	searchGetPayorInfoInsuranceRequestFieldProvider        = big.NewInt(1 << 1)
-	searchGetPayorInfoInsuranceRequestFieldProviderPayorId = big.NewInt(1 << 2)
+	insuranceSearchGetPayorInfoRequestFieldInsuranceName   = big.NewInt(1 << 0)
+	insuranceSearchGetPayorInfoRequestFieldProvider        = big.NewInt(1 << 1)
+	insuranceSearchGetPayorInfoRequestFieldProviderPayorId = big.NewInt(1 << 2)
 )
 
-type SearchGetPayorInfoInsuranceRequest struct {
+type InsuranceSearchGetPayorInfoRequest struct {
 	InsuranceName   *string                    `json:"-" url:"insurance_name,omitempty"`
 	Provider        *PayorCodeExternalProvider `json:"-" url:"provider,omitempty"`
 	ProviderPayorId *string                    `json:"-" url:"provider_payor_id,omitempty"`
@@ -49,32 +49,32 @@ type SearchGetPayorInfoInsuranceRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *SearchGetPayorInfoInsuranceRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (i *InsuranceSearchGetPayorInfoRequest) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
+	i.explicitFields.Or(i.explicitFields, field)
 }
 
 // SetInsuranceName sets the InsuranceName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SearchGetPayorInfoInsuranceRequest) SetInsuranceName(insuranceName *string) {
-	s.InsuranceName = insuranceName
-	s.require(searchGetPayorInfoInsuranceRequestFieldInsuranceName)
+func (i *InsuranceSearchGetPayorInfoRequest) SetInsuranceName(insuranceName *string) {
+	i.InsuranceName = insuranceName
+	i.require(insuranceSearchGetPayorInfoRequestFieldInsuranceName)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SearchGetPayorInfoInsuranceRequest) SetProvider(provider *PayorCodeExternalProvider) {
-	s.Provider = provider
-	s.require(searchGetPayorInfoInsuranceRequestFieldProvider)
+func (i *InsuranceSearchGetPayorInfoRequest) SetProvider(provider *PayorCodeExternalProvider) {
+	i.Provider = provider
+	i.require(insuranceSearchGetPayorInfoRequestFieldProvider)
 }
 
 // SetProviderPayorId sets the ProviderPayorId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SearchGetPayorInfoInsuranceRequest) SetProviderPayorId(providerPayorId *string) {
-	s.ProviderPayorId = providerPayorId
-	s.require(searchGetPayorInfoInsuranceRequestFieldProviderPayorId)
+func (i *InsuranceSearchGetPayorInfoRequest) SetProviderPayorId(providerPayorId *string) {
+	i.ProviderPayorId = providerPayorId
+	i.require(insuranceSearchGetPayorInfoRequestFieldProviderPayorId)
 }
 
 var (
