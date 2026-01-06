@@ -374,8 +374,8 @@ func (r *RawClient) GetMarkersForLabTest(
 
 func (r *RawClient) GetMarkersByLabAndProviderId(
 	ctx context.Context,
-	labId int,
 	providerId string,
+	labId int,
 	request *vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingMarker], error) {
@@ -387,8 +387,8 @@ func (r *RawClient) GetMarkersByLabAndProviderId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v3/lab_tests/%v/markers/%v",
-		labId,
 		providerId,
+		labId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

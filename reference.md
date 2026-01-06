@@ -12648,7 +12648,7 @@ client.LabTests.GetMarkersForLabTest(
 </dl>
 </details>
 
-<details><summary><code>client.LabTests.GetMarkersByLabAndProviderId(LabId, ProviderId) -> *vitalgo.ClientFacingMarker</code></summary>
+<details><summary><code>client.LabTests.GetMarkersByLabAndProviderId(ProviderId, LabId) -> *vitalgo.ClientFacingMarker</code></summary>
 <dl>
 <dd>
 
@@ -12682,8 +12682,8 @@ request := &vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest{
     }
 client.LabTests.GetMarkersByLabAndProviderId(
         context.TODO(),
-        1,
         "provider_id",
+        1,
         request,
     )
 }
@@ -12701,7 +12701,7 @@ client.LabTests.GetMarkersByLabAndProviderId(
 <dl>
 <dd>
 
-**labId:** `int` 
+**providerId:** `string` 
     
 </dd>
 </dl>
@@ -12709,7 +12709,7 @@ client.LabTests.GetMarkersByLabAndProviderId(
 <dl>
 <dd>
 
-**providerId:** `string` 
+**labId:** `int` 
     
 </dd>
 </dl>

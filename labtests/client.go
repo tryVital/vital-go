@@ -157,15 +157,15 @@ func (c *Client) GetMarkersForLabTest(
 // GET a specific marker for the given lab and provider_id
 func (c *Client) GetMarkersByLabAndProviderId(
 	ctx context.Context,
-	labId int,
 	providerId string,
+	labId int,
 	request *vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingMarker, error) {
 	response, err := c.WithRawResponse.GetMarkersByLabAndProviderId(
 		ctx,
-		labId,
 		providerId,
+		labId,
 		request,
 		opts...,
 	)
