@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get sleep cycle for user_id
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetSleepCycleRequest,
+	userId string,
+	request *vitalgo.SleepCycleGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientSleepCycleResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)

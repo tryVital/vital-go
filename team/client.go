@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Post teams.
 func (c *Client) GetLinkConfig(
 	ctx context.Context,
-	request *vitalgo.GetLinkConfigTeamRequest,
+	request *vitalgo.TeamGetLinkConfigRequest,
 	opts ...option.RequestOption,
 ) (map[string]any, error) {
 	response, err := c.WithRawResponse.GetLinkConfig(
@@ -52,12 +52,12 @@ func (c *Client) GetLinkConfig(
 // Get team.
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetTeamRequest,
+	teamId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingTeam, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
-		request,
+		teamId,
 		opts...,
 	)
 	if err != nil {
@@ -69,7 +69,7 @@ func (c *Client) Get(
 // Search team users by user_id
 func (c *Client) GetUserById(
 	ctx context.Context,
-	request *vitalgo.GetUserByIdTeamRequest,
+	request *vitalgo.TeamGetUserByIdRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingUser, error) {
 	response, err := c.WithRawResponse.GetUserById(
@@ -100,7 +100,7 @@ func (c *Client) GetSvixUrl(
 // GET source priorities.
 func (c *Client) GetSourcePriorities(
 	ctx context.Context,
-	request *vitalgo.GetSourcePrioritiesTeamRequest,
+	request *vitalgo.TeamGetSourcePrioritiesRequest,
 	opts ...option.RequestOption,
 ) ([]map[string]any, error) {
 	response, err := c.WithRawResponse.GetSourcePriorities(
@@ -131,12 +131,12 @@ func (c *Client) UpdateSourcePriorities(
 
 func (c *Client) GetPhysicians(
 	ctx context.Context,
-	request *vitalgo.GetPhysiciansTeamRequest,
+	teamId string,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingPhysician, error) {
 	response, err := c.WithRawResponse.GetPhysicians(
 		ctx,
-		request,
+		teamId,
 		opts...,
 	)
 	if err != nil {

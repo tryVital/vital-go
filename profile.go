@@ -11,12 +11,10 @@ import (
 )
 
 var (
-	getProfileRequestFieldUserId   = big.NewInt(1 << 0)
-	getProfileRequestFieldProvider = big.NewInt(1 << 1)
+	profileGetRequestFieldProvider = big.NewInt(1 << 0)
 )
 
-type GetProfileRequest struct {
-	UserId string `json:"-" url:"-"`
+type ProfileGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 
@@ -24,34 +22,25 @@ type GetProfileRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetProfileRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (p *ProfileGetRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetProfileRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getProfileRequestFieldUserId)
+	p.explicitFields.Or(p.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetProfileRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getProfileRequestFieldProvider)
+func (p *ProfileGetRequest) SetProvider(provider *string) {
+	p.Provider = provider
+	p.require(profileGetRequestFieldProvider)
 }
 
 var (
-	getRawProfileRequestFieldUserId   = big.NewInt(1 << 0)
-	getRawProfileRequestFieldProvider = big.NewInt(1 << 1)
+	profileGetRawRequestFieldProvider = big.NewInt(1 << 0)
 )
 
-type GetRawProfileRequest struct {
-	UserId string `json:"-" url:"-"`
+type ProfileGetRawRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 
@@ -59,25 +48,18 @@ type GetRawProfileRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetRawProfileRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (p *ProfileGetRawRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawProfileRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getRawProfileRequestFieldUserId)
+	p.explicitFields.Or(p.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawProfileRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getRawProfileRequestFieldProvider)
+func (p *ProfileGetRawRequest) SetProvider(provider *string) {
+	p.Provider = provider
+	p.require(profileGetRawRequestFieldProvider)
 }
 
 var (
@@ -98,7 +80,7 @@ type ClientFacingProfile struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
 	UserId        string              `json:"user_id" url:"user_id"`
 	Height        *int                `json:"height,omitempty" url:"height,omitempty"`
-	BirthDate     *time.Time          `json:"birth_date,omitempty" url:"birth_date,omitempty" format:"date"`
+	BirthDate     *string             `json:"birth_date,omitempty" url:"birth_date,omitempty"`
 	WheelchairUse *bool               `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
 	Gender        *Gender             `json:"gender,omitempty" url:"gender,omitempty"`
 	Sex           *Sex                `json:"sex,omitempty" url:"sex,omitempty"`
@@ -134,7 +116,7 @@ func (c *ClientFacingProfile) GetHeight() *int {
 	return c.Height
 }
 
-func (c *ClientFacingProfile) GetBirthDate() *time.Time {
+func (c *ClientFacingProfile) GetBirthDate() *string {
 	if c == nil {
 		return nil
 	}
@@ -217,7 +199,7 @@ func (c *ClientFacingProfile) SetHeight(height *int) {
 
 // SetBirthDate sets the BirthDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingProfile) SetBirthDate(birthDate *time.Time) {
+func (c *ClientFacingProfile) SetBirthDate(birthDate *string) {
 	c.BirthDate = birthDate
 	c.require(clientFacingProfileFieldBirthDate)
 }
@@ -268,7 +250,6 @@ func (c *ClientFacingProfile) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingProfile
 	var unmarshaler = struct {
 		embed
-		BirthDate *internal.Date     `json:"birth_date,omitempty"`
 		CreatedAt *internal.DateTime `json:"created_at"`
 		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
@@ -278,7 +259,6 @@ func (c *ClientFacingProfile) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = ClientFacingProfile(unmarshaler.embed)
-	c.BirthDate = unmarshaler.BirthDate.TimePtr()
 	c.CreatedAt = unmarshaler.CreatedAt.Time()
 	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
@@ -294,12 +274,10 @@ func (c *ClientFacingProfile) MarshalJSON() ([]byte, error) {
 	type embed ClientFacingProfile
 	var marshaler = struct {
 		embed
-		BirthDate *internal.Date     `json:"birth_date,omitempty"`
 		CreatedAt *internal.DateTime `json:"created_at"`
 		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
 		embed:     embed(*c),
-		BirthDate: internal.NewOptionalDate(c.BirthDate),
 		CreatedAt: internal.NewDateTime(c.CreatedAt),
 		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
 	}

@@ -34,11 +34,13 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) WorkoutSwimmingStrokeGrouped(
 	ctx context.Context,
-	request *vitalgo.WorkoutSwimmingStrokeGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWorkoutSwimmingStrokeGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedWorkoutSwimmingStrokeResponse, error) {
 	response, err := c.WithRawResponse.WorkoutSwimmingStrokeGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -50,11 +52,13 @@ func (c *Client) WorkoutSwimmingStrokeGrouped(
 
 func (c *Client) WorkoutDistanceGrouped(
 	ctx context.Context,
-	request *vitalgo.WorkoutDistanceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWorkoutDistanceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedWorkoutDistanceResponse, error) {
 	response, err := c.WithRawResponse.WorkoutDistanceGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -66,11 +70,13 @@ func (c *Client) WorkoutDistanceGrouped(
 
 func (c *Client) HeartRateRecoveryOneMinuteGrouped(
 	ctx context.Context,
-	request *vitalgo.HeartRateRecoveryOneMinuteGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartRateRecoveryOneMinuteGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedHeartRateRecoveryOneMinuteResponse, error) {
 	response, err := c.WithRawResponse.HeartRateRecoveryOneMinuteGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -82,11 +88,13 @@ func (c *Client) HeartRateRecoveryOneMinuteGrouped(
 
 func (c *Client) WaistCircumferenceGrouped(
 	ctx context.Context,
-	request *vitalgo.WaistCircumferenceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWaistCircumferenceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedWaistCircumferenceResponse, error) {
 	response, err := c.WithRawResponse.WaistCircumferenceGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -98,11 +106,13 @@ func (c *Client) WaistCircumferenceGrouped(
 
 func (c *Client) LeanBodyMassGrouped(
 	ctx context.Context,
-	request *vitalgo.LeanBodyMassGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsLeanBodyMassGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedLeanBodyMassResponse, error) {
 	response, err := c.WithRawResponse.LeanBodyMassGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -114,11 +124,13 @@ func (c *Client) LeanBodyMassGrouped(
 
 func (c *Client) BodyMassIndexGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyMassIndexGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyMassIndexGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBodyMassIndexResponse, error) {
 	response, err := c.WithRawResponse.BodyMassIndexGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -130,11 +142,13 @@ func (c *Client) BodyMassIndexGrouped(
 
 func (c *Client) BasalBodyTemperatureGrouped(
 	ctx context.Context,
-	request *vitalgo.BasalBodyTemperatureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBasalBodyTemperatureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBasalBodyTemperatureResponse, error) {
 	response, err := c.WithRawResponse.BasalBodyTemperatureGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -146,11 +160,13 @@ func (c *Client) BasalBodyTemperatureGrouped(
 
 func (c *Client) HandwashingGrouped(
 	ctx context.Context,
-	request *vitalgo.HandwashingGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHandwashingGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedHandwashingResponse, error) {
 	response, err := c.WithRawResponse.HandwashingGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -162,11 +178,13 @@ func (c *Client) HandwashingGrouped(
 
 func (c *Client) DaylightExposureGrouped(
 	ctx context.Context,
-	request *vitalgo.DaylightExposureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsDaylightExposureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedDaylightExposureResponse, error) {
 	response, err := c.WithRawResponse.DaylightExposureGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -178,11 +196,13 @@ func (c *Client) DaylightExposureGrouped(
 
 func (c *Client) UvExposureGrouped(
 	ctx context.Context,
-	request *vitalgo.UvExposureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsUvExposureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedUvExposureResponse, error) {
 	response, err := c.WithRawResponse.UvExposureGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -194,11 +214,13 @@ func (c *Client) UvExposureGrouped(
 
 func (c *Client) FallGrouped(
 	ctx context.Context,
-	request *vitalgo.FallGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsFallGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedFallResponse, error) {
 	response, err := c.WithRawResponse.FallGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -210,11 +232,13 @@ func (c *Client) FallGrouped(
 
 func (c *Client) InhalerUsageGrouped(
 	ctx context.Context,
-	request *vitalgo.InhalerUsageGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsInhalerUsageGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedInhalerUsageResponse, error) {
 	response, err := c.WithRawResponse.InhalerUsageGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -226,11 +250,13 @@ func (c *Client) InhalerUsageGrouped(
 
 func (c *Client) PeakExpiratoryFlowRateGrouped(
 	ctx context.Context,
-	request *vitalgo.PeakExpiratoryFlowRateGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsPeakExpiratoryFlowRateGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedPeakExpiratoryFlowRateResponse, error) {
 	response, err := c.WithRawResponse.PeakExpiratoryFlowRateGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -242,11 +268,13 @@ func (c *Client) PeakExpiratoryFlowRateGrouped(
 
 func (c *Client) ForcedVitalCapacityGrouped(
 	ctx context.Context,
-	request *vitalgo.ForcedVitalCapacityGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsForcedVitalCapacityGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedForcedVitalCapacityResponse, error) {
 	response, err := c.WithRawResponse.ForcedVitalCapacityGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -258,11 +286,13 @@ func (c *Client) ForcedVitalCapacityGrouped(
 
 func (c *Client) ForcedExpiratoryVolume1Grouped(
 	ctx context.Context,
-	request *vitalgo.ForcedExpiratoryVolume1GroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsForcedExpiratoryVolume1GroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedForcedExpiratoryVolume1Response, error) {
 	response, err := c.WithRawResponse.ForcedExpiratoryVolume1Grouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -274,11 +304,13 @@ func (c *Client) ForcedExpiratoryVolume1Grouped(
 
 func (c *Client) WheelchairPushGrouped(
 	ctx context.Context,
-	request *vitalgo.WheelchairPushGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWheelchairPushGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedWheelchairPushResponse, error) {
 	response, err := c.WithRawResponse.WheelchairPushGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -290,11 +322,13 @@ func (c *Client) WheelchairPushGrouped(
 
 func (c *Client) SleepBreathingDisturbanceGrouped(
 	ctx context.Context,
-	request *vitalgo.SleepBreathingDisturbanceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsSleepBreathingDisturbanceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedSleepBreathingDisturbanceResponse, error) {
 	response, err := c.WithRawResponse.SleepBreathingDisturbanceGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -306,11 +340,13 @@ func (c *Client) SleepBreathingDisturbanceGrouped(
 
 func (c *Client) SleepApneaAlertGrouped(
 	ctx context.Context,
-	request *vitalgo.SleepApneaAlertGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsSleepApneaAlertGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedSleepApneaAlertResponse, error) {
 	response, err := c.WithRawResponse.SleepApneaAlertGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -322,11 +358,13 @@ func (c *Client) SleepApneaAlertGrouped(
 
 func (c *Client) StandDurationGrouped(
 	ctx context.Context,
-	request *vitalgo.StandDurationGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStandDurationGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedStandDurationResponse, error) {
 	response, err := c.WithRawResponse.StandDurationGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -338,11 +376,13 @@ func (c *Client) StandDurationGrouped(
 
 func (c *Client) StandHourGrouped(
 	ctx context.Context,
-	request *vitalgo.StandHourGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStandHourGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedStandHourResponse, error) {
 	response, err := c.WithRawResponse.StandHourGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -354,11 +394,13 @@ func (c *Client) StandHourGrouped(
 
 func (c *Client) HeartRateAlertGrouped(
 	ctx context.Context,
-	request *vitalgo.HeartRateAlertGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartRateAlertGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedHeartRateAlertResponse, error) {
 	response, err := c.WithRawResponse.HeartRateAlertGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -370,11 +412,13 @@ func (c *Client) HeartRateAlertGrouped(
 
 func (c *Client) AfibBurdenGrouped(
 	ctx context.Context,
-	request *vitalgo.AfibBurdenGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsAfibBurdenGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedAFibBurdenResponse, error) {
 	response, err := c.WithRawResponse.AfibBurdenGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -386,11 +430,13 @@ func (c *Client) AfibBurdenGrouped(
 
 func (c *Client) WorkoutDurationGrouped(
 	ctx context.Context,
-	request *vitalgo.WorkoutDurationGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWorkoutDurationGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedWorkoutDurationResponse, error) {
 	response, err := c.WithRawResponse.WorkoutDurationGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -402,11 +448,13 @@ func (c *Client) WorkoutDurationGrouped(
 
 func (c *Client) Vo2MaxGrouped(
 	ctx context.Context,
-	request *vitalgo.Vo2MaxGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsVo2MaxGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedVo2MaxResponse, error) {
 	response, err := c.WithRawResponse.Vo2MaxGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -418,11 +466,13 @@ func (c *Client) Vo2MaxGrouped(
 
 func (c *Client) StressLevelGrouped(
 	ctx context.Context,
-	request *vitalgo.StressLevelGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStressLevelGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedStressLevelResponse, error) {
 	response, err := c.WithRawResponse.StressLevelGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -434,11 +484,13 @@ func (c *Client) StressLevelGrouped(
 
 func (c *Client) MindfulnessMinutesGrouped(
 	ctx context.Context,
-	request *vitalgo.MindfulnessMinutesGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsMindfulnessMinutesGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedMindfulnessMinutesResponse, error) {
 	response, err := c.WithRawResponse.MindfulnessMinutesGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -450,11 +502,13 @@ func (c *Client) MindfulnessMinutesGrouped(
 
 func (c *Client) CaffeineGrouped(
 	ctx context.Context,
-	request *vitalgo.CaffeineGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaffeineGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedCaffeineResponse, error) {
 	response, err := c.WithRawResponse.CaffeineGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -466,11 +520,13 @@ func (c *Client) CaffeineGrouped(
 
 func (c *Client) WaterGrouped(
 	ctx context.Context,
-	request *vitalgo.WaterGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWaterGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedWaterResponse, error) {
 	response, err := c.WithRawResponse.WaterGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -482,11 +538,13 @@ func (c *Client) WaterGrouped(
 
 func (c *Client) StepsGrouped(
 	ctx context.Context,
-	request *vitalgo.StepsGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStepsGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedStepsResponse, error) {
 	response, err := c.WithRawResponse.StepsGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -498,11 +556,13 @@ func (c *Client) StepsGrouped(
 
 func (c *Client) FloorsClimbedGrouped(
 	ctx context.Context,
-	request *vitalgo.FloorsClimbedGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsFloorsClimbedGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedFloorsClimbedResponse, error) {
 	response, err := c.WithRawResponse.FloorsClimbedGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -514,11 +574,13 @@ func (c *Client) FloorsClimbedGrouped(
 
 func (c *Client) DistanceGrouped(
 	ctx context.Context,
-	request *vitalgo.DistanceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsDistanceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedDistanceResponse, error) {
 	response, err := c.WithRawResponse.DistanceGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -530,11 +592,13 @@ func (c *Client) DistanceGrouped(
 
 func (c *Client) CaloriesBasalGrouped(
 	ctx context.Context,
-	request *vitalgo.CaloriesBasalGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesBasalGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedCaloriesBasalResponse, error) {
 	response, err := c.WithRawResponse.CaloriesBasalGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -546,11 +610,13 @@ func (c *Client) CaloriesBasalGrouped(
 
 func (c *Client) CaloriesActiveGrouped(
 	ctx context.Context,
-	request *vitalgo.CaloriesActiveGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesActiveGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedCaloriesActiveResponse, error) {
 	response, err := c.WithRawResponse.CaloriesActiveGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -562,11 +628,13 @@ func (c *Client) CaloriesActiveGrouped(
 
 func (c *Client) RespiratoryRateGrouped(
 	ctx context.Context,
-	request *vitalgo.RespiratoryRateGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsRespiratoryRateGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedRespiratoryRateResponse, error) {
 	response, err := c.WithRawResponse.RespiratoryRateGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -578,11 +646,13 @@ func (c *Client) RespiratoryRateGrouped(
 
 func (c *Client) NoteGrouped(
 	ctx context.Context,
-	request *vitalgo.NoteGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsNoteGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedNoteResponse, error) {
 	response, err := c.WithRawResponse.NoteGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -594,11 +664,13 @@ func (c *Client) NoteGrouped(
 
 func (c *Client) InsulinInjectionGrouped(
 	ctx context.Context,
-	request *vitalgo.InsulinInjectionGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsInsulinInjectionGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedInsulinInjectionResponse, error) {
 	response, err := c.WithRawResponse.InsulinInjectionGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -610,11 +682,13 @@ func (c *Client) InsulinInjectionGrouped(
 
 func (c *Client) IgeGrouped(
 	ctx context.Context,
-	request *vitalgo.IgeGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIgeGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedIgeResponse, error) {
 	response, err := c.WithRawResponse.IgeGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -626,11 +700,13 @@ func (c *Client) IgeGrouped(
 
 func (c *Client) IggGrouped(
 	ctx context.Context,
-	request *vitalgo.IggGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIggGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedIggResponse, error) {
 	response, err := c.WithRawResponse.IggGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -642,11 +718,13 @@ func (c *Client) IggGrouped(
 
 func (c *Client) HypnogramGrouped(
 	ctx context.Context,
-	request *vitalgo.HypnogramGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHypnogramGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedHypnogramResponse, error) {
 	response, err := c.WithRawResponse.HypnogramGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -658,11 +736,13 @@ func (c *Client) HypnogramGrouped(
 
 func (c *Client) HrvGrouped(
 	ctx context.Context,
-	request *vitalgo.HrvGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHrvGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedHrvResponse, error) {
 	response, err := c.WithRawResponse.HrvGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -674,11 +754,13 @@ func (c *Client) HrvGrouped(
 
 func (c *Client) HeartrateGrouped(
 	ctx context.Context,
-	request *vitalgo.HeartrateGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartrateGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedHeartRateResponse, error) {
 	response, err := c.WithRawResponse.HeartrateGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -690,11 +772,13 @@ func (c *Client) HeartrateGrouped(
 
 func (c *Client) GlucoseGrouped(
 	ctx context.Context,
-	request *vitalgo.GlucoseGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsGlucoseGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedGlucoseResponse, error) {
 	response, err := c.WithRawResponse.GlucoseGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -706,11 +790,13 @@ func (c *Client) GlucoseGrouped(
 
 func (c *Client) CholesterolGrouped(
 	ctx context.Context,
-	request *vitalgo.CholesterolGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedCholesterolResponse, error) {
 	response, err := c.WithRawResponse.CholesterolGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -722,11 +808,13 @@ func (c *Client) CholesterolGrouped(
 
 func (c *Client) CarbohydratesGrouped(
 	ctx context.Context,
-	request *vitalgo.CarbohydratesGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCarbohydratesGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedCarbohydratesResponse, error) {
 	response, err := c.WithRawResponse.CarbohydratesGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -738,11 +826,13 @@ func (c *Client) CarbohydratesGrouped(
 
 func (c *Client) BodyTemperatureDeltaGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyTemperatureDeltaGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyTemperatureDeltaGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBodyTemperatureDeltaResponse, error) {
 	response, err := c.WithRawResponse.BodyTemperatureDeltaGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -754,11 +844,13 @@ func (c *Client) BodyTemperatureDeltaGrouped(
 
 func (c *Client) BodyTemperatureGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyTemperatureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyTemperatureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBodyTemperatureResponse, error) {
 	response, err := c.WithRawResponse.BodyTemperatureGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -770,11 +862,13 @@ func (c *Client) BodyTemperatureGrouped(
 
 func (c *Client) BodyWeightGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyWeightGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyWeightGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBodyWeightResponse, error) {
 	response, err := c.WithRawResponse.BodyWeightGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -786,11 +880,13 @@ func (c *Client) BodyWeightGrouped(
 
 func (c *Client) BodyFatGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyFatGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyFatGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBodyFatResponse, error) {
 	response, err := c.WithRawResponse.BodyFatGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -802,11 +898,13 @@ func (c *Client) BodyFatGrouped(
 
 func (c *Client) BloodOxygenGrouped(
 	ctx context.Context,
-	request *vitalgo.BloodOxygenGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodOxygenGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBloodOxygenResponse, error) {
 	response, err := c.WithRawResponse.BloodOxygenGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -818,11 +916,13 @@ func (c *Client) BloodOxygenGrouped(
 
 func (c *Client) ElectrocardiogramVoltageGrouped(
 	ctx context.Context,
-	request *vitalgo.ElectrocardiogramVoltageGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsElectrocardiogramVoltageGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedElectrocardiogramVoltageResponse, error) {
 	response, err := c.WithRawResponse.ElectrocardiogramVoltageGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -834,11 +934,13 @@ func (c *Client) ElectrocardiogramVoltageGrouped(
 
 func (c *Client) BloodPressureGrouped(
 	ctx context.Context,
-	request *vitalgo.BloodPressureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodPressureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.GroupedBloodPressureResponse, error) {
 	response, err := c.WithRawResponse.BloodPressureGrouped(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -850,11 +952,13 @@ func (c *Client) BloodPressureGrouped(
 
 func (c *Client) Vo2Max(
 	ctx context.Context,
-	request *vitalgo.Vo2MaxVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsVo2MaxRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingVo2MaxTimeseries, error) {
 	response, err := c.WithRawResponse.Vo2Max(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -866,11 +970,13 @@ func (c *Client) Vo2Max(
 
 func (c *Client) StressLevel(
 	ctx context.Context,
-	request *vitalgo.StressLevelVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStressLevelRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingStressLevelTimeseries, error) {
 	response, err := c.WithRawResponse.StressLevel(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -882,11 +988,13 @@ func (c *Client) StressLevel(
 
 func (c *Client) MindfulnessMinutes(
 	ctx context.Context,
-	request *vitalgo.MindfulnessMinutesVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsMindfulnessMinutesRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingMindfulnessMinutesTimeseries, error) {
 	response, err := c.WithRawResponse.MindfulnessMinutes(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -898,11 +1006,13 @@ func (c *Client) MindfulnessMinutes(
 
 func (c *Client) Caffeine(
 	ctx context.Context,
-	request *vitalgo.CaffeineVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaffeineRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCaffeineTimeseries, error) {
 	response, err := c.WithRawResponse.Caffeine(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -914,11 +1024,13 @@ func (c *Client) Caffeine(
 
 func (c *Client) Water(
 	ctx context.Context,
-	request *vitalgo.WaterVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWaterRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingWaterTimeseries, error) {
 	response, err := c.WithRawResponse.Water(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -930,11 +1042,13 @@ func (c *Client) Water(
 
 func (c *Client) Steps(
 	ctx context.Context,
-	request *vitalgo.StepsVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStepsRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingStepsTimeseries, error) {
 	response, err := c.WithRawResponse.Steps(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -946,11 +1060,13 @@ func (c *Client) Steps(
 
 func (c *Client) FloorsClimbed(
 	ctx context.Context,
-	request *vitalgo.FloorsClimbedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsFloorsClimbedRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingFloorsClimbedTimeseries, error) {
 	response, err := c.WithRawResponse.FloorsClimbed(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -962,11 +1078,13 @@ func (c *Client) FloorsClimbed(
 
 func (c *Client) Distance(
 	ctx context.Context,
-	request *vitalgo.DistanceVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsDistanceRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingDistanceTimeseries, error) {
 	response, err := c.WithRawResponse.Distance(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -978,11 +1096,13 @@ func (c *Client) Distance(
 
 func (c *Client) CaloriesBasal(
 	ctx context.Context,
-	request *vitalgo.CaloriesBasalVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesBasalRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCaloriesBasalTimeseries, error) {
 	response, err := c.WithRawResponse.CaloriesBasal(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -994,11 +1114,13 @@ func (c *Client) CaloriesBasal(
 
 func (c *Client) CaloriesActive(
 	ctx context.Context,
-	request *vitalgo.CaloriesActiveVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesActiveRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCaloriesActiveTimeseries, error) {
 	response, err := c.WithRawResponse.CaloriesActive(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1010,11 +1132,13 @@ func (c *Client) CaloriesActive(
 
 func (c *Client) RespiratoryRate(
 	ctx context.Context,
-	request *vitalgo.RespiratoryRateVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsRespiratoryRateRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingRespiratoryRateTimeseries, error) {
 	response, err := c.WithRawResponse.RespiratoryRate(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1026,11 +1150,13 @@ func (c *Client) RespiratoryRate(
 
 func (c *Client) Ige(
 	ctx context.Context,
-	request *vitalgo.IgeVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIgeRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingIgeTimeseries, error) {
 	response, err := c.WithRawResponse.Ige(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1042,11 +1168,13 @@ func (c *Client) Ige(
 
 func (c *Client) Igg(
 	ctx context.Context,
-	request *vitalgo.IggVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIggRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingIggTimeseries, error) {
 	response, err := c.WithRawResponse.Igg(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1058,11 +1186,13 @@ func (c *Client) Igg(
 
 func (c *Client) Hypnogram(
 	ctx context.Context,
-	request *vitalgo.HypnogramVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHypnogramRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingHypnogramTimeseries, error) {
 	response, err := c.WithRawResponse.Hypnogram(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1074,11 +1204,13 @@ func (c *Client) Hypnogram(
 
 func (c *Client) Hrv(
 	ctx context.Context,
-	request *vitalgo.HrvVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHrvRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingHrvTimeseries, error) {
 	response, err := c.WithRawResponse.Hrv(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1090,11 +1222,13 @@ func (c *Client) Hrv(
 
 func (c *Client) Heartrate(
 	ctx context.Context,
-	request *vitalgo.HeartrateVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartrateRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingHeartRateTimeseries, error) {
 	response, err := c.WithRawResponse.Heartrate(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1106,11 +1240,13 @@ func (c *Client) Heartrate(
 
 func (c *Client) Glucose(
 	ctx context.Context,
-	request *vitalgo.GlucoseVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsGlucoseRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingGlucoseTimeseries, error) {
 	response, err := c.WithRawResponse.Glucose(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1122,11 +1258,13 @@ func (c *Client) Glucose(
 
 func (c *Client) CholesterolTriglycerides(
 	ctx context.Context,
-	request *vitalgo.CholesterolTriglyceridesVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolTriglyceridesRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
 	response, err := c.WithRawResponse.CholesterolTriglycerides(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1138,11 +1276,13 @@ func (c *Client) CholesterolTriglycerides(
 
 func (c *Client) CholesterolTotal(
 	ctx context.Context,
-	request *vitalgo.CholesterolTotalVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolTotalRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
 	response, err := c.WithRawResponse.CholesterolTotal(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1154,11 +1294,13 @@ func (c *Client) CholesterolTotal(
 
 func (c *Client) CholesterolLdl(
 	ctx context.Context,
-	request *vitalgo.CholesterolLdlVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolLdlRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
 	response, err := c.WithRawResponse.CholesterolLdl(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1170,11 +1312,13 @@ func (c *Client) CholesterolLdl(
 
 func (c *Client) CholesterolHdl(
 	ctx context.Context,
-	request *vitalgo.CholesterolHdlVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolHdlRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
 	response, err := c.WithRawResponse.CholesterolHdl(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1186,11 +1330,13 @@ func (c *Client) CholesterolHdl(
 
 func (c *Client) Cholesterol(
 	ctx context.Context,
-	request *vitalgo.CholesterolVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingCholesterolTimeseries, error) {
 	response, err := c.WithRawResponse.Cholesterol(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1202,11 +1348,13 @@ func (c *Client) Cholesterol(
 
 func (c *Client) BodyWeight(
 	ctx context.Context,
-	request *vitalgo.BodyWeightVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyWeightRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingBodyWeightTimeseries, error) {
 	response, err := c.WithRawResponse.BodyWeight(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1218,11 +1366,13 @@ func (c *Client) BodyWeight(
 
 func (c *Client) BodyFat(
 	ctx context.Context,
-	request *vitalgo.BodyFatVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyFatRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingBodyFatTimeseries, error) {
 	response, err := c.WithRawResponse.BodyFat(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1234,11 +1384,13 @@ func (c *Client) BodyFat(
 
 func (c *Client) BloodOxygen(
 	ctx context.Context,
-	request *vitalgo.BloodOxygenVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodOxygenRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingBloodOxygenTimeseries, error) {
 	response, err := c.WithRawResponse.BloodOxygen(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1250,11 +1402,13 @@ func (c *Client) BloodOxygen(
 
 func (c *Client) ElectrocardiogramVoltage(
 	ctx context.Context,
-	request *vitalgo.ElectrocardiogramVoltageVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsElectrocardiogramVoltageRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingElectrocardiogramVoltageTimeseries, error) {
 	response, err := c.WithRawResponse.ElectrocardiogramVoltage(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -1266,11 +1420,13 @@ func (c *Client) ElectrocardiogramVoltage(
 
 func (c *Client) BloodPressure(
 	ctx context.Context,
-	request *vitalgo.BloodPressureVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodPressureRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingBloodPressureTimeseries, error) {
 	response, err := c.WithRawResponse.BloodPressure(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)

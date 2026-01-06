@@ -32,7 +32,8 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.GetWorkoutsRequest,
+	userId string,
+	request *vitalgo.WorkoutsGetRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientWorkoutResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -43,7 +44,7 @@ func (r *RawClient) Get(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/workouts/%v",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -83,7 +84,8 @@ func (r *RawClient) Get(
 
 func (r *RawClient) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawWorkoutsRequest,
+	userId string,
+	request *vitalgo.WorkoutsGetRawRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.RawWorkout], error) {
 	options := core.NewRequestOptions(opts...)
@@ -94,7 +96,7 @@ func (r *RawClient) GetRaw(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/workouts/%v/raw",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -134,7 +136,8 @@ func (r *RawClient) GetRaw(
 
 func (r *RawClient) GetByWorkoutId(
 	ctx context.Context,
-	request *vitalgo.GetByWorkoutIdWorkoutsRequest,
+	// The Vital ID for the workout
+	workoutId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingStream], error) {
 	options := core.NewRequestOptions(opts...)
@@ -145,7 +148,7 @@ func (r *RawClient) GetByWorkoutId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/workouts/%v/stream",
-		request.WorkoutId,
+		workoutId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

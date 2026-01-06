@@ -32,6 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) QueryOne(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.QueryBatch,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.AggregationResponse], error) {
@@ -43,7 +44,7 @@ func (r *RawClient) QueryOne(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/aggregate/v1/user/%v/query",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -79,7 +80,8 @@ func (r *RawClient) QueryOne(
 
 func (r *RawClient) GetResultTableForContinuousQuery(
 	ctx context.Context,
-	request *vitalgo.GetResultTableForContinuousQueryAggregateRequest,
+	userId string,
+	queryIdOrSlug string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.AggregationResult], error) {
 	options := core.NewRequestOptions(opts...)
@@ -90,8 +92,8 @@ func (r *RawClient) GetResultTableForContinuousQuery(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/aggregate/v1/user/%v/continuous_query/%v/result_table",
-		request.UserId,
-		request.QueryIdOrSlug,
+		userId,
+		queryIdOrSlug,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -125,7 +127,9 @@ func (r *RawClient) GetResultTableForContinuousQuery(
 
 func (r *RawClient) GetTaskHistoryForContinuousQuery(
 	ctx context.Context,
-	request *vitalgo.GetTaskHistoryForContinuousQueryAggregateRequest,
+	userId string,
+	queryIdOrSlug string,
+	request *vitalgo.AggregateGetTaskHistoryForContinuousQueryRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ContinuousQueryTaskHistoryResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -136,8 +140,8 @@ func (r *RawClient) GetTaskHistoryForContinuousQuery(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/aggregate/v1/user/%v/continuous_query/%v/task_history",
-		request.UserId,
-		request.QueryIdOrSlug,
+		userId,
+		queryIdOrSlug,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

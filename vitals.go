@@ -11,16 +11,14 @@ import (
 )
 
 var (
-	afibBurdenGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	afibBurdenGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	afibBurdenGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	afibBurdenGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	afibBurdenGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	afibBurdenGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsAfibBurdenGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsAfibBurdenGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsAfibBurdenGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsAfibBurdenGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsAfibBurdenGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type AfibBurdenGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsAfibBurdenGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -36,66 +34,57 @@ type AfibBurdenGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (a *AfibBurdenGroupedVitalsRequest) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
+func (v *VitalsAfibBurdenGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AfibBurdenGroupedVitalsRequest) SetUserId(userId string) {
-	a.UserId = userId
-	a.require(afibBurdenGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AfibBurdenGroupedVitalsRequest) SetCursor(cursor *string) {
-	a.Cursor = cursor
-	a.require(afibBurdenGroupedVitalsRequestFieldCursor)
+func (v *VitalsAfibBurdenGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsAfibBurdenGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AfibBurdenGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	a.NextCursor = nextCursor
-	a.require(afibBurdenGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsAfibBurdenGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsAfibBurdenGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AfibBurdenGroupedVitalsRequest) SetProvider(provider *string) {
-	a.Provider = provider
-	a.require(afibBurdenGroupedVitalsRequestFieldProvider)
+func (v *VitalsAfibBurdenGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsAfibBurdenGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AfibBurdenGroupedVitalsRequest) SetStartDate(startDate string) {
-	a.StartDate = startDate
-	a.require(afibBurdenGroupedVitalsRequestFieldStartDate)
+func (v *VitalsAfibBurdenGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsAfibBurdenGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AfibBurdenGroupedVitalsRequest) SetEndDate(endDate *string) {
-	a.EndDate = endDate
-	a.require(afibBurdenGroupedVitalsRequestFieldEndDate)
+func (v *VitalsAfibBurdenGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsAfibBurdenGroupedRequestFieldEndDate)
 }
 
 var (
-	basalBodyTemperatureGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	basalBodyTemperatureGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	basalBodyTemperatureGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	basalBodyTemperatureGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	basalBodyTemperatureGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	basalBodyTemperatureGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBasalBodyTemperatureGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBasalBodyTemperatureGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBasalBodyTemperatureGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBasalBodyTemperatureGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBasalBodyTemperatureGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BasalBodyTemperatureGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBasalBodyTemperatureGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -111,64 +100,55 @@ type BasalBodyTemperatureGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BasalBodyTemperatureGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBasalBodyTemperatureGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasalBodyTemperatureGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(basalBodyTemperatureGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasalBodyTemperatureGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(basalBodyTemperatureGroupedVitalsRequestFieldCursor)
+func (v *VitalsBasalBodyTemperatureGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBasalBodyTemperatureGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasalBodyTemperatureGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(basalBodyTemperatureGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBasalBodyTemperatureGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBasalBodyTemperatureGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasalBodyTemperatureGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(basalBodyTemperatureGroupedVitalsRequestFieldProvider)
+func (v *VitalsBasalBodyTemperatureGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBasalBodyTemperatureGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasalBodyTemperatureGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(basalBodyTemperatureGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBasalBodyTemperatureGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBasalBodyTemperatureGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasalBodyTemperatureGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(basalBodyTemperatureGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBasalBodyTemperatureGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBasalBodyTemperatureGroupedRequestFieldEndDate)
 }
 
 var (
-	bloodOxygenVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	bloodOxygenVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	bloodOxygenVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	bloodOxygenVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsBloodOxygenRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsBloodOxygenRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsBloodOxygenRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type BloodOxygenVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBloodOxygenRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -180,52 +160,43 @@ type BloodOxygenVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BloodOxygenVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBloodOxygenRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bloodOxygenVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bloodOxygenVitalsRequestFieldProvider)
+func (v *VitalsBloodOxygenRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBloodOxygenRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bloodOxygenVitalsRequestFieldStartDate)
+func (v *VitalsBloodOxygenRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBloodOxygenRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bloodOxygenVitalsRequestFieldEndDate)
+func (v *VitalsBloodOxygenRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBloodOxygenRequestFieldEndDate)
 }
 
 var (
-	bloodOxygenGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	bloodOxygenGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	bloodOxygenGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	bloodOxygenGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	bloodOxygenGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	bloodOxygenGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBloodOxygenGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBloodOxygenGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBloodOxygenGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBloodOxygenGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBloodOxygenGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BloodOxygenGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBloodOxygenGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -241,64 +212,55 @@ type BloodOxygenGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BloodOxygenGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBloodOxygenGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bloodOxygenGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(bloodOxygenGroupedVitalsRequestFieldCursor)
+func (v *VitalsBloodOxygenGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBloodOxygenGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(bloodOxygenGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBloodOxygenGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBloodOxygenGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bloodOxygenGroupedVitalsRequestFieldProvider)
+func (v *VitalsBloodOxygenGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBloodOxygenGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bloodOxygenGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBloodOxygenGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBloodOxygenGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodOxygenGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bloodOxygenGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBloodOxygenGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBloodOxygenGroupedRequestFieldEndDate)
 }
 
 var (
-	bloodPressureVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	bloodPressureVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	bloodPressureVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	bloodPressureVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsBloodPressureRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsBloodPressureRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsBloodPressureRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type BloodPressureVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBloodPressureRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -310,52 +272,43 @@ type BloodPressureVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BloodPressureVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBloodPressureRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bloodPressureVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bloodPressureVitalsRequestFieldProvider)
+func (v *VitalsBloodPressureRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBloodPressureRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bloodPressureVitalsRequestFieldStartDate)
+func (v *VitalsBloodPressureRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBloodPressureRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bloodPressureVitalsRequestFieldEndDate)
+func (v *VitalsBloodPressureRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBloodPressureRequestFieldEndDate)
 }
 
 var (
-	bloodPressureGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	bloodPressureGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	bloodPressureGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	bloodPressureGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	bloodPressureGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	bloodPressureGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBloodPressureGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBloodPressureGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBloodPressureGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBloodPressureGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBloodPressureGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BloodPressureGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBloodPressureGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -371,64 +324,55 @@ type BloodPressureGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BloodPressureGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBloodPressureGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bloodPressureGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(bloodPressureGroupedVitalsRequestFieldCursor)
+func (v *VitalsBloodPressureGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBloodPressureGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(bloodPressureGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBloodPressureGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBloodPressureGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bloodPressureGroupedVitalsRequestFieldProvider)
+func (v *VitalsBloodPressureGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBloodPressureGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bloodPressureGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBloodPressureGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBloodPressureGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BloodPressureGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bloodPressureGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBloodPressureGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBloodPressureGroupedRequestFieldEndDate)
 }
 
 var (
-	bodyFatVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	bodyFatVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	bodyFatVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	bodyFatVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsBodyFatRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsBodyFatRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsBodyFatRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type BodyFatVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBodyFatRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -440,52 +384,43 @@ type BodyFatVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyFatVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBodyFatRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyFatVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bodyFatVitalsRequestFieldProvider)
+func (v *VitalsBodyFatRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBodyFatRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bodyFatVitalsRequestFieldStartDate)
+func (v *VitalsBodyFatRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBodyFatRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bodyFatVitalsRequestFieldEndDate)
+func (v *VitalsBodyFatRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBodyFatRequestFieldEndDate)
 }
 
 var (
-	bodyFatGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	bodyFatGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	bodyFatGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	bodyFatGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	bodyFatGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	bodyFatGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBodyFatGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBodyFatGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBodyFatGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBodyFatGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBodyFatGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BodyFatGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBodyFatGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -501,66 +436,57 @@ type BodyFatGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyFatGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBodyFatGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyFatGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(bodyFatGroupedVitalsRequestFieldCursor)
+func (v *VitalsBodyFatGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBodyFatGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(bodyFatGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBodyFatGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBodyFatGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bodyFatGroupedVitalsRequestFieldProvider)
+func (v *VitalsBodyFatGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBodyFatGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bodyFatGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBodyFatGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBodyFatGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyFatGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bodyFatGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBodyFatGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBodyFatGroupedRequestFieldEndDate)
 }
 
 var (
-	bodyMassIndexGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	bodyMassIndexGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	bodyMassIndexGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	bodyMassIndexGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	bodyMassIndexGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	bodyMassIndexGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBodyMassIndexGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBodyMassIndexGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBodyMassIndexGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBodyMassIndexGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBodyMassIndexGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BodyMassIndexGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBodyMassIndexGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -576,66 +502,57 @@ type BodyMassIndexGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyMassIndexGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBodyMassIndexGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyMassIndexGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyMassIndexGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyMassIndexGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(bodyMassIndexGroupedVitalsRequestFieldCursor)
+func (v *VitalsBodyMassIndexGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBodyMassIndexGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyMassIndexGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(bodyMassIndexGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBodyMassIndexGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBodyMassIndexGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyMassIndexGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bodyMassIndexGroupedVitalsRequestFieldProvider)
+func (v *VitalsBodyMassIndexGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBodyMassIndexGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyMassIndexGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bodyMassIndexGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBodyMassIndexGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBodyMassIndexGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyMassIndexGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bodyMassIndexGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBodyMassIndexGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBodyMassIndexGroupedRequestFieldEndDate)
 }
 
 var (
-	bodyTemperatureDeltaGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	bodyTemperatureDeltaGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	bodyTemperatureDeltaGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	bodyTemperatureDeltaGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	bodyTemperatureDeltaGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	bodyTemperatureDeltaGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBodyTemperatureDeltaGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBodyTemperatureDeltaGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBodyTemperatureDeltaGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBodyTemperatureDeltaGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBodyTemperatureDeltaGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BodyTemperatureDeltaGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBodyTemperatureDeltaGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -651,66 +568,57 @@ type BodyTemperatureDeltaGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyTemperatureDeltaGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBodyTemperatureDeltaGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureDeltaGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyTemperatureDeltaGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureDeltaGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(bodyTemperatureDeltaGroupedVitalsRequestFieldCursor)
+func (v *VitalsBodyTemperatureDeltaGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBodyTemperatureDeltaGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureDeltaGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(bodyTemperatureDeltaGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBodyTemperatureDeltaGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBodyTemperatureDeltaGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureDeltaGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bodyTemperatureDeltaGroupedVitalsRequestFieldProvider)
+func (v *VitalsBodyTemperatureDeltaGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBodyTemperatureDeltaGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureDeltaGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bodyTemperatureDeltaGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBodyTemperatureDeltaGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBodyTemperatureDeltaGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureDeltaGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bodyTemperatureDeltaGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBodyTemperatureDeltaGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBodyTemperatureDeltaGroupedRequestFieldEndDate)
 }
 
 var (
-	bodyTemperatureGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	bodyTemperatureGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	bodyTemperatureGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	bodyTemperatureGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	bodyTemperatureGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	bodyTemperatureGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBodyTemperatureGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBodyTemperatureGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBodyTemperatureGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBodyTemperatureGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBodyTemperatureGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BodyTemperatureGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBodyTemperatureGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -726,64 +634,55 @@ type BodyTemperatureGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyTemperatureGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBodyTemperatureGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyTemperatureGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(bodyTemperatureGroupedVitalsRequestFieldCursor)
+func (v *VitalsBodyTemperatureGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBodyTemperatureGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(bodyTemperatureGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBodyTemperatureGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBodyTemperatureGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bodyTemperatureGroupedVitalsRequestFieldProvider)
+func (v *VitalsBodyTemperatureGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBodyTemperatureGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bodyTemperatureGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBodyTemperatureGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBodyTemperatureGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyTemperatureGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bodyTemperatureGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBodyTemperatureGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBodyTemperatureGroupedRequestFieldEndDate)
 }
 
 var (
-	bodyWeightVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	bodyWeightVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	bodyWeightVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	bodyWeightVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsBodyWeightRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsBodyWeightRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsBodyWeightRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type BodyWeightVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBodyWeightRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -795,52 +694,43 @@ type BodyWeightVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyWeightVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBodyWeightRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyWeightVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bodyWeightVitalsRequestFieldProvider)
+func (v *VitalsBodyWeightRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBodyWeightRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bodyWeightVitalsRequestFieldStartDate)
+func (v *VitalsBodyWeightRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBodyWeightRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bodyWeightVitalsRequestFieldEndDate)
+func (v *VitalsBodyWeightRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBodyWeightRequestFieldEndDate)
 }
 
 var (
-	bodyWeightGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	bodyWeightGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	bodyWeightGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	bodyWeightGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	bodyWeightGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	bodyWeightGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsBodyWeightGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsBodyWeightGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsBodyWeightGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsBodyWeightGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsBodyWeightGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type BodyWeightGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsBodyWeightGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -856,64 +746,55 @@ type BodyWeightGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyWeightGroupedVitalsRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (v *VitalsBodyWeightGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightGroupedVitalsRequest) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyWeightGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightGroupedVitalsRequest) SetCursor(cursor *string) {
-	b.Cursor = cursor
-	b.require(bodyWeightGroupedVitalsRequestFieldCursor)
+func (v *VitalsBodyWeightGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsBodyWeightGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	b.NextCursor = nextCursor
-	b.require(bodyWeightGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsBodyWeightGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsBodyWeightGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightGroupedVitalsRequest) SetProvider(provider *string) {
-	b.Provider = provider
-	b.require(bodyWeightGroupedVitalsRequestFieldProvider)
+func (v *VitalsBodyWeightGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsBodyWeightGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightGroupedVitalsRequest) SetStartDate(startDate string) {
-	b.StartDate = startDate
-	b.require(bodyWeightGroupedVitalsRequestFieldStartDate)
+func (v *VitalsBodyWeightGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsBodyWeightGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyWeightGroupedVitalsRequest) SetEndDate(endDate *string) {
-	b.EndDate = endDate
-	b.require(bodyWeightGroupedVitalsRequestFieldEndDate)
+func (v *VitalsBodyWeightGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsBodyWeightGroupedRequestFieldEndDate)
 }
 
 var (
-	caffeineVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	caffeineVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	caffeineVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	caffeineVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCaffeineRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCaffeineRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCaffeineRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CaffeineVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCaffeineRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -925,52 +806,43 @@ type CaffeineVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CaffeineVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCaffeineRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(caffeineVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(caffeineVitalsRequestFieldProvider)
+func (v *VitalsCaffeineRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCaffeineRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(caffeineVitalsRequestFieldStartDate)
+func (v *VitalsCaffeineRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCaffeineRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(caffeineVitalsRequestFieldEndDate)
+func (v *VitalsCaffeineRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCaffeineRequestFieldEndDate)
 }
 
 var (
-	caffeineGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	caffeineGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	caffeineGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	caffeineGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	caffeineGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	caffeineGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsCaffeineGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsCaffeineGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsCaffeineGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsCaffeineGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsCaffeineGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type CaffeineGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCaffeineGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -986,64 +858,55 @@ type CaffeineGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CaffeineGroupedVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCaffeineGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineGroupedVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(caffeineGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineGroupedVitalsRequest) SetCursor(cursor *string) {
-	c.Cursor = cursor
-	c.require(caffeineGroupedVitalsRequestFieldCursor)
+func (v *VitalsCaffeineGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsCaffeineGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	c.NextCursor = nextCursor
-	c.require(caffeineGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsCaffeineGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsCaffeineGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineGroupedVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(caffeineGroupedVitalsRequestFieldProvider)
+func (v *VitalsCaffeineGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCaffeineGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineGroupedVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(caffeineGroupedVitalsRequestFieldStartDate)
+func (v *VitalsCaffeineGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCaffeineGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaffeineGroupedVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(caffeineGroupedVitalsRequestFieldEndDate)
+func (v *VitalsCaffeineGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCaffeineGroupedRequestFieldEndDate)
 }
 
 var (
-	caloriesActiveVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	caloriesActiveVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	caloriesActiveVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	caloriesActiveVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCaloriesActiveRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCaloriesActiveRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCaloriesActiveRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CaloriesActiveVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCaloriesActiveRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1055,52 +918,43 @@ type CaloriesActiveVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CaloriesActiveVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCaloriesActiveRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(caloriesActiveVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(caloriesActiveVitalsRequestFieldProvider)
+func (v *VitalsCaloriesActiveRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCaloriesActiveRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(caloriesActiveVitalsRequestFieldStartDate)
+func (v *VitalsCaloriesActiveRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCaloriesActiveRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(caloriesActiveVitalsRequestFieldEndDate)
+func (v *VitalsCaloriesActiveRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCaloriesActiveRequestFieldEndDate)
 }
 
 var (
-	caloriesActiveGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	caloriesActiveGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	caloriesActiveGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	caloriesActiveGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	caloriesActiveGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	caloriesActiveGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsCaloriesActiveGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsCaloriesActiveGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsCaloriesActiveGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsCaloriesActiveGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsCaloriesActiveGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type CaloriesActiveGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCaloriesActiveGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -1116,64 +970,55 @@ type CaloriesActiveGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CaloriesActiveGroupedVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCaloriesActiveGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveGroupedVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(caloriesActiveGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveGroupedVitalsRequest) SetCursor(cursor *string) {
-	c.Cursor = cursor
-	c.require(caloriesActiveGroupedVitalsRequestFieldCursor)
+func (v *VitalsCaloriesActiveGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsCaloriesActiveGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	c.NextCursor = nextCursor
-	c.require(caloriesActiveGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsCaloriesActiveGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsCaloriesActiveGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveGroupedVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(caloriesActiveGroupedVitalsRequestFieldProvider)
+func (v *VitalsCaloriesActiveGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCaloriesActiveGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveGroupedVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(caloriesActiveGroupedVitalsRequestFieldStartDate)
+func (v *VitalsCaloriesActiveGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCaloriesActiveGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesActiveGroupedVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(caloriesActiveGroupedVitalsRequestFieldEndDate)
+func (v *VitalsCaloriesActiveGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCaloriesActiveGroupedRequestFieldEndDate)
 }
 
 var (
-	caloriesBasalVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	caloriesBasalVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	caloriesBasalVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	caloriesBasalVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCaloriesBasalRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCaloriesBasalRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCaloriesBasalRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CaloriesBasalVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCaloriesBasalRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1185,52 +1030,43 @@ type CaloriesBasalVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CaloriesBasalVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCaloriesBasalRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(caloriesBasalVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(caloriesBasalVitalsRequestFieldProvider)
+func (v *VitalsCaloriesBasalRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCaloriesBasalRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(caloriesBasalVitalsRequestFieldStartDate)
+func (v *VitalsCaloriesBasalRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCaloriesBasalRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(caloriesBasalVitalsRequestFieldEndDate)
+func (v *VitalsCaloriesBasalRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCaloriesBasalRequestFieldEndDate)
 }
 
 var (
-	caloriesBasalGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	caloriesBasalGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	caloriesBasalGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	caloriesBasalGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	caloriesBasalGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	caloriesBasalGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsCaloriesBasalGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsCaloriesBasalGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsCaloriesBasalGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsCaloriesBasalGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsCaloriesBasalGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type CaloriesBasalGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCaloriesBasalGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -1246,66 +1082,57 @@ type CaloriesBasalGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CaloriesBasalGroupedVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCaloriesBasalGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalGroupedVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(caloriesBasalGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalGroupedVitalsRequest) SetCursor(cursor *string) {
-	c.Cursor = cursor
-	c.require(caloriesBasalGroupedVitalsRequestFieldCursor)
+func (v *VitalsCaloriesBasalGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsCaloriesBasalGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	c.NextCursor = nextCursor
-	c.require(caloriesBasalGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsCaloriesBasalGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsCaloriesBasalGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalGroupedVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(caloriesBasalGroupedVitalsRequestFieldProvider)
+func (v *VitalsCaloriesBasalGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCaloriesBasalGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalGroupedVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(caloriesBasalGroupedVitalsRequestFieldStartDate)
+func (v *VitalsCaloriesBasalGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCaloriesBasalGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaloriesBasalGroupedVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(caloriesBasalGroupedVitalsRequestFieldEndDate)
+func (v *VitalsCaloriesBasalGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCaloriesBasalGroupedRequestFieldEndDate)
 }
 
 var (
-	carbohydratesGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	carbohydratesGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	carbohydratesGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	carbohydratesGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	carbohydratesGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	carbohydratesGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsCarbohydratesGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsCarbohydratesGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsCarbohydratesGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsCarbohydratesGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsCarbohydratesGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type CarbohydratesGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCarbohydratesGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -1321,64 +1148,55 @@ type CarbohydratesGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CarbohydratesGroupedVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCarbohydratesGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CarbohydratesGroupedVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(carbohydratesGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CarbohydratesGroupedVitalsRequest) SetCursor(cursor *string) {
-	c.Cursor = cursor
-	c.require(carbohydratesGroupedVitalsRequestFieldCursor)
+func (v *VitalsCarbohydratesGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsCarbohydratesGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CarbohydratesGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	c.NextCursor = nextCursor
-	c.require(carbohydratesGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsCarbohydratesGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsCarbohydratesGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CarbohydratesGroupedVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(carbohydratesGroupedVitalsRequestFieldProvider)
+func (v *VitalsCarbohydratesGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCarbohydratesGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CarbohydratesGroupedVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(carbohydratesGroupedVitalsRequestFieldStartDate)
+func (v *VitalsCarbohydratesGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCarbohydratesGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CarbohydratesGroupedVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(carbohydratesGroupedVitalsRequestFieldEndDate)
+func (v *VitalsCarbohydratesGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCarbohydratesGroupedRequestFieldEndDate)
 }
 
 var (
-	cholesterolVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	cholesterolVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	cholesterolVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	cholesterolVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCholesterolRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCholesterolRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCholesterolRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CholesterolVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCholesterolRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1390,50 +1208,41 @@ type CholesterolVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CholesterolVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCholesterolRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(cholesterolVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(cholesterolVitalsRequestFieldProvider)
+func (v *VitalsCholesterolRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCholesterolRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(cholesterolVitalsRequestFieldStartDate)
+func (v *VitalsCholesterolRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCholesterolRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(cholesterolVitalsRequestFieldEndDate)
+func (v *VitalsCholesterolRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCholesterolRequestFieldEndDate)
 }
 
 var (
-	cholesterolHdlVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	cholesterolHdlVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	cholesterolHdlVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	cholesterolHdlVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCholesterolHdlRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCholesterolHdlRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCholesterolHdlRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CholesterolHdlVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCholesterolHdlRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1445,50 +1254,41 @@ type CholesterolHdlVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CholesterolHdlVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCholesterolHdlRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolHdlVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(cholesterolHdlVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolHdlVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(cholesterolHdlVitalsRequestFieldProvider)
+func (v *VitalsCholesterolHdlRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCholesterolHdlRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolHdlVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(cholesterolHdlVitalsRequestFieldStartDate)
+func (v *VitalsCholesterolHdlRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCholesterolHdlRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolHdlVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(cholesterolHdlVitalsRequestFieldEndDate)
+func (v *VitalsCholesterolHdlRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCholesterolHdlRequestFieldEndDate)
 }
 
 var (
-	cholesterolLdlVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	cholesterolLdlVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	cholesterolLdlVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	cholesterolLdlVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCholesterolLdlRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCholesterolLdlRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCholesterolLdlRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CholesterolLdlVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCholesterolLdlRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1500,50 +1300,41 @@ type CholesterolLdlVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CholesterolLdlVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCholesterolLdlRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolLdlVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(cholesterolLdlVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolLdlVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(cholesterolLdlVitalsRequestFieldProvider)
+func (v *VitalsCholesterolLdlRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCholesterolLdlRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolLdlVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(cholesterolLdlVitalsRequestFieldStartDate)
+func (v *VitalsCholesterolLdlRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCholesterolLdlRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolLdlVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(cholesterolLdlVitalsRequestFieldEndDate)
+func (v *VitalsCholesterolLdlRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCholesterolLdlRequestFieldEndDate)
 }
 
 var (
-	cholesterolTotalVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	cholesterolTotalVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	cholesterolTotalVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	cholesterolTotalVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCholesterolTotalRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCholesterolTotalRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCholesterolTotalRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CholesterolTotalVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCholesterolTotalRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1555,50 +1346,41 @@ type CholesterolTotalVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CholesterolTotalVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCholesterolTotalRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTotalVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(cholesterolTotalVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTotalVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(cholesterolTotalVitalsRequestFieldProvider)
+func (v *VitalsCholesterolTotalRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCholesterolTotalRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTotalVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(cholesterolTotalVitalsRequestFieldStartDate)
+func (v *VitalsCholesterolTotalRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCholesterolTotalRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTotalVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(cholesterolTotalVitalsRequestFieldEndDate)
+func (v *VitalsCholesterolTotalRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCholesterolTotalRequestFieldEndDate)
 }
 
 var (
-	cholesterolTriglyceridesVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	cholesterolTriglyceridesVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	cholesterolTriglyceridesVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	cholesterolTriglyceridesVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsCholesterolTriglyceridesRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsCholesterolTriglyceridesRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsCholesterolTriglyceridesRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type CholesterolTriglyceridesVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCholesterolTriglyceridesRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1610,52 +1392,43 @@ type CholesterolTriglyceridesVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CholesterolTriglyceridesVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCholesterolTriglyceridesRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTriglyceridesVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(cholesterolTriglyceridesVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTriglyceridesVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(cholesterolTriglyceridesVitalsRequestFieldProvider)
+func (v *VitalsCholesterolTriglyceridesRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCholesterolTriglyceridesRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTriglyceridesVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(cholesterolTriglyceridesVitalsRequestFieldStartDate)
+func (v *VitalsCholesterolTriglyceridesRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCholesterolTriglyceridesRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolTriglyceridesVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(cholesterolTriglyceridesVitalsRequestFieldEndDate)
+func (v *VitalsCholesterolTriglyceridesRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCholesterolTriglyceridesRequestFieldEndDate)
 }
 
 var (
-	cholesterolGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	cholesterolGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	cholesterolGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	cholesterolGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	cholesterolGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	cholesterolGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsCholesterolGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsCholesterolGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsCholesterolGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsCholesterolGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsCholesterolGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type CholesterolGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsCholesterolGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -1671,66 +1444,57 @@ type CholesterolGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (c *CholesterolGroupedVitalsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
+func (v *VitalsCholesterolGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolGroupedVitalsRequest) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(cholesterolGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolGroupedVitalsRequest) SetCursor(cursor *string) {
-	c.Cursor = cursor
-	c.require(cholesterolGroupedVitalsRequestFieldCursor)
+func (v *VitalsCholesterolGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsCholesterolGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	c.NextCursor = nextCursor
-	c.require(cholesterolGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsCholesterolGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsCholesterolGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolGroupedVitalsRequest) SetProvider(provider *string) {
-	c.Provider = provider
-	c.require(cholesterolGroupedVitalsRequestFieldProvider)
+func (v *VitalsCholesterolGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsCholesterolGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolGroupedVitalsRequest) SetStartDate(startDate string) {
-	c.StartDate = startDate
-	c.require(cholesterolGroupedVitalsRequestFieldStartDate)
+func (v *VitalsCholesterolGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsCholesterolGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CholesterolGroupedVitalsRequest) SetEndDate(endDate *string) {
-	c.EndDate = endDate
-	c.require(cholesterolGroupedVitalsRequestFieldEndDate)
+func (v *VitalsCholesterolGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsCholesterolGroupedRequestFieldEndDate)
 }
 
 var (
-	daylightExposureGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	daylightExposureGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	daylightExposureGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	daylightExposureGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	daylightExposureGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	daylightExposureGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsDaylightExposureGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsDaylightExposureGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsDaylightExposureGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsDaylightExposureGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsDaylightExposureGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type DaylightExposureGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsDaylightExposureGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -1746,64 +1510,55 @@ type DaylightExposureGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DaylightExposureGroupedVitalsRequest) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
+func (v *VitalsDaylightExposureGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DaylightExposureGroupedVitalsRequest) SetUserId(userId string) {
-	d.UserId = userId
-	d.require(daylightExposureGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DaylightExposureGroupedVitalsRequest) SetCursor(cursor *string) {
-	d.Cursor = cursor
-	d.require(daylightExposureGroupedVitalsRequestFieldCursor)
+func (v *VitalsDaylightExposureGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsDaylightExposureGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DaylightExposureGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	d.NextCursor = nextCursor
-	d.require(daylightExposureGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsDaylightExposureGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsDaylightExposureGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DaylightExposureGroupedVitalsRequest) SetProvider(provider *string) {
-	d.Provider = provider
-	d.require(daylightExposureGroupedVitalsRequestFieldProvider)
+func (v *VitalsDaylightExposureGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsDaylightExposureGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DaylightExposureGroupedVitalsRequest) SetStartDate(startDate string) {
-	d.StartDate = startDate
-	d.require(daylightExposureGroupedVitalsRequestFieldStartDate)
+func (v *VitalsDaylightExposureGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsDaylightExposureGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DaylightExposureGroupedVitalsRequest) SetEndDate(endDate *string) {
-	d.EndDate = endDate
-	d.require(daylightExposureGroupedVitalsRequestFieldEndDate)
+func (v *VitalsDaylightExposureGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsDaylightExposureGroupedRequestFieldEndDate)
 }
 
 var (
-	distanceVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	distanceVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	distanceVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	distanceVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsDistanceRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsDistanceRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsDistanceRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type DistanceVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsDistanceRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1815,52 +1570,43 @@ type DistanceVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DistanceVitalsRequest) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
+func (v *VitalsDistanceRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceVitalsRequest) SetUserId(userId string) {
-	d.UserId = userId
-	d.require(distanceVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceVitalsRequest) SetProvider(provider *string) {
-	d.Provider = provider
-	d.require(distanceVitalsRequestFieldProvider)
+func (v *VitalsDistanceRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsDistanceRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceVitalsRequest) SetStartDate(startDate string) {
-	d.StartDate = startDate
-	d.require(distanceVitalsRequestFieldStartDate)
+func (v *VitalsDistanceRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsDistanceRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceVitalsRequest) SetEndDate(endDate *string) {
-	d.EndDate = endDate
-	d.require(distanceVitalsRequestFieldEndDate)
+func (v *VitalsDistanceRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsDistanceRequestFieldEndDate)
 }
 
 var (
-	distanceGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	distanceGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	distanceGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	distanceGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	distanceGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	distanceGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsDistanceGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsDistanceGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsDistanceGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsDistanceGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsDistanceGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type DistanceGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsDistanceGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -1876,64 +1622,55 @@ type DistanceGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (d *DistanceGroupedVitalsRequest) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
+func (v *VitalsDistanceGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceGroupedVitalsRequest) SetUserId(userId string) {
-	d.UserId = userId
-	d.require(distanceGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceGroupedVitalsRequest) SetCursor(cursor *string) {
-	d.Cursor = cursor
-	d.require(distanceGroupedVitalsRequestFieldCursor)
+func (v *VitalsDistanceGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsDistanceGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	d.NextCursor = nextCursor
-	d.require(distanceGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsDistanceGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsDistanceGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceGroupedVitalsRequest) SetProvider(provider *string) {
-	d.Provider = provider
-	d.require(distanceGroupedVitalsRequestFieldProvider)
+func (v *VitalsDistanceGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsDistanceGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceGroupedVitalsRequest) SetStartDate(startDate string) {
-	d.StartDate = startDate
-	d.require(distanceGroupedVitalsRequestFieldStartDate)
+func (v *VitalsDistanceGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsDistanceGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DistanceGroupedVitalsRequest) SetEndDate(endDate *string) {
-	d.EndDate = endDate
-	d.require(distanceGroupedVitalsRequestFieldEndDate)
+func (v *VitalsDistanceGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsDistanceGroupedRequestFieldEndDate)
 }
 
 var (
-	electrocardiogramVoltageVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	electrocardiogramVoltageVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	electrocardiogramVoltageVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	electrocardiogramVoltageVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsElectrocardiogramVoltageRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsElectrocardiogramVoltageRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsElectrocardiogramVoltageRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type ElectrocardiogramVoltageVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsElectrocardiogramVoltageRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -1945,52 +1682,43 @@ type ElectrocardiogramVoltageVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (e *ElectrocardiogramVoltageVitalsRequest) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
+func (v *VitalsElectrocardiogramVoltageRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageVitalsRequest) SetUserId(userId string) {
-	e.UserId = userId
-	e.require(electrocardiogramVoltageVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageVitalsRequest) SetProvider(provider *string) {
-	e.Provider = provider
-	e.require(electrocardiogramVoltageVitalsRequestFieldProvider)
+func (v *VitalsElectrocardiogramVoltageRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsElectrocardiogramVoltageRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageVitalsRequest) SetStartDate(startDate string) {
-	e.StartDate = startDate
-	e.require(electrocardiogramVoltageVitalsRequestFieldStartDate)
+func (v *VitalsElectrocardiogramVoltageRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsElectrocardiogramVoltageRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageVitalsRequest) SetEndDate(endDate *string) {
-	e.EndDate = endDate
-	e.require(electrocardiogramVoltageVitalsRequestFieldEndDate)
+func (v *VitalsElectrocardiogramVoltageRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsElectrocardiogramVoltageRequestFieldEndDate)
 }
 
 var (
-	electrocardiogramVoltageGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	electrocardiogramVoltageGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	electrocardiogramVoltageGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	electrocardiogramVoltageGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	electrocardiogramVoltageGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	electrocardiogramVoltageGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsElectrocardiogramVoltageGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsElectrocardiogramVoltageGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsElectrocardiogramVoltageGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsElectrocardiogramVoltageGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsElectrocardiogramVoltageGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type ElectrocardiogramVoltageGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsElectrocardiogramVoltageGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2006,66 +1734,57 @@ type ElectrocardiogramVoltageGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (e *ElectrocardiogramVoltageGroupedVitalsRequest) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
+func (v *VitalsElectrocardiogramVoltageGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageGroupedVitalsRequest) SetUserId(userId string) {
-	e.UserId = userId
-	e.require(electrocardiogramVoltageGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageGroupedVitalsRequest) SetCursor(cursor *string) {
-	e.Cursor = cursor
-	e.require(electrocardiogramVoltageGroupedVitalsRequestFieldCursor)
+func (v *VitalsElectrocardiogramVoltageGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsElectrocardiogramVoltageGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	e.NextCursor = nextCursor
-	e.require(electrocardiogramVoltageGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsElectrocardiogramVoltageGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsElectrocardiogramVoltageGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageGroupedVitalsRequest) SetProvider(provider *string) {
-	e.Provider = provider
-	e.require(electrocardiogramVoltageGroupedVitalsRequestFieldProvider)
+func (v *VitalsElectrocardiogramVoltageGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsElectrocardiogramVoltageGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageGroupedVitalsRequest) SetStartDate(startDate string) {
-	e.StartDate = startDate
-	e.require(electrocardiogramVoltageGroupedVitalsRequestFieldStartDate)
+func (v *VitalsElectrocardiogramVoltageGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsElectrocardiogramVoltageGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *ElectrocardiogramVoltageGroupedVitalsRequest) SetEndDate(endDate *string) {
-	e.EndDate = endDate
-	e.require(electrocardiogramVoltageGroupedVitalsRequestFieldEndDate)
+func (v *VitalsElectrocardiogramVoltageGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsElectrocardiogramVoltageGroupedRequestFieldEndDate)
 }
 
 var (
-	fallGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	fallGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	fallGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	fallGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	fallGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	fallGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsFallGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsFallGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsFallGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsFallGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsFallGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type FallGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsFallGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2081,64 +1800,55 @@ type FallGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (f *FallGroupedVitalsRequest) require(field *big.Int) {
-	if f.explicitFields == nil {
-		f.explicitFields = big.NewInt(0)
+func (v *VitalsFallGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	f.explicitFields.Or(f.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FallGroupedVitalsRequest) SetUserId(userId string) {
-	f.UserId = userId
-	f.require(fallGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FallGroupedVitalsRequest) SetCursor(cursor *string) {
-	f.Cursor = cursor
-	f.require(fallGroupedVitalsRequestFieldCursor)
+func (v *VitalsFallGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsFallGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FallGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	f.NextCursor = nextCursor
-	f.require(fallGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsFallGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsFallGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FallGroupedVitalsRequest) SetProvider(provider *string) {
-	f.Provider = provider
-	f.require(fallGroupedVitalsRequestFieldProvider)
+func (v *VitalsFallGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsFallGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FallGroupedVitalsRequest) SetStartDate(startDate string) {
-	f.StartDate = startDate
-	f.require(fallGroupedVitalsRequestFieldStartDate)
+func (v *VitalsFallGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsFallGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FallGroupedVitalsRequest) SetEndDate(endDate *string) {
-	f.EndDate = endDate
-	f.require(fallGroupedVitalsRequestFieldEndDate)
+func (v *VitalsFallGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsFallGroupedRequestFieldEndDate)
 }
 
 var (
-	floorsClimbedVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	floorsClimbedVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	floorsClimbedVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	floorsClimbedVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsFloorsClimbedRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsFloorsClimbedRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsFloorsClimbedRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type FloorsClimbedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsFloorsClimbedRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -2150,52 +1860,43 @@ type FloorsClimbedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (f *FloorsClimbedVitalsRequest) require(field *big.Int) {
-	if f.explicitFields == nil {
-		f.explicitFields = big.NewInt(0)
+func (v *VitalsFloorsClimbedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	f.explicitFields.Or(f.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedVitalsRequest) SetUserId(userId string) {
-	f.UserId = userId
-	f.require(floorsClimbedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedVitalsRequest) SetProvider(provider *string) {
-	f.Provider = provider
-	f.require(floorsClimbedVitalsRequestFieldProvider)
+func (v *VitalsFloorsClimbedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsFloorsClimbedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedVitalsRequest) SetStartDate(startDate string) {
-	f.StartDate = startDate
-	f.require(floorsClimbedVitalsRequestFieldStartDate)
+func (v *VitalsFloorsClimbedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsFloorsClimbedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedVitalsRequest) SetEndDate(endDate *string) {
-	f.EndDate = endDate
-	f.require(floorsClimbedVitalsRequestFieldEndDate)
+func (v *VitalsFloorsClimbedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsFloorsClimbedRequestFieldEndDate)
 }
 
 var (
-	floorsClimbedGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	floorsClimbedGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	floorsClimbedGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	floorsClimbedGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	floorsClimbedGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	floorsClimbedGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsFloorsClimbedGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsFloorsClimbedGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsFloorsClimbedGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsFloorsClimbedGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsFloorsClimbedGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type FloorsClimbedGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsFloorsClimbedGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2211,66 +1912,57 @@ type FloorsClimbedGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (f *FloorsClimbedGroupedVitalsRequest) require(field *big.Int) {
-	if f.explicitFields == nil {
-		f.explicitFields = big.NewInt(0)
+func (v *VitalsFloorsClimbedGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	f.explicitFields.Or(f.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedGroupedVitalsRequest) SetUserId(userId string) {
-	f.UserId = userId
-	f.require(floorsClimbedGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedGroupedVitalsRequest) SetCursor(cursor *string) {
-	f.Cursor = cursor
-	f.require(floorsClimbedGroupedVitalsRequestFieldCursor)
+func (v *VitalsFloorsClimbedGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsFloorsClimbedGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	f.NextCursor = nextCursor
-	f.require(floorsClimbedGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsFloorsClimbedGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsFloorsClimbedGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedGroupedVitalsRequest) SetProvider(provider *string) {
-	f.Provider = provider
-	f.require(floorsClimbedGroupedVitalsRequestFieldProvider)
+func (v *VitalsFloorsClimbedGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsFloorsClimbedGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedGroupedVitalsRequest) SetStartDate(startDate string) {
-	f.StartDate = startDate
-	f.require(floorsClimbedGroupedVitalsRequestFieldStartDate)
+func (v *VitalsFloorsClimbedGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsFloorsClimbedGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FloorsClimbedGroupedVitalsRequest) SetEndDate(endDate *string) {
-	f.EndDate = endDate
-	f.require(floorsClimbedGroupedVitalsRequestFieldEndDate)
+func (v *VitalsFloorsClimbedGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsFloorsClimbedGroupedRequestFieldEndDate)
 }
 
 var (
-	forcedExpiratoryVolume1GroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	forcedExpiratoryVolume1GroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	forcedExpiratoryVolume1GroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	forcedExpiratoryVolume1GroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	forcedExpiratoryVolume1GroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	forcedExpiratoryVolume1GroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsForcedExpiratoryVolume1GroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsForcedExpiratoryVolume1GroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsForcedExpiratoryVolume1GroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsForcedExpiratoryVolume1GroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsForcedExpiratoryVolume1GroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type ForcedExpiratoryVolume1GroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsForcedExpiratoryVolume1GroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2286,66 +1978,57 @@ type ForcedExpiratoryVolume1GroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (f *ForcedExpiratoryVolume1GroupedVitalsRequest) require(field *big.Int) {
-	if f.explicitFields == nil {
-		f.explicitFields = big.NewInt(0)
+func (v *VitalsForcedExpiratoryVolume1GroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	f.explicitFields.Or(f.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedExpiratoryVolume1GroupedVitalsRequest) SetUserId(userId string) {
-	f.UserId = userId
-	f.require(forcedExpiratoryVolume1GroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedExpiratoryVolume1GroupedVitalsRequest) SetCursor(cursor *string) {
-	f.Cursor = cursor
-	f.require(forcedExpiratoryVolume1GroupedVitalsRequestFieldCursor)
+func (v *VitalsForcedExpiratoryVolume1GroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsForcedExpiratoryVolume1GroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedExpiratoryVolume1GroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	f.NextCursor = nextCursor
-	f.require(forcedExpiratoryVolume1GroupedVitalsRequestFieldNextCursor)
+func (v *VitalsForcedExpiratoryVolume1GroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsForcedExpiratoryVolume1GroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedExpiratoryVolume1GroupedVitalsRequest) SetProvider(provider *string) {
-	f.Provider = provider
-	f.require(forcedExpiratoryVolume1GroupedVitalsRequestFieldProvider)
+func (v *VitalsForcedExpiratoryVolume1GroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsForcedExpiratoryVolume1GroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedExpiratoryVolume1GroupedVitalsRequest) SetStartDate(startDate string) {
-	f.StartDate = startDate
-	f.require(forcedExpiratoryVolume1GroupedVitalsRequestFieldStartDate)
+func (v *VitalsForcedExpiratoryVolume1GroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsForcedExpiratoryVolume1GroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedExpiratoryVolume1GroupedVitalsRequest) SetEndDate(endDate *string) {
-	f.EndDate = endDate
-	f.require(forcedExpiratoryVolume1GroupedVitalsRequestFieldEndDate)
+func (v *VitalsForcedExpiratoryVolume1GroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsForcedExpiratoryVolume1GroupedRequestFieldEndDate)
 }
 
 var (
-	forcedVitalCapacityGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	forcedVitalCapacityGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	forcedVitalCapacityGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	forcedVitalCapacityGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	forcedVitalCapacityGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	forcedVitalCapacityGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsForcedVitalCapacityGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsForcedVitalCapacityGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsForcedVitalCapacityGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsForcedVitalCapacityGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsForcedVitalCapacityGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type ForcedVitalCapacityGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsForcedVitalCapacityGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2361,64 +2044,55 @@ type ForcedVitalCapacityGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (f *ForcedVitalCapacityGroupedVitalsRequest) require(field *big.Int) {
-	if f.explicitFields == nil {
-		f.explicitFields = big.NewInt(0)
+func (v *VitalsForcedVitalCapacityGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	f.explicitFields.Or(f.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedVitalCapacityGroupedVitalsRequest) SetUserId(userId string) {
-	f.UserId = userId
-	f.require(forcedVitalCapacityGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedVitalCapacityGroupedVitalsRequest) SetCursor(cursor *string) {
-	f.Cursor = cursor
-	f.require(forcedVitalCapacityGroupedVitalsRequestFieldCursor)
+func (v *VitalsForcedVitalCapacityGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsForcedVitalCapacityGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedVitalCapacityGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	f.NextCursor = nextCursor
-	f.require(forcedVitalCapacityGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsForcedVitalCapacityGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsForcedVitalCapacityGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedVitalCapacityGroupedVitalsRequest) SetProvider(provider *string) {
-	f.Provider = provider
-	f.require(forcedVitalCapacityGroupedVitalsRequestFieldProvider)
+func (v *VitalsForcedVitalCapacityGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsForcedVitalCapacityGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedVitalCapacityGroupedVitalsRequest) SetStartDate(startDate string) {
-	f.StartDate = startDate
-	f.require(forcedVitalCapacityGroupedVitalsRequestFieldStartDate)
+func (v *VitalsForcedVitalCapacityGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsForcedVitalCapacityGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *ForcedVitalCapacityGroupedVitalsRequest) SetEndDate(endDate *string) {
-	f.EndDate = endDate
-	f.require(forcedVitalCapacityGroupedVitalsRequestFieldEndDate)
+func (v *VitalsForcedVitalCapacityGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsForcedVitalCapacityGroupedRequestFieldEndDate)
 }
 
 var (
-	glucoseVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	glucoseVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	glucoseVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	glucoseVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsGlucoseRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsGlucoseRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsGlucoseRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type GlucoseVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsGlucoseRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -2430,52 +2104,43 @@ type GlucoseVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GlucoseVitalsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (v *VitalsGlucoseRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseVitalsRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(glucoseVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseVitalsRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(glucoseVitalsRequestFieldProvider)
+func (v *VitalsGlucoseRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsGlucoseRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseVitalsRequest) SetStartDate(startDate string) {
-	g.StartDate = startDate
-	g.require(glucoseVitalsRequestFieldStartDate)
+func (v *VitalsGlucoseRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsGlucoseRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseVitalsRequest) SetEndDate(endDate *string) {
-	g.EndDate = endDate
-	g.require(glucoseVitalsRequestFieldEndDate)
+func (v *VitalsGlucoseRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsGlucoseRequestFieldEndDate)
 }
 
 var (
-	glucoseGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	glucoseGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	glucoseGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	glucoseGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	glucoseGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	glucoseGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsGlucoseGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsGlucoseGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsGlucoseGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsGlucoseGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsGlucoseGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type GlucoseGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsGlucoseGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2491,66 +2156,57 @@ type GlucoseGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GlucoseGroupedVitalsRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (v *VitalsGlucoseGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseGroupedVitalsRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(glucoseGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseGroupedVitalsRequest) SetCursor(cursor *string) {
-	g.Cursor = cursor
-	g.require(glucoseGroupedVitalsRequestFieldCursor)
+func (v *VitalsGlucoseGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsGlucoseGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(glucoseGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsGlucoseGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsGlucoseGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseGroupedVitalsRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(glucoseGroupedVitalsRequestFieldProvider)
+func (v *VitalsGlucoseGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsGlucoseGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseGroupedVitalsRequest) SetStartDate(startDate string) {
-	g.StartDate = startDate
-	g.require(glucoseGroupedVitalsRequestFieldStartDate)
+func (v *VitalsGlucoseGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsGlucoseGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GlucoseGroupedVitalsRequest) SetEndDate(endDate *string) {
-	g.EndDate = endDate
-	g.require(glucoseGroupedVitalsRequestFieldEndDate)
+func (v *VitalsGlucoseGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsGlucoseGroupedRequestFieldEndDate)
 }
 
 var (
-	handwashingGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	handwashingGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	handwashingGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	handwashingGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	handwashingGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	handwashingGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsHandwashingGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsHandwashingGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsHandwashingGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsHandwashingGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsHandwashingGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type HandwashingGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHandwashingGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2566,66 +2222,57 @@ type HandwashingGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HandwashingGroupedVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHandwashingGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HandwashingGroupedVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(handwashingGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HandwashingGroupedVitalsRequest) SetCursor(cursor *string) {
-	h.Cursor = cursor
-	h.require(handwashingGroupedVitalsRequestFieldCursor)
+func (v *VitalsHandwashingGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsHandwashingGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HandwashingGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	h.NextCursor = nextCursor
-	h.require(handwashingGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsHandwashingGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsHandwashingGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HandwashingGroupedVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(handwashingGroupedVitalsRequestFieldProvider)
+func (v *VitalsHandwashingGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHandwashingGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HandwashingGroupedVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(handwashingGroupedVitalsRequestFieldStartDate)
+func (v *VitalsHandwashingGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHandwashingGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HandwashingGroupedVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(handwashingGroupedVitalsRequestFieldEndDate)
+func (v *VitalsHandwashingGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHandwashingGroupedRequestFieldEndDate)
 }
 
 var (
-	heartRateAlertGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	heartRateAlertGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	heartRateAlertGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	heartRateAlertGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	heartRateAlertGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	heartRateAlertGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsHeartRateAlertGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsHeartRateAlertGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsHeartRateAlertGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsHeartRateAlertGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsHeartRateAlertGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type HeartRateAlertGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHeartRateAlertGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2641,66 +2288,57 @@ type HeartRateAlertGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HeartRateAlertGroupedVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHeartRateAlertGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateAlertGroupedVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(heartRateAlertGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateAlertGroupedVitalsRequest) SetCursor(cursor *string) {
-	h.Cursor = cursor
-	h.require(heartRateAlertGroupedVitalsRequestFieldCursor)
+func (v *VitalsHeartRateAlertGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsHeartRateAlertGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateAlertGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	h.NextCursor = nextCursor
-	h.require(heartRateAlertGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsHeartRateAlertGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsHeartRateAlertGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateAlertGroupedVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(heartRateAlertGroupedVitalsRequestFieldProvider)
+func (v *VitalsHeartRateAlertGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHeartRateAlertGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateAlertGroupedVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(heartRateAlertGroupedVitalsRequestFieldStartDate)
+func (v *VitalsHeartRateAlertGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHeartRateAlertGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateAlertGroupedVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(heartRateAlertGroupedVitalsRequestFieldEndDate)
+func (v *VitalsHeartRateAlertGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHeartRateAlertGroupedRequestFieldEndDate)
 }
 
 var (
-	heartRateRecoveryOneMinuteGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	heartRateRecoveryOneMinuteGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	heartRateRecoveryOneMinuteGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	heartRateRecoveryOneMinuteGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	heartRateRecoveryOneMinuteGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	heartRateRecoveryOneMinuteGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type HeartRateRecoveryOneMinuteGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHeartRateRecoveryOneMinuteGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2716,64 +2354,55 @@ type HeartRateRecoveryOneMinuteGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HeartRateRecoveryOneMinuteGroupedVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHeartRateRecoveryOneMinuteGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateRecoveryOneMinuteGroupedVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(heartRateRecoveryOneMinuteGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateRecoveryOneMinuteGroupedVitalsRequest) SetCursor(cursor *string) {
-	h.Cursor = cursor
-	h.require(heartRateRecoveryOneMinuteGroupedVitalsRequestFieldCursor)
+func (v *VitalsHeartRateRecoveryOneMinuteGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateRecoveryOneMinuteGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	h.NextCursor = nextCursor
-	h.require(heartRateRecoveryOneMinuteGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsHeartRateRecoveryOneMinuteGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateRecoveryOneMinuteGroupedVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(heartRateRecoveryOneMinuteGroupedVitalsRequestFieldProvider)
+func (v *VitalsHeartRateRecoveryOneMinuteGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateRecoveryOneMinuteGroupedVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(heartRateRecoveryOneMinuteGroupedVitalsRequestFieldStartDate)
+func (v *VitalsHeartRateRecoveryOneMinuteGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartRateRecoveryOneMinuteGroupedVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(heartRateRecoveryOneMinuteGroupedVitalsRequestFieldEndDate)
+func (v *VitalsHeartRateRecoveryOneMinuteGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHeartRateRecoveryOneMinuteGroupedRequestFieldEndDate)
 }
 
 var (
-	heartrateVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	heartrateVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	heartrateVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	heartrateVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsHeartrateRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsHeartrateRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsHeartrateRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type HeartrateVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHeartrateRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -2785,52 +2414,43 @@ type HeartrateVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HeartrateVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHeartrateRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(heartrateVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(heartrateVitalsRequestFieldProvider)
+func (v *VitalsHeartrateRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHeartrateRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(heartrateVitalsRequestFieldStartDate)
+func (v *VitalsHeartrateRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHeartrateRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(heartrateVitalsRequestFieldEndDate)
+func (v *VitalsHeartrateRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHeartrateRequestFieldEndDate)
 }
 
 var (
-	heartrateGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	heartrateGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	heartrateGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	heartrateGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	heartrateGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	heartrateGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsHeartrateGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsHeartrateGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsHeartrateGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsHeartrateGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsHeartrateGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type HeartrateGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHeartrateGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2846,64 +2466,55 @@ type HeartrateGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HeartrateGroupedVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHeartrateGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateGroupedVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(heartrateGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateGroupedVitalsRequest) SetCursor(cursor *string) {
-	h.Cursor = cursor
-	h.require(heartrateGroupedVitalsRequestFieldCursor)
+func (v *VitalsHeartrateGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsHeartrateGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	h.NextCursor = nextCursor
-	h.require(heartrateGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsHeartrateGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsHeartrateGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateGroupedVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(heartrateGroupedVitalsRequestFieldProvider)
+func (v *VitalsHeartrateGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHeartrateGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateGroupedVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(heartrateGroupedVitalsRequestFieldStartDate)
+func (v *VitalsHeartrateGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHeartrateGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HeartrateGroupedVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(heartrateGroupedVitalsRequestFieldEndDate)
+func (v *VitalsHeartrateGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHeartrateGroupedRequestFieldEndDate)
 }
 
 var (
-	hrvVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	hrvVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	hrvVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	hrvVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsHrvRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsHrvRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsHrvRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type HrvVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHrvRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -2915,52 +2526,43 @@ type HrvVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HrvVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHrvRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(hrvVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(hrvVitalsRequestFieldProvider)
+func (v *VitalsHrvRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHrvRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(hrvVitalsRequestFieldStartDate)
+func (v *VitalsHrvRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHrvRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(hrvVitalsRequestFieldEndDate)
+func (v *VitalsHrvRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHrvRequestFieldEndDate)
 }
 
 var (
-	hrvGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	hrvGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	hrvGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	hrvGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	hrvGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	hrvGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsHrvGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsHrvGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsHrvGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsHrvGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsHrvGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type HrvGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHrvGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -2976,64 +2578,55 @@ type HrvGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HrvGroupedVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHrvGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvGroupedVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(hrvGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvGroupedVitalsRequest) SetCursor(cursor *string) {
-	h.Cursor = cursor
-	h.require(hrvGroupedVitalsRequestFieldCursor)
+func (v *VitalsHrvGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsHrvGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	h.NextCursor = nextCursor
-	h.require(hrvGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsHrvGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsHrvGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvGroupedVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(hrvGroupedVitalsRequestFieldProvider)
+func (v *VitalsHrvGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHrvGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvGroupedVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(hrvGroupedVitalsRequestFieldStartDate)
+func (v *VitalsHrvGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHrvGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HrvGroupedVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(hrvGroupedVitalsRequestFieldEndDate)
+func (v *VitalsHrvGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHrvGroupedRequestFieldEndDate)
 }
 
 var (
-	hypnogramVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	hypnogramVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	hypnogramVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	hypnogramVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsHypnogramRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsHypnogramRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsHypnogramRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type HypnogramVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHypnogramRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -3045,52 +2638,43 @@ type HypnogramVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HypnogramVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHypnogramRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(hypnogramVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(hypnogramVitalsRequestFieldProvider)
+func (v *VitalsHypnogramRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHypnogramRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(hypnogramVitalsRequestFieldStartDate)
+func (v *VitalsHypnogramRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHypnogramRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(hypnogramVitalsRequestFieldEndDate)
+func (v *VitalsHypnogramRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHypnogramRequestFieldEndDate)
 }
 
 var (
-	hypnogramGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	hypnogramGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	hypnogramGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	hypnogramGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	hypnogramGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	hypnogramGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsHypnogramGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsHypnogramGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsHypnogramGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsHypnogramGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsHypnogramGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type HypnogramGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsHypnogramGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3106,64 +2690,55 @@ type HypnogramGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (h *HypnogramGroupedVitalsRequest) require(field *big.Int) {
-	if h.explicitFields == nil {
-		h.explicitFields = big.NewInt(0)
+func (v *VitalsHypnogramGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	h.explicitFields.Or(h.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramGroupedVitalsRequest) SetUserId(userId string) {
-	h.UserId = userId
-	h.require(hypnogramGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramGroupedVitalsRequest) SetCursor(cursor *string) {
-	h.Cursor = cursor
-	h.require(hypnogramGroupedVitalsRequestFieldCursor)
+func (v *VitalsHypnogramGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsHypnogramGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	h.NextCursor = nextCursor
-	h.require(hypnogramGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsHypnogramGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsHypnogramGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramGroupedVitalsRequest) SetProvider(provider *string) {
-	h.Provider = provider
-	h.require(hypnogramGroupedVitalsRequestFieldProvider)
+func (v *VitalsHypnogramGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsHypnogramGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramGroupedVitalsRequest) SetStartDate(startDate string) {
-	h.StartDate = startDate
-	h.require(hypnogramGroupedVitalsRequestFieldStartDate)
+func (v *VitalsHypnogramGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsHypnogramGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HypnogramGroupedVitalsRequest) SetEndDate(endDate *string) {
-	h.EndDate = endDate
-	h.require(hypnogramGroupedVitalsRequestFieldEndDate)
+func (v *VitalsHypnogramGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsHypnogramGroupedRequestFieldEndDate)
 }
 
 var (
-	igeVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	igeVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	igeVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	igeVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsIgeRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsIgeRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsIgeRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type IgeVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsIgeRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -3175,52 +2750,43 @@ type IgeVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (i *IgeVitalsRequest) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
+func (v *VitalsIgeRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeVitalsRequest) SetUserId(userId string) {
-	i.UserId = userId
-	i.require(igeVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeVitalsRequest) SetProvider(provider *string) {
-	i.Provider = provider
-	i.require(igeVitalsRequestFieldProvider)
+func (v *VitalsIgeRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsIgeRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeVitalsRequest) SetStartDate(startDate string) {
-	i.StartDate = startDate
-	i.require(igeVitalsRequestFieldStartDate)
+func (v *VitalsIgeRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsIgeRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeVitalsRequest) SetEndDate(endDate *string) {
-	i.EndDate = endDate
-	i.require(igeVitalsRequestFieldEndDate)
+func (v *VitalsIgeRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsIgeRequestFieldEndDate)
 }
 
 var (
-	igeGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	igeGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	igeGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	igeGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	igeGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	igeGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsIgeGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsIgeGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsIgeGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsIgeGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsIgeGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type IgeGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsIgeGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3236,64 +2802,55 @@ type IgeGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (i *IgeGroupedVitalsRequest) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
+func (v *VitalsIgeGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeGroupedVitalsRequest) SetUserId(userId string) {
-	i.UserId = userId
-	i.require(igeGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeGroupedVitalsRequest) SetCursor(cursor *string) {
-	i.Cursor = cursor
-	i.require(igeGroupedVitalsRequestFieldCursor)
+func (v *VitalsIgeGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsIgeGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	i.NextCursor = nextCursor
-	i.require(igeGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsIgeGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsIgeGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeGroupedVitalsRequest) SetProvider(provider *string) {
-	i.Provider = provider
-	i.require(igeGroupedVitalsRequestFieldProvider)
+func (v *VitalsIgeGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsIgeGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeGroupedVitalsRequest) SetStartDate(startDate string) {
-	i.StartDate = startDate
-	i.require(igeGroupedVitalsRequestFieldStartDate)
+func (v *VitalsIgeGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsIgeGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IgeGroupedVitalsRequest) SetEndDate(endDate *string) {
-	i.EndDate = endDate
-	i.require(igeGroupedVitalsRequestFieldEndDate)
+func (v *VitalsIgeGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsIgeGroupedRequestFieldEndDate)
 }
 
 var (
-	iggVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	iggVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	iggVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	iggVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsIggRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsIggRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsIggRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type IggVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsIggRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -3305,52 +2862,43 @@ type IggVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (i *IggVitalsRequest) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
+func (v *VitalsIggRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggVitalsRequest) SetUserId(userId string) {
-	i.UserId = userId
-	i.require(iggVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggVitalsRequest) SetProvider(provider *string) {
-	i.Provider = provider
-	i.require(iggVitalsRequestFieldProvider)
+func (v *VitalsIggRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsIggRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggVitalsRequest) SetStartDate(startDate string) {
-	i.StartDate = startDate
-	i.require(iggVitalsRequestFieldStartDate)
+func (v *VitalsIggRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsIggRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggVitalsRequest) SetEndDate(endDate *string) {
-	i.EndDate = endDate
-	i.require(iggVitalsRequestFieldEndDate)
+func (v *VitalsIggRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsIggRequestFieldEndDate)
 }
 
 var (
-	iggGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	iggGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	iggGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	iggGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	iggGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	iggGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsIggGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsIggGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsIggGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsIggGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsIggGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type IggGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsIggGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3366,66 +2914,57 @@ type IggGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (i *IggGroupedVitalsRequest) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
+func (v *VitalsIggGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggGroupedVitalsRequest) SetUserId(userId string) {
-	i.UserId = userId
-	i.require(iggGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggGroupedVitalsRequest) SetCursor(cursor *string) {
-	i.Cursor = cursor
-	i.require(iggGroupedVitalsRequestFieldCursor)
+func (v *VitalsIggGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsIggGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	i.NextCursor = nextCursor
-	i.require(iggGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsIggGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsIggGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggGroupedVitalsRequest) SetProvider(provider *string) {
-	i.Provider = provider
-	i.require(iggGroupedVitalsRequestFieldProvider)
+func (v *VitalsIggGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsIggGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggGroupedVitalsRequest) SetStartDate(startDate string) {
-	i.StartDate = startDate
-	i.require(iggGroupedVitalsRequestFieldStartDate)
+func (v *VitalsIggGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsIggGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IggGroupedVitalsRequest) SetEndDate(endDate *string) {
-	i.EndDate = endDate
-	i.require(iggGroupedVitalsRequestFieldEndDate)
+func (v *VitalsIggGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsIggGroupedRequestFieldEndDate)
 }
 
 var (
-	inhalerUsageGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	inhalerUsageGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	inhalerUsageGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	inhalerUsageGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	inhalerUsageGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	inhalerUsageGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsInhalerUsageGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsInhalerUsageGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsInhalerUsageGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsInhalerUsageGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsInhalerUsageGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type InhalerUsageGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsInhalerUsageGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3441,66 +2980,57 @@ type InhalerUsageGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (i *InhalerUsageGroupedVitalsRequest) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
+func (v *VitalsInhalerUsageGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InhalerUsageGroupedVitalsRequest) SetUserId(userId string) {
-	i.UserId = userId
-	i.require(inhalerUsageGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InhalerUsageGroupedVitalsRequest) SetCursor(cursor *string) {
-	i.Cursor = cursor
-	i.require(inhalerUsageGroupedVitalsRequestFieldCursor)
+func (v *VitalsInhalerUsageGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsInhalerUsageGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InhalerUsageGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	i.NextCursor = nextCursor
-	i.require(inhalerUsageGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsInhalerUsageGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsInhalerUsageGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InhalerUsageGroupedVitalsRequest) SetProvider(provider *string) {
-	i.Provider = provider
-	i.require(inhalerUsageGroupedVitalsRequestFieldProvider)
+func (v *VitalsInhalerUsageGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsInhalerUsageGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InhalerUsageGroupedVitalsRequest) SetStartDate(startDate string) {
-	i.StartDate = startDate
-	i.require(inhalerUsageGroupedVitalsRequestFieldStartDate)
+func (v *VitalsInhalerUsageGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsInhalerUsageGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InhalerUsageGroupedVitalsRequest) SetEndDate(endDate *string) {
-	i.EndDate = endDate
-	i.require(inhalerUsageGroupedVitalsRequestFieldEndDate)
+func (v *VitalsInhalerUsageGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsInhalerUsageGroupedRequestFieldEndDate)
 }
 
 var (
-	insulinInjectionGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	insulinInjectionGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	insulinInjectionGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	insulinInjectionGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	insulinInjectionGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	insulinInjectionGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsInsulinInjectionGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsInsulinInjectionGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsInsulinInjectionGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsInsulinInjectionGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsInsulinInjectionGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type InsulinInjectionGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsInsulinInjectionGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3516,66 +3046,57 @@ type InsulinInjectionGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (i *InsulinInjectionGroupedVitalsRequest) require(field *big.Int) {
-	if i.explicitFields == nil {
-		i.explicitFields = big.NewInt(0)
+func (v *VitalsInsulinInjectionGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	i.explicitFields.Or(i.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InsulinInjectionGroupedVitalsRequest) SetUserId(userId string) {
-	i.UserId = userId
-	i.require(insulinInjectionGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InsulinInjectionGroupedVitalsRequest) SetCursor(cursor *string) {
-	i.Cursor = cursor
-	i.require(insulinInjectionGroupedVitalsRequestFieldCursor)
+func (v *VitalsInsulinInjectionGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsInsulinInjectionGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InsulinInjectionGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	i.NextCursor = nextCursor
-	i.require(insulinInjectionGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsInsulinInjectionGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsInsulinInjectionGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InsulinInjectionGroupedVitalsRequest) SetProvider(provider *string) {
-	i.Provider = provider
-	i.require(insulinInjectionGroupedVitalsRequestFieldProvider)
+func (v *VitalsInsulinInjectionGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsInsulinInjectionGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InsulinInjectionGroupedVitalsRequest) SetStartDate(startDate string) {
-	i.StartDate = startDate
-	i.require(insulinInjectionGroupedVitalsRequestFieldStartDate)
+func (v *VitalsInsulinInjectionGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsInsulinInjectionGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InsulinInjectionGroupedVitalsRequest) SetEndDate(endDate *string) {
-	i.EndDate = endDate
-	i.require(insulinInjectionGroupedVitalsRequestFieldEndDate)
+func (v *VitalsInsulinInjectionGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsInsulinInjectionGroupedRequestFieldEndDate)
 }
 
 var (
-	leanBodyMassGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	leanBodyMassGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	leanBodyMassGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	leanBodyMassGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	leanBodyMassGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	leanBodyMassGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsLeanBodyMassGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsLeanBodyMassGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsLeanBodyMassGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsLeanBodyMassGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsLeanBodyMassGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type LeanBodyMassGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsLeanBodyMassGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3591,64 +3112,55 @@ type LeanBodyMassGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (l *LeanBodyMassGroupedVitalsRequest) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
+func (v *VitalsLeanBodyMassGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	l.explicitFields.Or(l.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LeanBodyMassGroupedVitalsRequest) SetUserId(userId string) {
-	l.UserId = userId
-	l.require(leanBodyMassGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LeanBodyMassGroupedVitalsRequest) SetCursor(cursor *string) {
-	l.Cursor = cursor
-	l.require(leanBodyMassGroupedVitalsRequestFieldCursor)
+func (v *VitalsLeanBodyMassGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsLeanBodyMassGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LeanBodyMassGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	l.NextCursor = nextCursor
-	l.require(leanBodyMassGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsLeanBodyMassGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsLeanBodyMassGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LeanBodyMassGroupedVitalsRequest) SetProvider(provider *string) {
-	l.Provider = provider
-	l.require(leanBodyMassGroupedVitalsRequestFieldProvider)
+func (v *VitalsLeanBodyMassGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsLeanBodyMassGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LeanBodyMassGroupedVitalsRequest) SetStartDate(startDate string) {
-	l.StartDate = startDate
-	l.require(leanBodyMassGroupedVitalsRequestFieldStartDate)
+func (v *VitalsLeanBodyMassGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsLeanBodyMassGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LeanBodyMassGroupedVitalsRequest) SetEndDate(endDate *string) {
-	l.EndDate = endDate
-	l.require(leanBodyMassGroupedVitalsRequestFieldEndDate)
+func (v *VitalsLeanBodyMassGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsLeanBodyMassGroupedRequestFieldEndDate)
 }
 
 var (
-	mindfulnessMinutesVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	mindfulnessMinutesVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	mindfulnessMinutesVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	mindfulnessMinutesVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsMindfulnessMinutesRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsMindfulnessMinutesRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsMindfulnessMinutesRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type MindfulnessMinutesVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsMindfulnessMinutesRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -3660,52 +3172,43 @@ type MindfulnessMinutesVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *MindfulnessMinutesVitalsRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (v *VitalsMindfulnessMinutesRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesVitalsRequest) SetUserId(userId string) {
-	m.UserId = userId
-	m.require(mindfulnessMinutesVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesVitalsRequest) SetProvider(provider *string) {
-	m.Provider = provider
-	m.require(mindfulnessMinutesVitalsRequestFieldProvider)
+func (v *VitalsMindfulnessMinutesRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsMindfulnessMinutesRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesVitalsRequest) SetStartDate(startDate string) {
-	m.StartDate = startDate
-	m.require(mindfulnessMinutesVitalsRequestFieldStartDate)
+func (v *VitalsMindfulnessMinutesRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsMindfulnessMinutesRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesVitalsRequest) SetEndDate(endDate *string) {
-	m.EndDate = endDate
-	m.require(mindfulnessMinutesVitalsRequestFieldEndDate)
+func (v *VitalsMindfulnessMinutesRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsMindfulnessMinutesRequestFieldEndDate)
 }
 
 var (
-	mindfulnessMinutesGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	mindfulnessMinutesGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	mindfulnessMinutesGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	mindfulnessMinutesGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	mindfulnessMinutesGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	mindfulnessMinutesGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsMindfulnessMinutesGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsMindfulnessMinutesGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsMindfulnessMinutesGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsMindfulnessMinutesGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsMindfulnessMinutesGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type MindfulnessMinutesGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsMindfulnessMinutesGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3721,66 +3224,57 @@ type MindfulnessMinutesGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (m *MindfulnessMinutesGroupedVitalsRequest) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (v *VitalsMindfulnessMinutesGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesGroupedVitalsRequest) SetUserId(userId string) {
-	m.UserId = userId
-	m.require(mindfulnessMinutesGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesGroupedVitalsRequest) SetCursor(cursor *string) {
-	m.Cursor = cursor
-	m.require(mindfulnessMinutesGroupedVitalsRequestFieldCursor)
+func (v *VitalsMindfulnessMinutesGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsMindfulnessMinutesGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	m.NextCursor = nextCursor
-	m.require(mindfulnessMinutesGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsMindfulnessMinutesGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsMindfulnessMinutesGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesGroupedVitalsRequest) SetProvider(provider *string) {
-	m.Provider = provider
-	m.require(mindfulnessMinutesGroupedVitalsRequestFieldProvider)
+func (v *VitalsMindfulnessMinutesGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsMindfulnessMinutesGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesGroupedVitalsRequest) SetStartDate(startDate string) {
-	m.StartDate = startDate
-	m.require(mindfulnessMinutesGroupedVitalsRequestFieldStartDate)
+func (v *VitalsMindfulnessMinutesGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsMindfulnessMinutesGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MindfulnessMinutesGroupedVitalsRequest) SetEndDate(endDate *string) {
-	m.EndDate = endDate
-	m.require(mindfulnessMinutesGroupedVitalsRequestFieldEndDate)
+func (v *VitalsMindfulnessMinutesGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsMindfulnessMinutesGroupedRequestFieldEndDate)
 }
 
 var (
-	noteGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	noteGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	noteGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	noteGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	noteGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	noteGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsNoteGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsNoteGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsNoteGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsNoteGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsNoteGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type NoteGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsNoteGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3796,66 +3290,57 @@ type NoteGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (n *NoteGroupedVitalsRequest) require(field *big.Int) {
-	if n.explicitFields == nil {
-		n.explicitFields = big.NewInt(0)
+func (v *VitalsNoteGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	n.explicitFields.Or(n.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NoteGroupedVitalsRequest) SetUserId(userId string) {
-	n.UserId = userId
-	n.require(noteGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NoteGroupedVitalsRequest) SetCursor(cursor *string) {
-	n.Cursor = cursor
-	n.require(noteGroupedVitalsRequestFieldCursor)
+func (v *VitalsNoteGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsNoteGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NoteGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	n.NextCursor = nextCursor
-	n.require(noteGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsNoteGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsNoteGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NoteGroupedVitalsRequest) SetProvider(provider *string) {
-	n.Provider = provider
-	n.require(noteGroupedVitalsRequestFieldProvider)
+func (v *VitalsNoteGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsNoteGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NoteGroupedVitalsRequest) SetStartDate(startDate string) {
-	n.StartDate = startDate
-	n.require(noteGroupedVitalsRequestFieldStartDate)
+func (v *VitalsNoteGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsNoteGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NoteGroupedVitalsRequest) SetEndDate(endDate *string) {
-	n.EndDate = endDate
-	n.require(noteGroupedVitalsRequestFieldEndDate)
+func (v *VitalsNoteGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsNoteGroupedRequestFieldEndDate)
 }
 
 var (
-	peakExpiratoryFlowRateGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	peakExpiratoryFlowRateGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	peakExpiratoryFlowRateGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	peakExpiratoryFlowRateGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	peakExpiratoryFlowRateGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	peakExpiratoryFlowRateGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsPeakExpiratoryFlowRateGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsPeakExpiratoryFlowRateGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsPeakExpiratoryFlowRateGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsPeakExpiratoryFlowRateGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsPeakExpiratoryFlowRateGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type PeakExpiratoryFlowRateGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsPeakExpiratoryFlowRateGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -3871,64 +3356,55 @@ type PeakExpiratoryFlowRateGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (p *PeakExpiratoryFlowRateGroupedVitalsRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
+func (v *VitalsPeakExpiratoryFlowRateGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PeakExpiratoryFlowRateGroupedVitalsRequest) SetUserId(userId string) {
-	p.UserId = userId
-	p.require(peakExpiratoryFlowRateGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PeakExpiratoryFlowRateGroupedVitalsRequest) SetCursor(cursor *string) {
-	p.Cursor = cursor
-	p.require(peakExpiratoryFlowRateGroupedVitalsRequestFieldCursor)
+func (v *VitalsPeakExpiratoryFlowRateGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsPeakExpiratoryFlowRateGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PeakExpiratoryFlowRateGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	p.NextCursor = nextCursor
-	p.require(peakExpiratoryFlowRateGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsPeakExpiratoryFlowRateGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsPeakExpiratoryFlowRateGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PeakExpiratoryFlowRateGroupedVitalsRequest) SetProvider(provider *string) {
-	p.Provider = provider
-	p.require(peakExpiratoryFlowRateGroupedVitalsRequestFieldProvider)
+func (v *VitalsPeakExpiratoryFlowRateGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsPeakExpiratoryFlowRateGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PeakExpiratoryFlowRateGroupedVitalsRequest) SetStartDate(startDate string) {
-	p.StartDate = startDate
-	p.require(peakExpiratoryFlowRateGroupedVitalsRequestFieldStartDate)
+func (v *VitalsPeakExpiratoryFlowRateGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsPeakExpiratoryFlowRateGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PeakExpiratoryFlowRateGroupedVitalsRequest) SetEndDate(endDate *string) {
-	p.EndDate = endDate
-	p.require(peakExpiratoryFlowRateGroupedVitalsRequestFieldEndDate)
+func (v *VitalsPeakExpiratoryFlowRateGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsPeakExpiratoryFlowRateGroupedRequestFieldEndDate)
 }
 
 var (
-	respiratoryRateVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	respiratoryRateVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	respiratoryRateVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	respiratoryRateVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsRespiratoryRateRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsRespiratoryRateRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsRespiratoryRateRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type RespiratoryRateVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsRespiratoryRateRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -3940,52 +3416,43 @@ type RespiratoryRateVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (r *RespiratoryRateVitalsRequest) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
+func (v *VitalsRespiratoryRateRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateVitalsRequest) SetUserId(userId string) {
-	r.UserId = userId
-	r.require(respiratoryRateVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateVitalsRequest) SetProvider(provider *string) {
-	r.Provider = provider
-	r.require(respiratoryRateVitalsRequestFieldProvider)
+func (v *VitalsRespiratoryRateRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsRespiratoryRateRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateVitalsRequest) SetStartDate(startDate string) {
-	r.StartDate = startDate
-	r.require(respiratoryRateVitalsRequestFieldStartDate)
+func (v *VitalsRespiratoryRateRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsRespiratoryRateRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateVitalsRequest) SetEndDate(endDate *string) {
-	r.EndDate = endDate
-	r.require(respiratoryRateVitalsRequestFieldEndDate)
+func (v *VitalsRespiratoryRateRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsRespiratoryRateRequestFieldEndDate)
 }
 
 var (
-	respiratoryRateGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	respiratoryRateGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	respiratoryRateGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	respiratoryRateGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	respiratoryRateGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	respiratoryRateGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsRespiratoryRateGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsRespiratoryRateGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsRespiratoryRateGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsRespiratoryRateGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsRespiratoryRateGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type RespiratoryRateGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsRespiratoryRateGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -4001,66 +3468,57 @@ type RespiratoryRateGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (r *RespiratoryRateGroupedVitalsRequest) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
+func (v *VitalsRespiratoryRateGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateGroupedVitalsRequest) SetUserId(userId string) {
-	r.UserId = userId
-	r.require(respiratoryRateGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateGroupedVitalsRequest) SetCursor(cursor *string) {
-	r.Cursor = cursor
-	r.require(respiratoryRateGroupedVitalsRequestFieldCursor)
+func (v *VitalsRespiratoryRateGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsRespiratoryRateGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	r.NextCursor = nextCursor
-	r.require(respiratoryRateGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsRespiratoryRateGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsRespiratoryRateGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateGroupedVitalsRequest) SetProvider(provider *string) {
-	r.Provider = provider
-	r.require(respiratoryRateGroupedVitalsRequestFieldProvider)
+func (v *VitalsRespiratoryRateGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsRespiratoryRateGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateGroupedVitalsRequest) SetStartDate(startDate string) {
-	r.StartDate = startDate
-	r.require(respiratoryRateGroupedVitalsRequestFieldStartDate)
+func (v *VitalsRespiratoryRateGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsRespiratoryRateGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RespiratoryRateGroupedVitalsRequest) SetEndDate(endDate *string) {
-	r.EndDate = endDate
-	r.require(respiratoryRateGroupedVitalsRequestFieldEndDate)
+func (v *VitalsRespiratoryRateGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsRespiratoryRateGroupedRequestFieldEndDate)
 }
 
 var (
-	sleepApneaAlertGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	sleepApneaAlertGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	sleepApneaAlertGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	sleepApneaAlertGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	sleepApneaAlertGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	sleepApneaAlertGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsSleepApneaAlertGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsSleepApneaAlertGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsSleepApneaAlertGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsSleepApneaAlertGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsSleepApneaAlertGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type SleepApneaAlertGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsSleepApneaAlertGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -4076,66 +3534,57 @@ type SleepApneaAlertGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *SleepApneaAlertGroupedVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsSleepApneaAlertGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepApneaAlertGroupedVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(sleepApneaAlertGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepApneaAlertGroupedVitalsRequest) SetCursor(cursor *string) {
-	s.Cursor = cursor
-	s.require(sleepApneaAlertGroupedVitalsRequestFieldCursor)
+func (v *VitalsSleepApneaAlertGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsSleepApneaAlertGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepApneaAlertGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	s.NextCursor = nextCursor
-	s.require(sleepApneaAlertGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsSleepApneaAlertGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsSleepApneaAlertGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepApneaAlertGroupedVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(sleepApneaAlertGroupedVitalsRequestFieldProvider)
+func (v *VitalsSleepApneaAlertGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsSleepApneaAlertGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepApneaAlertGroupedVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(sleepApneaAlertGroupedVitalsRequestFieldStartDate)
+func (v *VitalsSleepApneaAlertGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsSleepApneaAlertGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepApneaAlertGroupedVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(sleepApneaAlertGroupedVitalsRequestFieldEndDate)
+func (v *VitalsSleepApneaAlertGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsSleepApneaAlertGroupedRequestFieldEndDate)
 }
 
 var (
-	sleepBreathingDisturbanceGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	sleepBreathingDisturbanceGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	sleepBreathingDisturbanceGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	sleepBreathingDisturbanceGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	sleepBreathingDisturbanceGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	sleepBreathingDisturbanceGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsSleepBreathingDisturbanceGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsSleepBreathingDisturbanceGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsSleepBreathingDisturbanceGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsSleepBreathingDisturbanceGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsSleepBreathingDisturbanceGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type SleepBreathingDisturbanceGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsSleepBreathingDisturbanceGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -4151,66 +3600,57 @@ type SleepBreathingDisturbanceGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *SleepBreathingDisturbanceGroupedVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsSleepBreathingDisturbanceGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepBreathingDisturbanceGroupedVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(sleepBreathingDisturbanceGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepBreathingDisturbanceGroupedVitalsRequest) SetCursor(cursor *string) {
-	s.Cursor = cursor
-	s.require(sleepBreathingDisturbanceGroupedVitalsRequestFieldCursor)
+func (v *VitalsSleepBreathingDisturbanceGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsSleepBreathingDisturbanceGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepBreathingDisturbanceGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	s.NextCursor = nextCursor
-	s.require(sleepBreathingDisturbanceGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsSleepBreathingDisturbanceGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsSleepBreathingDisturbanceGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepBreathingDisturbanceGroupedVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(sleepBreathingDisturbanceGroupedVitalsRequestFieldProvider)
+func (v *VitalsSleepBreathingDisturbanceGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsSleepBreathingDisturbanceGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepBreathingDisturbanceGroupedVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(sleepBreathingDisturbanceGroupedVitalsRequestFieldStartDate)
+func (v *VitalsSleepBreathingDisturbanceGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsSleepBreathingDisturbanceGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepBreathingDisturbanceGroupedVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(sleepBreathingDisturbanceGroupedVitalsRequestFieldEndDate)
+func (v *VitalsSleepBreathingDisturbanceGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsSleepBreathingDisturbanceGroupedRequestFieldEndDate)
 }
 
 var (
-	standDurationGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	standDurationGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	standDurationGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	standDurationGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	standDurationGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	standDurationGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsStandDurationGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsStandDurationGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsStandDurationGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsStandDurationGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsStandDurationGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type StandDurationGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsStandDurationGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -4226,66 +3666,57 @@ type StandDurationGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StandDurationGroupedVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsStandDurationGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandDurationGroupedVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(standDurationGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandDurationGroupedVitalsRequest) SetCursor(cursor *string) {
-	s.Cursor = cursor
-	s.require(standDurationGroupedVitalsRequestFieldCursor)
+func (v *VitalsStandDurationGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsStandDurationGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandDurationGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	s.NextCursor = nextCursor
-	s.require(standDurationGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsStandDurationGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsStandDurationGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandDurationGroupedVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(standDurationGroupedVitalsRequestFieldProvider)
+func (v *VitalsStandDurationGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsStandDurationGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandDurationGroupedVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(standDurationGroupedVitalsRequestFieldStartDate)
+func (v *VitalsStandDurationGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsStandDurationGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandDurationGroupedVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(standDurationGroupedVitalsRequestFieldEndDate)
+func (v *VitalsStandDurationGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsStandDurationGroupedRequestFieldEndDate)
 }
 
 var (
-	standHourGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	standHourGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	standHourGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	standHourGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	standHourGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	standHourGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsStandHourGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsStandHourGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsStandHourGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsStandHourGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsStandHourGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type StandHourGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsStandHourGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -4301,64 +3732,55 @@ type StandHourGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StandHourGroupedVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsStandHourGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandHourGroupedVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(standHourGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandHourGroupedVitalsRequest) SetCursor(cursor *string) {
-	s.Cursor = cursor
-	s.require(standHourGroupedVitalsRequestFieldCursor)
+func (v *VitalsStandHourGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsStandHourGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandHourGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	s.NextCursor = nextCursor
-	s.require(standHourGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsStandHourGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsStandHourGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandHourGroupedVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(standHourGroupedVitalsRequestFieldProvider)
+func (v *VitalsStandHourGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsStandHourGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandHourGroupedVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(standHourGroupedVitalsRequestFieldStartDate)
+func (v *VitalsStandHourGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsStandHourGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StandHourGroupedVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(standHourGroupedVitalsRequestFieldEndDate)
+func (v *VitalsStandHourGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsStandHourGroupedRequestFieldEndDate)
 }
 
 var (
-	stepsVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	stepsVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	stepsVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	stepsVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsStepsRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsStepsRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsStepsRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type StepsVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsStepsRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -4370,52 +3792,43 @@ type StepsVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StepsVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsStepsRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(stepsVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(stepsVitalsRequestFieldProvider)
+func (v *VitalsStepsRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsStepsRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(stepsVitalsRequestFieldStartDate)
+func (v *VitalsStepsRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsStepsRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(stepsVitalsRequestFieldEndDate)
+func (v *VitalsStepsRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsStepsRequestFieldEndDate)
 }
 
 var (
-	stepsGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	stepsGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	stepsGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	stepsGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	stepsGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	stepsGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsStepsGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsStepsGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsStepsGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsStepsGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsStepsGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type StepsGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsStepsGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -4431,64 +3844,55 @@ type StepsGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StepsGroupedVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsStepsGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsGroupedVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(stepsGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsGroupedVitalsRequest) SetCursor(cursor *string) {
-	s.Cursor = cursor
-	s.require(stepsGroupedVitalsRequestFieldCursor)
+func (v *VitalsStepsGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsStepsGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	s.NextCursor = nextCursor
-	s.require(stepsGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsStepsGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsStepsGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsGroupedVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(stepsGroupedVitalsRequestFieldProvider)
+func (v *VitalsStepsGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsStepsGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsGroupedVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(stepsGroupedVitalsRequestFieldStartDate)
+func (v *VitalsStepsGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsStepsGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StepsGroupedVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(stepsGroupedVitalsRequestFieldEndDate)
+func (v *VitalsStepsGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsStepsGroupedRequestFieldEndDate)
 }
 
 var (
-	stressLevelVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	stressLevelVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	stressLevelVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	stressLevelVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsStressLevelRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsStressLevelRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsStressLevelRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type StressLevelVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsStressLevelRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -4500,52 +3904,43 @@ type StressLevelVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StressLevelVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsStressLevelRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(stressLevelVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(stressLevelVitalsRequestFieldProvider)
+func (v *VitalsStressLevelRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsStressLevelRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(stressLevelVitalsRequestFieldStartDate)
+func (v *VitalsStressLevelRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsStressLevelRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(stressLevelVitalsRequestFieldEndDate)
+func (v *VitalsStressLevelRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsStressLevelRequestFieldEndDate)
 }
 
 var (
-	stressLevelGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	stressLevelGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	stressLevelGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	stressLevelGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	stressLevelGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	stressLevelGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsStressLevelGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsStressLevelGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsStressLevelGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsStressLevelGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsStressLevelGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type StressLevelGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsStressLevelGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -4561,53 +3956,46 @@ type StressLevelGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (s *StressLevelGroupedVitalsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
+func (v *VitalsStressLevelGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelGroupedVitalsRequest) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(stressLevelGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelGroupedVitalsRequest) SetCursor(cursor *string) {
-	s.Cursor = cursor
-	s.require(stressLevelGroupedVitalsRequestFieldCursor)
+func (v *VitalsStressLevelGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsStressLevelGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	s.NextCursor = nextCursor
-	s.require(stressLevelGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsStressLevelGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsStressLevelGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelGroupedVitalsRequest) SetProvider(provider *string) {
-	s.Provider = provider
-	s.require(stressLevelGroupedVitalsRequestFieldProvider)
+func (v *VitalsStressLevelGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsStressLevelGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelGroupedVitalsRequest) SetStartDate(startDate string) {
-	s.StartDate = startDate
-	s.require(stressLevelGroupedVitalsRequestFieldStartDate)
+func (v *VitalsStressLevelGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsStressLevelGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StressLevelGroupedVitalsRequest) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(stressLevelGroupedVitalsRequestFieldEndDate)
+func (v *VitalsStressLevelGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsStressLevelGroupedRequestFieldEndDate)
 }
 
 var (
@@ -24879,16 +24267,14 @@ func (g *GroupedWorkoutSwimmingStrokeResponse) String() string {
 }
 
 var (
-	uvExposureGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	uvExposureGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	uvExposureGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	uvExposureGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	uvExposureGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	uvExposureGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsUvExposureGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsUvExposureGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsUvExposureGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsUvExposureGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsUvExposureGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type UvExposureGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsUvExposureGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -24904,196 +24290,103 @@ type UvExposureGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (u *UvExposureGroupedVitalsRequest) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
-	}
-	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UvExposureGroupedVitalsRequest) SetUserId(userId string) {
-	u.UserId = userId
-	u.require(uvExposureGroupedVitalsRequestFieldUserId)
-}
-
-// SetCursor sets the Cursor field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UvExposureGroupedVitalsRequest) SetCursor(cursor *string) {
-	u.Cursor = cursor
-	u.require(uvExposureGroupedVitalsRequestFieldCursor)
-}
-
-// SetNextCursor sets the NextCursor field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UvExposureGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	u.NextCursor = nextCursor
-	u.require(uvExposureGroupedVitalsRequestFieldNextCursor)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UvExposureGroupedVitalsRequest) SetProvider(provider *string) {
-	u.Provider = provider
-	u.require(uvExposureGroupedVitalsRequestFieldProvider)
-}
-
-// SetStartDate sets the StartDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UvExposureGroupedVitalsRequest) SetStartDate(startDate string) {
-	u.StartDate = startDate
-	u.require(uvExposureGroupedVitalsRequestFieldStartDate)
-}
-
-// SetEndDate sets the EndDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UvExposureGroupedVitalsRequest) SetEndDate(endDate *string) {
-	u.EndDate = endDate
-	u.require(uvExposureGroupedVitalsRequestFieldEndDate)
-}
-
-var (
-	vo2MaxVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	vo2MaxVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	vo2MaxVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	vo2MaxVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
-)
-
-type Vo2MaxVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
-	// Provider oura/strava etc
-	Provider *string `json:"-" url:"provider,omitempty"`
-	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-" url:"start_date"`
-	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-" url:"end_date,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (v *Vo2MaxVitalsRequest) require(field *big.Int) {
+func (v *VitalsUvExposureGroupedRequest) require(field *big.Int) {
 	if v.explicitFields == nil {
 		v.explicitFields = big.NewInt(0)
 	}
 	v.explicitFields.Or(v.explicitFields, field)
 }
 
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxVitalsRequest) SetUserId(userId string) {
-	v.UserId = userId
-	v.require(vo2MaxVitalsRequestFieldUserId)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxVitalsRequest) SetProvider(provider *string) {
-	v.Provider = provider
-	v.require(vo2MaxVitalsRequestFieldProvider)
-}
-
-// SetStartDate sets the StartDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxVitalsRequest) SetStartDate(startDate string) {
-	v.StartDate = startDate
-	v.require(vo2MaxVitalsRequestFieldStartDate)
-}
-
-// SetEndDate sets the EndDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxVitalsRequest) SetEndDate(endDate *string) {
-	v.EndDate = endDate
-	v.require(vo2MaxVitalsRequestFieldEndDate)
-}
-
-var (
-	vo2MaxGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	vo2MaxGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	vo2MaxGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	vo2MaxGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	vo2MaxGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	vo2MaxGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
-)
-
-type Vo2MaxGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
-	// The cursor for fetching the next page, or `null` to fetch the first page.
-	Cursor *string `json:"-" url:"cursor,omitempty"`
-	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
-	// Provider oura/strava etc
-	Provider *string `json:"-" url:"provider,omitempty"`
-	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-" url:"start_date"`
-	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-" url:"end_date,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (v *Vo2MaxGroupedVitalsRequest) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxGroupedVitalsRequest) SetUserId(userId string) {
-	v.UserId = userId
-	v.require(vo2MaxGroupedVitalsRequestFieldUserId)
-}
-
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxGroupedVitalsRequest) SetCursor(cursor *string) {
+func (v *VitalsUvExposureGroupedRequest) SetCursor(cursor *string) {
 	v.Cursor = cursor
-	v.require(vo2MaxGroupedVitalsRequestFieldCursor)
+	v.require(vitalsUvExposureGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
+func (v *VitalsUvExposureGroupedRequest) SetNextCursor(nextCursor *string) {
 	v.NextCursor = nextCursor
-	v.require(vo2MaxGroupedVitalsRequestFieldNextCursor)
+	v.require(vitalsUvExposureGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxGroupedVitalsRequest) SetProvider(provider *string) {
+func (v *VitalsUvExposureGroupedRequest) SetProvider(provider *string) {
 	v.Provider = provider
-	v.require(vo2MaxGroupedVitalsRequestFieldProvider)
+	v.require(vitalsUvExposureGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxGroupedVitalsRequest) SetStartDate(startDate string) {
+func (v *VitalsUvExposureGroupedRequest) SetStartDate(startDate string) {
 	v.StartDate = startDate
-	v.require(vo2MaxGroupedVitalsRequestFieldStartDate)
+	v.require(vitalsUvExposureGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *Vo2MaxGroupedVitalsRequest) SetEndDate(endDate *string) {
+func (v *VitalsUvExposureGroupedRequest) SetEndDate(endDate *string) {
 	v.EndDate = endDate
-	v.require(vo2MaxGroupedVitalsRequestFieldEndDate)
+	v.require(vitalsUvExposureGroupedRequestFieldEndDate)
 }
 
 var (
-	waistCircumferenceGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	waistCircumferenceGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	waistCircumferenceGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	waistCircumferenceGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	waistCircumferenceGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	waistCircumferenceGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsVo2MaxRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsVo2MaxRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsVo2MaxRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type WaistCircumferenceGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsVo2MaxRequest struct {
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (v *VitalsVo2MaxRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetProvider sets the Provider field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsVo2MaxRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsVo2MaxRequestFieldProvider)
+}
+
+// SetStartDate sets the StartDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsVo2MaxRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsVo2MaxRequestFieldStartDate)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsVo2MaxRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsVo2MaxRequestFieldEndDate)
+}
+
+var (
+	vitalsVo2MaxGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsVo2MaxGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsVo2MaxGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsVo2MaxGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsVo2MaxGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
+)
+
+type VitalsVo2MaxGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -25109,121 +24402,57 @@ type WaistCircumferenceGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (w *WaistCircumferenceGroupedVitalsRequest) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *VitalsVo2MaxGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaistCircumferenceGroupedVitalsRequest) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(waistCircumferenceGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaistCircumferenceGroupedVitalsRequest) SetCursor(cursor *string) {
-	w.Cursor = cursor
-	w.require(waistCircumferenceGroupedVitalsRequestFieldCursor)
+func (v *VitalsVo2MaxGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsVo2MaxGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaistCircumferenceGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	w.NextCursor = nextCursor
-	w.require(waistCircumferenceGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsVo2MaxGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsVo2MaxGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaistCircumferenceGroupedVitalsRequest) SetProvider(provider *string) {
-	w.Provider = provider
-	w.require(waistCircumferenceGroupedVitalsRequestFieldProvider)
+func (v *VitalsVo2MaxGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsVo2MaxGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaistCircumferenceGroupedVitalsRequest) SetStartDate(startDate string) {
-	w.StartDate = startDate
-	w.require(waistCircumferenceGroupedVitalsRequestFieldStartDate)
+func (v *VitalsVo2MaxGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsVo2MaxGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaistCircumferenceGroupedVitalsRequest) SetEndDate(endDate *string) {
-	w.EndDate = endDate
-	w.require(waistCircumferenceGroupedVitalsRequestFieldEndDate)
+func (v *VitalsVo2MaxGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsVo2MaxGroupedRequestFieldEndDate)
 }
 
 var (
-	waterVitalsRequestFieldUserId    = big.NewInt(1 << 0)
-	waterVitalsRequestFieldProvider  = big.NewInt(1 << 1)
-	waterVitalsRequestFieldStartDate = big.NewInt(1 << 2)
-	waterVitalsRequestFieldEndDate   = big.NewInt(1 << 3)
+	vitalsWaistCircumferenceGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsWaistCircumferenceGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsWaistCircumferenceGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsWaistCircumferenceGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsWaistCircumferenceGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type WaterVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
-	// Provider oura/strava etc
-	Provider *string `json:"-" url:"provider,omitempty"`
-	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
-	StartDate string `json:"-" url:"start_date"`
-	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
-	EndDate *string `json:"-" url:"end_date,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (w *WaterVitalsRequest) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
-	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterVitalsRequest) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(waterVitalsRequestFieldUserId)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterVitalsRequest) SetProvider(provider *string) {
-	w.Provider = provider
-	w.require(waterVitalsRequestFieldProvider)
-}
-
-// SetStartDate sets the StartDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterVitalsRequest) SetStartDate(startDate string) {
-	w.StartDate = startDate
-	w.require(waterVitalsRequestFieldStartDate)
-}
-
-// SetEndDate sets the EndDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterVitalsRequest) SetEndDate(endDate *string) {
-	w.EndDate = endDate
-	w.require(waterVitalsRequestFieldEndDate)
-}
-
-var (
-	waterGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	waterGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	waterGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	waterGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	waterGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	waterGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
-)
-
-type WaterGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsWaistCircumferenceGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -25239,66 +24468,103 @@ type WaterGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (w *WaterGroupedVitalsRequest) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *VitalsWaistCircumferenceGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterGroupedVitalsRequest) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(waterGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterGroupedVitalsRequest) SetCursor(cursor *string) {
-	w.Cursor = cursor
-	w.require(waterGroupedVitalsRequestFieldCursor)
+func (v *VitalsWaistCircumferenceGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsWaistCircumferenceGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	w.NextCursor = nextCursor
-	w.require(waterGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsWaistCircumferenceGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsWaistCircumferenceGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterGroupedVitalsRequest) SetProvider(provider *string) {
-	w.Provider = provider
-	w.require(waterGroupedVitalsRequestFieldProvider)
+func (v *VitalsWaistCircumferenceGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsWaistCircumferenceGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterGroupedVitalsRequest) SetStartDate(startDate string) {
-	w.StartDate = startDate
-	w.require(waterGroupedVitalsRequestFieldStartDate)
+func (v *VitalsWaistCircumferenceGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsWaistCircumferenceGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WaterGroupedVitalsRequest) SetEndDate(endDate *string) {
-	w.EndDate = endDate
-	w.require(waterGroupedVitalsRequestFieldEndDate)
+func (v *VitalsWaistCircumferenceGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsWaistCircumferenceGroupedRequestFieldEndDate)
 }
 
 var (
-	wheelchairPushGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	wheelchairPushGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	wheelchairPushGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	wheelchairPushGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	wheelchairPushGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	wheelchairPushGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsWaterRequestFieldProvider  = big.NewInt(1 << 0)
+	vitalsWaterRequestFieldStartDate = big.NewInt(1 << 1)
+	vitalsWaterRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type WheelchairPushGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsWaterRequest struct {
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (v *VitalsWaterRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetProvider sets the Provider field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWaterRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsWaterRequestFieldProvider)
+}
+
+// SetStartDate sets the StartDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWaterRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsWaterRequestFieldStartDate)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWaterRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsWaterRequestFieldEndDate)
+}
+
+var (
+	vitalsWaterGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsWaterGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsWaterGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsWaterGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsWaterGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
+)
+
+type VitalsWaterGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -25314,66 +24580,57 @@ type WheelchairPushGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (w *WheelchairPushGroupedVitalsRequest) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *VitalsWaterGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WheelchairPushGroupedVitalsRequest) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(wheelchairPushGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WheelchairPushGroupedVitalsRequest) SetCursor(cursor *string) {
-	w.Cursor = cursor
-	w.require(wheelchairPushGroupedVitalsRequestFieldCursor)
+func (v *VitalsWaterGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsWaterGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WheelchairPushGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	w.NextCursor = nextCursor
-	w.require(wheelchairPushGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsWaterGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsWaterGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WheelchairPushGroupedVitalsRequest) SetProvider(provider *string) {
-	w.Provider = provider
-	w.require(wheelchairPushGroupedVitalsRequestFieldProvider)
+func (v *VitalsWaterGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsWaterGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WheelchairPushGroupedVitalsRequest) SetStartDate(startDate string) {
-	w.StartDate = startDate
-	w.require(wheelchairPushGroupedVitalsRequestFieldStartDate)
+func (v *VitalsWaterGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsWaterGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WheelchairPushGroupedVitalsRequest) SetEndDate(endDate *string) {
-	w.EndDate = endDate
-	w.require(wheelchairPushGroupedVitalsRequestFieldEndDate)
+func (v *VitalsWaterGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsWaterGroupedRequestFieldEndDate)
 }
 
 var (
-	workoutDistanceGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	workoutDistanceGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	workoutDistanceGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	workoutDistanceGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	workoutDistanceGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	workoutDistanceGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsWheelchairPushGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsWheelchairPushGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsWheelchairPushGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsWheelchairPushGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsWheelchairPushGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type WorkoutDistanceGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsWheelchairPushGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -25389,66 +24646,57 @@ type WorkoutDistanceGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (w *WorkoutDistanceGroupedVitalsRequest) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *VitalsWheelchairPushGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDistanceGroupedVitalsRequest) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(workoutDistanceGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDistanceGroupedVitalsRequest) SetCursor(cursor *string) {
-	w.Cursor = cursor
-	w.require(workoutDistanceGroupedVitalsRequestFieldCursor)
+func (v *VitalsWheelchairPushGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsWheelchairPushGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDistanceGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	w.NextCursor = nextCursor
-	w.require(workoutDistanceGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsWheelchairPushGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsWheelchairPushGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDistanceGroupedVitalsRequest) SetProvider(provider *string) {
-	w.Provider = provider
-	w.require(workoutDistanceGroupedVitalsRequestFieldProvider)
+func (v *VitalsWheelchairPushGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsWheelchairPushGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDistanceGroupedVitalsRequest) SetStartDate(startDate string) {
-	w.StartDate = startDate
-	w.require(workoutDistanceGroupedVitalsRequestFieldStartDate)
+func (v *VitalsWheelchairPushGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsWheelchairPushGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDistanceGroupedVitalsRequest) SetEndDate(endDate *string) {
-	w.EndDate = endDate
-	w.require(workoutDistanceGroupedVitalsRequestFieldEndDate)
+func (v *VitalsWheelchairPushGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsWheelchairPushGroupedRequestFieldEndDate)
 }
 
 var (
-	workoutDurationGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	workoutDurationGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	workoutDurationGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	workoutDurationGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	workoutDurationGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	workoutDurationGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsWorkoutDistanceGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsWorkoutDistanceGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsWorkoutDistanceGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsWorkoutDistanceGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsWorkoutDistanceGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type WorkoutDurationGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsWorkoutDistanceGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -25464,66 +24712,57 @@ type WorkoutDurationGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (w *WorkoutDurationGroupedVitalsRequest) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *VitalsWorkoutDistanceGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDurationGroupedVitalsRequest) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(workoutDurationGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDurationGroupedVitalsRequest) SetCursor(cursor *string) {
-	w.Cursor = cursor
-	w.require(workoutDurationGroupedVitalsRequestFieldCursor)
+func (v *VitalsWorkoutDistanceGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsWorkoutDistanceGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDurationGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	w.NextCursor = nextCursor
-	w.require(workoutDurationGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsWorkoutDistanceGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsWorkoutDistanceGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDurationGroupedVitalsRequest) SetProvider(provider *string) {
-	w.Provider = provider
-	w.require(workoutDurationGroupedVitalsRequestFieldProvider)
+func (v *VitalsWorkoutDistanceGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsWorkoutDistanceGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDurationGroupedVitalsRequest) SetStartDate(startDate string) {
-	w.StartDate = startDate
-	w.require(workoutDurationGroupedVitalsRequestFieldStartDate)
+func (v *VitalsWorkoutDistanceGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsWorkoutDistanceGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutDurationGroupedVitalsRequest) SetEndDate(endDate *string) {
-	w.EndDate = endDate
-	w.require(workoutDurationGroupedVitalsRequestFieldEndDate)
+func (v *VitalsWorkoutDistanceGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsWorkoutDistanceGroupedRequestFieldEndDate)
 }
 
 var (
-	workoutSwimmingStrokeGroupedVitalsRequestFieldUserId     = big.NewInt(1 << 0)
-	workoutSwimmingStrokeGroupedVitalsRequestFieldCursor     = big.NewInt(1 << 1)
-	workoutSwimmingStrokeGroupedVitalsRequestFieldNextCursor = big.NewInt(1 << 2)
-	workoutSwimmingStrokeGroupedVitalsRequestFieldProvider   = big.NewInt(1 << 3)
-	workoutSwimmingStrokeGroupedVitalsRequestFieldStartDate  = big.NewInt(1 << 4)
-	workoutSwimmingStrokeGroupedVitalsRequestFieldEndDate    = big.NewInt(1 << 5)
+	vitalsWorkoutDurationGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsWorkoutDurationGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsWorkoutDurationGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsWorkoutDurationGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsWorkoutDurationGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
 )
 
-type WorkoutSwimmingStrokeGroupedVitalsRequest struct {
-	UserId string `json:"-" url:"-"`
+type VitalsWorkoutDurationGroupedRequest struct {
 	// The cursor for fetching the next page, or `null` to fetch the first page.
 	Cursor *string `json:"-" url:"cursor,omitempty"`
 	// The cursor for fetching the next page, or `null` to fetch the first page.
@@ -25539,51 +24778,110 @@ type WorkoutSwimmingStrokeGroupedVitalsRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (w *WorkoutSwimmingStrokeGroupedVitalsRequest) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
+func (v *VitalsWorkoutDurationGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
 	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutSwimmingStrokeGroupedVitalsRequest) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(workoutSwimmingStrokeGroupedVitalsRequestFieldUserId)
+	v.explicitFields.Or(v.explicitFields, field)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutSwimmingStrokeGroupedVitalsRequest) SetCursor(cursor *string) {
-	w.Cursor = cursor
-	w.require(workoutSwimmingStrokeGroupedVitalsRequestFieldCursor)
+func (v *VitalsWorkoutDurationGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsWorkoutDurationGroupedRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutSwimmingStrokeGroupedVitalsRequest) SetNextCursor(nextCursor *string) {
-	w.NextCursor = nextCursor
-	w.require(workoutSwimmingStrokeGroupedVitalsRequestFieldNextCursor)
+func (v *VitalsWorkoutDurationGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsWorkoutDurationGroupedRequestFieldNextCursor)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutSwimmingStrokeGroupedVitalsRequest) SetProvider(provider *string) {
-	w.Provider = provider
-	w.require(workoutSwimmingStrokeGroupedVitalsRequestFieldProvider)
+func (v *VitalsWorkoutDurationGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsWorkoutDurationGroupedRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutSwimmingStrokeGroupedVitalsRequest) SetStartDate(startDate string) {
-	w.StartDate = startDate
-	w.require(workoutSwimmingStrokeGroupedVitalsRequestFieldStartDate)
+func (v *VitalsWorkoutDurationGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsWorkoutDurationGroupedRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutSwimmingStrokeGroupedVitalsRequest) SetEndDate(endDate *string) {
-	w.EndDate = endDate
-	w.require(workoutSwimmingStrokeGroupedVitalsRequestFieldEndDate)
+func (v *VitalsWorkoutDurationGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsWorkoutDurationGroupedRequestFieldEndDate)
+}
+
+var (
+	vitalsWorkoutSwimmingStrokeGroupedRequestFieldCursor     = big.NewInt(1 << 0)
+	vitalsWorkoutSwimmingStrokeGroupedRequestFieldNextCursor = big.NewInt(1 << 1)
+	vitalsWorkoutSwimmingStrokeGroupedRequestFieldProvider   = big.NewInt(1 << 2)
+	vitalsWorkoutSwimmingStrokeGroupedRequestFieldStartDate  = big.NewInt(1 << 3)
+	vitalsWorkoutSwimmingStrokeGroupedRequestFieldEndDate    = big.NewInt(1 << 4)
+)
+
+type VitalsWorkoutSwimmingStrokeGroupedRequest struct {
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	Cursor *string `json:"-" url:"cursor,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	// Provider oura/strava etc
+	Provider *string `json:"-" url:"provider,omitempty"`
+	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
+	StartDate string `json:"-" url:"start_date"`
+	// Date to YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 23:59:59
+	EndDate *string `json:"-" url:"end_date,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (v *VitalsWorkoutSwimmingStrokeGroupedRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWorkoutSwimmingStrokeGroupedRequest) SetCursor(cursor *string) {
+	v.Cursor = cursor
+	v.require(vitalsWorkoutSwimmingStrokeGroupedRequestFieldCursor)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWorkoutSwimmingStrokeGroupedRequest) SetNextCursor(nextCursor *string) {
+	v.NextCursor = nextCursor
+	v.require(vitalsWorkoutSwimmingStrokeGroupedRequestFieldNextCursor)
+}
+
+// SetProvider sets the Provider field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWorkoutSwimmingStrokeGroupedRequest) SetProvider(provider *string) {
+	v.Provider = provider
+	v.require(vitalsWorkoutSwimmingStrokeGroupedRequestFieldProvider)
+}
+
+// SetStartDate sets the StartDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWorkoutSwimmingStrokeGroupedRequest) SetStartDate(startDate string) {
+	v.StartDate = startDate
+	v.require(vitalsWorkoutSwimmingStrokeGroupedRequestFieldStartDate)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VitalsWorkoutSwimmingStrokeGroupedRequest) SetEndDate(endDate *string) {
+	v.EndDate = endDate
+	v.require(vitalsWorkoutSwimmingStrokeGroupedRequestFieldEndDate)
 }
