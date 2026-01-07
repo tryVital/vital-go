@@ -34,11 +34,13 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetMenstrualCycleRequest,
+	userId string,
+	request *vitalgo.MenstrualCycleGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.MenstrualCycleResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
