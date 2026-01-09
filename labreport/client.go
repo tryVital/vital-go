@@ -57,12 +57,12 @@ func (c *Client) ParserCreateJob(
 //	ParseLabResultJobResponse with job status and parsed data (if complete)
 func (c *Client) ParserGetJob(
 	ctx context.Context,
-	request *vitalgo.ParserGetJobLabReportRequest,
+	jobId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ParsingJob, error) {
 	response, err := c.WithRawResponse.ParserGetJob(
 		ctx,
-		request,
+		jobId,
 		opts...,
 	)
 	if err != nil {
