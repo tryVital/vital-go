@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get Body summary for user_id
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetBodyRequest,
+	userId string,
+	request *vitalgo.BodyGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientBodyResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -52,11 +54,13 @@ func (c *Client) Get(
 // Get raw Body summary for user_id
 func (c *Client) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawBodyRequest,
+	userId string,
+	request *vitalgo.BodyGetRawRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.RawBody, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
