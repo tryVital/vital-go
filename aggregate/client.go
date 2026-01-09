@@ -34,11 +34,13 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) QueryOne(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.QueryBatch,
 	opts ...option.RequestOption,
 ) (*vitalgo.AggregationResponse, error) {
 	response, err := c.WithRawResponse.QueryOne(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -50,12 +52,14 @@ func (c *Client) QueryOne(
 
 func (c *Client) GetResultTableForContinuousQuery(
 	ctx context.Context,
-	request *vitalgo.GetResultTableForContinuousQueryAggregateRequest,
+	userId string,
+	queryIdOrSlug string,
 	opts ...option.RequestOption,
 ) (*vitalgo.AggregationResult, error) {
 	response, err := c.WithRawResponse.GetResultTableForContinuousQuery(
 		ctx,
-		request,
+		userId,
+		queryIdOrSlug,
 		opts...,
 	)
 	if err != nil {
@@ -66,11 +70,15 @@ func (c *Client) GetResultTableForContinuousQuery(
 
 func (c *Client) GetTaskHistoryForContinuousQuery(
 	ctx context.Context,
-	request *vitalgo.GetTaskHistoryForContinuousQueryAggregateRequest,
+	userId string,
+	queryIdOrSlug string,
+	request *vitalgo.AggregateGetTaskHistoryForContinuousQueryRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ContinuousQueryTaskHistoryResponse, error) {
 	response, err := c.WithRawResponse.GetTaskHistoryForContinuousQuery(
 		ctx,
+		userId,
+		queryIdOrSlug,
 		request,
 		opts...,
 	)
