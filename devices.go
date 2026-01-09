@@ -10,12 +10,10 @@ import (
 )
 
 var (
-	getRawDevicesRequestFieldUserId   = big.NewInt(1 << 0)
-	getRawDevicesRequestFieldProvider = big.NewInt(1 << 1)
+	devicesGetRawRequestFieldProvider = big.NewInt(1 << 0)
 )
 
-type GetRawDevicesRequest struct {
-	UserId string `json:"-" url:"-"`
+type DevicesGetRawRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 
@@ -23,25 +21,18 @@ type GetRawDevicesRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetRawDevicesRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (d *DevicesGetRawRequest) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawDevicesRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getRawDevicesRequestFieldUserId)
+	d.explicitFields.Or(d.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawDevicesRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getRawDevicesRequestFieldProvider)
+func (d *DevicesGetRawRequest) SetProvider(provider *string) {
+	d.Provider = provider
+	d.require(devicesGetRawRequestFieldProvider)
 }
 
 var (

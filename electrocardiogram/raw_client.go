@@ -32,7 +32,8 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.GetElectrocardiogramRequest,
+	userId string,
+	request *vitalgo.ElectrocardiogramGetRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingElectrocardiogramResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -43,7 +44,7 @@ func (r *RawClient) Get(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/electrocardiogram/%v",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

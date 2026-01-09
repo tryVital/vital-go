@@ -32,7 +32,8 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) WorkoutSwimmingStrokeGrouped(
 	ctx context.Context,
-	request *vitalgo.WorkoutSwimmingStrokeGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWorkoutSwimmingStrokeGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedWorkoutSwimmingStrokeResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -43,7 +44,7 @@ func (r *RawClient) WorkoutSwimmingStrokeGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/workout_swimming_stroke/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -83,7 +84,8 @@ func (r *RawClient) WorkoutSwimmingStrokeGrouped(
 
 func (r *RawClient) WorkoutDistanceGrouped(
 	ctx context.Context,
-	request *vitalgo.WorkoutDistanceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWorkoutDistanceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedWorkoutDistanceResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -94,7 +96,7 @@ func (r *RawClient) WorkoutDistanceGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/workout_distance/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -134,7 +136,8 @@ func (r *RawClient) WorkoutDistanceGrouped(
 
 func (r *RawClient) HeartRateRecoveryOneMinuteGrouped(
 	ctx context.Context,
-	request *vitalgo.HeartRateRecoveryOneMinuteGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartRateRecoveryOneMinuteGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedHeartRateRecoveryOneMinuteResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -145,7 +148,7 @@ func (r *RawClient) HeartRateRecoveryOneMinuteGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/heart_rate_recovery_one_minute/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -185,7 +188,8 @@ func (r *RawClient) HeartRateRecoveryOneMinuteGrouped(
 
 func (r *RawClient) WaistCircumferenceGrouped(
 	ctx context.Context,
-	request *vitalgo.WaistCircumferenceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWaistCircumferenceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedWaistCircumferenceResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -196,7 +200,7 @@ func (r *RawClient) WaistCircumferenceGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/waist_circumference/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -236,7 +240,8 @@ func (r *RawClient) WaistCircumferenceGrouped(
 
 func (r *RawClient) LeanBodyMassGrouped(
 	ctx context.Context,
-	request *vitalgo.LeanBodyMassGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsLeanBodyMassGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedLeanBodyMassResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -247,7 +252,7 @@ func (r *RawClient) LeanBodyMassGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/lean_body_mass/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -287,7 +292,8 @@ func (r *RawClient) LeanBodyMassGrouped(
 
 func (r *RawClient) BodyMassIndexGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyMassIndexGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyMassIndexGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBodyMassIndexResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -298,7 +304,7 @@ func (r *RawClient) BodyMassIndexGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/body_mass_index/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -338,7 +344,8 @@ func (r *RawClient) BodyMassIndexGrouped(
 
 func (r *RawClient) BasalBodyTemperatureGrouped(
 	ctx context.Context,
-	request *vitalgo.BasalBodyTemperatureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBasalBodyTemperatureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBasalBodyTemperatureResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -349,7 +356,7 @@ func (r *RawClient) BasalBodyTemperatureGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/basal_body_temperature/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -389,7 +396,8 @@ func (r *RawClient) BasalBodyTemperatureGrouped(
 
 func (r *RawClient) HandwashingGrouped(
 	ctx context.Context,
-	request *vitalgo.HandwashingGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHandwashingGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedHandwashingResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -400,7 +408,7 @@ func (r *RawClient) HandwashingGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/handwashing/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -440,7 +448,8 @@ func (r *RawClient) HandwashingGrouped(
 
 func (r *RawClient) DaylightExposureGrouped(
 	ctx context.Context,
-	request *vitalgo.DaylightExposureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsDaylightExposureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedDaylightExposureResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -451,7 +460,7 @@ func (r *RawClient) DaylightExposureGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/daylight_exposure/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -491,7 +500,8 @@ func (r *RawClient) DaylightExposureGrouped(
 
 func (r *RawClient) UvExposureGrouped(
 	ctx context.Context,
-	request *vitalgo.UvExposureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsUvExposureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedUvExposureResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -502,7 +512,7 @@ func (r *RawClient) UvExposureGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/uv_exposure/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -542,7 +552,8 @@ func (r *RawClient) UvExposureGrouped(
 
 func (r *RawClient) FallGrouped(
 	ctx context.Context,
-	request *vitalgo.FallGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsFallGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedFallResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -553,7 +564,7 @@ func (r *RawClient) FallGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/fall/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -593,7 +604,8 @@ func (r *RawClient) FallGrouped(
 
 func (r *RawClient) InhalerUsageGrouped(
 	ctx context.Context,
-	request *vitalgo.InhalerUsageGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsInhalerUsageGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedInhalerUsageResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -604,7 +616,7 @@ func (r *RawClient) InhalerUsageGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/inhaler_usage/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -644,7 +656,8 @@ func (r *RawClient) InhalerUsageGrouped(
 
 func (r *RawClient) PeakExpiratoryFlowRateGrouped(
 	ctx context.Context,
-	request *vitalgo.PeakExpiratoryFlowRateGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsPeakExpiratoryFlowRateGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedPeakExpiratoryFlowRateResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -655,7 +668,7 @@ func (r *RawClient) PeakExpiratoryFlowRateGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/peak_expiratory_flow_rate/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -695,7 +708,8 @@ func (r *RawClient) PeakExpiratoryFlowRateGrouped(
 
 func (r *RawClient) ForcedVitalCapacityGrouped(
 	ctx context.Context,
-	request *vitalgo.ForcedVitalCapacityGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsForcedVitalCapacityGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedForcedVitalCapacityResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -706,7 +720,7 @@ func (r *RawClient) ForcedVitalCapacityGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/forced_vital_capacity/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -746,7 +760,8 @@ func (r *RawClient) ForcedVitalCapacityGrouped(
 
 func (r *RawClient) ForcedExpiratoryVolume1Grouped(
 	ctx context.Context,
-	request *vitalgo.ForcedExpiratoryVolume1GroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsForcedExpiratoryVolume1GroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedForcedExpiratoryVolume1Response], error) {
 	options := core.NewRequestOptions(opts...)
@@ -757,7 +772,7 @@ func (r *RawClient) ForcedExpiratoryVolume1Grouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/forced_expiratory_volume_1/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -797,7 +812,8 @@ func (r *RawClient) ForcedExpiratoryVolume1Grouped(
 
 func (r *RawClient) WheelchairPushGrouped(
 	ctx context.Context,
-	request *vitalgo.WheelchairPushGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWheelchairPushGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedWheelchairPushResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -808,7 +824,7 @@ func (r *RawClient) WheelchairPushGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/wheelchair_push/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -848,7 +864,8 @@ func (r *RawClient) WheelchairPushGrouped(
 
 func (r *RawClient) SleepBreathingDisturbanceGrouped(
 	ctx context.Context,
-	request *vitalgo.SleepBreathingDisturbanceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsSleepBreathingDisturbanceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedSleepBreathingDisturbanceResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -859,7 +876,7 @@ func (r *RawClient) SleepBreathingDisturbanceGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/sleep_breathing_disturbance/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -899,7 +916,8 @@ func (r *RawClient) SleepBreathingDisturbanceGrouped(
 
 func (r *RawClient) SleepApneaAlertGrouped(
 	ctx context.Context,
-	request *vitalgo.SleepApneaAlertGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsSleepApneaAlertGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedSleepApneaAlertResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -910,7 +928,7 @@ func (r *RawClient) SleepApneaAlertGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/sleep_apnea_alert/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -950,7 +968,8 @@ func (r *RawClient) SleepApneaAlertGrouped(
 
 func (r *RawClient) StandDurationGrouped(
 	ctx context.Context,
-	request *vitalgo.StandDurationGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStandDurationGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedStandDurationResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -961,7 +980,7 @@ func (r *RawClient) StandDurationGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/stand_duration/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1001,7 +1020,8 @@ func (r *RawClient) StandDurationGrouped(
 
 func (r *RawClient) StandHourGrouped(
 	ctx context.Context,
-	request *vitalgo.StandHourGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStandHourGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedStandHourResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1012,7 +1032,7 @@ func (r *RawClient) StandHourGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/stand_hour/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1052,7 +1072,8 @@ func (r *RawClient) StandHourGrouped(
 
 func (r *RawClient) HeartRateAlertGrouped(
 	ctx context.Context,
-	request *vitalgo.HeartRateAlertGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartRateAlertGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedHeartRateAlertResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1063,7 +1084,7 @@ func (r *RawClient) HeartRateAlertGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/heart_rate_alert/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1103,7 +1124,8 @@ func (r *RawClient) HeartRateAlertGrouped(
 
 func (r *RawClient) AfibBurdenGrouped(
 	ctx context.Context,
-	request *vitalgo.AfibBurdenGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsAfibBurdenGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedAFibBurdenResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1114,7 +1136,7 @@ func (r *RawClient) AfibBurdenGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/afib_burden/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1154,7 +1176,8 @@ func (r *RawClient) AfibBurdenGrouped(
 
 func (r *RawClient) WorkoutDurationGrouped(
 	ctx context.Context,
-	request *vitalgo.WorkoutDurationGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWorkoutDurationGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedWorkoutDurationResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1165,7 +1188,7 @@ func (r *RawClient) WorkoutDurationGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/workout_duration/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1205,7 +1228,8 @@ func (r *RawClient) WorkoutDurationGrouped(
 
 func (r *RawClient) Vo2MaxGrouped(
 	ctx context.Context,
-	request *vitalgo.Vo2MaxGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsVo2MaxGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedVo2MaxResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1216,7 +1240,7 @@ func (r *RawClient) Vo2MaxGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/vo2_max/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1256,7 +1280,8 @@ func (r *RawClient) Vo2MaxGrouped(
 
 func (r *RawClient) StressLevelGrouped(
 	ctx context.Context,
-	request *vitalgo.StressLevelGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStressLevelGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedStressLevelResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1267,7 +1292,7 @@ func (r *RawClient) StressLevelGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/stress_level/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1307,7 +1332,8 @@ func (r *RawClient) StressLevelGrouped(
 
 func (r *RawClient) MindfulnessMinutesGrouped(
 	ctx context.Context,
-	request *vitalgo.MindfulnessMinutesGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsMindfulnessMinutesGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedMindfulnessMinutesResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1318,7 +1344,7 @@ func (r *RawClient) MindfulnessMinutesGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/mindfulness_minutes/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1358,7 +1384,8 @@ func (r *RawClient) MindfulnessMinutesGrouped(
 
 func (r *RawClient) CaffeineGrouped(
 	ctx context.Context,
-	request *vitalgo.CaffeineGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaffeineGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedCaffeineResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1369,7 +1396,7 @@ func (r *RawClient) CaffeineGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/caffeine/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1409,7 +1436,8 @@ func (r *RawClient) CaffeineGrouped(
 
 func (r *RawClient) WaterGrouped(
 	ctx context.Context,
-	request *vitalgo.WaterGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWaterGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedWaterResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1420,7 +1448,7 @@ func (r *RawClient) WaterGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/water/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1460,7 +1488,8 @@ func (r *RawClient) WaterGrouped(
 
 func (r *RawClient) StepsGrouped(
 	ctx context.Context,
-	request *vitalgo.StepsGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStepsGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedStepsResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1471,7 +1500,7 @@ func (r *RawClient) StepsGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/steps/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1511,7 +1540,8 @@ func (r *RawClient) StepsGrouped(
 
 func (r *RawClient) FloorsClimbedGrouped(
 	ctx context.Context,
-	request *vitalgo.FloorsClimbedGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsFloorsClimbedGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedFloorsClimbedResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1522,7 +1552,7 @@ func (r *RawClient) FloorsClimbedGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/floors_climbed/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1562,7 +1592,8 @@ func (r *RawClient) FloorsClimbedGrouped(
 
 func (r *RawClient) DistanceGrouped(
 	ctx context.Context,
-	request *vitalgo.DistanceGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsDistanceGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedDistanceResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1573,7 +1604,7 @@ func (r *RawClient) DistanceGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/distance/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1613,7 +1644,8 @@ func (r *RawClient) DistanceGrouped(
 
 func (r *RawClient) CaloriesBasalGrouped(
 	ctx context.Context,
-	request *vitalgo.CaloriesBasalGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesBasalGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedCaloriesBasalResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1624,7 +1656,7 @@ func (r *RawClient) CaloriesBasalGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/calories_basal/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1664,7 +1696,8 @@ func (r *RawClient) CaloriesBasalGrouped(
 
 func (r *RawClient) CaloriesActiveGrouped(
 	ctx context.Context,
-	request *vitalgo.CaloriesActiveGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesActiveGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedCaloriesActiveResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1675,7 +1708,7 @@ func (r *RawClient) CaloriesActiveGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/calories_active/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1715,7 +1748,8 @@ func (r *RawClient) CaloriesActiveGrouped(
 
 func (r *RawClient) RespiratoryRateGrouped(
 	ctx context.Context,
-	request *vitalgo.RespiratoryRateGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsRespiratoryRateGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedRespiratoryRateResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1726,7 +1760,7 @@ func (r *RawClient) RespiratoryRateGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/respiratory_rate/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1766,7 +1800,8 @@ func (r *RawClient) RespiratoryRateGrouped(
 
 func (r *RawClient) NoteGrouped(
 	ctx context.Context,
-	request *vitalgo.NoteGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsNoteGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedNoteResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1777,7 +1812,7 @@ func (r *RawClient) NoteGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/note/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1817,7 +1852,8 @@ func (r *RawClient) NoteGrouped(
 
 func (r *RawClient) InsulinInjectionGrouped(
 	ctx context.Context,
-	request *vitalgo.InsulinInjectionGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsInsulinInjectionGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedInsulinInjectionResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1828,7 +1864,7 @@ func (r *RawClient) InsulinInjectionGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/insulin_injection/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1868,7 +1904,8 @@ func (r *RawClient) InsulinInjectionGrouped(
 
 func (r *RawClient) IgeGrouped(
 	ctx context.Context,
-	request *vitalgo.IgeGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIgeGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedIgeResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1879,7 +1916,7 @@ func (r *RawClient) IgeGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/ige/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1919,7 +1956,8 @@ func (r *RawClient) IgeGrouped(
 
 func (r *RawClient) IggGrouped(
 	ctx context.Context,
-	request *vitalgo.IggGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIggGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedIggResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1930,7 +1968,7 @@ func (r *RawClient) IggGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/igg/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1970,7 +2008,8 @@ func (r *RawClient) IggGrouped(
 
 func (r *RawClient) HypnogramGrouped(
 	ctx context.Context,
-	request *vitalgo.HypnogramGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHypnogramGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedHypnogramResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1981,7 +2020,7 @@ func (r *RawClient) HypnogramGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/hypnogram/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2021,7 +2060,8 @@ func (r *RawClient) HypnogramGrouped(
 
 func (r *RawClient) HrvGrouped(
 	ctx context.Context,
-	request *vitalgo.HrvGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHrvGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedHrvResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2032,7 +2072,7 @@ func (r *RawClient) HrvGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/hrv/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2072,7 +2112,8 @@ func (r *RawClient) HrvGrouped(
 
 func (r *RawClient) HeartrateGrouped(
 	ctx context.Context,
-	request *vitalgo.HeartrateGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartrateGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedHeartRateResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2083,7 +2124,7 @@ func (r *RawClient) HeartrateGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/heartrate/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2123,7 +2164,8 @@ func (r *RawClient) HeartrateGrouped(
 
 func (r *RawClient) GlucoseGrouped(
 	ctx context.Context,
-	request *vitalgo.GlucoseGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsGlucoseGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedGlucoseResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2134,7 +2176,7 @@ func (r *RawClient) GlucoseGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/glucose/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2174,7 +2216,8 @@ func (r *RawClient) GlucoseGrouped(
 
 func (r *RawClient) CholesterolGrouped(
 	ctx context.Context,
-	request *vitalgo.CholesterolGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedCholesterolResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2185,7 +2228,7 @@ func (r *RawClient) CholesterolGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/cholesterol/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2225,7 +2268,8 @@ func (r *RawClient) CholesterolGrouped(
 
 func (r *RawClient) CarbohydratesGrouped(
 	ctx context.Context,
-	request *vitalgo.CarbohydratesGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCarbohydratesGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedCarbohydratesResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2236,7 +2280,7 @@ func (r *RawClient) CarbohydratesGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/carbohydrates/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2276,7 +2320,8 @@ func (r *RawClient) CarbohydratesGrouped(
 
 func (r *RawClient) BodyTemperatureDeltaGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyTemperatureDeltaGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyTemperatureDeltaGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBodyTemperatureDeltaResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2287,7 +2332,7 @@ func (r *RawClient) BodyTemperatureDeltaGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/body_temperature_delta/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2327,7 +2372,8 @@ func (r *RawClient) BodyTemperatureDeltaGrouped(
 
 func (r *RawClient) BodyTemperatureGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyTemperatureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyTemperatureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBodyTemperatureResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2338,7 +2384,7 @@ func (r *RawClient) BodyTemperatureGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/body_temperature/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2378,7 +2424,8 @@ func (r *RawClient) BodyTemperatureGrouped(
 
 func (r *RawClient) BodyWeightGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyWeightGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyWeightGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBodyWeightResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2389,7 +2436,7 @@ func (r *RawClient) BodyWeightGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/body_weight/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2429,7 +2476,8 @@ func (r *RawClient) BodyWeightGrouped(
 
 func (r *RawClient) BodyFatGrouped(
 	ctx context.Context,
-	request *vitalgo.BodyFatGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyFatGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBodyFatResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2440,7 +2488,7 @@ func (r *RawClient) BodyFatGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/body_fat/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2480,7 +2528,8 @@ func (r *RawClient) BodyFatGrouped(
 
 func (r *RawClient) BloodOxygenGrouped(
 	ctx context.Context,
-	request *vitalgo.BloodOxygenGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodOxygenGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBloodOxygenResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2491,7 +2540,7 @@ func (r *RawClient) BloodOxygenGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/blood_oxygen/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2531,7 +2580,8 @@ func (r *RawClient) BloodOxygenGrouped(
 
 func (r *RawClient) ElectrocardiogramVoltageGrouped(
 	ctx context.Context,
-	request *vitalgo.ElectrocardiogramVoltageGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsElectrocardiogramVoltageGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedElectrocardiogramVoltageResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2542,7 +2592,7 @@ func (r *RawClient) ElectrocardiogramVoltageGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/electrocardiogram_voltage/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2582,7 +2632,8 @@ func (r *RawClient) ElectrocardiogramVoltageGrouped(
 
 func (r *RawClient) BloodPressureGrouped(
 	ctx context.Context,
-	request *vitalgo.BloodPressureGroupedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodPressureGroupedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.GroupedBloodPressureResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2593,7 +2644,7 @@ func (r *RawClient) BloodPressureGrouped(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/blood_pressure/grouped",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2633,7 +2684,8 @@ func (r *RawClient) BloodPressureGrouped(
 
 func (r *RawClient) Vo2Max(
 	ctx context.Context,
-	request *vitalgo.Vo2MaxVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsVo2MaxRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingVo2MaxTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2644,7 +2696,7 @@ func (r *RawClient) Vo2Max(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/vo2_max",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2684,7 +2736,8 @@ func (r *RawClient) Vo2Max(
 
 func (r *RawClient) StressLevel(
 	ctx context.Context,
-	request *vitalgo.StressLevelVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStressLevelRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingStressLevelTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2695,7 +2748,7 @@ func (r *RawClient) StressLevel(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/stress_level",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2735,7 +2788,8 @@ func (r *RawClient) StressLevel(
 
 func (r *RawClient) MindfulnessMinutes(
 	ctx context.Context,
-	request *vitalgo.MindfulnessMinutesVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsMindfulnessMinutesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingMindfulnessMinutesTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2746,7 +2800,7 @@ func (r *RawClient) MindfulnessMinutes(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/mindfulness_minutes",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2786,7 +2840,8 @@ func (r *RawClient) MindfulnessMinutes(
 
 func (r *RawClient) Caffeine(
 	ctx context.Context,
-	request *vitalgo.CaffeineVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaffeineRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCaffeineTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2797,7 +2852,7 @@ func (r *RawClient) Caffeine(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/caffeine",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2837,7 +2892,8 @@ func (r *RawClient) Caffeine(
 
 func (r *RawClient) Water(
 	ctx context.Context,
-	request *vitalgo.WaterVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsWaterRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingWaterTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2848,7 +2904,7 @@ func (r *RawClient) Water(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/water",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2888,7 +2944,8 @@ func (r *RawClient) Water(
 
 func (r *RawClient) Steps(
 	ctx context.Context,
-	request *vitalgo.StepsVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsStepsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingStepsTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2899,7 +2956,7 @@ func (r *RawClient) Steps(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/steps",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2939,7 +2996,8 @@ func (r *RawClient) Steps(
 
 func (r *RawClient) FloorsClimbed(
 	ctx context.Context,
-	request *vitalgo.FloorsClimbedVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsFloorsClimbedRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingFloorsClimbedTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -2950,7 +3008,7 @@ func (r *RawClient) FloorsClimbed(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/floors_climbed",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -2990,7 +3048,8 @@ func (r *RawClient) FloorsClimbed(
 
 func (r *RawClient) Distance(
 	ctx context.Context,
-	request *vitalgo.DistanceVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsDistanceRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingDistanceTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3001,7 +3060,7 @@ func (r *RawClient) Distance(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/distance",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3041,7 +3100,8 @@ func (r *RawClient) Distance(
 
 func (r *RawClient) CaloriesBasal(
 	ctx context.Context,
-	request *vitalgo.CaloriesBasalVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesBasalRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCaloriesBasalTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3052,7 +3112,7 @@ func (r *RawClient) CaloriesBasal(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/calories_basal",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3092,7 +3152,8 @@ func (r *RawClient) CaloriesBasal(
 
 func (r *RawClient) CaloriesActive(
 	ctx context.Context,
-	request *vitalgo.CaloriesActiveVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCaloriesActiveRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCaloriesActiveTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3103,7 +3164,7 @@ func (r *RawClient) CaloriesActive(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/calories_active",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3143,7 +3204,8 @@ func (r *RawClient) CaloriesActive(
 
 func (r *RawClient) RespiratoryRate(
 	ctx context.Context,
-	request *vitalgo.RespiratoryRateVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsRespiratoryRateRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingRespiratoryRateTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3154,7 +3216,7 @@ func (r *RawClient) RespiratoryRate(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/respiratory_rate",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3194,7 +3256,8 @@ func (r *RawClient) RespiratoryRate(
 
 func (r *RawClient) Ige(
 	ctx context.Context,
-	request *vitalgo.IgeVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIgeRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingIgeTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3205,7 +3268,7 @@ func (r *RawClient) Ige(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/ige",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3245,7 +3308,8 @@ func (r *RawClient) Ige(
 
 func (r *RawClient) Igg(
 	ctx context.Context,
-	request *vitalgo.IggVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsIggRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingIggTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3256,7 +3320,7 @@ func (r *RawClient) Igg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/igg",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3296,7 +3360,8 @@ func (r *RawClient) Igg(
 
 func (r *RawClient) Hypnogram(
 	ctx context.Context,
-	request *vitalgo.HypnogramVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHypnogramRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingHypnogramTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3307,7 +3372,7 @@ func (r *RawClient) Hypnogram(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/hypnogram",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3347,7 +3412,8 @@ func (r *RawClient) Hypnogram(
 
 func (r *RawClient) Hrv(
 	ctx context.Context,
-	request *vitalgo.HrvVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHrvRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingHrvTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3358,7 +3424,7 @@ func (r *RawClient) Hrv(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/hrv",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3398,7 +3464,8 @@ func (r *RawClient) Hrv(
 
 func (r *RawClient) Heartrate(
 	ctx context.Context,
-	request *vitalgo.HeartrateVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsHeartrateRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingHeartRateTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3409,7 +3476,7 @@ func (r *RawClient) Heartrate(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/heartrate",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3449,7 +3516,8 @@ func (r *RawClient) Heartrate(
 
 func (r *RawClient) Glucose(
 	ctx context.Context,
-	request *vitalgo.GlucoseVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsGlucoseRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingGlucoseTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3460,7 +3528,7 @@ func (r *RawClient) Glucose(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/glucose",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3500,7 +3568,8 @@ func (r *RawClient) Glucose(
 
 func (r *RawClient) CholesterolTriglycerides(
 	ctx context.Context,
-	request *vitalgo.CholesterolTriglyceridesVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolTriglyceridesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3511,7 +3580,7 @@ func (r *RawClient) CholesterolTriglycerides(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/cholesterol/triglycerides",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3551,7 +3620,8 @@ func (r *RawClient) CholesterolTriglycerides(
 
 func (r *RawClient) CholesterolTotal(
 	ctx context.Context,
-	request *vitalgo.CholesterolTotalVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolTotalRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3562,7 +3632,7 @@ func (r *RawClient) CholesterolTotal(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/cholesterol/total",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3602,7 +3672,8 @@ func (r *RawClient) CholesterolTotal(
 
 func (r *RawClient) CholesterolLdl(
 	ctx context.Context,
-	request *vitalgo.CholesterolLdlVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolLdlRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3613,7 +3684,7 @@ func (r *RawClient) CholesterolLdl(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/cholesterol/ldl",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3653,7 +3724,8 @@ func (r *RawClient) CholesterolLdl(
 
 func (r *RawClient) CholesterolHdl(
 	ctx context.Context,
-	request *vitalgo.CholesterolHdlVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolHdlRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3664,7 +3736,7 @@ func (r *RawClient) CholesterolHdl(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/cholesterol/hdl",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3704,7 +3776,8 @@ func (r *RawClient) CholesterolHdl(
 
 func (r *RawClient) Cholesterol(
 	ctx context.Context,
-	request *vitalgo.CholesterolVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsCholesterolRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3715,7 +3788,7 @@ func (r *RawClient) Cholesterol(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/cholesterol",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3755,7 +3828,8 @@ func (r *RawClient) Cholesterol(
 
 func (r *RawClient) BodyWeight(
 	ctx context.Context,
-	request *vitalgo.BodyWeightVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyWeightRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingBodyWeightTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3766,7 +3840,7 @@ func (r *RawClient) BodyWeight(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/body_weight",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3806,7 +3880,8 @@ func (r *RawClient) BodyWeight(
 
 func (r *RawClient) BodyFat(
 	ctx context.Context,
-	request *vitalgo.BodyFatVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBodyFatRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingBodyFatTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3817,7 +3892,7 @@ func (r *RawClient) BodyFat(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/body_fat",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3857,7 +3932,8 @@ func (r *RawClient) BodyFat(
 
 func (r *RawClient) BloodOxygen(
 	ctx context.Context,
-	request *vitalgo.BloodOxygenVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodOxygenRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingBloodOxygenTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3868,7 +3944,7 @@ func (r *RawClient) BloodOxygen(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/blood_oxygen",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3908,7 +3984,8 @@ func (r *RawClient) BloodOxygen(
 
 func (r *RawClient) ElectrocardiogramVoltage(
 	ctx context.Context,
-	request *vitalgo.ElectrocardiogramVoltageVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsElectrocardiogramVoltageRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingElectrocardiogramVoltageTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3919,7 +3996,7 @@ func (r *RawClient) ElectrocardiogramVoltage(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/electrocardiogram_voltage",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -3959,7 +4036,8 @@ func (r *RawClient) ElectrocardiogramVoltage(
 
 func (r *RawClient) BloodPressure(
 	ctx context.Context,
-	request *vitalgo.BloodPressureVitalsRequest,
+	userId string,
+	request *vitalgo.VitalsBloodPressureRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingBloodPressureTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
@@ -3970,7 +4048,7 @@ func (r *RawClient) BloodPressure(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/timeseries/%v/blood_pressure",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

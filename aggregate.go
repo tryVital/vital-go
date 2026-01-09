@@ -11,105 +11,46 @@ import (
 )
 
 var (
-	getResultTableForContinuousQueryAggregateRequestFieldUserId        = big.NewInt(1 << 0)
-	getResultTableForContinuousQueryAggregateRequestFieldQueryIdOrSlug = big.NewInt(1 << 1)
+	aggregateGetTaskHistoryForContinuousQueryRequestFieldNextCursor = big.NewInt(1 << 0)
+	aggregateGetTaskHistoryForContinuousQueryRequestFieldLimit      = big.NewInt(1 << 1)
 )
 
-type GetResultTableForContinuousQueryAggregateRequest struct {
-	UserId        string `json:"-" url:"-"`
-	QueryIdOrSlug string `json:"-" url:"-"`
-	accept        string
+type AggregateGetTaskHistoryForContinuousQueryRequest struct {
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	Limit      *int    `json:"-" url:"limit,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetResultTableForContinuousQueryAggregateRequest) Accept() string {
-	return g.accept
-}
-
-func (g *GetResultTableForContinuousQueryAggregateRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (a *AggregateGetTaskHistoryForContinuousQueryRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetResultTableForContinuousQueryAggregateRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getResultTableForContinuousQueryAggregateRequestFieldUserId)
-}
-
-// SetQueryIdOrSlug sets the QueryIdOrSlug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetResultTableForContinuousQueryAggregateRequest) SetQueryIdOrSlug(queryIdOrSlug string) {
-	g.QueryIdOrSlug = queryIdOrSlug
-	g.require(getResultTableForContinuousQueryAggregateRequestFieldQueryIdOrSlug)
-}
-
-var (
-	getTaskHistoryForContinuousQueryAggregateRequestFieldUserId        = big.NewInt(1 << 0)
-	getTaskHistoryForContinuousQueryAggregateRequestFieldQueryIdOrSlug = big.NewInt(1 << 1)
-	getTaskHistoryForContinuousQueryAggregateRequestFieldNextCursor    = big.NewInt(1 << 2)
-	getTaskHistoryForContinuousQueryAggregateRequestFieldLimit         = big.NewInt(1 << 3)
-)
-
-type GetTaskHistoryForContinuousQueryAggregateRequest struct {
-	UserId        string  `json:"-" url:"-"`
-	QueryIdOrSlug string  `json:"-" url:"-"`
-	NextCursor    *string `json:"-" url:"next_cursor,omitempty"`
-	Limit         *int    `json:"-" url:"limit,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldUserId)
-}
-
-// SetQueryIdOrSlug sets the QueryIdOrSlug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetQueryIdOrSlug(queryIdOrSlug string) {
-	g.QueryIdOrSlug = queryIdOrSlug
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldQueryIdOrSlug)
+	a.explicitFields.Or(a.explicitFields, field)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldNextCursor)
+func (a *AggregateGetTaskHistoryForContinuousQueryRequest) SetNextCursor(nextCursor *string) {
+	a.NextCursor = nextCursor
+	a.require(aggregateGetTaskHistoryForContinuousQueryRequestFieldNextCursor)
 }
 
 // SetLimit sets the Limit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTaskHistoryForContinuousQueryAggregateRequest) SetLimit(limit *int) {
-	g.Limit = limit
-	g.require(getTaskHistoryForContinuousQueryAggregateRequestFieldLimit)
+func (a *AggregateGetTaskHistoryForContinuousQueryRequest) SetLimit(limit *int) {
+	a.Limit = limit
+	a.require(aggregateGetTaskHistoryForContinuousQueryRequestFieldLimit)
 }
 
 var (
-	queryBatchFieldUserId    = big.NewInt(1 << 0)
-	queryBatchFieldTimeframe = big.NewInt(1 << 1)
-	queryBatchFieldQueries   = big.NewInt(1 << 2)
-	queryBatchFieldConfig    = big.NewInt(1 << 3)
+	queryBatchFieldTimeframe = big.NewInt(1 << 0)
+	queryBatchFieldQueries   = big.NewInt(1 << 1)
+	queryBatchFieldConfig    = big.NewInt(1 << 2)
 )
 
 type QueryBatch struct {
-	UserId    string               `json:"-" url:"-"`
 	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
 	Queries   []*Query             `json:"queries,omitempty" url:"-"`
 	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
@@ -128,13 +69,6 @@ func (q *QueryBatch) require(field *big.Int) {
 		q.explicitFields = big.NewInt(0)
 	}
 	q.explicitFields.Or(q.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryBatch) SetUserId(userId string) {
-	q.UserId = userId
-	q.require(queryBatchFieldUserId)
 }
 
 // SetTimeframe sets the Timeframe field and marks it as non-optional;
@@ -4836,8 +4770,8 @@ var (
 )
 
 type RelativeTimeframe struct {
-	Anchor time.Time `json:"anchor" url:"anchor" format:"date"`
-	Past   *Period   `json:"past" url:"past"`
+	Anchor string  `json:"anchor" url:"anchor"`
+	Past   *Period `json:"past" url:"past"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4847,9 +4781,9 @@ type RelativeTimeframe struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RelativeTimeframe) GetAnchor() time.Time {
+func (r *RelativeTimeframe) GetAnchor() string {
 	if r == nil {
-		return time.Time{}
+		return ""
 	}
 	return r.Anchor
 }
@@ -4878,7 +4812,7 @@ func (r *RelativeTimeframe) require(field *big.Int) {
 
 // SetAnchor sets the Anchor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RelativeTimeframe) SetAnchor(anchor time.Time) {
+func (r *RelativeTimeframe) SetAnchor(anchor string) {
 	r.Anchor = anchor
 	r.require(relativeTimeframeFieldAnchor)
 }
@@ -4894,8 +4828,7 @@ func (r *RelativeTimeframe) UnmarshalJSON(data []byte) error {
 	type embed RelativeTimeframe
 	var unmarshaler = struct {
 		embed
-		Anchor *internal.Date `json:"anchor"`
-		Type   string         `json:"type"`
+		Type string `json:"type"`
 	}{
 		embed: embed(*r),
 	}
@@ -4903,7 +4836,6 @@ func (r *RelativeTimeframe) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*r = RelativeTimeframe(unmarshaler.embed)
-	r.Anchor = unmarshaler.Anchor.Time()
 	if unmarshaler.Type != "relative" {
 		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "relative", unmarshaler.Type)
 	}
@@ -4921,12 +4853,10 @@ func (r *RelativeTimeframe) MarshalJSON() ([]byte, error) {
 	type embed RelativeTimeframe
 	var marshaler = struct {
 		embed
-		Anchor *internal.Date `json:"anchor"`
-		Type   string         `json:"type"`
+		Type string `json:"type"`
 	}{
-		embed:  embed(*r),
-		Anchor: internal.NewDate(r.Anchor),
-		Type:   "relative",
+		embed: embed(*r),
+		Type:  "relative",
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)

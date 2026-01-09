@@ -92,7 +92,7 @@ func (r *RawClient) ParserCreateJob(
 
 func (r *RawClient) ParserGetJob(
 	ctx context.Context,
-	request *vitalgo.ParserGetJobLabReportRequest,
+	jobId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ParsingJob], error) {
 	options := core.NewRequestOptions(opts...)
@@ -103,7 +103,7 @@ func (r *RawClient) ParserGetJob(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/lab_report/v1/parser/job/%v",
-		request.JobId,
+		jobId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

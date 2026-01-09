@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get workout summary for user_id
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetWorkoutsRequest,
+	userId string,
+	request *vitalgo.WorkoutsGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientWorkoutResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -52,11 +54,13 @@ func (c *Client) Get(
 // Get raw workout summary for user_id
 func (c *Client) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawWorkoutsRequest,
+	userId string,
+	request *vitalgo.WorkoutsGetRawRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.RawWorkout, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -68,12 +72,13 @@ func (c *Client) GetRaw(
 
 func (c *Client) GetByWorkoutId(
 	ctx context.Context,
-	request *vitalgo.GetByWorkoutIdWorkoutsRequest,
+	// The Vital ID for the workout
+	workoutId string,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingStream, error) {
 	response, err := c.WithRawResponse.GetByWorkoutId(
 		ctx,
-		request,
+		workoutId,
 		opts...,
 	)
 	if err != nil {
