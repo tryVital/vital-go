@@ -11,16 +11,14 @@ import (
 )
 
 var (
-	getElectrocardiogramRequestFieldUserId    = big.NewInt(1 << 0)
-	getElectrocardiogramRequestFieldStartDate = big.NewInt(1 << 1)
-	getElectrocardiogramRequestFieldEndDate   = big.NewInt(1 << 2)
-	getElectrocardiogramRequestFieldProvider  = big.NewInt(1 << 3)
+	electrocardiogramGetRequestFieldStartDate = big.NewInt(1 << 0)
+	electrocardiogramGetRequestFieldEndDate   = big.NewInt(1 << 1)
+	electrocardiogramGetRequestFieldProvider  = big.NewInt(1 << 2)
 )
 
-type GetElectrocardiogramRequest struct {
-	UserId    string     `json:"-" url:"-"`
-	StartDate time.Time  `json:"-" url:"start_date" format:"date"`
-	EndDate   *time.Time `json:"-" url:"end_date,omitempty" format:"date"`
+type ElectrocardiogramGetRequest struct {
+	StartDate string  `json:"-" url:"start_date"`
+	EndDate   *string `json:"-" url:"end_date,omitempty"`
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 
@@ -28,39 +26,32 @@ type GetElectrocardiogramRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetElectrocardiogramRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (e *ElectrocardiogramGetRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetElectrocardiogramRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getElectrocardiogramRequestFieldUserId)
+	e.explicitFields.Or(e.explicitFields, field)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetElectrocardiogramRequest) SetStartDate(startDate time.Time) {
-	g.StartDate = startDate
-	g.require(getElectrocardiogramRequestFieldStartDate)
+func (e *ElectrocardiogramGetRequest) SetStartDate(startDate string) {
+	e.StartDate = startDate
+	e.require(electrocardiogramGetRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetElectrocardiogramRequest) SetEndDate(endDate *time.Time) {
-	g.EndDate = endDate
-	g.require(getElectrocardiogramRequestFieldEndDate)
+func (e *ElectrocardiogramGetRequest) SetEndDate(endDate *string) {
+	e.EndDate = endDate
+	e.require(electrocardiogramGetRequestFieldEndDate)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetElectrocardiogramRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getElectrocardiogramRequestFieldProvider)
+func (e *ElectrocardiogramGetRequest) SetProvider(provider *string) {
+	e.Provider = provider
+	e.require(electrocardiogramGetRequestFieldProvider)
 }
 
 var (

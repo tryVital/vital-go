@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get Provider list
 func (c *Client) GetAll(
 	ctx context.Context,
-	request *vitalgo.GetAllProvidersRequest,
+	request *vitalgo.ProvidersGetAllRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.ClientFacingProviderDetailed, error) {
 	response, err := c.WithRawResponse.GetAll(

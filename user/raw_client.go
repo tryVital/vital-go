@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetAll(
 	ctx context.Context,
-	request *vitalgo.GetAllUserRequest,
+	request *vitalgo.UserGetAllRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.PaginatedUsersResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -162,7 +162,7 @@ func (r *RawClient) GetTeamMetrics(
 
 func (r *RawClient) GetConnectedProviders(
 	ctx context.Context,
-	request *vitalgo.GetConnectedProvidersUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string][]*vitalgo.ClientFacingProviderWithStatus], error) {
 	options := core.NewRequestOptions(opts...)
@@ -173,7 +173,7 @@ func (r *RawClient) GetConnectedProviders(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/providers/%v",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -206,7 +206,7 @@ func (r *RawClient) GetConnectedProviders(
 
 func (r *RawClient) GetLatestUserInfo(
 	ctx context.Context,
-	request *vitalgo.GetLatestUserInfoUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserInfo], error) {
 	options := core.NewRequestOptions(opts...)
@@ -217,7 +217,7 @@ func (r *RawClient) GetLatestUserInfo(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/info/latest",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -250,6 +250,7 @@ func (r *RawClient) GetLatestUserInfo(
 
 func (r *RawClient) CreateInsurance(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.CreateInsuranceRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingInsurance], error) {
@@ -261,7 +262,7 @@ func (r *RawClient) CreateInsurance(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/insurance",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -296,7 +297,8 @@ func (r *RawClient) CreateInsurance(
 
 func (r *RawClient) GetLatestInsurance(
 	ctx context.Context,
-	request *vitalgo.GetLatestInsuranceUserRequest,
+	userId string,
+	request *vitalgo.UserGetLatestInsuranceRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingInsurance], error) {
 	options := core.NewRequestOptions(opts...)
@@ -307,7 +309,7 @@ func (r *RawClient) GetLatestInsurance(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/insurance/latest",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -347,6 +349,7 @@ func (r *RawClient) GetLatestInsurance(
 
 func (r *RawClient) UpsertUserInfo(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.UserInfoCreateRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserInfo], error) {
@@ -358,7 +361,7 @@ func (r *RawClient) UpsertUserInfo(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/info",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -393,7 +396,8 @@ func (r *RawClient) UpsertUserInfo(
 
 func (r *RawClient) GetByClientUserId(
 	ctx context.Context,
-	request *vitalgo.GetByClientUserIdUserRequest,
+	// A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
+	clientUserId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingUser], error) {
 	options := core.NewRequestOptions(opts...)
@@ -404,7 +408,7 @@ func (r *RawClient) GetByClientUserId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/resolve/%v",
-		request.ClientUserId,
+		clientUserId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -437,7 +441,9 @@ func (r *RawClient) GetByClientUserId(
 
 func (r *RawClient) DeregisterProvider(
 	ctx context.Context,
-	request *vitalgo.DeregisterProviderUserRequest,
+	userId string,
+	// Provider slug. e.g., `oura`, `fitbit`, `garmin`.
+	provider *vitalgo.Providers,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -448,8 +454,8 @@ func (r *RawClient) DeregisterProvider(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/%v",
-		request.UserId,
-		request.Provider,
+		userId,
+		provider,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -482,7 +488,7 @@ func (r *RawClient) DeregisterProvider(
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.GetUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingUser], error) {
 	options := core.NewRequestOptions(opts...)
@@ -493,7 +499,7 @@ func (r *RawClient) Get(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -526,7 +532,7 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Delete(
 	ctx context.Context,
-	request *vitalgo.DeleteUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -537,7 +543,7 @@ func (r *RawClient) Delete(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -570,6 +576,7 @@ func (r *RawClient) Delete(
 
 func (r *RawClient) Patch(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.UserPatchBody,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
@@ -581,7 +588,7 @@ func (r *RawClient) Patch(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -614,7 +621,7 @@ func (r *RawClient) Patch(
 
 func (r *RawClient) UndoDelete(
 	ctx context.Context,
-	request *vitalgo.UndoDeleteUserRequest,
+	request *vitalgo.UserUndoDeleteRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -662,7 +669,8 @@ func (r *RawClient) UndoDelete(
 
 func (r *RawClient) Refresh(
 	ctx context.Context,
-	request *vitalgo.RefreshUserRequest,
+	userId string,
+	request *vitalgo.UserRefreshRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserRefreshSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -673,7 +681,7 @@ func (r *RawClient) Refresh(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/refresh/%v",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -713,7 +721,7 @@ func (r *RawClient) Refresh(
 
 func (r *RawClient) GetDevices(
 	ctx context.Context,
-	request *vitalgo.GetDevicesUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*vitalgo.ClientFacingDevice], error) {
 	options := core.NewRequestOptions(opts...)
@@ -724,7 +732,7 @@ func (r *RawClient) GetDevices(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/device",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -757,7 +765,8 @@ func (r *RawClient) GetDevices(
 
 func (r *RawClient) GetDevice(
 	ctx context.Context,
-	request *vitalgo.GetDeviceUserRequest,
+	userId string,
+	deviceId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingDevice], error) {
 	options := core.NewRequestOptions(opts...)
@@ -768,8 +777,8 @@ func (r *RawClient) GetDevice(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/device/%v",
-		request.UserId,
-		request.DeviceId,
+		userId,
+		deviceId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -802,7 +811,7 @@ func (r *RawClient) GetDevice(
 
 func (r *RawClient) GetUserSignInToken(
 	ctx context.Context,
-	request *vitalgo.GetUserSignInTokenUserRequest,
+	userId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.UserSignInTokenResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -813,7 +822,7 @@ func (r *RawClient) GetUserSignInToken(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/sign_in_token",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -846,6 +855,7 @@ func (r *RawClient) GetUserSignInToken(
 
 func (r *RawClient) CreatePortalUrl(
 	ctx context.Context,
+	userId string,
 	request *vitalgo.CreateUserPortalUrlBody,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.CreateUserPortalUrlResponse], error) {
@@ -857,7 +867,7 @@ func (r *RawClient) CreatePortalUrl(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/user/%v/create_portal_url",
-		request.UserId,
+		userId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
