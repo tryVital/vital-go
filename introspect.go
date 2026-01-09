@@ -11,77 +11,14 @@ import (
 )
 
 var (
-	getUserHistoricalPullsIntrospectRequestFieldUserId     = big.NewInt(1 << 0)
-	getUserHistoricalPullsIntrospectRequestFieldProvider   = big.NewInt(1 << 1)
-	getUserHistoricalPullsIntrospectRequestFieldUserLimit  = big.NewInt(1 << 2)
-	getUserHistoricalPullsIntrospectRequestFieldCursor     = big.NewInt(1 << 3)
-	getUserHistoricalPullsIntrospectRequestFieldNextCursor = big.NewInt(1 << 4)
+	introspectGetUserHistoricalPullsRequestFieldUserId     = big.NewInt(1 << 0)
+	introspectGetUserHistoricalPullsRequestFieldProvider   = big.NewInt(1 << 1)
+	introspectGetUserHistoricalPullsRequestFieldUserLimit  = big.NewInt(1 << 2)
+	introspectGetUserHistoricalPullsRequestFieldCursor     = big.NewInt(1 << 3)
+	introspectGetUserHistoricalPullsRequestFieldNextCursor = big.NewInt(1 << 4)
 )
 
-type GetUserHistoricalPullsIntrospectRequest struct {
-	// Filter by user ID.
-	UserId    *string                                          `json:"-" url:"user_id,omitempty"`
-	Provider  *GetUserHistoricalPullsIntrospectRequestProvider `json:"-" url:"provider,omitempty"`
-	UserLimit *int                                             `json:"-" url:"user_limit,omitempty"`
-	Cursor    *string                                          `json:"-" url:"cursor,omitempty"`
-	// The cursor for fetching the next page, or `null` to fetch the first page.
-	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetUserHistoricalPullsIntrospectRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserHistoricalPullsIntrospectRequest) SetUserId(userId *string) {
-	g.UserId = userId
-	g.require(getUserHistoricalPullsIntrospectRequestFieldUserId)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserHistoricalPullsIntrospectRequest) SetProvider(provider *GetUserHistoricalPullsIntrospectRequestProvider) {
-	g.Provider = provider
-	g.require(getUserHistoricalPullsIntrospectRequestFieldProvider)
-}
-
-// SetUserLimit sets the UserLimit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserHistoricalPullsIntrospectRequest) SetUserLimit(userLimit *int) {
-	g.UserLimit = userLimit
-	g.require(getUserHistoricalPullsIntrospectRequestFieldUserLimit)
-}
-
-// SetCursor sets the Cursor field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserHistoricalPullsIntrospectRequest) SetCursor(cursor *string) {
-	g.Cursor = cursor
-	g.require(getUserHistoricalPullsIntrospectRequestFieldCursor)
-}
-
-// SetNextCursor sets the NextCursor field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserHistoricalPullsIntrospectRequest) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getUserHistoricalPullsIntrospectRequestFieldNextCursor)
-}
-
-var (
-	getUserResourcesIntrospectRequestFieldUserId     = big.NewInt(1 << 0)
-	getUserResourcesIntrospectRequestFieldProvider   = big.NewInt(1 << 1)
-	getUserResourcesIntrospectRequestFieldUserLimit  = big.NewInt(1 << 2)
-	getUserResourcesIntrospectRequestFieldCursor     = big.NewInt(1 << 3)
-	getUserResourcesIntrospectRequestFieldNextCursor = big.NewInt(1 << 4)
-)
-
-type GetUserResourcesIntrospectRequest struct {
+type IntrospectGetUserHistoricalPullsRequest struct {
 	// Filter by user ID.
 	UserId    *string    `json:"-" url:"user_id,omitempty"`
 	Provider  *Providers `json:"-" url:"provider,omitempty"`
@@ -94,46 +31,109 @@ type GetUserResourcesIntrospectRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetUserResourcesIntrospectRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (i *IntrospectGetUserHistoricalPullsRequest) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	i.explicitFields.Or(i.explicitFields, field)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserResourcesIntrospectRequest) SetUserId(userId *string) {
-	g.UserId = userId
-	g.require(getUserResourcesIntrospectRequestFieldUserId)
+func (i *IntrospectGetUserHistoricalPullsRequest) SetUserId(userId *string) {
+	i.UserId = userId
+	i.require(introspectGetUserHistoricalPullsRequestFieldUserId)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserResourcesIntrospectRequest) SetProvider(provider *Providers) {
-	g.Provider = provider
-	g.require(getUserResourcesIntrospectRequestFieldProvider)
+func (i *IntrospectGetUserHistoricalPullsRequest) SetProvider(provider *Providers) {
+	i.Provider = provider
+	i.require(introspectGetUserHistoricalPullsRequestFieldProvider)
 }
 
 // SetUserLimit sets the UserLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserResourcesIntrospectRequest) SetUserLimit(userLimit *int) {
-	g.UserLimit = userLimit
-	g.require(getUserResourcesIntrospectRequestFieldUserLimit)
+func (i *IntrospectGetUserHistoricalPullsRequest) SetUserLimit(userLimit *int) {
+	i.UserLimit = userLimit
+	i.require(introspectGetUserHistoricalPullsRequestFieldUserLimit)
 }
 
 // SetCursor sets the Cursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserResourcesIntrospectRequest) SetCursor(cursor *string) {
-	g.Cursor = cursor
-	g.require(getUserResourcesIntrospectRequestFieldCursor)
+func (i *IntrospectGetUserHistoricalPullsRequest) SetCursor(cursor *string) {
+	i.Cursor = cursor
+	i.require(introspectGetUserHistoricalPullsRequestFieldCursor)
 }
 
 // SetNextCursor sets the NextCursor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserResourcesIntrospectRequest) SetNextCursor(nextCursor *string) {
-	g.NextCursor = nextCursor
-	g.require(getUserResourcesIntrospectRequestFieldNextCursor)
+func (i *IntrospectGetUserHistoricalPullsRequest) SetNextCursor(nextCursor *string) {
+	i.NextCursor = nextCursor
+	i.require(introspectGetUserHistoricalPullsRequestFieldNextCursor)
+}
+
+var (
+	introspectGetUserResourcesRequestFieldUserId     = big.NewInt(1 << 0)
+	introspectGetUserResourcesRequestFieldProvider   = big.NewInt(1 << 1)
+	introspectGetUserResourcesRequestFieldUserLimit  = big.NewInt(1 << 2)
+	introspectGetUserResourcesRequestFieldCursor     = big.NewInt(1 << 3)
+	introspectGetUserResourcesRequestFieldNextCursor = big.NewInt(1 << 4)
+)
+
+type IntrospectGetUserResourcesRequest struct {
+	// Filter by user ID.
+	UserId    *string    `json:"-" url:"user_id,omitempty"`
+	Provider  *Providers `json:"-" url:"provider,omitempty"`
+	UserLimit *int       `json:"-" url:"user_limit,omitempty"`
+	Cursor    *string    `json:"-" url:"cursor,omitempty"`
+	// The cursor for fetching the next page, or `null` to fetch the first page.
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (i *IntrospectGetUserResourcesRequest) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IntrospectGetUserResourcesRequest) SetUserId(userId *string) {
+	i.UserId = userId
+	i.require(introspectGetUserResourcesRequestFieldUserId)
+}
+
+// SetProvider sets the Provider field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IntrospectGetUserResourcesRequest) SetProvider(provider *Providers) {
+	i.Provider = provider
+	i.require(introspectGetUserResourcesRequestFieldProvider)
+}
+
+// SetUserLimit sets the UserLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IntrospectGetUserResourcesRequest) SetUserLimit(userLimit *int) {
+	i.UserLimit = userLimit
+	i.require(introspectGetUserResourcesRequestFieldUserLimit)
+}
+
+// SetCursor sets the Cursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IntrospectGetUserResourcesRequest) SetCursor(cursor *string) {
+	i.Cursor = cursor
+	i.require(introspectGetUserResourcesRequestFieldCursor)
+}
+
+// SetNextCursor sets the NextCursor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IntrospectGetUserResourcesRequest) SetNextCursor(nextCursor *string) {
+	i.NextCursor = nextCursor
+	i.require(introspectGetUserResourcesRequestFieldNextCursor)
 }
 
 // ℹ️ This enum is non-exhaustive.
@@ -1378,66 +1378,4 @@ func (u *UserResourcesResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
-}
-
-type GetUserHistoricalPullsIntrospectRequestProvider struct {
-	Providers Providers
-	Labs      Labs
-
-	typ string
-}
-
-func (g *GetUserHistoricalPullsIntrospectRequestProvider) GetProviders() Providers {
-	if g == nil {
-		return ""
-	}
-	return g.Providers
-}
-
-func (g *GetUserHistoricalPullsIntrospectRequestProvider) GetLabs() Labs {
-	if g == nil {
-		return ""
-	}
-	return g.Labs
-}
-
-func (g *GetUserHistoricalPullsIntrospectRequestProvider) UnmarshalJSON(data []byte) error {
-	var valueProviders Providers
-	if err := json.Unmarshal(data, &valueProviders); err == nil {
-		g.typ = "Providers"
-		g.Providers = valueProviders
-		return nil
-	}
-	var valueLabs Labs
-	if err := json.Unmarshal(data, &valueLabs); err == nil {
-		g.typ = "Labs"
-		g.Labs = valueLabs
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, g)
-}
-
-func (g GetUserHistoricalPullsIntrospectRequestProvider) MarshalJSON() ([]byte, error) {
-	if g.typ == "Providers" || g.Providers != "" {
-		return json.Marshal(g.Providers)
-	}
-	if g.typ == "Labs" || g.Labs != "" {
-		return json.Marshal(g.Labs)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", g)
-}
-
-type GetUserHistoricalPullsIntrospectRequestProviderVisitor interface {
-	VisitProviders(Providers) error
-	VisitLabs(Labs) error
-}
-
-func (g *GetUserHistoricalPullsIntrospectRequestProvider) Accept(visitor GetUserHistoricalPullsIntrospectRequestProviderVisitor) error {
-	if g.typ == "Providers" || g.Providers != "" {
-		return visitor.VisitProviders(g.Providers)
-	}
-	if g.typ == "Labs" || g.Labs != "" {
-		return visitor.VisitLabs(g.Labs)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", g)
 }

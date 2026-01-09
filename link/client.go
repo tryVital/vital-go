@@ -34,7 +34,7 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListBulkOps(
 	ctx context.Context,
-	request *vitalgo.ListBulkOpsLinkRequest,
+	request *vitalgo.LinkListBulkOpsRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.BulkOpsResponse, error) {
 	response, err := c.WithRawResponse.ListBulkOps(
@@ -153,7 +153,7 @@ func (c *Client) IsTokenValid(
 // Generate a token to invite a user of Vital mobile app to your team
 func (c *Client) CodeCreate(
 	ctx context.Context,
-	request *vitalgo.CodeCreateLinkRequest,
+	request *vitalgo.LinkCodeCreateRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.VitalTokenCreatedResponse, error) {
 	response, err := c.WithRawResponse.CodeCreate(
@@ -189,7 +189,7 @@ func (c *Client) StartConnect(
 // Check link token state - can be hit continuously used as heartbeat
 func (c *Client) TokenState(
 	ctx context.Context,
-	request *vitalgo.TokenStateLinkRequest,
+	request *vitalgo.LinkTokenStateRequest,
 	opts ...option.RequestOption,
 ) (map[string]any, error) {
 	response, err := c.WithRawResponse.TokenState(
@@ -240,11 +240,13 @@ func (c *Client) PasswordAuth(
 // This endpoint generates an OAuth link for oauth provider
 func (c *Client) GenerateOauthLink(
 	ctx context.Context,
-	request *vitalgo.GenerateOauthLinkLinkRequest,
+	oauthProvider *vitalgo.OAuthProviders,
+	request *vitalgo.LinkGenerateOauthLinkRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.Source, error) {
 	response, err := c.WithRawResponse.GenerateOauthLink(
 		ctx,
+		oauthProvider,
 		request,
 		opts...,
 	)
@@ -257,11 +259,13 @@ func (c *Client) GenerateOauthLink(
 // This connects auth providers that are password based.
 func (c *Client) ConnectPasswordProvider(
 	ctx context.Context,
+	provider *vitalgo.PasswordProviders,
 	request *vitalgo.IndividualProviderData,
 	opts ...option.RequestOption,
 ) (*vitalgo.ProviderLinkResponse, error) {
 	response, err := c.WithRawResponse.ConnectPasswordProvider(
 		ctx,
+		provider,
 		request,
 		opts...,
 	)
@@ -274,11 +278,13 @@ func (c *Client) ConnectPasswordProvider(
 // This connects auth providers that are password based.
 func (c *Client) CompletePasswordProviderMfa(
 	ctx context.Context,
+	provider *vitalgo.PasswordProviders,
 	request *vitalgo.CompletePasswordProviderMfaBody,
 	opts ...option.RequestOption,
 ) (*vitalgo.ProviderLinkResponse, error) {
 	response, err := c.WithRawResponse.CompletePasswordProviderMfa(
 		ctx,
+		provider,
 		request,
 		opts...,
 	)
@@ -291,11 +297,13 @@ func (c *Client) CompletePasswordProviderMfa(
 // This connects auth providers that are email based.
 func (c *Client) ConnectEmailAuthProvider(
 	ctx context.Context,
+	provider vitalgo.EmailProviders,
 	request *vitalgo.EmailProviderAuthLink,
 	opts ...option.RequestOption,
 ) (any, error) {
 	response, err := c.WithRawResponse.ConnectEmailAuthProvider(
 		ctx,
+		provider,
 		request,
 		opts...,
 	)
@@ -308,7 +316,7 @@ func (c *Client) ConnectEmailAuthProvider(
 // GET List of all available providers given the generated link token.
 func (c *Client) GetAllProviders(
 	ctx context.Context,
-	request *vitalgo.GetAllProvidersLinkRequest,
+	request *vitalgo.LinkGetAllProvidersRequest,
 	opts ...option.RequestOption,
 ) ([]*vitalgo.SourceLink, error) {
 	response, err := c.WithRawResponse.GetAllProviders(
@@ -324,11 +332,13 @@ func (c *Client) GetAllProviders(
 
 func (c *Client) ConnectManualProvider(
 	ctx context.Context,
+	provider *vitalgo.ManualProviders,
 	request *vitalgo.ManualConnectionData,
 	opts ...option.RequestOption,
 ) (map[string]bool, error) {
 	response, err := c.WithRawResponse.ConnectManualProvider(
 		ctx,
+		provider,
 		request,
 		opts...,
 	)
