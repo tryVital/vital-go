@@ -27,31 +27,6 @@ func (b *BodyCreateLabReportParserJob) require(field *big.Int) {
 }
 
 var (
-	parserGetJobLabReportRequestFieldJobId = big.NewInt(1 << 0)
-)
-
-type ParserGetJobLabReportRequest struct {
-	JobId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (p *ParserGetJobLabReportRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetJobId sets the JobId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParserGetJobLabReportRequest) SetJobId(jobId string) {
-	p.JobId = jobId
-	p.require(parserGetJobLabReportRequestFieldJobId)
-}
-
-var (
 	labReportResultFieldTestName          = big.NewInt(1 << 0)
 	labReportResultFieldValue             = big.NewInt(1 << 1)
 	labReportResultFieldType              = big.NewInt(1 << 2)
