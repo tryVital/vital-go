@@ -35,11 +35,13 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get profile for user_id
 func (c *Client) Get(
 	ctx context.Context,
-	request *vitalgo.GetProfileRequest,
+	userId string,
+	request *vitalgo.ProfileGetRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingProfile, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)
@@ -52,11 +54,13 @@ func (c *Client) Get(
 // Get raw profile for user_id
 func (c *Client) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawProfileRequest,
+	userId string,
+	request *vitalgo.ProfileGetRawRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.RawProfile, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
+		userId,
 		request,
 		opts...,
 	)

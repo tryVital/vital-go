@@ -11,128 +11,78 @@ import (
 )
 
 var (
-	getTeamRequestFieldTeamId = big.NewInt(1 << 0)
+	teamGetLinkConfigRequestFieldVitalLinkToken = big.NewInt(1 << 0)
 )
 
-type GetTeamRequest struct {
-	TeamId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetTeamRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTeamId sets the TeamId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetTeamRequest) SetTeamId(teamId string) {
-	g.TeamId = teamId
-	g.require(getTeamRequestFieldTeamId)
-}
-
-var (
-	getLinkConfigTeamRequestFieldVitalLinkToken = big.NewInt(1 << 0)
-)
-
-type GetLinkConfigTeamRequest struct {
+type TeamGetLinkConfigRequest struct {
 	VitalLinkToken *string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetLinkConfigTeamRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TeamGetLinkConfigRequest) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetLinkConfigTeamRequest) SetVitalLinkToken(vitalLinkToken *string) {
-	g.VitalLinkToken = vitalLinkToken
-	g.require(getLinkConfigTeamRequestFieldVitalLinkToken)
+func (t *TeamGetLinkConfigRequest) SetVitalLinkToken(vitalLinkToken *string) {
+	t.VitalLinkToken = vitalLinkToken
+	t.require(teamGetLinkConfigRequestFieldVitalLinkToken)
 }
 
 var (
-	getPhysiciansTeamRequestFieldTeamId = big.NewInt(1 << 0)
+	teamGetSourcePrioritiesRequestFieldDataType = big.NewInt(1 << 0)
 )
 
-type GetPhysiciansTeamRequest struct {
-	TeamId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetPhysiciansTeamRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetTeamId sets the TeamId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPhysiciansTeamRequest) SetTeamId(teamId string) {
-	g.TeamId = teamId
-	g.require(getPhysiciansTeamRequestFieldTeamId)
-}
-
-var (
-	getSourcePrioritiesTeamRequestFieldDataType = big.NewInt(1 << 0)
-)
-
-type GetSourcePrioritiesTeamRequest struct {
+type TeamGetSourcePrioritiesRequest struct {
 	DataType *PriorityResource `json:"-" url:"data_type,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetSourcePrioritiesTeamRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TeamGetSourcePrioritiesRequest) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetDataType sets the DataType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSourcePrioritiesTeamRequest) SetDataType(dataType *PriorityResource) {
-	g.DataType = dataType
-	g.require(getSourcePrioritiesTeamRequestFieldDataType)
+func (t *TeamGetSourcePrioritiesRequest) SetDataType(dataType *PriorityResource) {
+	t.DataType = dataType
+	t.require(teamGetSourcePrioritiesRequestFieldDataType)
 }
 
 var (
-	getUserByIdTeamRequestFieldQueryId = big.NewInt(1 << 0)
+	teamGetUserByIdRequestFieldQueryId = big.NewInt(1 << 0)
 )
 
-type GetUserByIdTeamRequest struct {
+type TeamGetUserByIdRequest struct {
 	QueryId *string `json:"-" url:"query_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetUserByIdTeamRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (t *TeamGetUserByIdRequest) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
+	t.explicitFields.Or(t.explicitFields, field)
 }
 
 // SetQueryId sets the QueryId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetUserByIdTeamRequest) SetQueryId(queryId *string) {
-	g.QueryId = queryId
-	g.require(getUserByIdTeamRequestFieldQueryId)
+func (t *TeamGetUserByIdRequest) SetQueryId(queryId *string) {
+	t.QueryId = queryId
+	t.require(teamGetUserByIdRequestFieldQueryId)
 }
 
 var (

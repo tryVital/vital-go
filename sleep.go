@@ -11,14 +11,12 @@ import (
 )
 
 var (
-	getSleepRequestFieldUserId    = big.NewInt(1 << 0)
-	getSleepRequestFieldProvider  = big.NewInt(1 << 1)
-	getSleepRequestFieldStartDate = big.NewInt(1 << 2)
-	getSleepRequestFieldEndDate   = big.NewInt(1 << 3)
+	sleepGetRequestFieldProvider  = big.NewInt(1 << 0)
+	sleepGetRequestFieldStartDate = big.NewInt(1 << 1)
+	sleepGetRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type GetSleepRequest struct {
-	UserId string `json:"-" url:"-"`
+type SleepGetRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -30,50 +28,41 @@ type GetSleepRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetSleepRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (s *SleepGetRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getSleepRequestFieldUserId)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getSleepRequestFieldProvider)
+func (s *SleepGetRequest) SetProvider(provider *string) {
+	s.Provider = provider
+	s.require(sleepGetRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepRequest) SetStartDate(startDate string) {
-	g.StartDate = startDate
-	g.require(getSleepRequestFieldStartDate)
+func (s *SleepGetRequest) SetStartDate(startDate string) {
+	s.StartDate = startDate
+	s.require(sleepGetRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetSleepRequest) SetEndDate(endDate *string) {
-	g.EndDate = endDate
-	g.require(getSleepRequestFieldEndDate)
+func (s *SleepGetRequest) SetEndDate(endDate *string) {
+	s.EndDate = endDate
+	s.require(sleepGetRequestFieldEndDate)
 }
 
 var (
-	getRawSleepRequestFieldUserId    = big.NewInt(1 << 0)
-	getRawSleepRequestFieldProvider  = big.NewInt(1 << 1)
-	getRawSleepRequestFieldStartDate = big.NewInt(1 << 2)
-	getRawSleepRequestFieldEndDate   = big.NewInt(1 << 3)
+	sleepGetRawRequestFieldProvider  = big.NewInt(1 << 0)
+	sleepGetRawRequestFieldStartDate = big.NewInt(1 << 1)
+	sleepGetRawRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type GetRawSleepRequest struct {
-	UserId string `json:"-" url:"-"`
+type SleepGetRawRequest struct {
 	// Provider oura/strava etc
 	Provider *string `json:"-" url:"provider,omitempty"`
 	// Date from in YYYY-MM-DD or ISO formatted date time. If a date is provided without a time, the time will be set to 00:00:00
@@ -85,65 +74,32 @@ type GetRawSleepRequest struct {
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetRawSleepRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (s *SleepGetRawRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawSleepRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getRawSleepRequestFieldUserId)
+	s.explicitFields.Or(s.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawSleepRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getRawSleepRequestFieldProvider)
+func (s *SleepGetRawRequest) SetProvider(provider *string) {
+	s.Provider = provider
+	s.require(sleepGetRawRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawSleepRequest) SetStartDate(startDate string) {
-	g.StartDate = startDate
-	g.require(getRawSleepRequestFieldStartDate)
+func (s *SleepGetRawRequest) SetStartDate(startDate string) {
+	s.StartDate = startDate
+	s.require(sleepGetRawRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetRawSleepRequest) SetEndDate(endDate *string) {
-	g.EndDate = endDate
-	g.require(getRawSleepRequestFieldEndDate)
-}
-
-var (
-	getStreamBySleepIdSleepRequestFieldSleepId = big.NewInt(1 << 0)
-)
-
-type GetStreamBySleepIdSleepRequest struct {
-	// The Vital Sleep ID
-	SleepId string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (g *GetStreamBySleepIdSleepRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetSleepId sets the SleepId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetStreamBySleepIdSleepRequest) SetSleepId(sleepId string) {
-	g.SleepId = sleepId
-	g.require(getStreamBySleepIdSleepRequestFieldSleepId)
+func (s *SleepGetRawRequest) SetEndDate(endDate *string) {
+	s.EndDate = endDate
+	s.require(sleepGetRawRequestFieldEndDate)
 }
 
 var (
@@ -186,7 +142,7 @@ type ClientFacingSleep struct {
 	// Date of the specified record, formatted as ISO8601 datetime string in UTC 00:00. Deprecated in favour of calendar_date.
 	Date time.Time `json:"date" url:"date"`
 	// Date of the sleep summary in the YYYY-mm-dd format. This generally matches the sleep end date.
-	CalendarDate time.Time `json:"calendar_date" url:"calendar_date" format:"date"`
+	CalendarDate string `json:"calendar_date" url:"calendar_date"`
 	// UTC Time when the sleep period started
 	BedtimeStart time.Time `json:"bedtime_start" url:"bedtime_start"`
 	// UTC Time when the sleep period ended
@@ -268,9 +224,9 @@ func (c *ClientFacingSleep) GetDate() time.Time {
 	return c.Date
 }
 
-func (c *ClientFacingSleep) GetCalendarDate() time.Time {
+func (c *ClientFacingSleep) GetCalendarDate() string {
 	if c == nil {
-		return time.Time{}
+		return ""
 	}
 	return c.CalendarDate
 }
@@ -491,7 +447,7 @@ func (c *ClientFacingSleep) SetDate(date time.Time) {
 
 // SetCalendarDate sets the CalendarDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingSleep) SetCalendarDate(calendarDate time.Time) {
+func (c *ClientFacingSleep) SetCalendarDate(calendarDate string) {
 	c.CalendarDate = calendarDate
 	c.require(clientFacingSleepFieldCalendarDate)
 }
@@ -683,7 +639,6 @@ func (c *ClientFacingSleep) UnmarshalJSON(data []byte) error {
 	var unmarshaler = struct {
 		embed
 		Date         *internal.DateTime `json:"date"`
-		CalendarDate *internal.Date     `json:"calendar_date"`
 		BedtimeStart *internal.DateTime `json:"bedtime_start"`
 		BedtimeStop  *internal.DateTime `json:"bedtime_stop"`
 		CreatedAt    *internal.DateTime `json:"created_at"`
@@ -696,7 +651,6 @@ func (c *ClientFacingSleep) UnmarshalJSON(data []byte) error {
 	}
 	*c = ClientFacingSleep(unmarshaler.embed)
 	c.Date = unmarshaler.Date.Time()
-	c.CalendarDate = unmarshaler.CalendarDate.Time()
 	c.BedtimeStart = unmarshaler.BedtimeStart.Time()
 	c.BedtimeStop = unmarshaler.BedtimeStop.Time()
 	c.CreatedAt = unmarshaler.CreatedAt.Time()
@@ -715,7 +669,6 @@ func (c *ClientFacingSleep) MarshalJSON() ([]byte, error) {
 	var marshaler = struct {
 		embed
 		Date         *internal.DateTime `json:"date"`
-		CalendarDate *internal.Date     `json:"calendar_date"`
 		BedtimeStart *internal.DateTime `json:"bedtime_start"`
 		BedtimeStop  *internal.DateTime `json:"bedtime_stop"`
 		CreatedAt    *internal.DateTime `json:"created_at"`
@@ -723,7 +676,6 @@ func (c *ClientFacingSleep) MarshalJSON() ([]byte, error) {
 	}{
 		embed:        embed(*c),
 		Date:         internal.NewDateTime(c.Date),
-		CalendarDate: internal.NewDate(c.CalendarDate),
 		BedtimeStart: internal.NewDateTime(c.BedtimeStart),
 		BedtimeStop:  internal.NewDateTime(c.BedtimeStop),
 		CreatedAt:    internal.NewDateTime(c.CreatedAt),

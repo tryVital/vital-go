@@ -11,56 +11,47 @@ import (
 )
 
 var (
-	getMenstrualCycleRequestFieldUserId    = big.NewInt(1 << 0)
-	getMenstrualCycleRequestFieldProvider  = big.NewInt(1 << 1)
-	getMenstrualCycleRequestFieldStartDate = big.NewInt(1 << 2)
-	getMenstrualCycleRequestFieldEndDate   = big.NewInt(1 << 3)
+	menstrualCycleGetRequestFieldProvider  = big.NewInt(1 << 0)
+	menstrualCycleGetRequestFieldStartDate = big.NewInt(1 << 1)
+	menstrualCycleGetRequestFieldEndDate   = big.NewInt(1 << 2)
 )
 
-type GetMenstrualCycleRequest struct {
-	UserId string `json:"-" url:"-"`
+type MenstrualCycleGetRequest struct {
 	// Provider oura/strava etc
-	Provider  *string    `json:"-" url:"provider,omitempty"`
-	StartDate time.Time  `json:"-" url:"start_date" format:"date"`
-	EndDate   *time.Time `json:"-" url:"end_date,omitempty" format:"date"`
+	Provider  *string `json:"-" url:"provider,omitempty"`
+	StartDate string  `json:"-" url:"start_date"`
+	EndDate   *string `json:"-" url:"end_date,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (g *GetMenstrualCycleRequest) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
+func (m *MenstrualCycleGetRequest) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
 	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMenstrualCycleRequest) SetUserId(userId string) {
-	g.UserId = userId
-	g.require(getMenstrualCycleRequestFieldUserId)
+	m.explicitFields.Or(m.explicitFields, field)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMenstrualCycleRequest) SetProvider(provider *string) {
-	g.Provider = provider
-	g.require(getMenstrualCycleRequestFieldProvider)
+func (m *MenstrualCycleGetRequest) SetProvider(provider *string) {
+	m.Provider = provider
+	m.require(menstrualCycleGetRequestFieldProvider)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMenstrualCycleRequest) SetStartDate(startDate time.Time) {
-	g.StartDate = startDate
-	g.require(getMenstrualCycleRequestFieldStartDate)
+func (m *MenstrualCycleGetRequest) SetStartDate(startDate string) {
+	m.StartDate = startDate
+	m.require(menstrualCycleGetRequestFieldStartDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMenstrualCycleRequest) SetEndDate(endDate *time.Time) {
-	g.EndDate = endDate
-	g.require(getMenstrualCycleRequestFieldEndDate)
+func (m *MenstrualCycleGetRequest) SetEndDate(endDate *string) {
+	m.EndDate = endDate
+	m.require(menstrualCycleGetRequestFieldEndDate)
 }
 
 var (
@@ -69,8 +60,8 @@ var (
 )
 
 type BasalBodyTemperatureEntry struct {
-	Date  time.Time `json:"date" url:"date" format:"date"`
-	Value float64   `json:"value" url:"value"`
+	Date  string  `json:"date" url:"date"`
+	Value float64 `json:"value" url:"value"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -79,9 +70,9 @@ type BasalBodyTemperatureEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BasalBodyTemperatureEntry) GetDate() time.Time {
+func (b *BasalBodyTemperatureEntry) GetDate() string {
 	if b == nil {
-		return time.Time{}
+		return ""
 	}
 	return b.Date
 }
@@ -106,7 +97,7 @@ func (b *BasalBodyTemperatureEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasalBodyTemperatureEntry) SetDate(date time.Time) {
+func (b *BasalBodyTemperatureEntry) SetDate(date string) {
 	b.Date = date
 	b.require(basalBodyTemperatureEntryFieldDate)
 }
@@ -119,18 +110,12 @@ func (b *BasalBodyTemperatureEntry) SetValue(value float64) {
 }
 
 func (b *BasalBodyTemperatureEntry) UnmarshalJSON(data []byte) error {
-	type embed BasalBodyTemperatureEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*b),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler BasalBodyTemperatureEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BasalBodyTemperatureEntry(unmarshaler.embed)
-	b.Date = unmarshaler.Date.Time()
+	*b = BasalBodyTemperatureEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *b)
 	if err != nil {
 		return err
@@ -144,10 +129,8 @@ func (b *BasalBodyTemperatureEntry) MarshalJSON() ([]byte, error) {
 	type embed BasalBodyTemperatureEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*b),
-		Date:  internal.NewDate(b.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -171,7 +154,7 @@ var (
 )
 
 type CervicalMucusEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 	// ℹ️ This enum is non-exhaustive.
 	Quality CervicalMucusEntryQuality `json:"quality" url:"quality"`
 
@@ -182,9 +165,9 @@ type CervicalMucusEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CervicalMucusEntry) GetDate() time.Time {
+func (c *CervicalMucusEntry) GetDate() string {
 	if c == nil {
-		return time.Time{}
+		return ""
 	}
 	return c.Date
 }
@@ -209,7 +192,7 @@ func (c *CervicalMucusEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CervicalMucusEntry) SetDate(date time.Time) {
+func (c *CervicalMucusEntry) SetDate(date string) {
 	c.Date = date
 	c.require(cervicalMucusEntryFieldDate)
 }
@@ -222,18 +205,12 @@ func (c *CervicalMucusEntry) SetQuality(quality CervicalMucusEntryQuality) {
 }
 
 func (c *CervicalMucusEntry) UnmarshalJSON(data []byte) error {
-	type embed CervicalMucusEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*c),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler CervicalMucusEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = CervicalMucusEntry(unmarshaler.embed)
-	c.Date = unmarshaler.Date.Time()
+	*c = CervicalMucusEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -247,10 +224,8 @@ func (c *CervicalMucusEntry) MarshalJSON() ([]byte, error) {
 	type embed CervicalMucusEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*c),
-		Date:  internal.NewDate(c.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -328,9 +303,9 @@ var (
 
 type ClientFacingMenstrualCycle struct {
 	Id                     string                                    `json:"id" url:"id"`
-	PeriodStart            time.Time                                 `json:"period_start" url:"period_start" format:"date"`
-	PeriodEnd              *time.Time                                `json:"period_end,omitempty" url:"period_end,omitempty" format:"date"`
-	CycleEnd               *time.Time                                `json:"cycle_end,omitempty" url:"cycle_end,omitempty" format:"date"`
+	PeriodStart            string                                    `json:"period_start" url:"period_start"`
+	PeriodEnd              *string                                   `json:"period_end,omitempty" url:"period_end,omitempty"`
+	CycleEnd               *string                                   `json:"cycle_end,omitempty" url:"cycle_end,omitempty"`
 	IsPredicted            *bool                                     `json:"is_predicted,omitempty" url:"is_predicted,omitempty"`
 	MenstrualFlow          []*MenstrualFlowEntry                     `json:"menstrual_flow,omitempty" url:"menstrual_flow,omitempty"`
 	CervicalMucus          []*CervicalMucusEntry                     `json:"cervical_mucus,omitempty" url:"cervical_mucus,omitempty"`
@@ -366,21 +341,21 @@ func (c *ClientFacingMenstrualCycle) GetId() string {
 	return c.Id
 }
 
-func (c *ClientFacingMenstrualCycle) GetPeriodStart() time.Time {
+func (c *ClientFacingMenstrualCycle) GetPeriodStart() string {
 	if c == nil {
-		return time.Time{}
+		return ""
 	}
 	return c.PeriodStart
 }
 
-func (c *ClientFacingMenstrualCycle) GetPeriodEnd() *time.Time {
+func (c *ClientFacingMenstrualCycle) GetPeriodEnd() *string {
 	if c == nil {
 		return nil
 	}
 	return c.PeriodEnd
 }
 
-func (c *ClientFacingMenstrualCycle) GetCycleEnd() *time.Time {
+func (c *ClientFacingMenstrualCycle) GetCycleEnd() *string {
 	if c == nil {
 		return nil
 	}
@@ -540,21 +515,21 @@ func (c *ClientFacingMenstrualCycle) SetId(id string) {
 
 // SetPeriodStart sets the PeriodStart field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingMenstrualCycle) SetPeriodStart(periodStart time.Time) {
+func (c *ClientFacingMenstrualCycle) SetPeriodStart(periodStart string) {
 	c.PeriodStart = periodStart
 	c.require(clientFacingMenstrualCycleFieldPeriodStart)
 }
 
 // SetPeriodEnd sets the PeriodEnd field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingMenstrualCycle) SetPeriodEnd(periodEnd *time.Time) {
+func (c *ClientFacingMenstrualCycle) SetPeriodEnd(periodEnd *string) {
 	c.PeriodEnd = periodEnd
 	c.require(clientFacingMenstrualCycleFieldPeriodEnd)
 }
 
 // SetCycleEnd sets the CycleEnd field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingMenstrualCycle) SetCycleEnd(cycleEnd *time.Time) {
+func (c *ClientFacingMenstrualCycle) SetCycleEnd(cycleEnd *string) {
 	c.CycleEnd = cycleEnd
 	c.require(clientFacingMenstrualCycleFieldCycleEnd)
 }
@@ -696,11 +671,8 @@ func (c *ClientFacingMenstrualCycle) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingMenstrualCycle
 	var unmarshaler = struct {
 		embed
-		PeriodStart *internal.Date     `json:"period_start"`
-		PeriodEnd   *internal.Date     `json:"period_end,omitempty"`
-		CycleEnd    *internal.Date     `json:"cycle_end,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at"`
-		UpdatedAt   *internal.DateTime `json:"updated_at"`
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
 		embed: embed(*c),
 	}
@@ -708,9 +680,6 @@ func (c *ClientFacingMenstrualCycle) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = ClientFacingMenstrualCycle(unmarshaler.embed)
-	c.PeriodStart = unmarshaler.PeriodStart.Time()
-	c.PeriodEnd = unmarshaler.PeriodEnd.TimePtr()
-	c.CycleEnd = unmarshaler.CycleEnd.TimePtr()
 	c.CreatedAt = unmarshaler.CreatedAt.Time()
 	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
@@ -726,18 +695,12 @@ func (c *ClientFacingMenstrualCycle) MarshalJSON() ([]byte, error) {
 	type embed ClientFacingMenstrualCycle
 	var marshaler = struct {
 		embed
-		PeriodStart *internal.Date     `json:"period_start"`
-		PeriodEnd   *internal.Date     `json:"period_end,omitempty"`
-		CycleEnd    *internal.Date     `json:"cycle_end,omitempty"`
-		CreatedAt   *internal.DateTime `json:"created_at"`
-		UpdatedAt   *internal.DateTime `json:"updated_at"`
+		CreatedAt *internal.DateTime `json:"created_at"`
+		UpdatedAt *internal.DateTime `json:"updated_at"`
 	}{
-		embed:       embed(*c),
-		PeriodStart: internal.NewDate(c.PeriodStart),
-		PeriodEnd:   internal.NewOptionalDate(c.PeriodEnd),
-		CycleEnd:    internal.NewOptionalDate(c.CycleEnd),
-		CreatedAt:   internal.NewDateTime(c.CreatedAt),
-		UpdatedAt:   internal.NewDateTime(c.UpdatedAt),
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -885,7 +848,7 @@ var (
 )
 
 type ContraceptiveEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 	// ℹ️ This enum is non-exhaustive.
 	Type ContraceptiveEntryType `json:"type" url:"type"`
 
@@ -896,9 +859,9 @@ type ContraceptiveEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *ContraceptiveEntry) GetDate() time.Time {
+func (c *ContraceptiveEntry) GetDate() string {
 	if c == nil {
-		return time.Time{}
+		return ""
 	}
 	return c.Date
 }
@@ -923,7 +886,7 @@ func (c *ContraceptiveEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ContraceptiveEntry) SetDate(date time.Time) {
+func (c *ContraceptiveEntry) SetDate(date string) {
 	c.Date = date
 	c.require(contraceptiveEntryFieldDate)
 }
@@ -936,18 +899,12 @@ func (c *ContraceptiveEntry) SetType(type_ ContraceptiveEntryType) {
 }
 
 func (c *ContraceptiveEntry) UnmarshalJSON(data []byte) error {
-	type embed ContraceptiveEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*c),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler ContraceptiveEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = ContraceptiveEntry(unmarshaler.embed)
-	c.Date = unmarshaler.Date.Time()
+	*c = ContraceptiveEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -961,10 +918,8 @@ func (c *ContraceptiveEntry) MarshalJSON() ([]byte, error) {
 	type embed ContraceptiveEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*c),
-		Date:  internal.NewDate(c.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1026,7 +981,7 @@ var (
 )
 
 type DetectedDeviationEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 	// ℹ️ This enum is non-exhaustive.
 	Deviation DetectedDeviationEntryDeviation `json:"deviation" url:"deviation"`
 
@@ -1037,9 +992,9 @@ type DetectedDeviationEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (d *DetectedDeviationEntry) GetDate() time.Time {
+func (d *DetectedDeviationEntry) GetDate() string {
 	if d == nil {
-		return time.Time{}
+		return ""
 	}
 	return d.Date
 }
@@ -1064,7 +1019,7 @@ func (d *DetectedDeviationEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DetectedDeviationEntry) SetDate(date time.Time) {
+func (d *DetectedDeviationEntry) SetDate(date string) {
 	d.Date = date
 	d.require(detectedDeviationEntryFieldDate)
 }
@@ -1077,18 +1032,12 @@ func (d *DetectedDeviationEntry) SetDeviation(deviation DetectedDeviationEntryDe
 }
 
 func (d *DetectedDeviationEntry) UnmarshalJSON(data []byte) error {
-	type embed DetectedDeviationEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*d),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler DetectedDeviationEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*d = DetectedDeviationEntry(unmarshaler.embed)
-	d.Date = unmarshaler.Date.Time()
+	*d = DetectedDeviationEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *d)
 	if err != nil {
 		return err
@@ -1102,10 +1051,8 @@ func (d *DetectedDeviationEntry) MarshalJSON() ([]byte, error) {
 	type embed DetectedDeviationEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*d),
-		Date:  internal.NewDate(d.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1158,7 +1105,7 @@ var (
 )
 
 type HomePregnancyTestEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 	// ℹ️ This enum is non-exhaustive.
 	TestResult HomePregnancyTestEntryTestResult `json:"test_result" url:"test_result"`
 
@@ -1169,9 +1116,9 @@ type HomePregnancyTestEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (h *HomePregnancyTestEntry) GetDate() time.Time {
+func (h *HomePregnancyTestEntry) GetDate() string {
 	if h == nil {
-		return time.Time{}
+		return ""
 	}
 	return h.Date
 }
@@ -1196,7 +1143,7 @@ func (h *HomePregnancyTestEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HomePregnancyTestEntry) SetDate(date time.Time) {
+func (h *HomePregnancyTestEntry) SetDate(date string) {
 	h.Date = date
 	h.require(homePregnancyTestEntryFieldDate)
 }
@@ -1209,18 +1156,12 @@ func (h *HomePregnancyTestEntry) SetTestResult(testResult HomePregnancyTestEntry
 }
 
 func (h *HomePregnancyTestEntry) UnmarshalJSON(data []byte) error {
-	type embed HomePregnancyTestEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*h),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler HomePregnancyTestEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*h = HomePregnancyTestEntry(unmarshaler.embed)
-	h.Date = unmarshaler.Date.Time()
+	*h = HomePregnancyTestEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *h)
 	if err != nil {
 		return err
@@ -1234,10 +1175,8 @@ func (h *HomePregnancyTestEntry) MarshalJSON() ([]byte, error) {
 	type embed HomePregnancyTestEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*h),
-		Date:  internal.NewDate(h.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1287,7 +1226,7 @@ var (
 )
 
 type HomeProgesteroneTestEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 	// ℹ️ This enum is non-exhaustive.
 	TestResult HomeProgesteroneTestEntryTestResult `json:"test_result" url:"test_result"`
 
@@ -1298,9 +1237,9 @@ type HomeProgesteroneTestEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (h *HomeProgesteroneTestEntry) GetDate() time.Time {
+func (h *HomeProgesteroneTestEntry) GetDate() string {
 	if h == nil {
-		return time.Time{}
+		return ""
 	}
 	return h.Date
 }
@@ -1325,7 +1264,7 @@ func (h *HomeProgesteroneTestEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HomeProgesteroneTestEntry) SetDate(date time.Time) {
+func (h *HomeProgesteroneTestEntry) SetDate(date string) {
 	h.Date = date
 	h.require(homeProgesteroneTestEntryFieldDate)
 }
@@ -1338,18 +1277,12 @@ func (h *HomeProgesteroneTestEntry) SetTestResult(testResult HomeProgesteroneTes
 }
 
 func (h *HomeProgesteroneTestEntry) UnmarshalJSON(data []byte) error {
-	type embed HomeProgesteroneTestEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*h),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler HomeProgesteroneTestEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*h = HomeProgesteroneTestEntry(unmarshaler.embed)
-	h.Date = unmarshaler.Date.Time()
+	*h = HomeProgesteroneTestEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *h)
 	if err != nil {
 		return err
@@ -1363,10 +1296,8 @@ func (h *HomeProgesteroneTestEntry) MarshalJSON() ([]byte, error) {
 	type embed HomeProgesteroneTestEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*h),
-		Date:  internal.NewDate(h.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1415,7 +1346,7 @@ var (
 )
 
 type IntermenstrualBleedingEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1424,9 +1355,9 @@ type IntermenstrualBleedingEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (i *IntermenstrualBleedingEntry) GetDate() time.Time {
+func (i *IntermenstrualBleedingEntry) GetDate() string {
 	if i == nil {
-		return time.Time{}
+		return ""
 	}
 	return i.Date
 }
@@ -1444,24 +1375,18 @@ func (i *IntermenstrualBleedingEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *IntermenstrualBleedingEntry) SetDate(date time.Time) {
+func (i *IntermenstrualBleedingEntry) SetDate(date string) {
 	i.Date = date
 	i.require(intermenstrualBleedingEntryFieldDate)
 }
 
 func (i *IntermenstrualBleedingEntry) UnmarshalJSON(data []byte) error {
-	type embed IntermenstrualBleedingEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*i),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler IntermenstrualBleedingEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*i = IntermenstrualBleedingEntry(unmarshaler.embed)
-	i.Date = unmarshaler.Date.Time()
+	*i = IntermenstrualBleedingEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *i)
 	if err != nil {
 		return err
@@ -1475,10 +1400,8 @@ func (i *IntermenstrualBleedingEntry) MarshalJSON() ([]byte, error) {
 	type embed IntermenstrualBleedingEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*i),
-		Date:  internal.NewDate(i.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1580,7 +1503,7 @@ var (
 )
 
 type MenstrualFlowEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 	// ℹ️ This enum is non-exhaustive.
 	Flow MenstrualFlowEntryFlow `json:"flow" url:"flow"`
 
@@ -1591,9 +1514,9 @@ type MenstrualFlowEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (m *MenstrualFlowEntry) GetDate() time.Time {
+func (m *MenstrualFlowEntry) GetDate() string {
 	if m == nil {
-		return time.Time{}
+		return ""
 	}
 	return m.Date
 }
@@ -1618,7 +1541,7 @@ func (m *MenstrualFlowEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MenstrualFlowEntry) SetDate(date time.Time) {
+func (m *MenstrualFlowEntry) SetDate(date string) {
 	m.Date = date
 	m.require(menstrualFlowEntryFieldDate)
 }
@@ -1631,18 +1554,12 @@ func (m *MenstrualFlowEntry) SetFlow(flow MenstrualFlowEntryFlow) {
 }
 
 func (m *MenstrualFlowEntry) UnmarshalJSON(data []byte) error {
-	type embed MenstrualFlowEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*m),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler MenstrualFlowEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*m = MenstrualFlowEntry(unmarshaler.embed)
-	m.Date = unmarshaler.Date.Time()
+	*m = MenstrualFlowEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *m)
 	if err != nil {
 		return err
@@ -1656,10 +1573,8 @@ func (m *MenstrualFlowEntry) MarshalJSON() ([]byte, error) {
 	type embed MenstrualFlowEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*m),
-		Date:  internal.NewDate(m.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1715,7 +1630,7 @@ var (
 )
 
 type OvulationTestEntry struct {
-	Date time.Time `json:"date" url:"date" format:"date"`
+	Date string `json:"date" url:"date"`
 	// ℹ️ This enum is non-exhaustive.
 	TestResult OvulationTestEntryTestResult `json:"test_result" url:"test_result"`
 
@@ -1726,9 +1641,9 @@ type OvulationTestEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OvulationTestEntry) GetDate() time.Time {
+func (o *OvulationTestEntry) GetDate() string {
 	if o == nil {
-		return time.Time{}
+		return ""
 	}
 	return o.Date
 }
@@ -1753,7 +1668,7 @@ func (o *OvulationTestEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OvulationTestEntry) SetDate(date time.Time) {
+func (o *OvulationTestEntry) SetDate(date string) {
 	o.Date = date
 	o.require(ovulationTestEntryFieldDate)
 }
@@ -1766,18 +1681,12 @@ func (o *OvulationTestEntry) SetTestResult(testResult OvulationTestEntryTestResu
 }
 
 func (o *OvulationTestEntry) UnmarshalJSON(data []byte) error {
-	type embed OvulationTestEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*o),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler OvulationTestEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*o = OvulationTestEntry(unmarshaler.embed)
-	o.Date = unmarshaler.Date.Time()
+	*o = OvulationTestEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *o)
 	if err != nil {
 		return err
@@ -1791,10 +1700,8 @@ func (o *OvulationTestEntry) MarshalJSON() ([]byte, error) {
 	type embed OvulationTestEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*o),
-		Date:  internal.NewDate(o.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1850,8 +1757,8 @@ var (
 )
 
 type SexualActivityEntry struct {
-	Date           time.Time `json:"date" url:"date" format:"date"`
-	ProtectionUsed *bool     `json:"protection_used,omitempty" url:"protection_used,omitempty"`
+	Date           string `json:"date" url:"date"`
+	ProtectionUsed *bool  `json:"protection_used,omitempty" url:"protection_used,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1860,9 +1767,9 @@ type SexualActivityEntry struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SexualActivityEntry) GetDate() time.Time {
+func (s *SexualActivityEntry) GetDate() string {
 	if s == nil {
-		return time.Time{}
+		return ""
 	}
 	return s.Date
 }
@@ -1887,7 +1794,7 @@ func (s *SexualActivityEntry) require(field *big.Int) {
 
 // SetDate sets the Date field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SexualActivityEntry) SetDate(date time.Time) {
+func (s *SexualActivityEntry) SetDate(date string) {
 	s.Date = date
 	s.require(sexualActivityEntryFieldDate)
 }
@@ -1900,18 +1807,12 @@ func (s *SexualActivityEntry) SetProtectionUsed(protectionUsed *bool) {
 }
 
 func (s *SexualActivityEntry) UnmarshalJSON(data []byte) error {
-	type embed SexualActivityEntry
-	var unmarshaler = struct {
-		embed
-		Date *internal.Date `json:"date"`
-	}{
-		embed: embed(*s),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler SexualActivityEntry
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SexualActivityEntry(unmarshaler.embed)
-	s.Date = unmarshaler.Date.Time()
+	*s = SexualActivityEntry(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
@@ -1925,10 +1826,8 @@ func (s *SexualActivityEntry) MarshalJSON() ([]byte, error) {
 	type embed SexualActivityEntry
 	var marshaler = struct {
 		embed
-		Date *internal.Date `json:"date"`
 	}{
 		embed: embed(*s),
-		Date:  internal.NewDate(s.Date),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
 	return json.Marshal(explicitMarshaler)

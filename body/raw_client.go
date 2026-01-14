@@ -32,7 +32,8 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.GetBodyRequest,
+	userId string,
+	request *vitalgo.BodyGetRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientBodyResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -43,7 +44,7 @@ func (r *RawClient) Get(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/body/%v",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -83,7 +84,8 @@ func (r *RawClient) Get(
 
 func (r *RawClient) GetRaw(
 	ctx context.Context,
-	request *vitalgo.GetRawBodyRequest,
+	userId string,
+	request *vitalgo.BodyGetRawRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.RawBody], error) {
 	options := core.NewRequestOptions(opts...)
@@ -94,7 +96,7 @@ func (r *RawClient) GetRaw(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/summary/body/%v/raw",
-		request.UserId,
+		userId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
