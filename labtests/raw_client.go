@@ -1314,7 +1314,7 @@ func (r *RawClient) BookPscAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.AppointmentBookingRequest,
+	request *vitalgo.LabTestsBookPscAppointmentRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1331,6 +1331,10 @@ func (r *RawClient) BookPscAppointment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.IdempotencyKey != nil {
+		headers.Add("x-idempotency-key", *request.IdempotencyKey)
+	}
+	headers.Add("Content-Type", "application/json")
 	var response *vitalgo.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
