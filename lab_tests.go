@@ -11,6 +11,46 @@ import (
 )
 
 var (
+	labTestsBookPscAppointmentRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+)
+
+type LabTestsBookPscAppointmentRequest struct {
+	// [!] This feature (Idempotency Key) is under closed beta. Idempotency Key support for booking PSC appointment.
+	IdempotencyKey *string                    `json:"-" url:"-"`
+	Body           *AppointmentBookingRequest `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *LabTestsBookPscAppointmentRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsBookPscAppointmentRequest) SetIdempotencyKey(idempotencyKey *string) {
+	l.IdempotencyKey = idempotencyKey
+	l.require(labTestsBookPscAppointmentRequestFieldIdempotencyKey)
+}
+
+func (l *LabTestsBookPscAppointmentRequest) UnmarshalJSON(data []byte) error {
+	body := new(AppointmentBookingRequest)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	l.Body = body
+	return nil
+}
+
+func (l *LabTestsBookPscAppointmentRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
+}
+
+var (
 	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldCancellationReasonId = big.NewInt(1 << 0)
 	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldNotes                = big.NewInt(1 << 1)
 )
@@ -1153,11 +1193,12 @@ func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) MarshalJSON() ([]b
 }
 
 var (
-	labTestsGetPscAppointmentAvailabilityRequestFieldLab       = big.NewInt(1 << 0)
-	labTestsGetPscAppointmentAvailabilityRequestFieldStartDate = big.NewInt(1 << 1)
-	labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes = big.NewInt(1 << 2)
-	labTestsGetPscAppointmentAvailabilityRequestFieldZipCode   = big.NewInt(1 << 3)
-	labTestsGetPscAppointmentAvailabilityRequestFieldRadius    = big.NewInt(1 << 4)
+	labTestsGetPscAppointmentAvailabilityRequestFieldLab        = big.NewInt(1 << 0)
+	labTestsGetPscAppointmentAvailabilityRequestFieldStartDate  = big.NewInt(1 << 1)
+	labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes  = big.NewInt(1 << 2)
+	labTestsGetPscAppointmentAvailabilityRequestFieldZipCode    = big.NewInt(1 << 3)
+	labTestsGetPscAppointmentAvailabilityRequestFieldRadius     = big.NewInt(1 << 4)
+	labTestsGetPscAppointmentAvailabilityRequestFieldAllowStale = big.NewInt(1 << 5)
 )
 
 type LabTestsGetPscAppointmentAvailabilityRequest struct {
@@ -1171,6 +1212,8 @@ type LabTestsGetPscAppointmentAvailabilityRequest struct {
 	ZipCode *string `json:"-" url:"zip_code,omitempty"`
 	// Radius in which to search. (meters)
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
+	// [Closed Beta] Serve last known good information when the PSC system is temporarily unavailable.
+	AllowStale *bool `json:"-" url:"allow_stale,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1216,6 +1259,13 @@ func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetZipCode(zipCode *strin
 func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetRadius(radius *AllowedRadius) {
 	l.Radius = radius
 	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldRadius)
+}
+
+// SetAllowStale sets the AllowStale field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetAllowStale(allowStale *bool) {
+	l.AllowStale = allowStale
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldAllowStale)
 }
 
 var (
@@ -1795,11 +1845,42 @@ func (a *AppointmentAvailabilitySlots) String() string {
 }
 
 var (
-	appointmentBookingRequestFieldBookingKey = big.NewInt(1 << 0)
+	appointmentBookingRequestFieldBookingKey                          = big.NewInt(1 << 0)
+	appointmentBookingRequestFieldAsyncConfirmation                   = big.NewInt(1 << 1)
+	appointmentBookingRequestFieldSyncConfirmationTimeoutMillisecond  = big.NewInt(1 << 2)
+	appointmentBookingRequestFieldAsyncConfirmationTimeoutMillisecond = big.NewInt(1 << 3)
 )
 
 type AppointmentBookingRequest struct {
 	BookingKey string `json:"booking_key" url:"booking_key"`
+	// [!] This feature (Async Confirmation) is under Closed Beta.
+	//
+	// If `true`, when the PSC system fails to confirm the booking within `sync_confirmation_timeout_millisecond`, this API
+	// endpoint would respond with a `pending` appointment. The booking attempt will continue asynchronously in background, until either:
+	//
+	// 1. the appointment moves to the reserved or confirmed state because an acknowledgement from the PSC system has been received; OR
+	// 2. the pending appointment moves to the cancelled state because the `async_confirmation_timeout_millisecond` timeout is reached.
+	//
+	// You will receive `labtest.appointment.updated` webhooks for all the relevant status changes (pending, confirmed, reserved
+	// and cancelled).
+	//
+	// If `false` (default), when the PSC system fails to confirm the booking, this API endpoint would respond with
+	// 500 Internal Server Error.
+	AsyncConfirmation *bool `json:"async_confirmation,omitempty" url:"async_confirmation,omitempty"`
+	// This parameter only takes effect when `async_confirmation` is `true`; no-op otherwise.
+	//
+	// The maximum amount of time which the Book Appointment endpoint would wait before it responds with a pending appointment.
+	// This timeout does not stop the booking attempt — it will continue asynchronously in background.
+	//
+	// Defaults to 2.5 seconds. Must be 1-10 seconds.
+	SyncConfirmationTimeoutMillisecond *int `json:"sync_confirmation_timeout_millisecond,omitempty" url:"sync_confirmation_timeout_millisecond,omitempty"`
+	// This parameter only takes effect when `async_confirmation` is `true`; no-op otherwise.
+	//
+	// The maximum amount of time which Junction would try to asynchronously book in the pending appointment. If this timeout is
+	// reached, the pending appointment would be cancelled.
+	//
+	// Defaults to 15 minutes. Must be 1-2880 minutes.
+	AsyncConfirmationTimeoutMillisecond *int `json:"async_confirmation_timeout_millisecond,omitempty" url:"async_confirmation_timeout_millisecond,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1813,6 +1894,27 @@ func (a *AppointmentBookingRequest) GetBookingKey() string {
 		return ""
 	}
 	return a.BookingKey
+}
+
+func (a *AppointmentBookingRequest) GetAsyncConfirmation() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AsyncConfirmation
+}
+
+func (a *AppointmentBookingRequest) GetSyncConfirmationTimeoutMillisecond() *int {
+	if a == nil {
+		return nil
+	}
+	return a.SyncConfirmationTimeoutMillisecond
+}
+
+func (a *AppointmentBookingRequest) GetAsyncConfirmationTimeoutMillisecond() *int {
+	if a == nil {
+		return nil
+	}
+	return a.AsyncConfirmationTimeoutMillisecond
 }
 
 func (a *AppointmentBookingRequest) GetExtraProperties() map[string]interface{} {
@@ -1831,6 +1933,27 @@ func (a *AppointmentBookingRequest) require(field *big.Int) {
 func (a *AppointmentBookingRequest) SetBookingKey(bookingKey string) {
 	a.BookingKey = bookingKey
 	a.require(appointmentBookingRequestFieldBookingKey)
+}
+
+// SetAsyncConfirmation sets the AsyncConfirmation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetAsyncConfirmation(asyncConfirmation *bool) {
+	a.AsyncConfirmation = asyncConfirmation
+	a.require(appointmentBookingRequestFieldAsyncConfirmation)
+}
+
+// SetSyncConfirmationTimeoutMillisecond sets the SyncConfirmationTimeoutMillisecond field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetSyncConfirmationTimeoutMillisecond(syncConfirmationTimeoutMillisecond *int) {
+	a.SyncConfirmationTimeoutMillisecond = syncConfirmationTimeoutMillisecond
+	a.require(appointmentBookingRequestFieldSyncConfirmationTimeoutMillisecond)
+}
+
+// SetAsyncConfirmationTimeoutMillisecond sets the AsyncConfirmationTimeoutMillisecond field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetAsyncConfirmationTimeoutMillisecond(asyncConfirmationTimeoutMillisecond *int) {
+	a.AsyncConfirmationTimeoutMillisecond = asyncConfirmationTimeoutMillisecond
+	a.require(appointmentBookingRequestFieldAsyncConfirmationTimeoutMillisecond)
 }
 
 func (a *AppointmentBookingRequest) UnmarshalJSON(data []byte) error {
