@@ -14221,6 +14221,9 @@ request := &vitalgo.LabTestsGetPscAppointmentAvailabilityRequest{
             "zip_code",
         ),
         Radius: vitalgo.AllowedRadiusTen.Ptr(),
+        AllowStale: vitalgo.Bool(
+            true,
+        ),
     }
 client.LabTests.GetPscAppointmentAvailability(
         context.TODO(),
@@ -14277,6 +14280,14 @@ client.LabTests.GetPscAppointmentAvailability(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**allowStale:** `*bool` — [Closed Beta] Serve last known good information when the PSC system is temporarily unavailable.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -14298,8 +14309,13 @@ client.LabTests.GetPscAppointmentAvailability(
 <dd>
 
 ```go
-request := &vitalgo.AppointmentBookingRequest{
-        BookingKey: "booking_key",
+request := &vitalgo.LabTestsBookPscAppointmentRequest{
+        IdempotencyKey: vitalgo.String(
+            "x-idempotency-key",
+        ),
+        Body: &vitalgo.AppointmentBookingRequest{
+            BookingKey: "booking_key",
+        },
     }
 client.LabTests.BookPscAppointment(
         context.TODO(),
@@ -14322,6 +14338,14 @@ client.LabTests.BookPscAppointment(
 <dd>
 
 **orderId:** `string` — Your Order ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*string` — [!] This feature (Idempotency Key) is under closed beta. Idempotency Key support for booking PSC appointment.
     
 </dd>
 </dl>
