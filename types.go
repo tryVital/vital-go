@@ -14644,6 +14644,9 @@ var (
 	clientFacingOrderFieldHasMissingResults     = big.NewInt(1 << 24)
 	clientFacingOrderFieldExpectedResultByDate  = big.NewInt(1 << 25)
 	clientFacingOrderFieldWorstCaseResultByDate = big.NewInt(1 << 26)
+	clientFacingOrderFieldOrigin                = big.NewInt(1 << 27)
+	clientFacingOrderFieldParentId              = big.NewInt(1 << 28)
+	clientFacingOrderFieldOrderTransaction      = big.NewInt(1 << 29)
 )
 
 type ClientFacingOrder struct {
@@ -14693,7 +14696,10 @@ type ClientFacingOrder struct {
 	// The common-case date by which the order result is expected to be available.
 	ExpectedResultByDate *string `json:"expected_result_by_date,omitempty" url:"expected_result_by_date,omitempty"`
 	// The latest date by which the order result is expected to be available.
-	WorstCaseResultByDate *string `json:"worst_case_result_by_date,omitempty" url:"worst_case_result_by_date,omitempty"`
+	WorstCaseResultByDate *string                       `json:"worst_case_result_by_date,omitempty" url:"worst_case_result_by_date,omitempty"`
+	Origin                *OrderOrigin                  `json:"origin,omitempty" url:"origin,omitempty"`
+	ParentId              *string                       `json:"parent_id,omitempty" url:"parent_id,omitempty"`
+	OrderTransaction      *ClientFacingOrderTransaction `json:"order_transaction,omitempty" url:"order_transaction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -14889,6 +14895,27 @@ func (c *ClientFacingOrder) GetWorstCaseResultByDate() *string {
 		return nil
 	}
 	return c.WorstCaseResultByDate
+}
+
+func (c *ClientFacingOrder) GetOrigin() *OrderOrigin {
+	if c == nil {
+		return nil
+	}
+	return c.Origin
+}
+
+func (c *ClientFacingOrder) GetParentId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ParentId
+}
+
+func (c *ClientFacingOrder) GetOrderTransaction() *ClientFacingOrderTransaction {
+	if c == nil {
+		return nil
+	}
+	return c.OrderTransaction
 }
 
 func (c *ClientFacingOrder) GetExtraProperties() map[string]interface{} {
@@ -15089,6 +15116,27 @@ func (c *ClientFacingOrder) SetExpectedResultByDate(expectedResultByDate *string
 func (c *ClientFacingOrder) SetWorstCaseResultByDate(worstCaseResultByDate *string) {
 	c.WorstCaseResultByDate = worstCaseResultByDate
 	c.require(clientFacingOrderFieldWorstCaseResultByDate)
+}
+
+// SetOrigin sets the Origin field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrder) SetOrigin(origin *OrderOrigin) {
+	c.Origin = origin
+	c.require(clientFacingOrderFieldOrigin)
+}
+
+// SetParentId sets the ParentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrder) SetParentId(parentId *string) {
+	c.ParentId = parentId
+	c.require(clientFacingOrderFieldParentId)
+}
+
+// SetOrderTransaction sets the OrderTransaction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrder) SetOrderTransaction(orderTransaction *ClientFacingOrderTransaction) {
+	c.OrderTransaction = orderTransaction
+	c.require(clientFacingOrderFieldOrderTransaction)
 }
 
 func (c *ClientFacingOrder) UnmarshalJSON(data []byte) error {
@@ -15578,6 +15626,308 @@ func (c *ClientFacingOrderEvent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientFacingOrderEvent) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Minimal order info for embedding in order_transaction payload.
+var (
+	clientFacingOrderInTransactionFieldId              = big.NewInt(1 << 0)
+	clientFacingOrderInTransactionFieldStatus          = big.NewInt(1 << 1)
+	clientFacingOrderInTransactionFieldStatusCreatedAt = big.NewInt(1 << 2)
+	clientFacingOrderInTransactionFieldOrigin          = big.NewInt(1 << 3)
+	clientFacingOrderInTransactionFieldParentId        = big.NewInt(1 << 4)
+	clientFacingOrderInTransactionFieldCreatedAt       = big.NewInt(1 << 5)
+	clientFacingOrderInTransactionFieldUpdatedAt       = big.NewInt(1 << 6)
+)
+
+type ClientFacingOrderInTransaction struct {
+	Id              string               `json:"id" url:"id"`
+	Status          *OrderTopLevelStatus `json:"status,omitempty" url:"status,omitempty"`
+	StatusCreatedAt *time.Time           `json:"status_created_at,omitempty" url:"status_created_at,omitempty"`
+	Origin          *OrderOrigin         `json:"origin,omitempty" url:"origin,omitempty"`
+	ParentId        *string              `json:"parent_id,omitempty" url:"parent_id,omitempty"`
+	CreatedAt       time.Time            `json:"created_at" url:"created_at"`
+	UpdatedAt       time.Time            `json:"updated_at" url:"updated_at"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientFacingOrderInTransaction) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *ClientFacingOrderInTransaction) GetStatus() *OrderTopLevelStatus {
+	if c == nil {
+		return nil
+	}
+	return c.Status
+}
+
+func (c *ClientFacingOrderInTransaction) GetStatusCreatedAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.StatusCreatedAt
+}
+
+func (c *ClientFacingOrderInTransaction) GetOrigin() *OrderOrigin {
+	if c == nil {
+		return nil
+	}
+	return c.Origin
+}
+
+func (c *ClientFacingOrderInTransaction) GetParentId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ParentId
+}
+
+func (c *ClientFacingOrderInTransaction) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ClientFacingOrderInTransaction) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *ClientFacingOrderInTransaction) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingOrderInTransaction) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetId(id string) {
+	c.Id = id
+	c.require(clientFacingOrderInTransactionFieldId)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetStatus(status *OrderTopLevelStatus) {
+	c.Status = status
+	c.require(clientFacingOrderInTransactionFieldStatus)
+}
+
+// SetStatusCreatedAt sets the StatusCreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetStatusCreatedAt(statusCreatedAt *time.Time) {
+	c.StatusCreatedAt = statusCreatedAt
+	c.require(clientFacingOrderInTransactionFieldStatusCreatedAt)
+}
+
+// SetOrigin sets the Origin field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetOrigin(origin *OrderOrigin) {
+	c.Origin = origin
+	c.require(clientFacingOrderInTransactionFieldOrigin)
+}
+
+// SetParentId sets the ParentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetParentId(parentId *string) {
+	c.ParentId = parentId
+	c.require(clientFacingOrderInTransactionFieldParentId)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(clientFacingOrderInTransactionFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetUpdatedAt(updatedAt time.Time) {
+	c.UpdatedAt = updatedAt
+	c.require(clientFacingOrderInTransactionFieldUpdatedAt)
+}
+
+func (c *ClientFacingOrderInTransaction) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingOrderInTransaction
+	var unmarshaler = struct {
+		embed
+		StatusCreatedAt *internal.DateTime `json:"status_created_at,omitempty"`
+		CreatedAt       *internal.DateTime `json:"created_at"`
+		UpdatedAt       *internal.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingOrderInTransaction(unmarshaler.embed)
+	c.StatusCreatedAt = unmarshaler.StatusCreatedAt.TimePtr()
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingOrderInTransaction) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingOrderInTransaction
+	var marshaler = struct {
+		embed
+		StatusCreatedAt *internal.DateTime `json:"status_created_at,omitempty"`
+		CreatedAt       *internal.DateTime `json:"created_at"`
+		UpdatedAt       *internal.DateTime `json:"updated_at"`
+	}{
+		embed:           embed(*c),
+		StatusCreatedAt: internal.NewOptionalDateTime(c.StatusCreatedAt),
+		CreatedAt:       internal.NewDateTime(c.CreatedAt),
+		UpdatedAt:       internal.NewDateTime(c.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientFacingOrderInTransaction) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Order transaction info.
+var (
+	clientFacingOrderTransactionFieldId     = big.NewInt(1 << 0)
+	clientFacingOrderTransactionFieldStatus = big.NewInt(1 << 1)
+	clientFacingOrderTransactionFieldOrders = big.NewInt(1 << 2)
+)
+
+type ClientFacingOrderTransaction struct {
+	Id     string                            `json:"id" url:"id"`
+	Status OrderTransactionStatus            `json:"status" url:"status"`
+	Orders []*ClientFacingOrderInTransaction `json:"orders" url:"orders"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientFacingOrderTransaction) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *ClientFacingOrderTransaction) GetStatus() OrderTransactionStatus {
+	if c == nil {
+		return ""
+	}
+	return c.Status
+}
+
+func (c *ClientFacingOrderTransaction) GetOrders() []*ClientFacingOrderInTransaction {
+	if c == nil {
+		return nil
+	}
+	return c.Orders
+}
+
+func (c *ClientFacingOrderTransaction) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingOrderTransaction) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderTransaction) SetId(id string) {
+	c.Id = id
+	c.require(clientFacingOrderTransactionFieldId)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderTransaction) SetStatus(status OrderTransactionStatus) {
+	c.Status = status
+	c.require(clientFacingOrderTransactionFieldStatus)
+}
+
+// SetOrders sets the Orders field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderTransaction) SetOrders(orders []*ClientFacingOrderInTransaction) {
+	c.Orders = orders
+	c.require(clientFacingOrderTransactionFieldOrders)
+}
+
+func (c *ClientFacingOrderTransaction) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingOrderTransaction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingOrderTransaction(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingOrderTransaction) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingOrderTransaction
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientFacingOrderTransaction) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -26912,6 +27262,32 @@ func (n *NotFoundErrorBody) String() string {
 }
 
 // ℹ️ This enum is non-exhaustive.
+type OrderOrigin string
+
+const (
+	OrderOriginInitial    OrderOrigin = "initial"
+	OrderOriginRedraw     OrderOrigin = "redraw"
+	OrderOriginRecreation OrderOrigin = "recreation"
+)
+
+func NewOrderOriginFromString(s string) (OrderOrigin, error) {
+	switch s {
+	case "initial":
+		return OrderOriginInitial, nil
+	case "redraw":
+		return OrderOriginRedraw, nil
+	case "recreation":
+		return OrderOriginRecreation, nil
+	}
+	var t OrderOrigin
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderOrigin) Ptr() *OrderOrigin {
+	return &o
+}
+
+// ℹ️ This enum is non-exhaustive.
 type OrderStatus string
 
 const (
@@ -27107,6 +27483,32 @@ func NewOrderTopLevelStatusFromString(s string) (OrderTopLevelStatus, error) {
 }
 
 func (o OrderTopLevelStatus) Ptr() *OrderTopLevelStatus {
+	return &o
+}
+
+// ℹ️ This enum is non-exhaustive.
+type OrderTransactionStatus string
+
+const (
+	OrderTransactionStatusActive    OrderTransactionStatus = "active"
+	OrderTransactionStatusCompleted OrderTransactionStatus = "completed"
+	OrderTransactionStatusCancelled OrderTransactionStatus = "cancelled"
+)
+
+func NewOrderTransactionStatusFromString(s string) (OrderTransactionStatus, error) {
+	switch s {
+	case "active":
+		return OrderTransactionStatusActive, nil
+	case "completed":
+		return OrderTransactionStatusCompleted, nil
+	case "cancelled":
+		return OrderTransactionStatusCancelled, nil
+	}
+	var t OrderTransactionStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderTransactionStatus) Ptr() *OrderTransactionStatus {
 	return &o
 }
 
