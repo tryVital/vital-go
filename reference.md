@@ -13038,6 +13038,9 @@ request := &vitalgo.LabTestsGetOrdersRequest{
         ShippingRecipientName: vitalgo.String(
             "shipping_recipient_name",
         ),
+        OrderTransactionId: vitalgo.String(
+            "order_transaction_id",
+        ),
         Page: vitalgo.Int(
             1,
         ),
@@ -13185,6 +13188,14 @@ client.LabTests.GetOrders(
 <dd>
 
 **orderIds:** `*string` — Filter by order ids.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderTransactionId:** `*string` — Filter by order transaction ID
     
 </dd>
 </dl>
@@ -14221,6 +14232,9 @@ request := &vitalgo.LabTestsGetPscAppointmentAvailabilityRequest{
             "zip_code",
         ),
         Radius: vitalgo.AllowedRadiusTen.Ptr(),
+        AllowStale: vitalgo.Bool(
+            true,
+        ),
     }
 client.LabTests.GetPscAppointmentAvailability(
         context.TODO(),
@@ -14277,6 +14291,14 @@ client.LabTests.GetPscAppointmentAvailability(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**allowStale:** `*bool` — If true, allows cached availability data to be returned.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -14298,8 +14320,13 @@ client.LabTests.GetPscAppointmentAvailability(
 <dd>
 
 ```go
-request := &vitalgo.AppointmentBookingRequest{
-        BookingKey: "booking_key",
+request := &vitalgo.LabTestsBookPscAppointmentRequest{
+        IdempotencyKey: vitalgo.String(
+            "x-idempotency-key",
+        ),
+        Body: &vitalgo.AppointmentBookingRequest{
+            BookingKey: "booking_key",
+        },
     }
 client.LabTests.BookPscAppointment(
         context.TODO(),
@@ -14322,6 +14349,22 @@ client.LabTests.BookPscAppointment(
 <dd>
 
 **orderId:** `string` — Your Order ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*string` — [!] This feature (Idempotency Key) is under closed beta. Idempotency Key support for booking PSC appointment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyError:** `*string` — If `no-cache`, applies idempotency only to successful outcomes.
     
 </dd>
 </dl>
