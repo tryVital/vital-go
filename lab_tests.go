@@ -11,6 +11,56 @@ import (
 )
 
 var (
+	labTestsBookPscAppointmentRequestFieldIdempotencyKey   = big.NewInt(1 << 0)
+	labTestsBookPscAppointmentRequestFieldIdempotencyError = big.NewInt(1 << 1)
+)
+
+type LabTestsBookPscAppointmentRequest struct {
+	// [!] This feature (Idempotency Key) is under closed beta. Idempotency Key support for booking PSC appointment.
+	IdempotencyKey *string `json:"-" url:"-"`
+	// If `no-cache`, applies idempotency only to successful outcomes.
+	IdempotencyError *string                    `json:"-" url:"-"`
+	Body             *AppointmentBookingRequest `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *LabTestsBookPscAppointmentRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsBookPscAppointmentRequest) SetIdempotencyKey(idempotencyKey *string) {
+	l.IdempotencyKey = idempotencyKey
+	l.require(labTestsBookPscAppointmentRequestFieldIdempotencyKey)
+}
+
+// SetIdempotencyError sets the IdempotencyError field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsBookPscAppointmentRequest) SetIdempotencyError(idempotencyError *string) {
+	l.IdempotencyError = idempotencyError
+	l.require(labTestsBookPscAppointmentRequestFieldIdempotencyError)
+}
+
+func (l *LabTestsBookPscAppointmentRequest) UnmarshalJSON(data []byte) error {
+	body := new(AppointmentBookingRequest)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	l.Body = body
+	return nil
+}
+
+func (l *LabTestsBookPscAppointmentRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
+}
+
+var (
 	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldCancellationReasonId = big.NewInt(1 << 0)
 	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldNotes                = big.NewInt(1 << 1)
 )
@@ -813,8 +863,9 @@ var (
 	labTestsGetOrdersRequestFieldPatientName           = big.NewInt(1 << 13)
 	labTestsGetOrdersRequestFieldShippingRecipientName = big.NewInt(1 << 14)
 	labTestsGetOrdersRequestFieldOrderIds              = big.NewInt(1 << 15)
-	labTestsGetOrdersRequestFieldPage                  = big.NewInt(1 << 16)
-	labTestsGetOrdersRequestFieldSize                  = big.NewInt(1 << 17)
+	labTestsGetOrdersRequestFieldOrderTransactionId    = big.NewInt(1 << 16)
+	labTestsGetOrdersRequestFieldPage                  = big.NewInt(1 << 17)
+	labTestsGetOrdersRequestFieldSize                  = big.NewInt(1 << 18)
 )
 
 type LabTestsGetOrdersRequest struct {
@@ -850,8 +901,10 @@ type LabTestsGetOrdersRequest struct {
 	ShippingRecipientName *string `json:"-" url:"shipping_recipient_name,omitempty"`
 	// Filter by order ids.
 	OrderIds []*string `json:"-" url:"order_ids,omitempty"`
-	Page     *int      `json:"-" url:"page,omitempty"`
-	Size     *int      `json:"-" url:"size,omitempty"`
+	// Filter by order transaction ID
+	OrderTransactionId *string `json:"-" url:"order_transaction_id,omitempty"`
+	Page               *int    `json:"-" url:"page,omitempty"`
+	Size               *int    `json:"-" url:"size,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -974,6 +1027,13 @@ func (l *LabTestsGetOrdersRequest) SetShippingRecipientName(shippingRecipientNam
 func (l *LabTestsGetOrdersRequest) SetOrderIds(orderIds []*string) {
 	l.OrderIds = orderIds
 	l.require(labTestsGetOrdersRequestFieldOrderIds)
+}
+
+// SetOrderTransactionId sets the OrderTransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsGetOrdersRequest) SetOrderTransactionId(orderTransactionId *string) {
+	l.OrderTransactionId = orderTransactionId
+	l.require(labTestsGetOrdersRequestFieldOrderTransactionId)
 }
 
 // SetPage sets the Page field and marks it as non-optional;
@@ -1153,11 +1213,12 @@ func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) MarshalJSON() ([]b
 }
 
 var (
-	labTestsGetPscAppointmentAvailabilityRequestFieldLab       = big.NewInt(1 << 0)
-	labTestsGetPscAppointmentAvailabilityRequestFieldStartDate = big.NewInt(1 << 1)
-	labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes = big.NewInt(1 << 2)
-	labTestsGetPscAppointmentAvailabilityRequestFieldZipCode   = big.NewInt(1 << 3)
-	labTestsGetPscAppointmentAvailabilityRequestFieldRadius    = big.NewInt(1 << 4)
+	labTestsGetPscAppointmentAvailabilityRequestFieldLab        = big.NewInt(1 << 0)
+	labTestsGetPscAppointmentAvailabilityRequestFieldStartDate  = big.NewInt(1 << 1)
+	labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes  = big.NewInt(1 << 2)
+	labTestsGetPscAppointmentAvailabilityRequestFieldZipCode    = big.NewInt(1 << 3)
+	labTestsGetPscAppointmentAvailabilityRequestFieldRadius     = big.NewInt(1 << 4)
+	labTestsGetPscAppointmentAvailabilityRequestFieldAllowStale = big.NewInt(1 << 5)
 )
 
 type LabTestsGetPscAppointmentAvailabilityRequest struct {
@@ -1171,6 +1232,8 @@ type LabTestsGetPscAppointmentAvailabilityRequest struct {
 	ZipCode *string `json:"-" url:"zip_code,omitempty"`
 	// Radius in which to search. (meters)
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
+	// If true, allows cached availability data to be returned.
+	AllowStale *bool `json:"-" url:"allow_stale,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1216,6 +1279,13 @@ func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetZipCode(zipCode *strin
 func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetRadius(radius *AllowedRadius) {
 	l.Radius = radius
 	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldRadius)
+}
+
+// SetAllowStale sets the AllowStale field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetAllowStale(allowStale *bool) {
+	l.AllowStale = allowStale
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldAllowStale)
 }
 
 var (
@@ -1795,11 +1865,20 @@ func (a *AppointmentAvailabilitySlots) String() string {
 }
 
 var (
-	appointmentBookingRequestFieldBookingKey = big.NewInt(1 << 0)
+	appointmentBookingRequestFieldBookingKey                          = big.NewInt(1 << 0)
+	appointmentBookingRequestFieldAsyncConfirmation                   = big.NewInt(1 << 1)
+	appointmentBookingRequestFieldSyncConfirmationTimeoutMillisecond  = big.NewInt(1 << 2)
+	appointmentBookingRequestFieldAsyncConfirmationTimeoutMillisecond = big.NewInt(1 << 3)
 )
 
 type AppointmentBookingRequest struct {
 	BookingKey string `json:"booking_key" url:"booking_key"`
+	// If true, the endpoint attempts to confirm the booking within the `sync_confirmation_timeout_millisecond` window. If confirmation is not received in time, a pending appointment is returned and booking continues asynchronously. If false (default), the endpoint waits for confirmation or returns a 500 error on failure.
+	AsyncConfirmation *bool `json:"async_confirmation,omitempty" url:"async_confirmation,omitempty"`
+	// Maximum time (in milliseconds) to wait for booking confirmation before returning a pending appointment. Only applies when `async_confirmation` is true. Defaults to 2500ms. Range: 1000-10000ms.
+	SyncConfirmationTimeoutMillisecond *int `json:"sync_confirmation_timeout_millisecond,omitempty" url:"sync_confirmation_timeout_millisecond,omitempty"`
+	// Maximum time (in milliseconds) to attempt asynchronous booking before cancelling the pending appointment. Only applies when `async_confirmation` is true. Defaults to 15 minutes. Range: 60000-172800000ms.
+	AsyncConfirmationTimeoutMillisecond *int `json:"async_confirmation_timeout_millisecond,omitempty" url:"async_confirmation_timeout_millisecond,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1813,6 +1892,27 @@ func (a *AppointmentBookingRequest) GetBookingKey() string {
 		return ""
 	}
 	return a.BookingKey
+}
+
+func (a *AppointmentBookingRequest) GetAsyncConfirmation() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AsyncConfirmation
+}
+
+func (a *AppointmentBookingRequest) GetSyncConfirmationTimeoutMillisecond() *int {
+	if a == nil {
+		return nil
+	}
+	return a.SyncConfirmationTimeoutMillisecond
+}
+
+func (a *AppointmentBookingRequest) GetAsyncConfirmationTimeoutMillisecond() *int {
+	if a == nil {
+		return nil
+	}
+	return a.AsyncConfirmationTimeoutMillisecond
 }
 
 func (a *AppointmentBookingRequest) GetExtraProperties() map[string]interface{} {
@@ -1831,6 +1931,27 @@ func (a *AppointmentBookingRequest) require(field *big.Int) {
 func (a *AppointmentBookingRequest) SetBookingKey(bookingKey string) {
 	a.BookingKey = bookingKey
 	a.require(appointmentBookingRequestFieldBookingKey)
+}
+
+// SetAsyncConfirmation sets the AsyncConfirmation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetAsyncConfirmation(asyncConfirmation *bool) {
+	a.AsyncConfirmation = asyncConfirmation
+	a.require(appointmentBookingRequestFieldAsyncConfirmation)
+}
+
+// SetSyncConfirmationTimeoutMillisecond sets the SyncConfirmationTimeoutMillisecond field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetSyncConfirmationTimeoutMillisecond(syncConfirmationTimeoutMillisecond *int) {
+	a.SyncConfirmationTimeoutMillisecond = syncConfirmationTimeoutMillisecond
+	a.require(appointmentBookingRequestFieldSyncConfirmationTimeoutMillisecond)
+}
+
+// SetAsyncConfirmationTimeoutMillisecond sets the AsyncConfirmationTimeoutMillisecond field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetAsyncConfirmationTimeoutMillisecond(asyncConfirmationTimeoutMillisecond *int) {
+	a.AsyncConfirmationTimeoutMillisecond = asyncConfirmationTimeoutMillisecond
+	a.require(appointmentBookingRequestFieldAsyncConfirmationTimeoutMillisecond)
 }
 
 func (a *AppointmentBookingRequest) UnmarshalJSON(data []byte) error {
@@ -2739,31 +2860,33 @@ func (b *BiomarkerResult) String() string {
 }
 
 var (
-	clientFacingAppointmentFieldId            = big.NewInt(1 << 0)
-	clientFacingAppointmentFieldUserId        = big.NewInt(1 << 1)
-	clientFacingAppointmentFieldOrderId       = big.NewInt(1 << 2)
-	clientFacingAppointmentFieldAddress       = big.NewInt(1 << 3)
-	clientFacingAppointmentFieldLocation      = big.NewInt(1 << 4)
-	clientFacingAppointmentFieldStartAt       = big.NewInt(1 << 5)
-	clientFacingAppointmentFieldEndAt         = big.NewInt(1 << 6)
-	clientFacingAppointmentFieldIanaTimezone  = big.NewInt(1 << 7)
-	clientFacingAppointmentFieldType          = big.NewInt(1 << 8)
-	clientFacingAppointmentFieldProvider      = big.NewInt(1 << 9)
-	clientFacingAppointmentFieldStatus        = big.NewInt(1 << 10)
-	clientFacingAppointmentFieldProviderId    = big.NewInt(1 << 11)
-	clientFacingAppointmentFieldExternalId    = big.NewInt(1 << 12)
-	clientFacingAppointmentFieldCanReschedule = big.NewInt(1 << 13)
-	clientFacingAppointmentFieldEventStatus   = big.NewInt(1 << 14)
-	clientFacingAppointmentFieldEventData     = big.NewInt(1 << 15)
-	clientFacingAppointmentFieldEvents        = big.NewInt(1 << 16)
+	clientFacingAppointmentFieldId                 = big.NewInt(1 << 0)
+	clientFacingAppointmentFieldUserId             = big.NewInt(1 << 1)
+	clientFacingAppointmentFieldOrderId            = big.NewInt(1 << 2)
+	clientFacingAppointmentFieldOrderTransactionId = big.NewInt(1 << 3)
+	clientFacingAppointmentFieldAddress            = big.NewInt(1 << 4)
+	clientFacingAppointmentFieldLocation           = big.NewInt(1 << 5)
+	clientFacingAppointmentFieldStartAt            = big.NewInt(1 << 6)
+	clientFacingAppointmentFieldEndAt              = big.NewInt(1 << 7)
+	clientFacingAppointmentFieldIanaTimezone       = big.NewInt(1 << 8)
+	clientFacingAppointmentFieldType               = big.NewInt(1 << 9)
+	clientFacingAppointmentFieldProvider           = big.NewInt(1 << 10)
+	clientFacingAppointmentFieldStatus             = big.NewInt(1 << 11)
+	clientFacingAppointmentFieldProviderId         = big.NewInt(1 << 12)
+	clientFacingAppointmentFieldExternalId         = big.NewInt(1 << 13)
+	clientFacingAppointmentFieldCanReschedule      = big.NewInt(1 << 14)
+	clientFacingAppointmentFieldEventStatus        = big.NewInt(1 << 15)
+	clientFacingAppointmentFieldEventData          = big.NewInt(1 << 16)
+	clientFacingAppointmentFieldEvents             = big.NewInt(1 << 17)
 )
 
 type ClientFacingAppointment struct {
-	Id       string     `json:"id" url:"id"`
-	UserId   string     `json:"user_id" url:"user_id"`
-	OrderId  string     `json:"order_id" url:"order_id"`
-	Address  *UsAddress `json:"address" url:"address"`
-	Location *LngLat    `json:"location" url:"location"`
+	Id                 string     `json:"id" url:"id"`
+	UserId             string     `json:"user_id" url:"user_id"`
+	OrderId            string     `json:"order_id" url:"order_id"`
+	OrderTransactionId *string    `json:"order_transaction_id,omitempty" url:"order_transaction_id,omitempty"`
+	Address            *UsAddress `json:"address" url:"address"`
+	Location           *LngLat    `json:"location" url:"location"`
 	// Time is in UTC
 	StartAt *time.Time `json:"start_at,omitempty" url:"start_at,omitempty"`
 	// Time is in UTC
@@ -2805,6 +2928,13 @@ func (c *ClientFacingAppointment) GetOrderId() string {
 		return ""
 	}
 	return c.OrderId
+}
+
+func (c *ClientFacingAppointment) GetOrderTransactionId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.OrderTransactionId
 }
 
 func (c *ClientFacingAppointment) GetAddress() *UsAddress {
@@ -2935,6 +3065,13 @@ func (c *ClientFacingAppointment) SetUserId(userId string) {
 func (c *ClientFacingAppointment) SetOrderId(orderId string) {
 	c.OrderId = orderId
 	c.require(clientFacingAppointmentFieldOrderId)
+}
+
+// SetOrderTransactionId sets the OrderTransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingAppointment) SetOrderTransactionId(orderTransactionId *string) {
+	c.OrderTransactionId = orderTransactionId
+	c.require(clientFacingAppointmentFieldOrderTransactionId)
 }
 
 // SetAddress sets the Address field and marks it as non-optional;
@@ -6021,98 +6158,6 @@ func NewOrderActivationTypeFromString(s string) (OrderActivationType, error) {
 }
 
 func (o OrderActivationType) Ptr() *OrderActivationType {
-	return &o
-}
-
-// ℹ️ This enum is non-exhaustive.
-type OrderLowLevelStatus string
-
-const (
-	OrderLowLevelStatusOrdered                    OrderLowLevelStatus = "ordered"
-	OrderLowLevelStatusRequisitionCreated         OrderLowLevelStatus = "requisition_created"
-	OrderLowLevelStatusRequisitionBypassed        OrderLowLevelStatus = "requisition_bypassed"
-	OrderLowLevelStatusTransitCustomer            OrderLowLevelStatus = "transit_customer"
-	OrderLowLevelStatusOutForDelivery             OrderLowLevelStatus = "out_for_delivery"
-	OrderLowLevelStatusWithCustomer               OrderLowLevelStatus = "with_customer"
-	OrderLowLevelStatusTransitLab                 OrderLowLevelStatus = "transit_lab"
-	OrderLowLevelStatusDeliveredToLab             OrderLowLevelStatus = "delivered_to_lab"
-	OrderLowLevelStatusCompleted                  OrderLowLevelStatus = "completed"
-	OrderLowLevelStatusFailureToDeliverToLab      OrderLowLevelStatus = "failure_to_deliver_to_lab"
-	OrderLowLevelStatusFailureToDeliverToCustomer OrderLowLevelStatus = "failure_to_deliver_to_customer"
-	OrderLowLevelStatusProblemInTransitLab        OrderLowLevelStatus = "problem_in_transit_lab"
-	OrderLowLevelStatusProblemInTransitCustomer   OrderLowLevelStatus = "problem_in_transit_customer"
-	OrderLowLevelStatusSampleError                OrderLowLevelStatus = "sample_error"
-	OrderLowLevelStatusAppointmentScheduled       OrderLowLevelStatus = "appointment_scheduled"
-	OrderLowLevelStatusAppointmentCancelled       OrderLowLevelStatus = "appointment_cancelled"
-	OrderLowLevelStatusAppointmentPending         OrderLowLevelStatus = "appointment_pending"
-	OrderLowLevelStatusDrawCompleted              OrderLowLevelStatus = "draw_completed"
-	OrderLowLevelStatusCancelled                  OrderLowLevelStatus = "cancelled"
-	OrderLowLevelStatusLost                       OrderLowLevelStatus = "lost"
-	OrderLowLevelStatusDoNotProcess               OrderLowLevelStatus = "do_not_process"
-	OrderLowLevelStatusPartialResults             OrderLowLevelStatus = "partial_results"
-	OrderLowLevelStatusAwaitingRegistration       OrderLowLevelStatus = "awaiting_registration"
-	OrderLowLevelStatusRegistered                 OrderLowLevelStatus = "registered"
-	OrderLowLevelStatusRedrawAvailable            OrderLowLevelStatus = "redraw_available"
-)
-
-func NewOrderLowLevelStatusFromString(s string) (OrderLowLevelStatus, error) {
-	switch s {
-	case "ordered":
-		return OrderLowLevelStatusOrdered, nil
-	case "requisition_created":
-		return OrderLowLevelStatusRequisitionCreated, nil
-	case "requisition_bypassed":
-		return OrderLowLevelStatusRequisitionBypassed, nil
-	case "transit_customer":
-		return OrderLowLevelStatusTransitCustomer, nil
-	case "out_for_delivery":
-		return OrderLowLevelStatusOutForDelivery, nil
-	case "with_customer":
-		return OrderLowLevelStatusWithCustomer, nil
-	case "transit_lab":
-		return OrderLowLevelStatusTransitLab, nil
-	case "delivered_to_lab":
-		return OrderLowLevelStatusDeliveredToLab, nil
-	case "completed":
-		return OrderLowLevelStatusCompleted, nil
-	case "failure_to_deliver_to_lab":
-		return OrderLowLevelStatusFailureToDeliverToLab, nil
-	case "failure_to_deliver_to_customer":
-		return OrderLowLevelStatusFailureToDeliverToCustomer, nil
-	case "problem_in_transit_lab":
-		return OrderLowLevelStatusProblemInTransitLab, nil
-	case "problem_in_transit_customer":
-		return OrderLowLevelStatusProblemInTransitCustomer, nil
-	case "sample_error":
-		return OrderLowLevelStatusSampleError, nil
-	case "appointment_scheduled":
-		return OrderLowLevelStatusAppointmentScheduled, nil
-	case "appointment_cancelled":
-		return OrderLowLevelStatusAppointmentCancelled, nil
-	case "appointment_pending":
-		return OrderLowLevelStatusAppointmentPending, nil
-	case "draw_completed":
-		return OrderLowLevelStatusDrawCompleted, nil
-	case "cancelled":
-		return OrderLowLevelStatusCancelled, nil
-	case "lost":
-		return OrderLowLevelStatusLost, nil
-	case "do_not_process":
-		return OrderLowLevelStatusDoNotProcess, nil
-	case "partial_results":
-		return OrderLowLevelStatusPartialResults, nil
-	case "awaiting_registration":
-		return OrderLowLevelStatusAwaitingRegistration, nil
-	case "registered":
-		return OrderLowLevelStatusRegistered, nil
-	case "redraw_available":
-		return OrderLowLevelStatusRedrawAvailable, nil
-	}
-	var t OrderLowLevelStatus
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (o OrderLowLevelStatus) Ptr() *OrderLowLevelStatus {
 	return &o
 }
 
