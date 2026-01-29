@@ -11,6 +11,56 @@ import (
 )
 
 var (
+	labTestsBookPscAppointmentRequestFieldIdempotencyKey   = big.NewInt(1 << 0)
+	labTestsBookPscAppointmentRequestFieldIdempotencyError = big.NewInt(1 << 1)
+)
+
+type LabTestsBookPscAppointmentRequest struct {
+	// [!] This feature (Idempotency Key) is under closed beta. Idempotency Key support for booking PSC appointment.
+	IdempotencyKey *string `json:"-" url:"-"`
+	// If `no-cache`, applies idempotency only to successful outcomes.
+	IdempotencyError *string                    `json:"-" url:"-"`
+	Body             *AppointmentBookingRequest `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *LabTestsBookPscAppointmentRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsBookPscAppointmentRequest) SetIdempotencyKey(idempotencyKey *string) {
+	l.IdempotencyKey = idempotencyKey
+	l.require(labTestsBookPscAppointmentRequestFieldIdempotencyKey)
+}
+
+// SetIdempotencyError sets the IdempotencyError field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsBookPscAppointmentRequest) SetIdempotencyError(idempotencyError *string) {
+	l.IdempotencyError = idempotencyError
+	l.require(labTestsBookPscAppointmentRequestFieldIdempotencyError)
+}
+
+func (l *LabTestsBookPscAppointmentRequest) UnmarshalJSON(data []byte) error {
+	body := new(AppointmentBookingRequest)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	l.Body = body
+	return nil
+}
+
+func (l *LabTestsBookPscAppointmentRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.Body)
+}
+
+var (
 	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldCancellationReasonId = big.NewInt(1 << 0)
 	apiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequestFieldNotes                = big.NewInt(1 << 1)
 )
@@ -813,8 +863,9 @@ var (
 	labTestsGetOrdersRequestFieldPatientName           = big.NewInt(1 << 13)
 	labTestsGetOrdersRequestFieldShippingRecipientName = big.NewInt(1 << 14)
 	labTestsGetOrdersRequestFieldOrderIds              = big.NewInt(1 << 15)
-	labTestsGetOrdersRequestFieldPage                  = big.NewInt(1 << 16)
-	labTestsGetOrdersRequestFieldSize                  = big.NewInt(1 << 17)
+	labTestsGetOrdersRequestFieldOrderTransactionId    = big.NewInt(1 << 16)
+	labTestsGetOrdersRequestFieldPage                  = big.NewInt(1 << 17)
+	labTestsGetOrdersRequestFieldSize                  = big.NewInt(1 << 18)
 )
 
 type LabTestsGetOrdersRequest struct {
@@ -850,8 +901,10 @@ type LabTestsGetOrdersRequest struct {
 	ShippingRecipientName *string `json:"-" url:"shipping_recipient_name,omitempty"`
 	// Filter by order ids.
 	OrderIds []*string `json:"-" url:"order_ids,omitempty"`
-	Page     *int      `json:"-" url:"page,omitempty"`
-	Size     *int      `json:"-" url:"size,omitempty"`
+	// Filter by order transaction ID
+	OrderTransactionId *string `json:"-" url:"order_transaction_id,omitempty"`
+	Page               *int    `json:"-" url:"page,omitempty"`
+	Size               *int    `json:"-" url:"size,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -974,6 +1027,13 @@ func (l *LabTestsGetOrdersRequest) SetShippingRecipientName(shippingRecipientNam
 func (l *LabTestsGetOrdersRequest) SetOrderIds(orderIds []*string) {
 	l.OrderIds = orderIds
 	l.require(labTestsGetOrdersRequestFieldOrderIds)
+}
+
+// SetOrderTransactionId sets the OrderTransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsGetOrdersRequest) SetOrderTransactionId(orderTransactionId *string) {
+	l.OrderTransactionId = orderTransactionId
+	l.require(labTestsGetOrdersRequestFieldOrderTransactionId)
 }
 
 // SetPage sets the Page field and marks it as non-optional;
@@ -1153,11 +1213,12 @@ func (l *LabTestsGetPhlebotomyAppointmentAvailabilityRequest) MarshalJSON() ([]b
 }
 
 var (
-	labTestsGetPscAppointmentAvailabilityRequestFieldLab       = big.NewInt(1 << 0)
-	labTestsGetPscAppointmentAvailabilityRequestFieldStartDate = big.NewInt(1 << 1)
-	labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes = big.NewInt(1 << 2)
-	labTestsGetPscAppointmentAvailabilityRequestFieldZipCode   = big.NewInt(1 << 3)
-	labTestsGetPscAppointmentAvailabilityRequestFieldRadius    = big.NewInt(1 << 4)
+	labTestsGetPscAppointmentAvailabilityRequestFieldLab        = big.NewInt(1 << 0)
+	labTestsGetPscAppointmentAvailabilityRequestFieldStartDate  = big.NewInt(1 << 1)
+	labTestsGetPscAppointmentAvailabilityRequestFieldSiteCodes  = big.NewInt(1 << 2)
+	labTestsGetPscAppointmentAvailabilityRequestFieldZipCode    = big.NewInt(1 << 3)
+	labTestsGetPscAppointmentAvailabilityRequestFieldRadius     = big.NewInt(1 << 4)
+	labTestsGetPscAppointmentAvailabilityRequestFieldAllowStale = big.NewInt(1 << 5)
 )
 
 type LabTestsGetPscAppointmentAvailabilityRequest struct {
@@ -1171,6 +1232,8 @@ type LabTestsGetPscAppointmentAvailabilityRequest struct {
 	ZipCode *string `json:"-" url:"zip_code,omitempty"`
 	// Radius in which to search. (meters)
 	Radius *AllowedRadius `json:"-" url:"radius,omitempty"`
+	// If true, allows cached availability data to be returned.
+	AllowStale *bool `json:"-" url:"allow_stale,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1216,6 +1279,13 @@ func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetZipCode(zipCode *strin
 func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetRadius(radius *AllowedRadius) {
 	l.Radius = radius
 	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldRadius)
+}
+
+// SetAllowStale sets the AllowStale field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabTestsGetPscAppointmentAvailabilityRequest) SetAllowStale(allowStale *bool) {
+	l.AllowStale = allowStale
+	l.require(labTestsGetPscAppointmentAvailabilityRequestFieldAllowStale)
 }
 
 var (
@@ -1795,11 +1865,20 @@ func (a *AppointmentAvailabilitySlots) String() string {
 }
 
 var (
-	appointmentBookingRequestFieldBookingKey = big.NewInt(1 << 0)
+	appointmentBookingRequestFieldBookingKey                          = big.NewInt(1 << 0)
+	appointmentBookingRequestFieldAsyncConfirmation                   = big.NewInt(1 << 1)
+	appointmentBookingRequestFieldSyncConfirmationTimeoutMillisecond  = big.NewInt(1 << 2)
+	appointmentBookingRequestFieldAsyncConfirmationTimeoutMillisecond = big.NewInt(1 << 3)
 )
 
 type AppointmentBookingRequest struct {
 	BookingKey string `json:"booking_key" url:"booking_key"`
+	// If true, the endpoint attempts to confirm the booking within the `sync_confirmation_timeout_millisecond` window. If confirmation is not received in time, a pending appointment is returned and booking continues asynchronously. If false (default), the endpoint waits for confirmation or returns a 500 error on failure.
+	AsyncConfirmation *bool `json:"async_confirmation,omitempty" url:"async_confirmation,omitempty"`
+	// Maximum time (in milliseconds) to wait for booking confirmation before returning a pending appointment. Only applies when `async_confirmation` is true. Defaults to 2500ms. Range: 1000-10000ms.
+	SyncConfirmationTimeoutMillisecond *int `json:"sync_confirmation_timeout_millisecond,omitempty" url:"sync_confirmation_timeout_millisecond,omitempty"`
+	// Maximum time (in milliseconds) to attempt asynchronous booking before cancelling the pending appointment. Only applies when `async_confirmation` is true. Defaults to 15 minutes. Range: 60000-172800000ms.
+	AsyncConfirmationTimeoutMillisecond *int `json:"async_confirmation_timeout_millisecond,omitempty" url:"async_confirmation_timeout_millisecond,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1813,6 +1892,27 @@ func (a *AppointmentBookingRequest) GetBookingKey() string {
 		return ""
 	}
 	return a.BookingKey
+}
+
+func (a *AppointmentBookingRequest) GetAsyncConfirmation() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AsyncConfirmation
+}
+
+func (a *AppointmentBookingRequest) GetSyncConfirmationTimeoutMillisecond() *int {
+	if a == nil {
+		return nil
+	}
+	return a.SyncConfirmationTimeoutMillisecond
+}
+
+func (a *AppointmentBookingRequest) GetAsyncConfirmationTimeoutMillisecond() *int {
+	if a == nil {
+		return nil
+	}
+	return a.AsyncConfirmationTimeoutMillisecond
 }
 
 func (a *AppointmentBookingRequest) GetExtraProperties() map[string]interface{} {
@@ -1831,6 +1931,27 @@ func (a *AppointmentBookingRequest) require(field *big.Int) {
 func (a *AppointmentBookingRequest) SetBookingKey(bookingKey string) {
 	a.BookingKey = bookingKey
 	a.require(appointmentBookingRequestFieldBookingKey)
+}
+
+// SetAsyncConfirmation sets the AsyncConfirmation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetAsyncConfirmation(asyncConfirmation *bool) {
+	a.AsyncConfirmation = asyncConfirmation
+	a.require(appointmentBookingRequestFieldAsyncConfirmation)
+}
+
+// SetSyncConfirmationTimeoutMillisecond sets the SyncConfirmationTimeoutMillisecond field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetSyncConfirmationTimeoutMillisecond(syncConfirmationTimeoutMillisecond *int) {
+	a.SyncConfirmationTimeoutMillisecond = syncConfirmationTimeoutMillisecond
+	a.require(appointmentBookingRequestFieldSyncConfirmationTimeoutMillisecond)
+}
+
+// SetAsyncConfirmationTimeoutMillisecond sets the AsyncConfirmationTimeoutMillisecond field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AppointmentBookingRequest) SetAsyncConfirmationTimeoutMillisecond(asyncConfirmationTimeoutMillisecond *int) {
+	a.AsyncConfirmationTimeoutMillisecond = asyncConfirmationTimeoutMillisecond
+	a.require(appointmentBookingRequestFieldAsyncConfirmationTimeoutMillisecond)
 }
 
 func (a *AppointmentBookingRequest) UnmarshalJSON(data []byte) error {
@@ -2363,407 +2484,34 @@ func (a *AreaInfo) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-// Represent the schema for an individual biomarker result.
 var (
-	biomarkerResultFieldName                 = big.NewInt(1 << 0)
-	biomarkerResultFieldSlug                 = big.NewInt(1 << 1)
-	biomarkerResultFieldResult               = big.NewInt(1 << 2)
-	biomarkerResultFieldType                 = big.NewInt(1 << 3)
-	biomarkerResultFieldUnit                 = big.NewInt(1 << 4)
-	biomarkerResultFieldTimestamp            = big.NewInt(1 << 5)
-	biomarkerResultFieldNotes                = big.NewInt(1 << 6)
-	biomarkerResultFieldReferenceRange       = big.NewInt(1 << 7)
-	biomarkerResultFieldMinRangeValue        = big.NewInt(1 << 8)
-	biomarkerResultFieldMaxRangeValue        = big.NewInt(1 << 9)
-	biomarkerResultFieldIsAboveMaxRange      = big.NewInt(1 << 10)
-	biomarkerResultFieldIsBelowMinRange      = big.NewInt(1 << 11)
-	biomarkerResultFieldInterpretation       = big.NewInt(1 << 12)
-	biomarkerResultFieldLoinc                = big.NewInt(1 << 13)
-	biomarkerResultFieldLoincSlug            = big.NewInt(1 << 14)
-	biomarkerResultFieldProviderId           = big.NewInt(1 << 15)
-	biomarkerResultFieldSourceMarkers        = big.NewInt(1 << 16)
-	biomarkerResultFieldPerformingLaboratory = big.NewInt(1 << 17)
-	biomarkerResultFieldSourceSampleId       = big.NewInt(1 << 18)
-)
-
-type BiomarkerResult struct {
-	Name                 string                 `json:"name" url:"name"`
-	Slug                 *string                `json:"slug,omitempty" url:"slug,omitempty"`
-	Result               string                 `json:"result" url:"result"`
-	Type                 ResultType             `json:"type" url:"type"`
-	Unit                 *string                `json:"unit,omitempty" url:"unit,omitempty"`
-	Timestamp            *time.Time             `json:"timestamp,omitempty" url:"timestamp,omitempty"`
-	Notes                *string                `json:"notes,omitempty" url:"notes,omitempty"`
-	ReferenceRange       *string                `json:"reference_range,omitempty" url:"reference_range,omitempty"`
-	MinRangeValue        *float64               `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
-	MaxRangeValue        *float64               `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
-	IsAboveMaxRange      *bool                  `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
-	IsBelowMinRange      *bool                  `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
-	Interpretation       *string                `json:"interpretation,omitempty" url:"interpretation,omitempty"`
-	Loinc                *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
-	LoincSlug            *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
-	ProviderId           *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
-	SourceMarkers        []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
-	PerformingLaboratory *string                `json:"performing_laboratory,omitempty" url:"performing_laboratory,omitempty"`
-	SourceSampleId       *string                `json:"source_sample_id,omitempty" url:"source_sample_id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BiomarkerResult) GetName() string {
-	if b == nil {
-		return ""
-	}
-	return b.Name
-}
-
-func (b *BiomarkerResult) GetSlug() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Slug
-}
-
-func (b *BiomarkerResult) GetResult() string {
-	if b == nil {
-		return ""
-	}
-	return b.Result
-}
-
-func (b *BiomarkerResult) GetType() ResultType {
-	if b == nil {
-		return ""
-	}
-	return b.Type
-}
-
-func (b *BiomarkerResult) GetUnit() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Unit
-}
-
-func (b *BiomarkerResult) GetTimestamp() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.Timestamp
-}
-
-func (b *BiomarkerResult) GetNotes() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Notes
-}
-
-func (b *BiomarkerResult) GetReferenceRange() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ReferenceRange
-}
-
-func (b *BiomarkerResult) GetMinRangeValue() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.MinRangeValue
-}
-
-func (b *BiomarkerResult) GetMaxRangeValue() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.MaxRangeValue
-}
-
-func (b *BiomarkerResult) GetIsAboveMaxRange() *bool {
-	if b == nil {
-		return nil
-	}
-	return b.IsAboveMaxRange
-}
-
-func (b *BiomarkerResult) GetIsBelowMinRange() *bool {
-	if b == nil {
-		return nil
-	}
-	return b.IsBelowMinRange
-}
-
-func (b *BiomarkerResult) GetInterpretation() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Interpretation
-}
-
-func (b *BiomarkerResult) GetLoinc() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Loinc
-}
-
-func (b *BiomarkerResult) GetLoincSlug() *string {
-	if b == nil {
-		return nil
-	}
-	return b.LoincSlug
-}
-
-func (b *BiomarkerResult) GetProviderId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ProviderId
-}
-
-func (b *BiomarkerResult) GetSourceMarkers() []*ParentBiomarkerData {
-	if b == nil {
-		return nil
-	}
-	return b.SourceMarkers
-}
-
-func (b *BiomarkerResult) GetPerformingLaboratory() *string {
-	if b == nil {
-		return nil
-	}
-	return b.PerformingLaboratory
-}
-
-func (b *BiomarkerResult) GetSourceSampleId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceSampleId
-}
-
-func (b *BiomarkerResult) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BiomarkerResult) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetName(name string) {
-	b.Name = name
-	b.require(biomarkerResultFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetSlug(slug *string) {
-	b.Slug = slug
-	b.require(biomarkerResultFieldSlug)
-}
-
-// SetResult sets the Result field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetResult(result string) {
-	b.Result = result
-	b.require(biomarkerResultFieldResult)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetType(type_ ResultType) {
-	b.Type = type_
-	b.require(biomarkerResultFieldType)
-}
-
-// SetUnit sets the Unit field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetUnit(unit *string) {
-	b.Unit = unit
-	b.require(biomarkerResultFieldUnit)
-}
-
-// SetTimestamp sets the Timestamp field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetTimestamp(timestamp *time.Time) {
-	b.Timestamp = timestamp
-	b.require(biomarkerResultFieldTimestamp)
-}
-
-// SetNotes sets the Notes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetNotes(notes *string) {
-	b.Notes = notes
-	b.require(biomarkerResultFieldNotes)
-}
-
-// SetReferenceRange sets the ReferenceRange field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetReferenceRange(referenceRange *string) {
-	b.ReferenceRange = referenceRange
-	b.require(biomarkerResultFieldReferenceRange)
-}
-
-// SetMinRangeValue sets the MinRangeValue field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetMinRangeValue(minRangeValue *float64) {
-	b.MinRangeValue = minRangeValue
-	b.require(biomarkerResultFieldMinRangeValue)
-}
-
-// SetMaxRangeValue sets the MaxRangeValue field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetMaxRangeValue(maxRangeValue *float64) {
-	b.MaxRangeValue = maxRangeValue
-	b.require(biomarkerResultFieldMaxRangeValue)
-}
-
-// SetIsAboveMaxRange sets the IsAboveMaxRange field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetIsAboveMaxRange(isAboveMaxRange *bool) {
-	b.IsAboveMaxRange = isAboveMaxRange
-	b.require(biomarkerResultFieldIsAboveMaxRange)
-}
-
-// SetIsBelowMinRange sets the IsBelowMinRange field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetIsBelowMinRange(isBelowMinRange *bool) {
-	b.IsBelowMinRange = isBelowMinRange
-	b.require(biomarkerResultFieldIsBelowMinRange)
-}
-
-// SetInterpretation sets the Interpretation field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetInterpretation(interpretation *string) {
-	b.Interpretation = interpretation
-	b.require(biomarkerResultFieldInterpretation)
-}
-
-// SetLoinc sets the Loinc field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetLoinc(loinc *string) {
-	b.Loinc = loinc
-	b.require(biomarkerResultFieldLoinc)
-}
-
-// SetLoincSlug sets the LoincSlug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetLoincSlug(loincSlug *string) {
-	b.LoincSlug = loincSlug
-	b.require(biomarkerResultFieldLoincSlug)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetProviderId(providerId *string) {
-	b.ProviderId = providerId
-	b.require(biomarkerResultFieldProviderId)
-}
-
-// SetSourceMarkers sets the SourceMarkers field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetSourceMarkers(sourceMarkers []*ParentBiomarkerData) {
-	b.SourceMarkers = sourceMarkers
-	b.require(biomarkerResultFieldSourceMarkers)
-}
-
-// SetPerformingLaboratory sets the PerformingLaboratory field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetPerformingLaboratory(performingLaboratory *string) {
-	b.PerformingLaboratory = performingLaboratory
-	b.require(biomarkerResultFieldPerformingLaboratory)
-}
-
-// SetSourceSampleId sets the SourceSampleId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BiomarkerResult) SetSourceSampleId(sourceSampleId *string) {
-	b.SourceSampleId = sourceSampleId
-	b.require(biomarkerResultFieldSourceSampleId)
-}
-
-func (b *BiomarkerResult) UnmarshalJSON(data []byte) error {
-	type embed BiomarkerResult
-	var unmarshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp,omitempty"`
-	}{
-		embed: embed(*b),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*b = BiomarkerResult(unmarshaler.embed)
-	b.Timestamp = unmarshaler.Timestamp.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BiomarkerResult) MarshalJSON() ([]byte, error) {
-	type embed BiomarkerResult
-	var marshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp,omitempty"`
-	}{
-		embed:     embed(*b),
-		Timestamp: internal.NewOptionalDateTime(b.Timestamp),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BiomarkerResult) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
-	clientFacingAppointmentFieldId            = big.NewInt(1 << 0)
-	clientFacingAppointmentFieldUserId        = big.NewInt(1 << 1)
-	clientFacingAppointmentFieldOrderId       = big.NewInt(1 << 2)
-	clientFacingAppointmentFieldAddress       = big.NewInt(1 << 3)
-	clientFacingAppointmentFieldLocation      = big.NewInt(1 << 4)
-	clientFacingAppointmentFieldStartAt       = big.NewInt(1 << 5)
-	clientFacingAppointmentFieldEndAt         = big.NewInt(1 << 6)
-	clientFacingAppointmentFieldIanaTimezone  = big.NewInt(1 << 7)
-	clientFacingAppointmentFieldType          = big.NewInt(1 << 8)
-	clientFacingAppointmentFieldProvider      = big.NewInt(1 << 9)
-	clientFacingAppointmentFieldStatus        = big.NewInt(1 << 10)
-	clientFacingAppointmentFieldProviderId    = big.NewInt(1 << 11)
-	clientFacingAppointmentFieldExternalId    = big.NewInt(1 << 12)
-	clientFacingAppointmentFieldCanReschedule = big.NewInt(1 << 13)
-	clientFacingAppointmentFieldEventStatus   = big.NewInt(1 << 14)
-	clientFacingAppointmentFieldEventData     = big.NewInt(1 << 15)
-	clientFacingAppointmentFieldEvents        = big.NewInt(1 << 16)
+	clientFacingAppointmentFieldId                 = big.NewInt(1 << 0)
+	clientFacingAppointmentFieldUserId             = big.NewInt(1 << 1)
+	clientFacingAppointmentFieldOrderId            = big.NewInt(1 << 2)
+	clientFacingAppointmentFieldOrderTransactionId = big.NewInt(1 << 3)
+	clientFacingAppointmentFieldAddress            = big.NewInt(1 << 4)
+	clientFacingAppointmentFieldLocation           = big.NewInt(1 << 5)
+	clientFacingAppointmentFieldStartAt            = big.NewInt(1 << 6)
+	clientFacingAppointmentFieldEndAt              = big.NewInt(1 << 7)
+	clientFacingAppointmentFieldIanaTimezone       = big.NewInt(1 << 8)
+	clientFacingAppointmentFieldType               = big.NewInt(1 << 9)
+	clientFacingAppointmentFieldProvider           = big.NewInt(1 << 10)
+	clientFacingAppointmentFieldStatus             = big.NewInt(1 << 11)
+	clientFacingAppointmentFieldProviderId         = big.NewInt(1 << 12)
+	clientFacingAppointmentFieldExternalId         = big.NewInt(1 << 13)
+	clientFacingAppointmentFieldCanReschedule      = big.NewInt(1 << 14)
+	clientFacingAppointmentFieldEventStatus        = big.NewInt(1 << 15)
+	clientFacingAppointmentFieldEventData          = big.NewInt(1 << 16)
+	clientFacingAppointmentFieldEvents             = big.NewInt(1 << 17)
 )
 
 type ClientFacingAppointment struct {
-	Id       string     `json:"id" url:"id"`
-	UserId   string     `json:"user_id" url:"user_id"`
-	OrderId  string     `json:"order_id" url:"order_id"`
-	Address  *UsAddress `json:"address" url:"address"`
-	Location *LngLat    `json:"location" url:"location"`
+	Id                 string     `json:"id" url:"id"`
+	UserId             string     `json:"user_id" url:"user_id"`
+	OrderId            string     `json:"order_id" url:"order_id"`
+	OrderTransactionId *string    `json:"order_transaction_id,omitempty" url:"order_transaction_id,omitempty"`
+	Address            *UsAddress `json:"address" url:"address"`
+	Location           *LngLat    `json:"location" url:"location"`
 	// Time is in UTC
 	StartAt *time.Time `json:"start_at,omitempty" url:"start_at,omitempty"`
 	// Time is in UTC
@@ -2805,6 +2553,13 @@ func (c *ClientFacingAppointment) GetOrderId() string {
 		return ""
 	}
 	return c.OrderId
+}
+
+func (c *ClientFacingAppointment) GetOrderTransactionId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.OrderTransactionId
 }
 
 func (c *ClientFacingAppointment) GetAddress() *UsAddress {
@@ -2935,6 +2690,13 @@ func (c *ClientFacingAppointment) SetUserId(userId string) {
 func (c *ClientFacingAppointment) SetOrderId(orderId string) {
 	c.OrderId = orderId
 	c.require(clientFacingAppointmentFieldOrderId)
+}
+
+// SetOrderTransactionId sets the OrderTransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingAppointment) SetOrderTransactionId(orderTransactionId *string) {
+	c.OrderTransactionId = orderTransactionId
+	c.require(clientFacingAppointmentFieldOrderTransactionId)
 }
 
 // SetAddress sets the Address field and marks it as non-optional;
@@ -4117,132 +3879,6 @@ func (c *ClientFacingResult) String() string {
 }
 
 var (
-	clinicalInformationFieldFasting     = big.NewInt(1 << 0)
-	clinicalInformationFieldNotes       = big.NewInt(1 << 1)
-	clinicalInformationFieldInformation = big.NewInt(1 << 2)
-	clinicalInformationFieldTotalVolume = big.NewInt(1 << 3)
-)
-
-type ClinicalInformation struct {
-	Fasting     *bool   `json:"fasting,omitempty" url:"fasting,omitempty"`
-	Notes       *string `json:"notes,omitempty" url:"notes,omitempty"`
-	Information *string `json:"information,omitempty" url:"information,omitempty"`
-	TotalVolume *string `json:"total_volume,omitempty" url:"total_volume,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ClinicalInformation) GetFasting() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.Fasting
-}
-
-func (c *ClinicalInformation) GetNotes() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Notes
-}
-
-func (c *ClinicalInformation) GetInformation() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Information
-}
-
-func (c *ClinicalInformation) GetTotalVolume() *string {
-	if c == nil {
-		return nil
-	}
-	return c.TotalVolume
-}
-
-func (c *ClinicalInformation) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
-}
-
-func (c *ClinicalInformation) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetFasting sets the Fasting field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClinicalInformation) SetFasting(fasting *bool) {
-	c.Fasting = fasting
-	c.require(clinicalInformationFieldFasting)
-}
-
-// SetNotes sets the Notes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClinicalInformation) SetNotes(notes *string) {
-	c.Notes = notes
-	c.require(clinicalInformationFieldNotes)
-}
-
-// SetInformation sets the Information field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClinicalInformation) SetInformation(information *string) {
-	c.Information = information
-	c.require(clinicalInformationFieldInformation)
-}
-
-// SetTotalVolume sets the TotalVolume field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClinicalInformation) SetTotalVolume(totalVolume *string) {
-	c.TotalVolume = totalVolume
-	c.require(clinicalInformationFieldTotalVolume)
-}
-
-func (c *ClinicalInformation) UnmarshalJSON(data []byte) error {
-	type unmarshaler ClinicalInformation
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ClinicalInformation(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ClinicalInformation) MarshalJSON() ([]byte, error) {
-	type embed ClinicalInformation
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ClinicalInformation) String() string {
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
 	daySlotsFieldLocation = big.NewInt(1 << 0)
 	daySlotsFieldDate     = big.NewInt(1 << 1)
 	daySlotsFieldSlots    = big.NewInt(1 << 2)
@@ -4350,56 +3986,6 @@ func (d *DaySlots) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", d)
-}
-
-// ℹ️ This enum is non-exhaustive.
-type FailureType string
-
-const (
-	FailureTypeQuantityNotSufficientFailure FailureType = "quantity_not_sufficient_failure"
-	FailureTypeCollectionProcessFailure     FailureType = "collection_process_failure"
-	FailureTypeDropOffFailure               FailureType = "drop_off_failure"
-	FailureTypeInternalLabFailure           FailureType = "internal_lab_failure"
-	FailureTypeOrderEntryFailure            FailureType = "order_entry_failure"
-	FailureTypeNonFailure                   FailureType = "non_failure"
-	FailureTypeUnknownFailure               FailureType = "unknown_failure"
-	FailureTypePatientConditionFailure      FailureType = "patient_condition_failure"
-	FailureTypeMissingResultCalcFailure     FailureType = "missing_result_calc_failure"
-	FailureTypeMissingDemoAoeCalcFailure    FailureType = "missing_demo_aoe_calc_failure"
-	FailureTypeInsufficientVolume           FailureType = "insufficient_volume"
-)
-
-func NewFailureTypeFromString(s string) (FailureType, error) {
-	switch s {
-	case "quantity_not_sufficient_failure":
-		return FailureTypeQuantityNotSufficientFailure, nil
-	case "collection_process_failure":
-		return FailureTypeCollectionProcessFailure, nil
-	case "drop_off_failure":
-		return FailureTypeDropOffFailure, nil
-	case "internal_lab_failure":
-		return FailureTypeInternalLabFailure, nil
-	case "order_entry_failure":
-		return FailureTypeOrderEntryFailure, nil
-	case "non_failure":
-		return FailureTypeNonFailure, nil
-	case "unknown_failure":
-		return FailureTypeUnknownFailure, nil
-	case "patient_condition_failure":
-		return FailureTypePatientConditionFailure, nil
-	case "missing_result_calc_failure":
-		return FailureTypeMissingResultCalcFailure, nil
-	case "missing_demo_aoe_calc_failure":
-		return FailureTypeMissingDemoAoeCalcFailure, nil
-	case "insufficient_volume":
-		return FailureTypeInsufficientVolume, nil
-	}
-	var t FailureType
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (f FailureType) Ptr() *FailureType {
-	return &f
 }
 
 var (
@@ -5122,480 +4708,6 @@ func (l *LabLocationMetadata) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
-var (
-	labResultsMetadataFieldAge            = big.NewInt(1 << 0)
-	labResultsMetadataFieldDob            = big.NewInt(1 << 1)
-	labResultsMetadataFieldClia           = big.NewInt(1 << 2)
-	labResultsMetadataFieldPatient        = big.NewInt(1 << 3)
-	labResultsMetadataFieldProvider       = big.NewInt(1 << 4)
-	labResultsMetadataFieldLaboratory     = big.NewInt(1 << 5)
-	labResultsMetadataFieldDateReported   = big.NewInt(1 << 6)
-	labResultsMetadataFieldDateCollected  = big.NewInt(1 << 7)
-	labResultsMetadataFieldSpecimenNumber = big.NewInt(1 << 8)
-	labResultsMetadataFieldDateReceived   = big.NewInt(1 << 9)
-	labResultsMetadataFieldStatus         = big.NewInt(1 << 10)
-	labResultsMetadataFieldInterpretation = big.NewInt(1 << 11)
-	labResultsMetadataFieldPatientId      = big.NewInt(1 << 12)
-	labResultsMetadataFieldAccountId      = big.NewInt(1 << 13)
-)
-
-type LabResultsMetadata struct {
-	Age            string  `json:"age" url:"age"`
-	Dob            string  `json:"dob" url:"dob"`
-	Clia           *string `json:"clia_#,omitempty" url:"clia_#,omitempty"`
-	Patient        string  `json:"patient" url:"patient"`
-	Provider       *string `json:"provider,omitempty" url:"provider,omitempty"`
-	Laboratory     *string `json:"laboratory,omitempty" url:"laboratory,omitempty"`
-	DateReported   string  `json:"date_reported" url:"date_reported"`
-	DateCollected  *string `json:"date_collected,omitempty" url:"date_collected,omitempty"`
-	SpecimenNumber string  `json:"specimen_number" url:"specimen_number"`
-	DateReceived   *string `json:"date_received,omitempty" url:"date_received,omitempty"`
-	Status         *string `json:"status,omitempty" url:"status,omitempty"`
-	Interpretation *string `json:"interpretation,omitempty" url:"interpretation,omitempty"`
-	PatientId      *string `json:"patient_id,omitempty" url:"patient_id,omitempty"`
-	AccountId      *string `json:"account_id,omitempty" url:"account_id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (l *LabResultsMetadata) GetAge() string {
-	if l == nil {
-		return ""
-	}
-	return l.Age
-}
-
-func (l *LabResultsMetadata) GetDob() string {
-	if l == nil {
-		return ""
-	}
-	return l.Dob
-}
-
-func (l *LabResultsMetadata) GetClia() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Clia
-}
-
-func (l *LabResultsMetadata) GetPatient() string {
-	if l == nil {
-		return ""
-	}
-	return l.Patient
-}
-
-func (l *LabResultsMetadata) GetProvider() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Provider
-}
-
-func (l *LabResultsMetadata) GetLaboratory() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Laboratory
-}
-
-func (l *LabResultsMetadata) GetDateReported() string {
-	if l == nil {
-		return ""
-	}
-	return l.DateReported
-}
-
-func (l *LabResultsMetadata) GetDateCollected() *string {
-	if l == nil {
-		return nil
-	}
-	return l.DateCollected
-}
-
-func (l *LabResultsMetadata) GetSpecimenNumber() string {
-	if l == nil {
-		return ""
-	}
-	return l.SpecimenNumber
-}
-
-func (l *LabResultsMetadata) GetDateReceived() *string {
-	if l == nil {
-		return nil
-	}
-	return l.DateReceived
-}
-
-func (l *LabResultsMetadata) GetStatus() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Status
-}
-
-func (l *LabResultsMetadata) GetInterpretation() *string {
-	if l == nil {
-		return nil
-	}
-	return l.Interpretation
-}
-
-func (l *LabResultsMetadata) GetPatientId() *string {
-	if l == nil {
-		return nil
-	}
-	return l.PatientId
-}
-
-func (l *LabResultsMetadata) GetAccountId() *string {
-	if l == nil {
-		return nil
-	}
-	return l.AccountId
-}
-
-func (l *LabResultsMetadata) GetExtraProperties() map[string]interface{} {
-	return l.extraProperties
-}
-
-func (l *LabResultsMetadata) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
-	}
-	l.explicitFields.Or(l.explicitFields, field)
-}
-
-// SetAge sets the Age field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetAge(age string) {
-	l.Age = age
-	l.require(labResultsMetadataFieldAge)
-}
-
-// SetDob sets the Dob field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetDob(dob string) {
-	l.Dob = dob
-	l.require(labResultsMetadataFieldDob)
-}
-
-// SetClia sets the Clia field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetClia(clia *string) {
-	l.Clia = clia
-	l.require(labResultsMetadataFieldClia)
-}
-
-// SetPatient sets the Patient field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetPatient(patient string) {
-	l.Patient = patient
-	l.require(labResultsMetadataFieldPatient)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetProvider(provider *string) {
-	l.Provider = provider
-	l.require(labResultsMetadataFieldProvider)
-}
-
-// SetLaboratory sets the Laboratory field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetLaboratory(laboratory *string) {
-	l.Laboratory = laboratory
-	l.require(labResultsMetadataFieldLaboratory)
-}
-
-// SetDateReported sets the DateReported field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetDateReported(dateReported string) {
-	l.DateReported = dateReported
-	l.require(labResultsMetadataFieldDateReported)
-}
-
-// SetDateCollected sets the DateCollected field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetDateCollected(dateCollected *string) {
-	l.DateCollected = dateCollected
-	l.require(labResultsMetadataFieldDateCollected)
-}
-
-// SetSpecimenNumber sets the SpecimenNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetSpecimenNumber(specimenNumber string) {
-	l.SpecimenNumber = specimenNumber
-	l.require(labResultsMetadataFieldSpecimenNumber)
-}
-
-// SetDateReceived sets the DateReceived field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetDateReceived(dateReceived *string) {
-	l.DateReceived = dateReceived
-	l.require(labResultsMetadataFieldDateReceived)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetStatus(status *string) {
-	l.Status = status
-	l.require(labResultsMetadataFieldStatus)
-}
-
-// SetInterpretation sets the Interpretation field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetInterpretation(interpretation *string) {
-	l.Interpretation = interpretation
-	l.require(labResultsMetadataFieldInterpretation)
-}
-
-// SetPatientId sets the PatientId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetPatientId(patientId *string) {
-	l.PatientId = patientId
-	l.require(labResultsMetadataFieldPatientId)
-}
-
-// SetAccountId sets the AccountId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsMetadata) SetAccountId(accountId *string) {
-	l.AccountId = accountId
-	l.require(labResultsMetadataFieldAccountId)
-}
-
-func (l *LabResultsMetadata) UnmarshalJSON(data []byte) error {
-	type unmarshaler LabResultsMetadata
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = LabResultsMetadata(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *l)
-	if err != nil {
-		return err
-	}
-	l.extraProperties = extraProperties
-	l.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *LabResultsMetadata) MarshalJSON() ([]byte, error) {
-	type embed LabResultsMetadata
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*l),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (l *LabResultsMetadata) String() string {
-	if len(l.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
-}
-
-var (
-	labResultsRawFieldMetadata          = big.NewInt(1 << 0)
-	labResultsRawFieldResults           = big.NewInt(1 << 1)
-	labResultsRawFieldMissingResults    = big.NewInt(1 << 2)
-	labResultsRawFieldSampleInformation = big.NewInt(1 << 3)
-)
-
-type LabResultsRaw struct {
-	Metadata          *LabResultsMetadata       `json:"metadata" url:"metadata"`
-	Results           *LabResultsRawResults     `json:"results" url:"results"`
-	MissingResults    []*MissingBiomarkerResult `json:"missing_results,omitempty" url:"missing_results,omitempty"`
-	SampleInformation map[string]*SampleData    `json:"sample_information,omitempty" url:"sample_information,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (l *LabResultsRaw) GetMetadata() *LabResultsMetadata {
-	if l == nil {
-		return nil
-	}
-	return l.Metadata
-}
-
-func (l *LabResultsRaw) GetResults() *LabResultsRawResults {
-	if l == nil {
-		return nil
-	}
-	return l.Results
-}
-
-func (l *LabResultsRaw) GetMissingResults() []*MissingBiomarkerResult {
-	if l == nil {
-		return nil
-	}
-	return l.MissingResults
-}
-
-func (l *LabResultsRaw) GetSampleInformation() map[string]*SampleData {
-	if l == nil {
-		return nil
-	}
-	return l.SampleInformation
-}
-
-func (l *LabResultsRaw) GetExtraProperties() map[string]interface{} {
-	return l.extraProperties
-}
-
-func (l *LabResultsRaw) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
-	}
-	l.explicitFields.Or(l.explicitFields, field)
-}
-
-// SetMetadata sets the Metadata field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsRaw) SetMetadata(metadata *LabResultsMetadata) {
-	l.Metadata = metadata
-	l.require(labResultsRawFieldMetadata)
-}
-
-// SetResults sets the Results field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsRaw) SetResults(results *LabResultsRawResults) {
-	l.Results = results
-	l.require(labResultsRawFieldResults)
-}
-
-// SetMissingResults sets the MissingResults field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsRaw) SetMissingResults(missingResults []*MissingBiomarkerResult) {
-	l.MissingResults = missingResults
-	l.require(labResultsRawFieldMissingResults)
-}
-
-// SetSampleInformation sets the SampleInformation field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LabResultsRaw) SetSampleInformation(sampleInformation map[string]*SampleData) {
-	l.SampleInformation = sampleInformation
-	l.require(labResultsRawFieldSampleInformation)
-}
-
-func (l *LabResultsRaw) UnmarshalJSON(data []byte) error {
-	type unmarshaler LabResultsRaw
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = LabResultsRaw(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *l)
-	if err != nil {
-		return err
-	}
-	l.extraProperties = extraProperties
-	l.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *LabResultsRaw) MarshalJSON() ([]byte, error) {
-	type embed LabResultsRaw
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*l),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (l *LabResultsRaw) String() string {
-	if len(l.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
-}
-
-type LabResultsRawResults struct {
-	BiomarkerResultList []*BiomarkerResult
-	StringUnknownMap    map[string]interface{}
-
-	typ string
-}
-
-func (l *LabResultsRawResults) GetBiomarkerResultList() []*BiomarkerResult {
-	if l == nil {
-		return nil
-	}
-	return l.BiomarkerResultList
-}
-
-func (l *LabResultsRawResults) GetStringUnknownMap() map[string]interface{} {
-	if l == nil {
-		return nil
-	}
-	return l.StringUnknownMap
-}
-
-func (l *LabResultsRawResults) UnmarshalJSON(data []byte) error {
-	var valueBiomarkerResultList []*BiomarkerResult
-	if err := json.Unmarshal(data, &valueBiomarkerResultList); err == nil {
-		l.typ = "BiomarkerResultList"
-		l.BiomarkerResultList = valueBiomarkerResultList
-		return nil
-	}
-	var valueStringUnknownMap map[string]interface{}
-	if err := json.Unmarshal(data, &valueStringUnknownMap); err == nil {
-		l.typ = "StringUnknownMap"
-		l.StringUnknownMap = valueStringUnknownMap
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, l)
-}
-
-func (l LabResultsRawResults) MarshalJSON() ([]byte, error) {
-	if l.typ == "BiomarkerResultList" || l.BiomarkerResultList != nil {
-		return json.Marshal(l.BiomarkerResultList)
-	}
-	if l.typ == "StringUnknownMap" || l.StringUnknownMap != nil {
-		return json.Marshal(l.StringUnknownMap)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", l)
-}
-
-type LabResultsRawResultsVisitor interface {
-	VisitBiomarkerResultList([]*BiomarkerResult) error
-	VisitStringUnknownMap(map[string]interface{}) error
-}
-
-func (l *LabResultsRawResults) Accept(visitor LabResultsRawResultsVisitor) error {
-	if l.typ == "BiomarkerResultList" || l.BiomarkerResultList != nil {
-		return visitor.VisitBiomarkerResultList(l.BiomarkerResultList)
-	}
-	if l.typ == "StringUnknownMap" || l.StringUnknownMap != nil {
-		return visitor.VisitStringUnknownMap(l.StringUnknownMap)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", l)
-}
-
 // ℹ️ This enum is non-exhaustive.
 type LabTestGenerationMethodFilter string
 
@@ -5811,196 +4923,6 @@ func (l *LngLat) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
-var (
-	missingBiomarkerResultFieldName                = big.NewInt(1 << 0)
-	missingBiomarkerResultFieldSlug                = big.NewInt(1 << 1)
-	missingBiomarkerResultFieldInferredFailureType = big.NewInt(1 << 2)
-	missingBiomarkerResultFieldNote                = big.NewInt(1 << 3)
-	missingBiomarkerResultFieldLoinc               = big.NewInt(1 << 4)
-	missingBiomarkerResultFieldLoincSlug           = big.NewInt(1 << 5)
-	missingBiomarkerResultFieldProviderId          = big.NewInt(1 << 6)
-	missingBiomarkerResultFieldSourceMarkers       = big.NewInt(1 << 7)
-)
-
-type MissingBiomarkerResult struct {
-	Name                string                 `json:"name" url:"name"`
-	Slug                string                 `json:"slug" url:"slug"`
-	InferredFailureType FailureType            `json:"inferred_failure_type" url:"inferred_failure_type"`
-	Note                *string                `json:"note,omitempty" url:"note,omitempty"`
-	Loinc               *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
-	LoincSlug           *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
-	ProviderId          *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
-	SourceMarkers       []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *MissingBiomarkerResult) GetName() string {
-	if m == nil {
-		return ""
-	}
-	return m.Name
-}
-
-func (m *MissingBiomarkerResult) GetSlug() string {
-	if m == nil {
-		return ""
-	}
-	return m.Slug
-}
-
-func (m *MissingBiomarkerResult) GetInferredFailureType() FailureType {
-	if m == nil {
-		return ""
-	}
-	return m.InferredFailureType
-}
-
-func (m *MissingBiomarkerResult) GetNote() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Note
-}
-
-func (m *MissingBiomarkerResult) GetLoinc() *string {
-	if m == nil {
-		return nil
-	}
-	return m.Loinc
-}
-
-func (m *MissingBiomarkerResult) GetLoincSlug() *string {
-	if m == nil {
-		return nil
-	}
-	return m.LoincSlug
-}
-
-func (m *MissingBiomarkerResult) GetProviderId() *string {
-	if m == nil {
-		return nil
-	}
-	return m.ProviderId
-}
-
-func (m *MissingBiomarkerResult) GetSourceMarkers() []*ParentBiomarkerData {
-	if m == nil {
-		return nil
-	}
-	return m.SourceMarkers
-}
-
-func (m *MissingBiomarkerResult) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
-}
-
-func (m *MissingBiomarkerResult) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
-	}
-	m.explicitFields.Or(m.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetName(name string) {
-	m.Name = name
-	m.require(missingBiomarkerResultFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetSlug(slug string) {
-	m.Slug = slug
-	m.require(missingBiomarkerResultFieldSlug)
-}
-
-// SetInferredFailureType sets the InferredFailureType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetInferredFailureType(inferredFailureType FailureType) {
-	m.InferredFailureType = inferredFailureType
-	m.require(missingBiomarkerResultFieldInferredFailureType)
-}
-
-// SetNote sets the Note field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetNote(note *string) {
-	m.Note = note
-	m.require(missingBiomarkerResultFieldNote)
-}
-
-// SetLoinc sets the Loinc field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetLoinc(loinc *string) {
-	m.Loinc = loinc
-	m.require(missingBiomarkerResultFieldLoinc)
-}
-
-// SetLoincSlug sets the LoincSlug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetLoincSlug(loincSlug *string) {
-	m.LoincSlug = loincSlug
-	m.require(missingBiomarkerResultFieldLoincSlug)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetProviderId(providerId *string) {
-	m.ProviderId = providerId
-	m.require(missingBiomarkerResultFieldProviderId)
-}
-
-// SetSourceMarkers sets the SourceMarkers field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *MissingBiomarkerResult) SetSourceMarkers(sourceMarkers []*ParentBiomarkerData) {
-	m.SourceMarkers = sourceMarkers
-	m.require(missingBiomarkerResultFieldSourceMarkers)
-}
-
-func (m *MissingBiomarkerResult) UnmarshalJSON(data []byte) error {
-	type unmarshaler MissingBiomarkerResult
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = MissingBiomarkerResult(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *MissingBiomarkerResult) MarshalJSON() ([]byte, error) {
-	type embed MissingBiomarkerResult
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*m),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (m *MissingBiomarkerResult) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
-
 // ℹ️ This enum is non-exhaustive.
 type OrderActivationType string
 
@@ -6021,98 +4943,6 @@ func NewOrderActivationTypeFromString(s string) (OrderActivationType, error) {
 }
 
 func (o OrderActivationType) Ptr() *OrderActivationType {
-	return &o
-}
-
-// ℹ️ This enum is non-exhaustive.
-type OrderLowLevelStatus string
-
-const (
-	OrderLowLevelStatusOrdered                    OrderLowLevelStatus = "ordered"
-	OrderLowLevelStatusRequisitionCreated         OrderLowLevelStatus = "requisition_created"
-	OrderLowLevelStatusRequisitionBypassed        OrderLowLevelStatus = "requisition_bypassed"
-	OrderLowLevelStatusTransitCustomer            OrderLowLevelStatus = "transit_customer"
-	OrderLowLevelStatusOutForDelivery             OrderLowLevelStatus = "out_for_delivery"
-	OrderLowLevelStatusWithCustomer               OrderLowLevelStatus = "with_customer"
-	OrderLowLevelStatusTransitLab                 OrderLowLevelStatus = "transit_lab"
-	OrderLowLevelStatusDeliveredToLab             OrderLowLevelStatus = "delivered_to_lab"
-	OrderLowLevelStatusCompleted                  OrderLowLevelStatus = "completed"
-	OrderLowLevelStatusFailureToDeliverToLab      OrderLowLevelStatus = "failure_to_deliver_to_lab"
-	OrderLowLevelStatusFailureToDeliverToCustomer OrderLowLevelStatus = "failure_to_deliver_to_customer"
-	OrderLowLevelStatusProblemInTransitLab        OrderLowLevelStatus = "problem_in_transit_lab"
-	OrderLowLevelStatusProblemInTransitCustomer   OrderLowLevelStatus = "problem_in_transit_customer"
-	OrderLowLevelStatusSampleError                OrderLowLevelStatus = "sample_error"
-	OrderLowLevelStatusAppointmentScheduled       OrderLowLevelStatus = "appointment_scheduled"
-	OrderLowLevelStatusAppointmentCancelled       OrderLowLevelStatus = "appointment_cancelled"
-	OrderLowLevelStatusAppointmentPending         OrderLowLevelStatus = "appointment_pending"
-	OrderLowLevelStatusDrawCompleted              OrderLowLevelStatus = "draw_completed"
-	OrderLowLevelStatusCancelled                  OrderLowLevelStatus = "cancelled"
-	OrderLowLevelStatusLost                       OrderLowLevelStatus = "lost"
-	OrderLowLevelStatusDoNotProcess               OrderLowLevelStatus = "do_not_process"
-	OrderLowLevelStatusPartialResults             OrderLowLevelStatus = "partial_results"
-	OrderLowLevelStatusAwaitingRegistration       OrderLowLevelStatus = "awaiting_registration"
-	OrderLowLevelStatusRegistered                 OrderLowLevelStatus = "registered"
-	OrderLowLevelStatusRedrawAvailable            OrderLowLevelStatus = "redraw_available"
-)
-
-func NewOrderLowLevelStatusFromString(s string) (OrderLowLevelStatus, error) {
-	switch s {
-	case "ordered":
-		return OrderLowLevelStatusOrdered, nil
-	case "requisition_created":
-		return OrderLowLevelStatusRequisitionCreated, nil
-	case "requisition_bypassed":
-		return OrderLowLevelStatusRequisitionBypassed, nil
-	case "transit_customer":
-		return OrderLowLevelStatusTransitCustomer, nil
-	case "out_for_delivery":
-		return OrderLowLevelStatusOutForDelivery, nil
-	case "with_customer":
-		return OrderLowLevelStatusWithCustomer, nil
-	case "transit_lab":
-		return OrderLowLevelStatusTransitLab, nil
-	case "delivered_to_lab":
-		return OrderLowLevelStatusDeliveredToLab, nil
-	case "completed":
-		return OrderLowLevelStatusCompleted, nil
-	case "failure_to_deliver_to_lab":
-		return OrderLowLevelStatusFailureToDeliverToLab, nil
-	case "failure_to_deliver_to_customer":
-		return OrderLowLevelStatusFailureToDeliverToCustomer, nil
-	case "problem_in_transit_lab":
-		return OrderLowLevelStatusProblemInTransitLab, nil
-	case "problem_in_transit_customer":
-		return OrderLowLevelStatusProblemInTransitCustomer, nil
-	case "sample_error":
-		return OrderLowLevelStatusSampleError, nil
-	case "appointment_scheduled":
-		return OrderLowLevelStatusAppointmentScheduled, nil
-	case "appointment_cancelled":
-		return OrderLowLevelStatusAppointmentCancelled, nil
-	case "appointment_pending":
-		return OrderLowLevelStatusAppointmentPending, nil
-	case "draw_completed":
-		return OrderLowLevelStatusDrawCompleted, nil
-	case "cancelled":
-		return OrderLowLevelStatusCancelled, nil
-	case "lost":
-		return OrderLowLevelStatusLost, nil
-	case "do_not_process":
-		return OrderLowLevelStatusDoNotProcess, nil
-	case "partial_results":
-		return OrderLowLevelStatusPartialResults, nil
-	case "awaiting_registration":
-		return OrderLowLevelStatusAwaitingRegistration, nil
-	case "registered":
-		return OrderLowLevelStatusRegistered, nil
-	case "redraw_available":
-		return OrderLowLevelStatusRedrawAvailable, nil
-	}
-	var t OrderLowLevelStatus
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (o OrderLowLevelStatus) Ptr() *OrderLowLevelStatus {
 	return &o
 }
 
@@ -6224,132 +5054,6 @@ func (o *OrderSetRequest) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)
-}
-
-var (
-	parentBiomarkerDataFieldMarkerId   = big.NewInt(1 << 0)
-	parentBiomarkerDataFieldName       = big.NewInt(1 << 1)
-	parentBiomarkerDataFieldSlug       = big.NewInt(1 << 2)
-	parentBiomarkerDataFieldProviderId = big.NewInt(1 << 3)
-)
-
-type ParentBiomarkerData struct {
-	MarkerId   int     `json:"marker_id" url:"marker_id"`
-	Name       string  `json:"name" url:"name"`
-	Slug       string  `json:"slug" url:"slug"`
-	ProviderId *string `json:"provider_id,omitempty" url:"provider_id,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *ParentBiomarkerData) GetMarkerId() int {
-	if p == nil {
-		return 0
-	}
-	return p.MarkerId
-}
-
-func (p *ParentBiomarkerData) GetName() string {
-	if p == nil {
-		return ""
-	}
-	return p.Name
-}
-
-func (p *ParentBiomarkerData) GetSlug() string {
-	if p == nil {
-		return ""
-	}
-	return p.Slug
-}
-
-func (p *ParentBiomarkerData) GetProviderId() *string {
-	if p == nil {
-		return nil
-	}
-	return p.ProviderId
-}
-
-func (p *ParentBiomarkerData) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *ParentBiomarkerData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetMarkerId sets the MarkerId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParentBiomarkerData) SetMarkerId(markerId int) {
-	p.MarkerId = markerId
-	p.require(parentBiomarkerDataFieldMarkerId)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParentBiomarkerData) SetName(name string) {
-	p.Name = name
-	p.require(parentBiomarkerDataFieldName)
-}
-
-// SetSlug sets the Slug field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParentBiomarkerData) SetSlug(slug string) {
-	p.Slug = slug
-	p.require(parentBiomarkerDataFieldSlug)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParentBiomarkerData) SetProviderId(providerId *string) {
-	p.ProviderId = providerId
-	p.require(parentBiomarkerDataFieldProviderId)
-}
-
-func (p *ParentBiomarkerData) UnmarshalJSON(data []byte) error {
-	type unmarshaler ParentBiomarkerData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = ParentBiomarkerData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *ParentBiomarkerData) MarshalJSON() ([]byte, error) {
-	type embed ParentBiomarkerData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *ParentBiomarkerData) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
 }
 
 var (
@@ -6515,132 +5219,6 @@ func (p *PatientAddress) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PatientAddress) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	performingLaboratoryFieldName            = big.NewInt(1 << 0)
-	performingLaboratoryFieldPhoneNumber     = big.NewInt(1 << 1)
-	performingLaboratoryFieldMedicalDirector = big.NewInt(1 << 2)
-	performingLaboratoryFieldAddress         = big.NewInt(1 << 3)
-)
-
-type PerformingLaboratory struct {
-	Name            string   `json:"name" url:"name"`
-	PhoneNumber     *string  `json:"phone_number,omitempty" url:"phone_number,omitempty"`
-	MedicalDirector *string  `json:"medical_director,omitempty" url:"medical_director,omitempty"`
-	Address         *Address `json:"address,omitempty" url:"address,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PerformingLaboratory) GetName() string {
-	if p == nil {
-		return ""
-	}
-	return p.Name
-}
-
-func (p *PerformingLaboratory) GetPhoneNumber() *string {
-	if p == nil {
-		return nil
-	}
-	return p.PhoneNumber
-}
-
-func (p *PerformingLaboratory) GetMedicalDirector() *string {
-	if p == nil {
-		return nil
-	}
-	return p.MedicalDirector
-}
-
-func (p *PerformingLaboratory) GetAddress() *Address {
-	if p == nil {
-		return nil
-	}
-	return p.Address
-}
-
-func (p *PerformingLaboratory) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PerformingLaboratory) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PerformingLaboratory) SetName(name string) {
-	p.Name = name
-	p.require(performingLaboratoryFieldName)
-}
-
-// SetPhoneNumber sets the PhoneNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PerformingLaboratory) SetPhoneNumber(phoneNumber *string) {
-	p.PhoneNumber = phoneNumber
-	p.require(performingLaboratoryFieldPhoneNumber)
-}
-
-// SetMedicalDirector sets the MedicalDirector field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PerformingLaboratory) SetMedicalDirector(medicalDirector *string) {
-	p.MedicalDirector = medicalDirector
-	p.require(performingLaboratoryFieldMedicalDirector)
-}
-
-// SetAddress sets the Address field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PerformingLaboratory) SetAddress(address *Address) {
-	p.Address = address
-	p.require(performingLaboratoryFieldAddress)
-}
-
-func (p *PerformingLaboratory) UnmarshalJSON(data []byte) error {
-	type unmarshaler PerformingLaboratory
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PerformingLaboratory(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PerformingLaboratory) MarshalJSON() ([]byte, error) {
-	type embed PerformingLaboratory
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PerformingLaboratory) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -7408,395 +5986,6 @@ func (p *PscInfo) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// ℹ️ This enum is non-exhaustive.
-type ResultType string
-
-const (
-	ResultTypeNumeric    ResultType = "numeric"
-	ResultTypeRange      ResultType = "range"
-	ResultTypeComment    ResultType = "comment"
-	ResultTypeCodedValue ResultType = "coded_value"
-)
-
-func NewResultTypeFromString(s string) (ResultType, error) {
-	switch s {
-	case "numeric":
-		return ResultTypeNumeric, nil
-	case "range":
-		return ResultTypeRange, nil
-	case "comment":
-		return ResultTypeComment, nil
-	case "coded_value":
-		return ResultTypeCodedValue, nil
-	}
-	var t ResultType
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (r ResultType) Ptr() *ResultType {
-	return &r
-}
-
-var (
-	sampleDataFieldSampleId               = big.NewInt(1 << 0)
-	sampleDataFieldControlNumber          = big.NewInt(1 << 1)
-	sampleDataFieldDateCollected          = big.NewInt(1 << 2)
-	sampleDataFieldDateReceived           = big.NewInt(1 << 3)
-	sampleDataFieldDateReported           = big.NewInt(1 << 4)
-	sampleDataFieldPerformingLaboratories = big.NewInt(1 << 5)
-	sampleDataFieldClinicalInformation    = big.NewInt(1 << 6)
-)
-
-type SampleData struct {
-	SampleId               *string                          `json:"sample_id,omitempty" url:"sample_id,omitempty"`
-	ControlNumber          *string                          `json:"control_number,omitempty" url:"control_number,omitempty"`
-	DateCollected          *SampleDataDateCollected         `json:"date_collected,omitempty" url:"date_collected,omitempty"`
-	DateReceived           *SampleDataDateReceived          `json:"date_received,omitempty" url:"date_received,omitempty"`
-	DateReported           *SampleDataDateReported          `json:"date_reported,omitempty" url:"date_reported,omitempty"`
-	PerformingLaboratories map[string]*PerformingLaboratory `json:"performing_laboratories,omitempty" url:"performing_laboratories,omitempty"`
-	ClinicalInformation    *ClinicalInformation             `json:"clinical_information,omitempty" url:"clinical_information,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SampleData) GetSampleId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SampleId
-}
-
-func (s *SampleData) GetControlNumber() *string {
-	if s == nil {
-		return nil
-	}
-	return s.ControlNumber
-}
-
-func (s *SampleData) GetDateCollected() *SampleDataDateCollected {
-	if s == nil {
-		return nil
-	}
-	return s.DateCollected
-}
-
-func (s *SampleData) GetDateReceived() *SampleDataDateReceived {
-	if s == nil {
-		return nil
-	}
-	return s.DateReceived
-}
-
-func (s *SampleData) GetDateReported() *SampleDataDateReported {
-	if s == nil {
-		return nil
-	}
-	return s.DateReported
-}
-
-func (s *SampleData) GetPerformingLaboratories() map[string]*PerformingLaboratory {
-	if s == nil {
-		return nil
-	}
-	return s.PerformingLaboratories
-}
-
-func (s *SampleData) GetClinicalInformation() *ClinicalInformation {
-	if s == nil {
-		return nil
-	}
-	return s.ClinicalInformation
-}
-
-func (s *SampleData) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
-}
-
-func (s *SampleData) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetSampleId sets the SampleId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SampleData) SetSampleId(sampleId *string) {
-	s.SampleId = sampleId
-	s.require(sampleDataFieldSampleId)
-}
-
-// SetControlNumber sets the ControlNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SampleData) SetControlNumber(controlNumber *string) {
-	s.ControlNumber = controlNumber
-	s.require(sampleDataFieldControlNumber)
-}
-
-// SetDateCollected sets the DateCollected field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SampleData) SetDateCollected(dateCollected *SampleDataDateCollected) {
-	s.DateCollected = dateCollected
-	s.require(sampleDataFieldDateCollected)
-}
-
-// SetDateReceived sets the DateReceived field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SampleData) SetDateReceived(dateReceived *SampleDataDateReceived) {
-	s.DateReceived = dateReceived
-	s.require(sampleDataFieldDateReceived)
-}
-
-// SetDateReported sets the DateReported field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SampleData) SetDateReported(dateReported *SampleDataDateReported) {
-	s.DateReported = dateReported
-	s.require(sampleDataFieldDateReported)
-}
-
-// SetPerformingLaboratories sets the PerformingLaboratories field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SampleData) SetPerformingLaboratories(performingLaboratories map[string]*PerformingLaboratory) {
-	s.PerformingLaboratories = performingLaboratories
-	s.require(sampleDataFieldPerformingLaboratories)
-}
-
-// SetClinicalInformation sets the ClinicalInformation field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SampleData) SetClinicalInformation(clinicalInformation *ClinicalInformation) {
-	s.ClinicalInformation = clinicalInformation
-	s.require(sampleDataFieldClinicalInformation)
-}
-
-func (s *SampleData) UnmarshalJSON(data []byte) error {
-	type unmarshaler SampleData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SampleData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SampleData) MarshalJSON() ([]byte, error) {
-	type embed SampleData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*s),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (s *SampleData) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SampleDataDateCollected struct {
-	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
-	String                         string
-
-	typ string
-}
-
-func (s *SampleDataDateCollected) GetUtcTimestampWithTimezoneOffset() *UtcTimestampWithTimezoneOffset {
-	if s == nil {
-		return nil
-	}
-	return s.UtcTimestampWithTimezoneOffset
-}
-
-func (s *SampleDataDateCollected) GetString() string {
-	if s == nil {
-		return ""
-	}
-	return s.String
-}
-
-func (s *SampleDataDateCollected) UnmarshalJSON(data []byte) error {
-	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
-	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
-		s.typ = "UtcTimestampWithTimezoneOffset"
-		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		s.typ = "String"
-		s.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
-}
-
-func (s SampleDataDateCollected) MarshalJSON() ([]byte, error) {
-	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
-		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
-	}
-	if s.typ == "String" || s.String != "" {
-		return json.Marshal(s.String)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
-}
-
-type SampleDataDateCollectedVisitor interface {
-	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
-	VisitString(string) error
-}
-
-func (s *SampleDataDateCollected) Accept(visitor SampleDataDateCollectedVisitor) error {
-	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
-		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
-	}
-	if s.typ == "String" || s.String != "" {
-		return visitor.VisitString(s.String)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", s)
-}
-
-type SampleDataDateReceived struct {
-	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
-	String                         string
-
-	typ string
-}
-
-func (s *SampleDataDateReceived) GetUtcTimestampWithTimezoneOffset() *UtcTimestampWithTimezoneOffset {
-	if s == nil {
-		return nil
-	}
-	return s.UtcTimestampWithTimezoneOffset
-}
-
-func (s *SampleDataDateReceived) GetString() string {
-	if s == nil {
-		return ""
-	}
-	return s.String
-}
-
-func (s *SampleDataDateReceived) UnmarshalJSON(data []byte) error {
-	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
-	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
-		s.typ = "UtcTimestampWithTimezoneOffset"
-		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		s.typ = "String"
-		s.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
-}
-
-func (s SampleDataDateReceived) MarshalJSON() ([]byte, error) {
-	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
-		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
-	}
-	if s.typ == "String" || s.String != "" {
-		return json.Marshal(s.String)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
-}
-
-type SampleDataDateReceivedVisitor interface {
-	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
-	VisitString(string) error
-}
-
-func (s *SampleDataDateReceived) Accept(visitor SampleDataDateReceivedVisitor) error {
-	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
-		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
-	}
-	if s.typ == "String" || s.String != "" {
-		return visitor.VisitString(s.String)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", s)
-}
-
-type SampleDataDateReported struct {
-	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
-	String                         string
-
-	typ string
-}
-
-func (s *SampleDataDateReported) GetUtcTimestampWithTimezoneOffset() *UtcTimestampWithTimezoneOffset {
-	if s == nil {
-		return nil
-	}
-	return s.UtcTimestampWithTimezoneOffset
-}
-
-func (s *SampleDataDateReported) GetString() string {
-	if s == nil {
-		return ""
-	}
-	return s.String
-}
-
-func (s *SampleDataDateReported) UnmarshalJSON(data []byte) error {
-	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
-	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
-		s.typ = "UtcTimestampWithTimezoneOffset"
-		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		s.typ = "String"
-		s.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
-}
-
-func (s SampleDataDateReported) MarshalJSON() ([]byte, error) {
-	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
-		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
-	}
-	if s.typ == "String" || s.String != "" {
-		return json.Marshal(s.String)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
-}
-
-type SampleDataDateReportedVisitor interface {
-	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
-	VisitString(string) error
-}
-
-func (s *SampleDataDateReported) Accept(visitor SampleDataDateReportedVisitor) error {
-	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
-		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
-	}
-	if s.typ == "String" || s.String != "" {
-		return visitor.VisitString(s.String)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", s)
-}
-
 var (
 	simulationFlagsFieldInterpretation    = big.NewInt(1 << 0)
 	simulationFlagsFieldResultTypes       = big.NewInt(1 << 1)
@@ -8247,108 +6436,6 @@ func (u *UsAddress) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UsAddress) String() string {
-	if len(u.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(u); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", u)
-}
-
-var (
-	utcTimestampWithTimezoneOffsetFieldTimestamp      = big.NewInt(1 << 0)
-	utcTimestampWithTimezoneOffsetFieldTimezoneOffset = big.NewInt(1 << 1)
-)
-
-type UtcTimestampWithTimezoneOffset struct {
-	Timestamp      time.Time `json:"timestamp" url:"timestamp"`
-	TimezoneOffset int       `json:"timezone_offset" url:"timezone_offset"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (u *UtcTimestampWithTimezoneOffset) GetTimestamp() time.Time {
-	if u == nil {
-		return time.Time{}
-	}
-	return u.Timestamp
-}
-
-func (u *UtcTimestampWithTimezoneOffset) GetTimezoneOffset() int {
-	if u == nil {
-		return 0
-	}
-	return u.TimezoneOffset
-}
-
-func (u *UtcTimestampWithTimezoneOffset) GetExtraProperties() map[string]interface{} {
-	return u.extraProperties
-}
-
-func (u *UtcTimestampWithTimezoneOffset) require(field *big.Int) {
-	if u.explicitFields == nil {
-		u.explicitFields = big.NewInt(0)
-	}
-	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetTimestamp sets the Timestamp field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UtcTimestampWithTimezoneOffset) SetTimestamp(timestamp time.Time) {
-	u.Timestamp = timestamp
-	u.require(utcTimestampWithTimezoneOffsetFieldTimestamp)
-}
-
-// SetTimezoneOffset sets the TimezoneOffset field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UtcTimestampWithTimezoneOffset) SetTimezoneOffset(timezoneOffset int) {
-	u.TimezoneOffset = timezoneOffset
-	u.require(utcTimestampWithTimezoneOffsetFieldTimezoneOffset)
-}
-
-func (u *UtcTimestampWithTimezoneOffset) UnmarshalJSON(data []byte) error {
-	type embed UtcTimestampWithTimezoneOffset
-	var unmarshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*u = UtcTimestampWithTimezoneOffset(unmarshaler.embed)
-	u.Timestamp = unmarshaler.Timestamp.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *u)
-	if err != nil {
-		return err
-	}
-	u.extraProperties = extraProperties
-	u.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (u *UtcTimestampWithTimezoneOffset) MarshalJSON() ([]byte, error) {
-	type embed UtcTimestampWithTimezoneOffset
-	var marshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-	}{
-		embed:     embed(*u),
-		Timestamp: internal.NewDateTime(u.Timestamp),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (u *UtcTimestampWithTimezoneOffset) String() string {
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
