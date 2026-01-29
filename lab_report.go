@@ -542,18 +542,20 @@ var (
 	parsingJobFieldId               = big.NewInt(1 << 0)
 	parsingJobFieldJobId            = big.NewInt(1 << 1)
 	parsingJobFieldStatus           = big.NewInt(1 << 2)
-	parsingJobFieldData             = big.NewInt(1 << 3)
-	parsingJobFieldNeedsHumanReview = big.NewInt(1 << 4)
-	parsingJobFieldIsReviewed       = big.NewInt(1 << 5)
+	parsingJobFieldFailureReason    = big.NewInt(1 << 3)
+	parsingJobFieldData             = big.NewInt(1 << 4)
+	parsingJobFieldNeedsHumanReview = big.NewInt(1 << 5)
+	parsingJobFieldIsReviewed       = big.NewInt(1 << 6)
 )
 
 type ParsingJob struct {
-	Id               string               `json:"id" url:"id"`
-	JobId            string               `json:"job_id" url:"job_id"`
-	Status           ParsingJobStatus     `json:"status" url:"status"`
-	Data             *ParsedLabReportData `json:"data,omitempty" url:"data,omitempty"`
-	NeedsHumanReview bool                 `json:"needs_human_review" url:"needs_human_review"`
-	IsReviewed       bool                 `json:"is_reviewed" url:"is_reviewed"`
+	Id               string                   `json:"id" url:"id"`
+	JobId            string                   `json:"job_id" url:"job_id"`
+	Status           ParsingJobStatus         `json:"status" url:"status"`
+	FailureReason    *ParsingJobFailureReason `json:"failure_reason,omitempty" url:"failure_reason,omitempty"`
+	Data             *ParsedLabReportData     `json:"data,omitempty" url:"data,omitempty"`
+	NeedsHumanReview bool                     `json:"needs_human_review" url:"needs_human_review"`
+	IsReviewed       bool                     `json:"is_reviewed" url:"is_reviewed"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -581,6 +583,13 @@ func (p *ParsingJob) GetStatus() ParsingJobStatus {
 		return ""
 	}
 	return p.Status
+}
+
+func (p *ParsingJob) GetFailureReason() *ParsingJobFailureReason {
+	if p == nil {
+		return nil
+	}
+	return p.FailureReason
 }
 
 func (p *ParsingJob) GetData() *ParsedLabReportData {
@@ -634,6 +643,13 @@ func (p *ParsingJob) SetJobId(jobId string) {
 func (p *ParsingJob) SetStatus(status ParsingJobStatus) {
 	p.Status = status
 	p.require(parsingJobFieldStatus)
+}
+
+// SetFailureReason sets the FailureReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ParsingJob) SetFailureReason(failureReason *ParsingJobFailureReason) {
+	p.FailureReason = failureReason
+	p.require(parsingJobFieldFailureReason)
 }
 
 // SetData sets the Data field and marks it as non-optional;
@@ -696,6 +712,32 @@ func (p *ParsingJob) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// Machine-readable failure reasons for parsing jobs. ℹ️ This enum is non-exhaustive.
+type ParsingJobFailureReason string
+
+const (
+	ParsingJobFailureReasonInvalidInput ParsingJobFailureReason = "invalid_input"
+	ParsingJobFailureReasonLowQuality   ParsingJobFailureReason = "low_quality"
+	ParsingJobFailureReasonNotEnglish   ParsingJobFailureReason = "not_english"
+)
+
+func NewParsingJobFailureReasonFromString(s string) (ParsingJobFailureReason, error) {
+	switch s {
+	case "invalid_input":
+		return ParsingJobFailureReasonInvalidInput, nil
+	case "low_quality":
+		return ParsingJobFailureReasonLowQuality, nil
+	case "not_english":
+		return ParsingJobFailureReasonNotEnglish, nil
+	}
+	var t ParsingJobFailureReason
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ParsingJobFailureReason) Ptr() *ParsingJobFailureReason {
+	return &p
+}
+
 // ℹ️ This enum is non-exhaustive.
 type ParsingJobStatus string
 
@@ -736,10 +778,10 @@ var (
 )
 
 type ResultMetadata struct {
-	PatientFirstName string  `json:"patient_first_name" url:"patient_first_name"`
-	PatientLastName  string  `json:"patient_last_name" url:"patient_last_name"`
-	Dob              string  `json:"dob" url:"dob"`
-	LabName          string  `json:"lab_name" url:"lab_name"`
+	PatientFirstName *string `json:"patient_first_name,omitempty" url:"patient_first_name,omitempty"`
+	PatientLastName  *string `json:"patient_last_name,omitempty" url:"patient_last_name,omitempty"`
+	Dob              *string `json:"dob,omitempty" url:"dob,omitempty"`
+	LabName          *string `json:"lab_name,omitempty" url:"lab_name,omitempty"`
 	DateReported     *string `json:"date_reported,omitempty" url:"date_reported,omitempty"`
 	DateCollected    *string `json:"date_collected,omitempty" url:"date_collected,omitempty"`
 	SpecimenNumber   *string `json:"specimen_number,omitempty" url:"specimen_number,omitempty"`
@@ -751,30 +793,30 @@ type ResultMetadata struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *ResultMetadata) GetPatientFirstName() string {
+func (r *ResultMetadata) GetPatientFirstName() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.PatientFirstName
 }
 
-func (r *ResultMetadata) GetPatientLastName() string {
+func (r *ResultMetadata) GetPatientLastName() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.PatientLastName
 }
 
-func (r *ResultMetadata) GetDob() string {
+func (r *ResultMetadata) GetDob() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.Dob
 }
 
-func (r *ResultMetadata) GetLabName() string {
+func (r *ResultMetadata) GetLabName() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.LabName
 }
@@ -813,28 +855,28 @@ func (r *ResultMetadata) require(field *big.Int) {
 
 // SetPatientFirstName sets the PatientFirstName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetPatientFirstName(patientFirstName string) {
+func (r *ResultMetadata) SetPatientFirstName(patientFirstName *string) {
 	r.PatientFirstName = patientFirstName
 	r.require(resultMetadataFieldPatientFirstName)
 }
 
 // SetPatientLastName sets the PatientLastName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetPatientLastName(patientLastName string) {
+func (r *ResultMetadata) SetPatientLastName(patientLastName *string) {
 	r.PatientLastName = patientLastName
 	r.require(resultMetadataFieldPatientLastName)
 }
 
 // SetDob sets the Dob field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetDob(dob string) {
+func (r *ResultMetadata) SetDob(dob *string) {
 	r.Dob = dob
 	r.require(resultMetadataFieldDob)
 }
 
 // SetLabName sets the LabName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetLabName(labName string) {
+func (r *ResultMetadata) SetLabName(labName *string) {
 	r.LabName = labName
 	r.require(resultMetadataFieldLabName)
 }
