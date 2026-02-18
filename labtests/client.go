@@ -518,7 +518,7 @@ func (c *Client) BookPscAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.AppointmentBookingRequest,
+	request *vitalgo.LabTestsBookPscAppointmentRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.BookPscAppointment(
