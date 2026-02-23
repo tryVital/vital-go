@@ -1813,6 +1813,7 @@ const (
 	ManualProvidersAppleHealthKit    ManualProviders = "apple_health_kit"
 	ManualProvidersManual            ManualProviders = "manual"
 	ManualProvidersHealthConnect     ManualProviders = "health_connect"
+	ManualProvidersSamsungHealth     ManualProviders = "samsung_health"
 )
 
 func NewManualProvidersFromString(s string) (ManualProviders, error) {
@@ -1835,6 +1836,8 @@ func NewManualProvidersFromString(s string) (ManualProviders, error) {
 		return ManualProvidersManual, nil
 	case "health_connect":
 		return ManualProvidersHealthConnect, nil
+	case "samsung_health":
+		return ManualProvidersSamsungHealth, nil
 	}
 	var t ManualProviders
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
