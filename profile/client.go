@@ -4,7 +4,7 @@ package profile
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -36,9 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.ProfileGetRequest,
+	request *v505.ProfileGetRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingProfile, error) {
+) (*v505.ClientFacingProfile, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		userId,
@@ -55,9 +55,9 @@ func (c *Client) Get(
 func (c *Client) GetRaw(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.ProfileGetRawRequest,
+	request *v505.ProfileGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawProfile, error) {
+) (*v505.RawProfile, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,

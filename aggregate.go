@@ -51,8 +51,8 @@ var (
 )
 
 type QueryBatch struct {
-	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
-	Queries   []*Query             `json:"queries,omitempty" url:"-"`
+	Timeframe *QueryBatchTimeframe `json:"timeframe" url:"-"`
+	Queries   []*Query             `json:"queries" url:"-"`
 	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
 	accept    string
 
@@ -3401,25 +3401,18 @@ func (p PeriodUnit) Ptr() *PeriodUnit {
 	return &p
 }
 
-var (
-	placeholderFieldPlaceholder = big.NewInt(1 << 0)
-)
-
 type Placeholder struct {
-	Placeholder bool `json:"placeholder" url:"placeholder"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
+	placeholder    bool
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (p *Placeholder) GetPlaceholder() bool {
-	if p == nil {
-		return false
-	}
-	return p.Placeholder
+func (p *Placeholder) Placeholder() bool {
+	return p.placeholder
 }
 
 func (p *Placeholder) GetExtraProperties() map[string]interface{} {
@@ -3433,21 +3426,23 @@ func (p *Placeholder) require(field *big.Int) {
 	p.explicitFields.Or(p.explicitFields, field)
 }
 
-// SetPlaceholder sets the Placeholder field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *Placeholder) SetPlaceholder(placeholder bool) {
-	p.Placeholder = placeholder
-	p.require(placeholderFieldPlaceholder)
-}
-
 func (p *Placeholder) UnmarshalJSON(data []byte) error {
-	type unmarshaler Placeholder
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed Placeholder
+	var unmarshaler = struct {
+		embed
+		Placeholder bool `json:"placeholder"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*p = Placeholder(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*p = Placeholder(unmarshaler.embed)
+	if unmarshaler.Placeholder != true {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, true, unmarshaler.Placeholder)
+	}
+	p.placeholder = unmarshaler.Placeholder
+	extraProperties, err := internal.ExtractExtraProperties(data, *p, "placeholder")
 	if err != nil {
 		return err
 	}
@@ -3460,8 +3455,10 @@ func (p *Placeholder) MarshalJSON() ([]byte, error) {
 	type embed Placeholder
 	var marshaler = struct {
 		embed
+		Placeholder bool `json:"placeholder"`
 	}{
-		embed: embed(*p),
+		embed:       embed(*p),
+		Placeholder: true,
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
 	return json.Marshal(explicitMarshaler)

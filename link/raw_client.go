@@ -4,7 +4,7 @@ package link
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListBulkOps(
 	ctx context.Context,
-	request *vitalgo.LinkListBulkOpsRequest,
+	request *v505.LinkListBulkOpsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.BulkOpsResponse], error) {
+) (*core.Response[*v505.BulkOpsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) ListBulkOps(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.BulkOpsResponse
+	var response *v505.BulkOpsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) ListBulkOps(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.BulkOpsResponse]{
+	return &core.Response[*v505.BulkOpsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) ListBulkOps(
 
 func (r *RawClient) BulkImport(
 	ctx context.Context,
-	request *vitalgo.BulkImportConnectionsBody,
+	request *v505.BulkImportConnectionsBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.BulkImportConnectionsResponse], error) {
+) (*core.Response[*v505.BulkImportConnectionsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -102,7 +102,7 @@ func (r *RawClient) BulkImport(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.BulkImportConnectionsResponse
+	var response *v505.BulkImportConnectionsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -115,13 +115,13 @@ func (r *RawClient) BulkImport(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.BulkImportConnectionsResponse]{
+	return &core.Response[*v505.BulkImportConnectionsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -130,7 +130,7 @@ func (r *RawClient) BulkImport(
 
 func (r *RawClient) BulkTriggerHistoricalPull(
 	ctx context.Context,
-	request *vitalgo.BulkTriggerHistoricalPullBody,
+	request *v505.BulkTriggerHistoricalPullBody,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -165,7 +165,7 @@ func (r *RawClient) BulkTriggerHistoricalPull(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -180,9 +180,9 @@ func (r *RawClient) BulkTriggerHistoricalPull(
 
 func (r *RawClient) BulkExport(
 	ctx context.Context,
-	request *vitalgo.BulkExportConnectionsBody,
+	request *v505.BulkExportConnectionsBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.BulkExportConnectionsResponse], error) {
+) (*core.Response[*v505.BulkExportConnectionsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -202,7 +202,7 @@ func (r *RawClient) BulkExport(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.BulkExportConnectionsResponse
+	var response *v505.BulkExportConnectionsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -215,13 +215,13 @@ func (r *RawClient) BulkExport(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.BulkExportConnectionsResponse]{
+	return &core.Response[*v505.BulkExportConnectionsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -230,7 +230,7 @@ func (r *RawClient) BulkExport(
 
 func (r *RawClient) BulkPause(
 	ctx context.Context,
-	request *vitalgo.BulkPauseConnectionsBody,
+	request *v505.BulkPauseConnectionsBody,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -265,7 +265,7 @@ func (r *RawClient) BulkPause(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -280,9 +280,9 @@ func (r *RawClient) BulkPause(
 
 func (r *RawClient) Token(
 	ctx context.Context,
-	request *vitalgo.LinkTokenExchange,
+	request *v505.LinkTokenExchange,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.LinkTokenExchangeResponse], error) {
+) (*core.Response[*v505.LinkTokenExchangeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -295,7 +295,7 @@ func (r *RawClient) Token(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.LinkTokenExchangeResponse
+	var response *v505.LinkTokenExchangeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -308,13 +308,13 @@ func (r *RawClient) Token(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.LinkTokenExchangeResponse]{
+	return &core.Response[*v505.LinkTokenExchangeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -323,7 +323,7 @@ func (r *RawClient) Token(
 
 func (r *RawClient) IsTokenValid(
 	ctx context.Context,
-	request *vitalgo.LinkTokenValidationRequest,
+	request *v505.LinkTokenValidationRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -351,7 +351,7 @@ func (r *RawClient) IsTokenValid(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -366,9 +366,9 @@ func (r *RawClient) IsTokenValid(
 
 func (r *RawClient) CodeCreate(
 	ctx context.Context,
-	request *vitalgo.LinkCodeCreateRequest,
+	request *v505.LinkCodeCreateRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.VitalTokenCreatedResponse], error) {
+) (*core.Response[*v505.VitalTokenCreatedResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -387,7 +387,7 @@ func (r *RawClient) CodeCreate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.VitalTokenCreatedResponse
+	var response *v505.VitalTokenCreatedResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -399,13 +399,13 @@ func (r *RawClient) CodeCreate(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.VitalTokenCreatedResponse]{
+	return &core.Response[*v505.VitalTokenCreatedResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -414,7 +414,7 @@ func (r *RawClient) CodeCreate(
 
 func (r *RawClient) StartConnect(
 	ctx context.Context,
-	request *vitalgo.BeginLinkTokenRequest,
+	request *v505.BeginLinkTokenRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -442,7 +442,7 @@ func (r *RawClient) StartConnect(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -457,7 +457,7 @@ func (r *RawClient) StartConnect(
 
 func (r *RawClient) TokenState(
 	ctx context.Context,
-	request *vitalgo.LinkTokenStateRequest,
+	request *v505.LinkTokenStateRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -487,7 +487,7 @@ func (r *RawClient) TokenState(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -502,7 +502,7 @@ func (r *RawClient) TokenState(
 
 func (r *RawClient) EmailAuth(
 	ctx context.Context,
-	request *vitalgo.EmailAuthLink,
+	request *v505.EmailAuthLink,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -533,7 +533,7 @@ func (r *RawClient) EmailAuth(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -548,7 +548,7 @@ func (r *RawClient) EmailAuth(
 
 func (r *RawClient) PasswordAuth(
 	ctx context.Context,
-	request *vitalgo.PasswordAuthLink,
+	request *v505.PasswordAuthLink,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -579,7 +579,7 @@ func (r *RawClient) PasswordAuth(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -594,10 +594,10 @@ func (r *RawClient) PasswordAuth(
 
 func (r *RawClient) GenerateOauthLink(
 	ctx context.Context,
-	oauthProvider *vitalgo.OAuthProviders,
-	request *vitalgo.LinkGenerateOauthLinkRequest,
+	oauthProvider *v505.OAuthProviders,
+	request *v505.LinkGenerateOauthLinkRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.Source], error) {
+) (*core.Response[*v505.Source], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -616,7 +616,7 @@ func (r *RawClient) GenerateOauthLink(
 		headers.Add("x-vital-link-token", *request.VitalLinkToken)
 	}
 
-	var response *vitalgo.Source
+	var response *v505.Source
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -628,13 +628,13 @@ func (r *RawClient) GenerateOauthLink(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.Source]{
+	return &core.Response[*v505.Source]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -643,10 +643,10 @@ func (r *RawClient) GenerateOauthLink(
 
 func (r *RawClient) ConnectPasswordProvider(
 	ctx context.Context,
-	provider *vitalgo.PasswordProviders,
-	request *vitalgo.IndividualProviderData,
+	provider *v505.PasswordProviders,
+	request *v505.IndividualProviderData,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ProviderLinkResponse], error) {
+) (*core.Response[*v505.ProviderLinkResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -665,7 +665,7 @@ func (r *RawClient) ConnectPasswordProvider(
 		headers.Add("x-vital-link-token", *request.VitalLinkToken)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ProviderLinkResponse
+	var response *v505.ProviderLinkResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -678,13 +678,13 @@ func (r *RawClient) ConnectPasswordProvider(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ProviderLinkResponse]{
+	return &core.Response[*v505.ProviderLinkResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -693,10 +693,10 @@ func (r *RawClient) ConnectPasswordProvider(
 
 func (r *RawClient) CompletePasswordProviderMfa(
 	ctx context.Context,
-	provider *vitalgo.PasswordProviders,
-	request *vitalgo.CompletePasswordProviderMfaBody,
+	provider *v505.PasswordProviders,
+	request *v505.CompletePasswordProviderMfaBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ProviderLinkResponse], error) {
+) (*core.Response[*v505.ProviderLinkResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -715,7 +715,7 @@ func (r *RawClient) CompletePasswordProviderMfa(
 		headers.Add("x-vital-link-token", *request.VitalLinkToken)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ProviderLinkResponse
+	var response *v505.ProviderLinkResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -728,13 +728,13 @@ func (r *RawClient) CompletePasswordProviderMfa(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ProviderLinkResponse]{
+	return &core.Response[*v505.ProviderLinkResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -743,8 +743,8 @@ func (r *RawClient) CompletePasswordProviderMfa(
 
 func (r *RawClient) ConnectEmailAuthProvider(
 	ctx context.Context,
-	provider vitalgo.EmailProviders,
-	request *vitalgo.EmailProviderAuthLink,
+	provider v505.EmailProviders,
+	request *v505.EmailProviderAuthLink,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -778,7 +778,7 @@ func (r *RawClient) ConnectEmailAuthProvider(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -793,9 +793,9 @@ func (r *RawClient) ConnectEmailAuthProvider(
 
 func (r *RawClient) GetAllProviders(
 	ctx context.Context,
-	request *vitalgo.LinkGetAllProvidersRequest,
+	request *v505.LinkGetAllProvidersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.SourceLink], error) {
+) (*core.Response[[]*v505.SourceLink], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -811,7 +811,7 @@ func (r *RawClient) GetAllProviders(
 		headers.Add("x-vital-link-token", *request.VitalLinkToken)
 	}
 
-	var response []*vitalgo.SourceLink
+	var response []*v505.SourceLink
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -823,13 +823,13 @@ func (r *RawClient) GetAllProviders(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.SourceLink]{
+	return &core.Response[[]*v505.SourceLink]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -838,8 +838,8 @@ func (r *RawClient) GetAllProviders(
 
 func (r *RawClient) ConnectManualProvider(
 	ctx context.Context,
-	provider *vitalgo.ManualProviders,
-	request *vitalgo.ManualConnectionData,
+	provider *v505.ManualProviders,
+	request *v505.ManualConnectionData,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]bool], error) {
 	options := core.NewRequestOptions(opts...)
@@ -870,7 +870,7 @@ func (r *RawClient) ConnectManualProvider(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -885,9 +885,9 @@ func (r *RawClient) ConnectManualProvider(
 
 func (r *RawClient) ConnectDemoProvider(
 	ctx context.Context,
-	request *vitalgo.DemoConnectionCreationPayload,
+	request *v505.DemoConnectionCreationPayload,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.DemoConnectionStatus], error) {
+) (*core.Response[*v505.DemoConnectionStatus], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -900,7 +900,7 @@ func (r *RawClient) ConnectDemoProvider(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.DemoConnectionStatus
+	var response *v505.DemoConnectionStatus
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -913,13 +913,13 @@ func (r *RawClient) ConnectDemoProvider(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.DemoConnectionStatus]{
+	return &core.Response[*v505.DemoConnectionStatus]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

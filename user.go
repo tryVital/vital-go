@@ -77,6 +77,27 @@ func (u *UserCreateBody) SetIngestionEnd(ingestionEnd *string) {
 	u.require(userCreateBodyFieldIngestionEnd)
 }
 
+func (u *UserCreateBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserCreateBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserCreateBody(body)
+	return nil
+}
+
+func (u *UserCreateBody) MarshalJSON() ([]byte, error) {
+	type embed UserCreateBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createInsuranceRequestFieldPayorCode    = big.NewInt(1 << 0)
 	createInsuranceRequestFieldMemberId     = big.NewInt(1 << 1)
@@ -92,7 +113,7 @@ type CreateInsuranceRequest struct {
 	MemberId     string                                                  `json:"member_id" url:"-"`
 	GroupId      *string                                                 `json:"group_id,omitempty" url:"-"`
 	Relationship ResponsibleRelationship                                 `json:"relationship" url:"-"`
-	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty" url:"-"`
+	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured" url:"-"`
 	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"-"`
 	IsPrimary    *bool                                                   `json:"is_primary,omitempty" url:"-"`
 
@@ -156,6 +177,27 @@ func (c *CreateInsuranceRequest) SetIsPrimary(isPrimary *bool) {
 	c.require(createInsuranceRequestFieldIsPrimary)
 }
 
+func (c *CreateInsuranceRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateInsuranceRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateInsuranceRequest(body)
+	return nil
+}
+
+func (c *CreateInsuranceRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateInsuranceRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createUserPortalUrlBodyFieldContext = big.NewInt(1 << 0)
 	createUserPortalUrlBodyFieldOrderId = big.NewInt(1 << 1)
@@ -196,6 +238,27 @@ func (c *CreateUserPortalUrlBody) SetContext(context CreateUserPortalUrlBodyCont
 func (c *CreateUserPortalUrlBody) SetOrderId(orderId *string) {
 	c.OrderId = orderId
 	c.require(createUserPortalUrlBodyFieldOrderId)
+}
+
+func (c *CreateUserPortalUrlBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateUserPortalUrlBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateUserPortalUrlBody(body)
+	return nil
+}
+
+func (c *CreateUserPortalUrlBody) MarshalJSON() ([]byte, error) {
+	type embed CreateUserPortalUrlBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -322,6 +385,27 @@ func (u *UserPatchBody) SetIngestionEnd(ingestionEnd *string) {
 func (u *UserPatchBody) SetClientUserId(clientUserId *string) {
 	u.ClientUserId = clientUserId
 	u.require(userPatchBodyFieldClientUserId)
+}
+
+func (u *UserPatchBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserPatchBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserPatchBody(body)
+	return nil
+}
+
+func (u *UserPatchBody) MarshalJSON() ([]byte, error) {
+	type embed UserPatchBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -2423,16 +2507,14 @@ func (u *UserInfo) String() string {
 }
 
 var (
-	userRefreshSuccessResponseFieldSuccess           = big.NewInt(1 << 0)
-	userRefreshSuccessResponseFieldUserId            = big.NewInt(1 << 1)
-	userRefreshSuccessResponseFieldRefreshedSources  = big.NewInt(1 << 2)
-	userRefreshSuccessResponseFieldInProgressSources = big.NewInt(1 << 3)
-	userRefreshSuccessResponseFieldFailedSources     = big.NewInt(1 << 4)
+	userRefreshSuccessResponseFieldUserId            = big.NewInt(1 << 0)
+	userRefreshSuccessResponseFieldRefreshedSources  = big.NewInt(1 << 1)
+	userRefreshSuccessResponseFieldInProgressSources = big.NewInt(1 << 2)
+	userRefreshSuccessResponseFieldFailedSources     = big.NewInt(1 << 3)
 )
 
 type UserRefreshSuccessResponse struct {
 	// Whether operation was successful or not
-	Success bool `json:"success" url:"success"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	UserId            string   `json:"user_id" url:"user_id"`
 	RefreshedSources  []string `json:"refreshed_sources" url:"refreshed_sources"`
@@ -2441,16 +2523,10 @@ type UserRefreshSuccessResponse struct {
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
+	success        bool
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (u *UserRefreshSuccessResponse) GetSuccess() bool {
-	if u == nil {
-		return false
-	}
-	return u.Success
 }
 
 func (u *UserRefreshSuccessResponse) GetUserId() string {
@@ -2481,6 +2557,10 @@ func (u *UserRefreshSuccessResponse) GetFailedSources() []string {
 	return u.FailedSources
 }
 
+func (u *UserRefreshSuccessResponse) Success() bool {
+	return u.success
+}
+
 func (u *UserRefreshSuccessResponse) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
@@ -2490,13 +2570,6 @@ func (u *UserRefreshSuccessResponse) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserRefreshSuccessResponse) SetSuccess(success bool) {
-	u.Success = success
-	u.require(userRefreshSuccessResponseFieldSuccess)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
@@ -2528,13 +2601,22 @@ func (u *UserRefreshSuccessResponse) SetFailedSources(failedSources []string) {
 }
 
 func (u *UserRefreshSuccessResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserRefreshSuccessResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed UserRefreshSuccessResponse
+	var unmarshaler = struct {
+		embed
+		Success bool `json:"success"`
+	}{
+		embed: embed(*u),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*u = UserRefreshSuccessResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	*u = UserRefreshSuccessResponse(unmarshaler.embed)
+	if unmarshaler.Success != true {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, true, unmarshaler.Success)
+	}
+	u.success = unmarshaler.Success
+	extraProperties, err := internal.ExtractExtraProperties(data, *u, "success")
 	if err != nil {
 		return err
 	}
@@ -2547,8 +2629,10 @@ func (u *UserRefreshSuccessResponse) MarshalJSON() ([]byte, error) {
 	type embed UserRefreshSuccessResponse
 	var marshaler = struct {
 		embed
+		Success bool `json:"success"`
 	}{
-		embed: embed(*u),
+		embed:   embed(*u),
+		Success: true,
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -3000,7 +3084,7 @@ type UserInfoCreateRequest struct {
 	PhoneNumber       string             `json:"phone_number" url:"-"`
 	Gender            string             `json:"gender" url:"-"`
 	Dob               string             `json:"dob" url:"-"`
-	Address           *Address           `json:"address,omitempty" url:"-"`
+	Address           *Address           `json:"address" url:"-"`
 	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"-"`
 	Race              *Race              `json:"race,omitempty" url:"-"`
 	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"-"`
@@ -3100,4 +3184,25 @@ func (u *UserInfoCreateRequest) SetSexualOrientation(sexualOrientation *SexualOr
 func (u *UserInfoCreateRequest) SetGenderIdentity(genderIdentity *GenderIdentity) {
 	u.GenderIdentity = genderIdentity
 	u.require(userInfoCreateRequestFieldGenderIdentity)
+}
+
+func (u *UserInfoCreateRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserInfoCreateRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserInfoCreateRequest(body)
+	return nil
+}
+
+func (u *UserInfoCreateRequest) MarshalJSON() ([]byte, error) {
+	type embed UserInfoCreateRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
