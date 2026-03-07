@@ -4,7 +4,7 @@ package sleepcycle
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -36,9 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.SleepCycleGetRequest,
+	request *v505.SleepCycleGetRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientSleepCycleResponse, error) {
+) (*v505.ClientSleepCycleResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		userId,

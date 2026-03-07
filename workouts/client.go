@@ -4,7 +4,7 @@ package workouts
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -36,9 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.WorkoutsGetRequest,
+	request *v505.WorkoutsGetRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientWorkoutResponse, error) {
+) (*v505.ClientWorkoutResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		userId,
@@ -55,9 +55,9 @@ func (c *Client) Get(
 func (c *Client) GetRaw(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.WorkoutsGetRawRequest,
+	request *v505.WorkoutsGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawWorkout, error) {
+) (*v505.RawWorkout, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,
@@ -75,7 +75,7 @@ func (c *Client) GetByWorkoutId(
 	// The Vital ID for the workout
 	workoutId string,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingStream, error) {
+) (*v505.ClientFacingStream, error) {
 	response, err := c.WithRawResponse.GetByWorkoutId(
 		ctx,
 		workoutId,

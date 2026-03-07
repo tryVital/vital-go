@@ -4,7 +4,7 @@ package providers
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetAll(
 	ctx context.Context,
-	request *vitalgo.ProvidersGetAllRequest,
+	request *v505.ProvidersGetAllRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingProviderDetailed], error) {
+) (*core.Response[[]*v505.ClientFacingProviderDetailed], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) GetAll(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingProviderDetailed
+	var response []*v505.ClientFacingProviderDetailed
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) GetAll(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingProviderDetailed]{
+	return &core.Response[[]*v505.ClientFacingProviderDetailed]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

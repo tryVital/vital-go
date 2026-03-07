@@ -4,7 +4,7 @@ package workouts
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.WorkoutsGetRequest,
+	request *v505.WorkoutsGetRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientWorkoutResponse], error) {
+) (*core.Response[*v505.ClientWorkoutResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,7 +57,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientWorkoutResponse
+	var response *v505.ClientWorkoutResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -69,13 +69,13 @@ func (r *RawClient) Get(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientWorkoutResponse]{
+	return &core.Response[*v505.ClientWorkoutResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -85,9 +85,9 @@ func (r *RawClient) Get(
 func (r *RawClient) GetRaw(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.WorkoutsGetRawRequest,
+	request *v505.WorkoutsGetRawRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.RawWorkout], error) {
+) (*core.Response[*v505.RawWorkout], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -109,7 +109,7 @@ func (r *RawClient) GetRaw(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.RawWorkout
+	var response *v505.RawWorkout
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -121,13 +121,13 @@ func (r *RawClient) GetRaw(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.RawWorkout]{
+	return &core.Response[*v505.RawWorkout]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -139,7 +139,7 @@ func (r *RawClient) GetByWorkoutId(
 	// The Vital ID for the workout
 	workoutId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingStream], error) {
+) (*core.Response[*v505.ClientFacingStream], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -154,7 +154,7 @@ func (r *RawClient) GetByWorkoutId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingStream
+	var response *v505.ClientFacingStream
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -166,13 +166,13 @@ func (r *RawClient) GetByWorkoutId(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingStream]{
+	return &core.Response[*v505.ClientFacingStream]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -5,7 +5,7 @@ package labtests
 import (
 	bytes "bytes"
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -34,9 +34,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Get(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetRequest,
+	request *v505.LabTestsGetRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingLabTest], error) {
+) (*core.Response[[]*v505.ClientFacingLabTest], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -55,7 +55,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingLabTest
+	var response []*v505.ClientFacingLabTest
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -67,13 +67,13 @@ func (r *RawClient) Get(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingLabTest]{
+	return &core.Response[[]*v505.ClientFacingLabTest]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -82,9 +82,9 @@ func (r *RawClient) Get(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *vitalgo.CreateLabTestRequest,
+	request *v505.CreateLabTestRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingLabTest], error) {
+) (*core.Response[*v505.ClientFacingLabTest], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -97,7 +97,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingLabTest
+	var response *v505.ClientFacingLabTest
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -110,13 +110,13 @@ func (r *RawClient) Create(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingLabTest]{
+	return &core.Response[*v505.ClientFacingLabTest]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -126,9 +126,9 @@ func (r *RawClient) Create(
 func (r *RawClient) GetById(
 	ctx context.Context,
 	labTestId string,
-	request *vitalgo.LabTestsGetByIdRequest,
+	request *v505.LabTestsGetByIdRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingLabTest], error) {
+) (*core.Response[*v505.ClientFacingLabTest], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -150,7 +150,7 @@ func (r *RawClient) GetById(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingLabTest
+	var response *v505.ClientFacingLabTest
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -162,13 +162,13 @@ func (r *RawClient) GetById(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingLabTest]{
+	return &core.Response[*v505.ClientFacingLabTest]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -178,9 +178,9 @@ func (r *RawClient) GetById(
 func (r *RawClient) UpdateLabTest(
 	ctx context.Context,
 	labTestId string,
-	request *vitalgo.UpdateLabTestRequest,
+	request *v505.UpdateLabTestRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingLabTest], error) {
+) (*core.Response[*v505.ClientFacingLabTest], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -196,7 +196,7 @@ func (r *RawClient) UpdateLabTest(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingLabTest
+	var response *v505.ClientFacingLabTest
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -209,13 +209,13 @@ func (r *RawClient) UpdateLabTest(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingLabTest]{
+	return &core.Response[*v505.ClientFacingLabTest]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -224,9 +224,9 @@ func (r *RawClient) UpdateLabTest(
 
 func (r *RawClient) GetMarkers(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetMarkersRequest,
+	request *v505.LabTestsGetMarkersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GetMarkersResponse], error) {
+) (*core.Response[*v505.GetMarkersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -245,7 +245,7 @@ func (r *RawClient) GetMarkers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GetMarkersResponse
+	var response *v505.GetMarkersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -257,13 +257,13 @@ func (r *RawClient) GetMarkers(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GetMarkersResponse]{
+	return &core.Response[*v505.GetMarkersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -272,9 +272,9 @@ func (r *RawClient) GetMarkers(
 
 func (r *RawClient) GetMarkersForOrderSet(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetMarkersForOrderSetRequest,
+	request *v505.LabTestsGetMarkersForOrderSetRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GetMarkersResponse], error) {
+) (*core.Response[*v505.GetMarkersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -294,7 +294,7 @@ func (r *RawClient) GetMarkersForOrderSet(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.GetMarkersResponse
+	var response *v505.GetMarkersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -307,13 +307,13 @@ func (r *RawClient) GetMarkersForOrderSet(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GetMarkersResponse]{
+	return &core.Response[*v505.GetMarkersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -323,9 +323,9 @@ func (r *RawClient) GetMarkersForOrderSet(
 func (r *RawClient) GetMarkersForLabTest(
 	ctx context.Context,
 	labTestId string,
-	request *vitalgo.LabTestsGetMarkersForLabTestRequest,
+	request *v505.LabTestsGetMarkersForLabTestRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GetMarkersResponse], error) {
+) (*core.Response[*v505.GetMarkersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -347,7 +347,7 @@ func (r *RawClient) GetMarkersForLabTest(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GetMarkersResponse
+	var response *v505.GetMarkersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -359,13 +359,13 @@ func (r *RawClient) GetMarkersForLabTest(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GetMarkersResponse]{
+	return &core.Response[*v505.GetMarkersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -376,9 +376,9 @@ func (r *RawClient) GetMarkersByLabAndProviderId(
 	ctx context.Context,
 	providerId string,
 	labId int,
-	request *vitalgo.LabTestsGetMarkersByLabAndProviderIdRequest,
+	request *v505.LabTestsGetMarkersByLabAndProviderIdRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingMarker], error) {
+) (*core.Response[*v505.ClientFacingMarker], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -401,7 +401,7 @@ func (r *RawClient) GetMarkersByLabAndProviderId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingMarker
+	var response *v505.ClientFacingMarker
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -413,13 +413,13 @@ func (r *RawClient) GetMarkersByLabAndProviderId(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingMarker]{
+	return &core.Response[*v505.ClientFacingMarker]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -429,7 +429,7 @@ func (r *RawClient) GetMarkersByLabAndProviderId(
 func (r *RawClient) GetLabs(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingLab], error) {
+) (*core.Response[[]*v505.ClientFacingLab], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -441,7 +441,7 @@ func (r *RawClient) GetLabs(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingLab
+	var response []*v505.ClientFacingLab
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -458,7 +458,7 @@ func (r *RawClient) GetLabs(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingLab]{
+	return &core.Response[[]*v505.ClientFacingLab]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -467,9 +467,9 @@ func (r *RawClient) GetLabs(
 
 func (r *RawClient) GetPaginated(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetPaginatedRequest,
+	request *v505.LabTestsGetPaginatedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.LabTestResourcesResponse], error) {
+) (*core.Response[*v505.LabTestResourcesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -488,7 +488,7 @@ func (r *RawClient) GetPaginated(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.LabTestResourcesResponse
+	var response *v505.LabTestResourcesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -500,13 +500,13 @@ func (r *RawClient) GetPaginated(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.LabTestResourcesResponse]{
+	return &core.Response[*v505.LabTestResourcesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -544,7 +544,7 @@ func (r *RawClient) GetLabTestCollectionInstructionPdf(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -559,9 +559,9 @@ func (r *RawClient) GetLabTestCollectionInstructionPdf(
 
 func (r *RawClient) GetOrders(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetOrdersRequest,
+	request *v505.LabTestsGetOrdersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GetOrdersResponse], error) {
+) (*core.Response[*v505.GetOrdersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -580,7 +580,7 @@ func (r *RawClient) GetOrders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GetOrdersResponse
+	var response *v505.GetOrdersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -592,13 +592,13 @@ func (r *RawClient) GetOrders(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GetOrdersResponse]{
+	return &core.Response[*v505.GetOrdersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -607,9 +607,9 @@ func (r *RawClient) GetOrders(
 
 func (r *RawClient) GetPhlebotomyAppointmentAvailability(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetPhlebotomyAppointmentAvailabilityRequest,
+	request *v505.LabTestsGetPhlebotomyAppointmentAvailabilityRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.AppointmentAvailabilitySlots], error) {
+) (*core.Response[*v505.AppointmentAvailabilitySlots], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -629,7 +629,7 @@ func (r *RawClient) GetPhlebotomyAppointmentAvailability(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.AppointmentAvailabilitySlots
+	var response *v505.AppointmentAvailabilitySlots
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -642,13 +642,13 @@ func (r *RawClient) GetPhlebotomyAppointmentAvailability(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.AppointmentAvailabilitySlots]{
+	return &core.Response[*v505.AppointmentAvailabilitySlots]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -659,9 +659,9 @@ func (r *RawClient) BookPhlebotomyAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.AppointmentBookingRequest,
+	request *v505.AppointmentBookingRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -676,7 +676,7 @@ func (r *RawClient) BookPhlebotomyAppointment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -689,13 +689,13 @@ func (r *RawClient) BookPhlebotomyAppointment(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -706,9 +706,9 @@ func (r *RawClient) RequestPhlebotomyAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.RequestAppointmentRequest,
+	request *v505.RequestAppointmentRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -724,7 +724,7 @@ func (r *RawClient) RequestPhlebotomyAppointment(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -737,13 +737,13 @@ func (r *RawClient) RequestPhlebotomyAppointment(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -754,9 +754,9 @@ func (r *RawClient) ReschedulePhlebotomyAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.AppointmentRescheduleRequest,
+	request *v505.AppointmentRescheduleRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -771,7 +771,7 @@ func (r *RawClient) ReschedulePhlebotomyAppointment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -784,13 +784,13 @@ func (r *RawClient) ReschedulePhlebotomyAppointment(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -801,9 +801,9 @@ func (r *RawClient) CancelPhlebotomyAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest,
+	request *v505.ApiApiV1EndpointsVitalApiLabTestingOrdersHelpersAppointmentCancelRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -819,7 +819,7 @@ func (r *RawClient) CancelPhlebotomyAppointment(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -832,13 +832,13 @@ func (r *RawClient) CancelPhlebotomyAppointment(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -848,7 +848,7 @@ func (r *RawClient) CancelPhlebotomyAppointment(
 func (r *RawClient) GetPhlebotomyAppointmentCancellationReason(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingAppointmentCancellationReason], error) {
+) (*core.Response[[]*v505.ClientFacingAppointmentCancellationReason], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -860,7 +860,7 @@ func (r *RawClient) GetPhlebotomyAppointmentCancellationReason(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingAppointmentCancellationReason
+	var response []*v505.ClientFacingAppointmentCancellationReason
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -877,7 +877,7 @@ func (r *RawClient) GetPhlebotomyAppointmentCancellationReason(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingAppointmentCancellationReason]{
+	return &core.Response[[]*v505.ClientFacingAppointmentCancellationReason]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -889,7 +889,7 @@ func (r *RawClient) GetPhlebotomyAppointment(
 	// Your Order ID.
 	orderId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -904,7 +904,7 @@ func (r *RawClient) GetPhlebotomyAppointment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -916,13 +916,13 @@ func (r *RawClient) GetPhlebotomyAppointment(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -931,9 +931,9 @@ func (r *RawClient) GetPhlebotomyAppointment(
 
 func (r *RawClient) GetAreaInfo(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetAreaInfoRequest,
+	request *v505.LabTestsGetAreaInfoRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.AreaInfo], error) {
+) (*core.Response[*v505.AreaInfo], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -952,7 +952,7 @@ func (r *RawClient) GetAreaInfo(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.AreaInfo
+	var response *v505.AreaInfo
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -964,13 +964,13 @@ func (r *RawClient) GetAreaInfo(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.AreaInfo]{
+	return &core.Response[*v505.AreaInfo]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -979,9 +979,9 @@ func (r *RawClient) GetAreaInfo(
 
 func (r *RawClient) GetPscInfo(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetPscInfoRequest,
+	request *v505.LabTestsGetPscInfoRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PscInfo], error) {
+) (*core.Response[*v505.PscInfo], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1000,7 +1000,7 @@ func (r *RawClient) GetPscInfo(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.PscInfo
+	var response *v505.PscInfo
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1012,13 +1012,13 @@ func (r *RawClient) GetPscInfo(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PscInfo]{
+	return &core.Response[*v505.PscInfo]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1029,9 +1029,9 @@ func (r *RawClient) GetOrderPscInfo(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.LabTestsGetOrderPscInfoRequest,
+	request *v505.LabTestsGetOrderPscInfoRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PscInfo], error) {
+) (*core.Response[*v505.PscInfo], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1053,7 +1053,7 @@ func (r *RawClient) GetOrderPscInfo(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.PscInfo
+	var response *v505.PscInfo
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1065,13 +1065,13 @@ func (r *RawClient) GetOrderPscInfo(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PscInfo]{
+	return &core.Response[*v505.PscInfo]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1109,7 +1109,7 @@ func (r *RawClient) GetResultPdf(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -1126,7 +1126,7 @@ func (r *RawClient) GetResultMetadata(
 	ctx context.Context,
 	orderId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.LabResultsMetadata], error) {
+) (*core.Response[*v505.LabResultsMetadata], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1141,7 +1141,7 @@ func (r *RawClient) GetResultMetadata(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.LabResultsMetadata
+	var response *v505.LabResultsMetadata
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1153,13 +1153,13 @@ func (r *RawClient) GetResultMetadata(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.LabResultsMetadata]{
+	return &core.Response[*v505.LabResultsMetadata]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1170,7 +1170,7 @@ func (r *RawClient) GetResultRaw(
 	ctx context.Context,
 	orderId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.LabResultsRaw], error) {
+) (*core.Response[*v505.LabResultsRaw], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1185,7 +1185,7 @@ func (r *RawClient) GetResultRaw(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.LabResultsRaw
+	var response *v505.LabResultsRaw
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1197,13 +1197,13 @@ func (r *RawClient) GetResultRaw(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.LabResultsRaw]{
+	return &core.Response[*v505.LabResultsRaw]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1213,7 +1213,7 @@ func (r *RawClient) GetResultRaw(
 func (r *RawClient) GetLabelsPdf(
 	ctx context.Context,
 	orderId string,
-	request *vitalgo.LabTestsGetLabelsPdfRequest,
+	request *v505.LabTestsGetLabelsPdfRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[io.Reader], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1249,7 +1249,7 @@ func (r *RawClient) GetLabelsPdf(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -1264,9 +1264,9 @@ func (r *RawClient) GetLabelsPdf(
 
 func (r *RawClient) GetPscAppointmentAvailability(
 	ctx context.Context,
-	request *vitalgo.LabTestsGetPscAppointmentAvailabilityRequest,
+	request *v505.LabTestsGetPscAppointmentAvailabilityRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.AppointmentAvailabilitySlots], error) {
+) (*core.Response[*v505.AppointmentAvailabilitySlots], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1285,7 +1285,7 @@ func (r *RawClient) GetPscAppointmentAvailability(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.AppointmentAvailabilitySlots
+	var response *v505.AppointmentAvailabilitySlots
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1297,13 +1297,13 @@ func (r *RawClient) GetPscAppointmentAvailability(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.AppointmentAvailabilitySlots]{
+	return &core.Response[*v505.AppointmentAvailabilitySlots]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1314,9 +1314,9 @@ func (r *RawClient) BookPscAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.AppointmentBookingRequest,
+	request *v505.LabTestsBookPscAppointmentRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1331,7 +1331,14 @@ func (r *RawClient) BookPscAppointment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingAppointment
+	if request.IdempotencyKey != nil {
+		headers.Add("x-idempotency-key", *request.IdempotencyKey)
+	}
+	if request.IdempotencyError != nil {
+		headers.Add("x-idempotency-error", *request.IdempotencyError)
+	}
+	headers.Add("Content-Type", "application/json")
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1344,13 +1351,13 @@ func (r *RawClient) BookPscAppointment(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1361,9 +1368,9 @@ func (r *RawClient) ReschedulePscAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.AppointmentRescheduleRequest,
+	request *v505.AppointmentRescheduleRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1378,7 +1385,7 @@ func (r *RawClient) ReschedulePscAppointment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1391,13 +1398,13 @@ func (r *RawClient) ReschedulePscAppointment(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1408,9 +1415,9 @@ func (r *RawClient) CancelPscAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest,
+	request *v505.VitalCoreClientsLabTestGetlabsSchemaAppointmentCancelRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1426,7 +1433,7 @@ func (r *RawClient) CancelPscAppointment(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1439,13 +1446,13 @@ func (r *RawClient) CancelPscAppointment(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1455,7 +1462,7 @@ func (r *RawClient) CancelPscAppointment(
 func (r *RawClient) GetPscAppointmentCancellationReason(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingAppointmentCancellationReason], error) {
+) (*core.Response[[]*v505.ClientFacingAppointmentCancellationReason], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1467,7 +1474,7 @@ func (r *RawClient) GetPscAppointmentCancellationReason(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingAppointmentCancellationReason
+	var response []*v505.ClientFacingAppointmentCancellationReason
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1484,7 +1491,7 @@ func (r *RawClient) GetPscAppointmentCancellationReason(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingAppointmentCancellationReason]{
+	return &core.Response[[]*v505.ClientFacingAppointmentCancellationReason]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1496,7 +1503,7 @@ func (r *RawClient) GetPscAppointment(
 	// Your Order ID.
 	orderId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingAppointment], error) {
+) (*core.Response[*v505.ClientFacingAppointment], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1511,7 +1518,7 @@ func (r *RawClient) GetPscAppointment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingAppointment
+	var response *v505.ClientFacingAppointment
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1523,13 +1530,13 @@ func (r *RawClient) GetPscAppointment(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingAppointment]{
+	return &core.Response[*v505.ClientFacingAppointment]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1568,7 +1575,7 @@ func (r *RawClient) GetOrderCollectionInstructionPdf(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -1613,7 +1620,7 @@ func (r *RawClient) GetOrderRequistionPdf(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -1658,7 +1665,7 @@ func (r *RawClient) GetOrderAbnPdf(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -1676,7 +1683,7 @@ func (r *RawClient) GetOrder(
 	// Your Order ID.
 	orderId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingOrder], error) {
+) (*core.Response[*v505.ClientFacingOrder], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1691,7 +1698,7 @@ func (r *RawClient) GetOrder(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingOrder
+	var response *v505.ClientFacingOrder
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1703,13 +1710,13 @@ func (r *RawClient) GetOrder(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingOrder]{
+	return &core.Response[*v505.ClientFacingOrder]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1718,9 +1725,9 @@ func (r *RawClient) GetOrder(
 
 func (r *RawClient) CreateOrder(
 	ctx context.Context,
-	request *vitalgo.CreateOrderRequestCompatible,
+	request *v505.CreateOrderRequestCompatible,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PostOrderResponse], error) {
+) (*core.Response[*v505.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1739,7 +1746,7 @@ func (r *RawClient) CreateOrder(
 		headers.Add("X-Idempotency-Error", *request.IdempotencyError)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.PostOrderResponse
+	var response *v505.PostOrderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1752,13 +1759,13 @@ func (r *RawClient) CreateOrder(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PostOrderResponse]{
+	return &core.Response[*v505.PostOrderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1767,9 +1774,9 @@ func (r *RawClient) CreateOrder(
 
 func (r *RawClient) ImportOrder(
 	ctx context.Context,
-	request *vitalgo.ImportOrderBody,
+	request *v505.ImportOrderBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PostOrderResponse], error) {
+) (*core.Response[*v505.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1782,7 +1789,7 @@ func (r *RawClient) ImportOrder(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.PostOrderResponse
+	var response *v505.PostOrderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1795,13 +1802,13 @@ func (r *RawClient) ImportOrder(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PostOrderResponse]{
+	return &core.Response[*v505.PostOrderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1813,7 +1820,7 @@ func (r *RawClient) CancelOrder(
 	// Your Order ID.
 	orderId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PostOrderResponse], error) {
+) (*core.Response[*v505.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1828,7 +1835,7 @@ func (r *RawClient) CancelOrder(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.PostOrderResponse
+	var response *v505.PostOrderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1840,13 +1847,13 @@ func (r *RawClient) CancelOrder(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PostOrderResponse]{
+	return &core.Response[*v505.PostOrderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1856,7 +1863,7 @@ func (r *RawClient) CancelOrder(
 func (r *RawClient) SimulateOrderProcess(
 	ctx context.Context,
 	orderId string,
-	request *vitalgo.LabTestsSimulateOrderProcessRequest,
+	request *v505.LabTestsSimulateOrderProcessRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -1894,7 +1901,7 @@ func (r *RawClient) SimulateOrderProcess(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -1912,7 +1919,7 @@ func (r *RawClient) UpdateOnSiteCollectionOrderDrawCompleted(
 	// Your Order ID.
 	orderId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PostOrderResponse], error) {
+) (*core.Response[*v505.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1927,7 +1934,7 @@ func (r *RawClient) UpdateOnSiteCollectionOrderDrawCompleted(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.PostOrderResponse
+	var response *v505.PostOrderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1939,13 +1946,13 @@ func (r *RawClient) UpdateOnSiteCollectionOrderDrawCompleted(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PostOrderResponse]{
+	return &core.Response[*v505.PostOrderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1954,9 +1961,9 @@ func (r *RawClient) UpdateOnSiteCollectionOrderDrawCompleted(
 
 func (r *RawClient) ValidateIcdCodes(
 	ctx context.Context,
-	request *vitalgo.ValidateIcdCodesBody,
+	request *v505.ValidateIcdCodesBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ValidateIcdCodesResponse], error) {
+) (*core.Response[*v505.ValidateIcdCodesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1969,7 +1976,7 @@ func (r *RawClient) ValidateIcdCodes(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ValidateIcdCodesResponse
+	var response *v505.ValidateIcdCodesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1982,13 +1989,13 @@ func (r *RawClient) ValidateIcdCodes(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ValidateIcdCodesResponse]{
+	return &core.Response[*v505.ValidateIcdCodesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
