@@ -51,8 +51,8 @@ var (
 )
 
 type QueryBatch struct {
-	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
-	Queries   []*Query             `json:"queries,omitempty" url:"-"`
+	Timeframe *QueryBatchTimeframe `json:"timeframe" url:"-"`
+	Queries   []*Query             `json:"queries" url:"-"`
 	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
 	accept    string
 

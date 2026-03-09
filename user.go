@@ -77,6 +77,27 @@ func (u *UserCreateBody) SetIngestionEnd(ingestionEnd *string) {
 	u.require(userCreateBodyFieldIngestionEnd)
 }
 
+func (u *UserCreateBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserCreateBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserCreateBody(body)
+	return nil
+}
+
+func (u *UserCreateBody) MarshalJSON() ([]byte, error) {
+	type embed UserCreateBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createInsuranceRequestFieldPayorCode    = big.NewInt(1 << 0)
 	createInsuranceRequestFieldMemberId     = big.NewInt(1 << 1)
@@ -92,7 +113,7 @@ type CreateInsuranceRequest struct {
 	MemberId     string                                                  `json:"member_id" url:"-"`
 	GroupId      *string                                                 `json:"group_id,omitempty" url:"-"`
 	Relationship ResponsibleRelationship                                 `json:"relationship" url:"-"`
-	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty" url:"-"`
+	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured" url:"-"`
 	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"-"`
 	IsPrimary    *bool                                                   `json:"is_primary,omitempty" url:"-"`
 
@@ -156,6 +177,27 @@ func (c *CreateInsuranceRequest) SetIsPrimary(isPrimary *bool) {
 	c.require(createInsuranceRequestFieldIsPrimary)
 }
 
+func (c *CreateInsuranceRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateInsuranceRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateInsuranceRequest(body)
+	return nil
+}
+
+func (c *CreateInsuranceRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateInsuranceRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createUserPortalUrlBodyFieldContext = big.NewInt(1 << 0)
 	createUserPortalUrlBodyFieldOrderId = big.NewInt(1 << 1)
@@ -196,6 +238,27 @@ func (c *CreateUserPortalUrlBody) SetContext(context CreateUserPortalUrlBodyCont
 func (c *CreateUserPortalUrlBody) SetOrderId(orderId *string) {
 	c.OrderId = orderId
 	c.require(createUserPortalUrlBodyFieldOrderId)
+}
+
+func (c *CreateUserPortalUrlBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateUserPortalUrlBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateUserPortalUrlBody(body)
+	return nil
+}
+
+func (c *CreateUserPortalUrlBody) MarshalJSON() ([]byte, error) {
+	type embed CreateUserPortalUrlBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -322,6 +385,27 @@ func (u *UserPatchBody) SetIngestionEnd(ingestionEnd *string) {
 func (u *UserPatchBody) SetClientUserId(clientUserId *string) {
 	u.ClientUserId = clientUserId
 	u.require(userPatchBodyFieldClientUserId)
+}
+
+func (u *UserPatchBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserPatchBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserPatchBody(body)
+	return nil
+}
+
+func (u *UserPatchBody) MarshalJSON() ([]byte, error) {
+	type embed UserPatchBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -3000,7 +3084,7 @@ type UserInfoCreateRequest struct {
 	PhoneNumber       string             `json:"phone_number" url:"-"`
 	Gender            string             `json:"gender" url:"-"`
 	Dob               string             `json:"dob" url:"-"`
-	Address           *Address           `json:"address,omitempty" url:"-"`
+	Address           *Address           `json:"address" url:"-"`
 	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"-"`
 	Race              *Race              `json:"race,omitempty" url:"-"`
 	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"-"`
@@ -3100,4 +3184,25 @@ func (u *UserInfoCreateRequest) SetSexualOrientation(sexualOrientation *SexualOr
 func (u *UserInfoCreateRequest) SetGenderIdentity(genderIdentity *GenderIdentity) {
 	u.GenderIdentity = genderIdentity
 	u.require(userInfoCreateRequestFieldGenderIdentity)
+}
+
+func (u *UserInfoCreateRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserInfoCreateRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserInfoCreateRequest(body)
+	return nil
+}
+
+func (u *UserInfoCreateRequest) MarshalJSON() ([]byte, error) {
+	type embed UserInfoCreateRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }

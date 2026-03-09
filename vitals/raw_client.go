@@ -4,7 +4,7 @@ package vitals
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) WorkoutSwimmingStrokeGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsWorkoutSwimmingStrokeGroupedRequest,
+	request *v505.VitalsWorkoutSwimmingStrokeGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedWorkoutSwimmingStrokeResponse], error) {
+) (*core.Response[*v505.GroupedWorkoutSwimmingStrokeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,7 +57,7 @@ func (r *RawClient) WorkoutSwimmingStrokeGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedWorkoutSwimmingStrokeResponse
+	var response *v505.GroupedWorkoutSwimmingStrokeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -69,13 +69,13 @@ func (r *RawClient) WorkoutSwimmingStrokeGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedWorkoutSwimmingStrokeResponse]{
+	return &core.Response[*v505.GroupedWorkoutSwimmingStrokeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -85,9 +85,9 @@ func (r *RawClient) WorkoutSwimmingStrokeGrouped(
 func (r *RawClient) WorkoutDistanceGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsWorkoutDistanceGroupedRequest,
+	request *v505.VitalsWorkoutDistanceGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedWorkoutDistanceResponse], error) {
+) (*core.Response[*v505.GroupedWorkoutDistanceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -109,7 +109,7 @@ func (r *RawClient) WorkoutDistanceGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedWorkoutDistanceResponse
+	var response *v505.GroupedWorkoutDistanceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -121,13 +121,13 @@ func (r *RawClient) WorkoutDistanceGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedWorkoutDistanceResponse]{
+	return &core.Response[*v505.GroupedWorkoutDistanceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -137,9 +137,9 @@ func (r *RawClient) WorkoutDistanceGrouped(
 func (r *RawClient) HeartRateRecoveryOneMinuteGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHeartRateRecoveryOneMinuteGroupedRequest,
+	request *v505.VitalsHeartRateRecoveryOneMinuteGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedHeartRateRecoveryOneMinuteResponse], error) {
+) (*core.Response[*v505.GroupedHeartRateRecoveryOneMinuteResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -161,7 +161,7 @@ func (r *RawClient) HeartRateRecoveryOneMinuteGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedHeartRateRecoveryOneMinuteResponse
+	var response *v505.GroupedHeartRateRecoveryOneMinuteResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -173,13 +173,13 @@ func (r *RawClient) HeartRateRecoveryOneMinuteGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedHeartRateRecoveryOneMinuteResponse]{
+	return &core.Response[*v505.GroupedHeartRateRecoveryOneMinuteResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -189,9 +189,9 @@ func (r *RawClient) HeartRateRecoveryOneMinuteGrouped(
 func (r *RawClient) WaistCircumferenceGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsWaistCircumferenceGroupedRequest,
+	request *v505.VitalsWaistCircumferenceGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedWaistCircumferenceResponse], error) {
+) (*core.Response[*v505.GroupedWaistCircumferenceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -213,7 +213,7 @@ func (r *RawClient) WaistCircumferenceGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedWaistCircumferenceResponse
+	var response *v505.GroupedWaistCircumferenceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -225,13 +225,13 @@ func (r *RawClient) WaistCircumferenceGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedWaistCircumferenceResponse]{
+	return &core.Response[*v505.GroupedWaistCircumferenceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -241,9 +241,9 @@ func (r *RawClient) WaistCircumferenceGrouped(
 func (r *RawClient) LeanBodyMassGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsLeanBodyMassGroupedRequest,
+	request *v505.VitalsLeanBodyMassGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedLeanBodyMassResponse], error) {
+) (*core.Response[*v505.GroupedLeanBodyMassResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -265,7 +265,7 @@ func (r *RawClient) LeanBodyMassGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedLeanBodyMassResponse
+	var response *v505.GroupedLeanBodyMassResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -277,13 +277,13 @@ func (r *RawClient) LeanBodyMassGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedLeanBodyMassResponse]{
+	return &core.Response[*v505.GroupedLeanBodyMassResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -293,9 +293,9 @@ func (r *RawClient) LeanBodyMassGrouped(
 func (r *RawClient) BodyMassIndexGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBodyMassIndexGroupedRequest,
+	request *v505.VitalsBodyMassIndexGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBodyMassIndexResponse], error) {
+) (*core.Response[*v505.GroupedBodyMassIndexResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -317,7 +317,7 @@ func (r *RawClient) BodyMassIndexGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBodyMassIndexResponse
+	var response *v505.GroupedBodyMassIndexResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -329,13 +329,13 @@ func (r *RawClient) BodyMassIndexGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBodyMassIndexResponse]{
+	return &core.Response[*v505.GroupedBodyMassIndexResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -345,9 +345,9 @@ func (r *RawClient) BodyMassIndexGrouped(
 func (r *RawClient) BasalBodyTemperatureGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBasalBodyTemperatureGroupedRequest,
+	request *v505.VitalsBasalBodyTemperatureGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBasalBodyTemperatureResponse], error) {
+) (*core.Response[*v505.GroupedBasalBodyTemperatureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -369,7 +369,7 @@ func (r *RawClient) BasalBodyTemperatureGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBasalBodyTemperatureResponse
+	var response *v505.GroupedBasalBodyTemperatureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -381,13 +381,13 @@ func (r *RawClient) BasalBodyTemperatureGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBasalBodyTemperatureResponse]{
+	return &core.Response[*v505.GroupedBasalBodyTemperatureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -397,9 +397,9 @@ func (r *RawClient) BasalBodyTemperatureGrouped(
 func (r *RawClient) HandwashingGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHandwashingGroupedRequest,
+	request *v505.VitalsHandwashingGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedHandwashingResponse], error) {
+) (*core.Response[*v505.GroupedHandwashingResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -421,7 +421,7 @@ func (r *RawClient) HandwashingGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedHandwashingResponse
+	var response *v505.GroupedHandwashingResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -433,13 +433,13 @@ func (r *RawClient) HandwashingGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedHandwashingResponse]{
+	return &core.Response[*v505.GroupedHandwashingResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -449,9 +449,9 @@ func (r *RawClient) HandwashingGrouped(
 func (r *RawClient) DaylightExposureGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsDaylightExposureGroupedRequest,
+	request *v505.VitalsDaylightExposureGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedDaylightExposureResponse], error) {
+) (*core.Response[*v505.GroupedDaylightExposureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -473,7 +473,7 @@ func (r *RawClient) DaylightExposureGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedDaylightExposureResponse
+	var response *v505.GroupedDaylightExposureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -485,13 +485,13 @@ func (r *RawClient) DaylightExposureGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedDaylightExposureResponse]{
+	return &core.Response[*v505.GroupedDaylightExposureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -501,9 +501,9 @@ func (r *RawClient) DaylightExposureGrouped(
 func (r *RawClient) UvExposureGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsUvExposureGroupedRequest,
+	request *v505.VitalsUvExposureGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedUvExposureResponse], error) {
+) (*core.Response[*v505.GroupedUvExposureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -525,7 +525,7 @@ func (r *RawClient) UvExposureGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedUvExposureResponse
+	var response *v505.GroupedUvExposureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -537,13 +537,13 @@ func (r *RawClient) UvExposureGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedUvExposureResponse]{
+	return &core.Response[*v505.GroupedUvExposureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -553,9 +553,9 @@ func (r *RawClient) UvExposureGrouped(
 func (r *RawClient) FallGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsFallGroupedRequest,
+	request *v505.VitalsFallGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedFallResponse], error) {
+) (*core.Response[*v505.GroupedFallResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -577,7 +577,7 @@ func (r *RawClient) FallGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedFallResponse
+	var response *v505.GroupedFallResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -589,13 +589,13 @@ func (r *RawClient) FallGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedFallResponse]{
+	return &core.Response[*v505.GroupedFallResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -605,9 +605,9 @@ func (r *RawClient) FallGrouped(
 func (r *RawClient) InhalerUsageGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsInhalerUsageGroupedRequest,
+	request *v505.VitalsInhalerUsageGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedInhalerUsageResponse], error) {
+) (*core.Response[*v505.GroupedInhalerUsageResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -629,7 +629,7 @@ func (r *RawClient) InhalerUsageGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedInhalerUsageResponse
+	var response *v505.GroupedInhalerUsageResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -641,13 +641,13 @@ func (r *RawClient) InhalerUsageGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedInhalerUsageResponse]{
+	return &core.Response[*v505.GroupedInhalerUsageResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -657,9 +657,9 @@ func (r *RawClient) InhalerUsageGrouped(
 func (r *RawClient) PeakExpiratoryFlowRateGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsPeakExpiratoryFlowRateGroupedRequest,
+	request *v505.VitalsPeakExpiratoryFlowRateGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedPeakExpiratoryFlowRateResponse], error) {
+) (*core.Response[*v505.GroupedPeakExpiratoryFlowRateResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -681,7 +681,7 @@ func (r *RawClient) PeakExpiratoryFlowRateGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedPeakExpiratoryFlowRateResponse
+	var response *v505.GroupedPeakExpiratoryFlowRateResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -693,13 +693,13 @@ func (r *RawClient) PeakExpiratoryFlowRateGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedPeakExpiratoryFlowRateResponse]{
+	return &core.Response[*v505.GroupedPeakExpiratoryFlowRateResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -709,9 +709,9 @@ func (r *RawClient) PeakExpiratoryFlowRateGrouped(
 func (r *RawClient) ForcedVitalCapacityGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsForcedVitalCapacityGroupedRequest,
+	request *v505.VitalsForcedVitalCapacityGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedForcedVitalCapacityResponse], error) {
+) (*core.Response[*v505.GroupedForcedVitalCapacityResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -733,7 +733,7 @@ func (r *RawClient) ForcedVitalCapacityGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedForcedVitalCapacityResponse
+	var response *v505.GroupedForcedVitalCapacityResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -745,13 +745,13 @@ func (r *RawClient) ForcedVitalCapacityGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedForcedVitalCapacityResponse]{
+	return &core.Response[*v505.GroupedForcedVitalCapacityResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -761,9 +761,9 @@ func (r *RawClient) ForcedVitalCapacityGrouped(
 func (r *RawClient) ForcedExpiratoryVolume1Grouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsForcedExpiratoryVolume1GroupedRequest,
+	request *v505.VitalsForcedExpiratoryVolume1GroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedForcedExpiratoryVolume1Response], error) {
+) (*core.Response[*v505.GroupedForcedExpiratoryVolume1Response], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -785,7 +785,7 @@ func (r *RawClient) ForcedExpiratoryVolume1Grouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedForcedExpiratoryVolume1Response
+	var response *v505.GroupedForcedExpiratoryVolume1Response
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -797,13 +797,13 @@ func (r *RawClient) ForcedExpiratoryVolume1Grouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedForcedExpiratoryVolume1Response]{
+	return &core.Response[*v505.GroupedForcedExpiratoryVolume1Response]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -813,9 +813,9 @@ func (r *RawClient) ForcedExpiratoryVolume1Grouped(
 func (r *RawClient) WheelchairPushGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsWheelchairPushGroupedRequest,
+	request *v505.VitalsWheelchairPushGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedWheelchairPushResponse], error) {
+) (*core.Response[*v505.GroupedWheelchairPushResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -837,7 +837,7 @@ func (r *RawClient) WheelchairPushGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedWheelchairPushResponse
+	var response *v505.GroupedWheelchairPushResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -849,13 +849,13 @@ func (r *RawClient) WheelchairPushGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedWheelchairPushResponse]{
+	return &core.Response[*v505.GroupedWheelchairPushResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -865,9 +865,9 @@ func (r *RawClient) WheelchairPushGrouped(
 func (r *RawClient) SleepBreathingDisturbanceGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsSleepBreathingDisturbanceGroupedRequest,
+	request *v505.VitalsSleepBreathingDisturbanceGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedSleepBreathingDisturbanceResponse], error) {
+) (*core.Response[*v505.GroupedSleepBreathingDisturbanceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -889,7 +889,7 @@ func (r *RawClient) SleepBreathingDisturbanceGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedSleepBreathingDisturbanceResponse
+	var response *v505.GroupedSleepBreathingDisturbanceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -901,13 +901,13 @@ func (r *RawClient) SleepBreathingDisturbanceGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedSleepBreathingDisturbanceResponse]{
+	return &core.Response[*v505.GroupedSleepBreathingDisturbanceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -917,9 +917,9 @@ func (r *RawClient) SleepBreathingDisturbanceGrouped(
 func (r *RawClient) SleepApneaAlertGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsSleepApneaAlertGroupedRequest,
+	request *v505.VitalsSleepApneaAlertGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedSleepApneaAlertResponse], error) {
+) (*core.Response[*v505.GroupedSleepApneaAlertResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -941,7 +941,7 @@ func (r *RawClient) SleepApneaAlertGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedSleepApneaAlertResponse
+	var response *v505.GroupedSleepApneaAlertResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -953,13 +953,13 @@ func (r *RawClient) SleepApneaAlertGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedSleepApneaAlertResponse]{
+	return &core.Response[*v505.GroupedSleepApneaAlertResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -969,9 +969,9 @@ func (r *RawClient) SleepApneaAlertGrouped(
 func (r *RawClient) StandDurationGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsStandDurationGroupedRequest,
+	request *v505.VitalsStandDurationGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedStandDurationResponse], error) {
+) (*core.Response[*v505.GroupedStandDurationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -993,7 +993,7 @@ func (r *RawClient) StandDurationGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedStandDurationResponse
+	var response *v505.GroupedStandDurationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1005,13 +1005,13 @@ func (r *RawClient) StandDurationGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedStandDurationResponse]{
+	return &core.Response[*v505.GroupedStandDurationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1021,9 +1021,9 @@ func (r *RawClient) StandDurationGrouped(
 func (r *RawClient) StandHourGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsStandHourGroupedRequest,
+	request *v505.VitalsStandHourGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedStandHourResponse], error) {
+) (*core.Response[*v505.GroupedStandHourResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1045,7 +1045,7 @@ func (r *RawClient) StandHourGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedStandHourResponse
+	var response *v505.GroupedStandHourResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1057,13 +1057,13 @@ func (r *RawClient) StandHourGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedStandHourResponse]{
+	return &core.Response[*v505.GroupedStandHourResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1073,9 +1073,9 @@ func (r *RawClient) StandHourGrouped(
 func (r *RawClient) HeartRateAlertGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHeartRateAlertGroupedRequest,
+	request *v505.VitalsHeartRateAlertGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedHeartRateAlertResponse], error) {
+) (*core.Response[*v505.GroupedHeartRateAlertResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1097,7 +1097,7 @@ func (r *RawClient) HeartRateAlertGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedHeartRateAlertResponse
+	var response *v505.GroupedHeartRateAlertResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1109,13 +1109,13 @@ func (r *RawClient) HeartRateAlertGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedHeartRateAlertResponse]{
+	return &core.Response[*v505.GroupedHeartRateAlertResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1125,9 +1125,9 @@ func (r *RawClient) HeartRateAlertGrouped(
 func (r *RawClient) AfibBurdenGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsAfibBurdenGroupedRequest,
+	request *v505.VitalsAfibBurdenGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedAFibBurdenResponse], error) {
+) (*core.Response[*v505.GroupedAFibBurdenResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1149,7 +1149,7 @@ func (r *RawClient) AfibBurdenGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedAFibBurdenResponse
+	var response *v505.GroupedAFibBurdenResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1161,13 +1161,13 @@ func (r *RawClient) AfibBurdenGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedAFibBurdenResponse]{
+	return &core.Response[*v505.GroupedAFibBurdenResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1177,9 +1177,9 @@ func (r *RawClient) AfibBurdenGrouped(
 func (r *RawClient) WorkoutDurationGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsWorkoutDurationGroupedRequest,
+	request *v505.VitalsWorkoutDurationGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedWorkoutDurationResponse], error) {
+) (*core.Response[*v505.GroupedWorkoutDurationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1201,7 +1201,7 @@ func (r *RawClient) WorkoutDurationGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedWorkoutDurationResponse
+	var response *v505.GroupedWorkoutDurationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1213,13 +1213,13 @@ func (r *RawClient) WorkoutDurationGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedWorkoutDurationResponse]{
+	return &core.Response[*v505.GroupedWorkoutDurationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1229,9 +1229,9 @@ func (r *RawClient) WorkoutDurationGrouped(
 func (r *RawClient) Vo2MaxGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsVo2MaxGroupedRequest,
+	request *v505.VitalsVo2MaxGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedVo2MaxResponse], error) {
+) (*core.Response[*v505.GroupedVo2MaxResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1253,7 +1253,7 @@ func (r *RawClient) Vo2MaxGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedVo2MaxResponse
+	var response *v505.GroupedVo2MaxResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1265,13 +1265,13 @@ func (r *RawClient) Vo2MaxGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedVo2MaxResponse]{
+	return &core.Response[*v505.GroupedVo2MaxResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1281,9 +1281,9 @@ func (r *RawClient) Vo2MaxGrouped(
 func (r *RawClient) StressLevelGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsStressLevelGroupedRequest,
+	request *v505.VitalsStressLevelGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedStressLevelResponse], error) {
+) (*core.Response[*v505.GroupedStressLevelResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1305,7 +1305,7 @@ func (r *RawClient) StressLevelGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedStressLevelResponse
+	var response *v505.GroupedStressLevelResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1317,13 +1317,13 @@ func (r *RawClient) StressLevelGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedStressLevelResponse]{
+	return &core.Response[*v505.GroupedStressLevelResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1333,9 +1333,9 @@ func (r *RawClient) StressLevelGrouped(
 func (r *RawClient) MindfulnessMinutesGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsMindfulnessMinutesGroupedRequest,
+	request *v505.VitalsMindfulnessMinutesGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedMindfulnessMinutesResponse], error) {
+) (*core.Response[*v505.GroupedMindfulnessMinutesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1357,7 +1357,7 @@ func (r *RawClient) MindfulnessMinutesGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedMindfulnessMinutesResponse
+	var response *v505.GroupedMindfulnessMinutesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1369,13 +1369,13 @@ func (r *RawClient) MindfulnessMinutesGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedMindfulnessMinutesResponse]{
+	return &core.Response[*v505.GroupedMindfulnessMinutesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1385,9 +1385,9 @@ func (r *RawClient) MindfulnessMinutesGrouped(
 func (r *RawClient) CaffeineGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCaffeineGroupedRequest,
+	request *v505.VitalsCaffeineGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedCaffeineResponse], error) {
+) (*core.Response[*v505.GroupedCaffeineResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1409,7 +1409,7 @@ func (r *RawClient) CaffeineGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedCaffeineResponse
+	var response *v505.GroupedCaffeineResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1421,13 +1421,13 @@ func (r *RawClient) CaffeineGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedCaffeineResponse]{
+	return &core.Response[*v505.GroupedCaffeineResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1437,9 +1437,9 @@ func (r *RawClient) CaffeineGrouped(
 func (r *RawClient) WaterGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsWaterGroupedRequest,
+	request *v505.VitalsWaterGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedWaterResponse], error) {
+) (*core.Response[*v505.GroupedWaterResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1461,7 +1461,7 @@ func (r *RawClient) WaterGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedWaterResponse
+	var response *v505.GroupedWaterResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1473,13 +1473,13 @@ func (r *RawClient) WaterGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedWaterResponse]{
+	return &core.Response[*v505.GroupedWaterResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1489,9 +1489,9 @@ func (r *RawClient) WaterGrouped(
 func (r *RawClient) StepsGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsStepsGroupedRequest,
+	request *v505.VitalsStepsGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedStepsResponse], error) {
+) (*core.Response[*v505.GroupedStepsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1513,7 +1513,7 @@ func (r *RawClient) StepsGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedStepsResponse
+	var response *v505.GroupedStepsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1525,13 +1525,13 @@ func (r *RawClient) StepsGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedStepsResponse]{
+	return &core.Response[*v505.GroupedStepsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1541,9 +1541,9 @@ func (r *RawClient) StepsGrouped(
 func (r *RawClient) FloorsClimbedGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsFloorsClimbedGroupedRequest,
+	request *v505.VitalsFloorsClimbedGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedFloorsClimbedResponse], error) {
+) (*core.Response[*v505.GroupedFloorsClimbedResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1565,7 +1565,7 @@ func (r *RawClient) FloorsClimbedGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedFloorsClimbedResponse
+	var response *v505.GroupedFloorsClimbedResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1577,13 +1577,13 @@ func (r *RawClient) FloorsClimbedGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedFloorsClimbedResponse]{
+	return &core.Response[*v505.GroupedFloorsClimbedResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1593,9 +1593,9 @@ func (r *RawClient) FloorsClimbedGrouped(
 func (r *RawClient) DistanceGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsDistanceGroupedRequest,
+	request *v505.VitalsDistanceGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedDistanceResponse], error) {
+) (*core.Response[*v505.GroupedDistanceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1617,7 +1617,7 @@ func (r *RawClient) DistanceGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedDistanceResponse
+	var response *v505.GroupedDistanceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1629,13 +1629,13 @@ func (r *RawClient) DistanceGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedDistanceResponse]{
+	return &core.Response[*v505.GroupedDistanceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1645,9 +1645,9 @@ func (r *RawClient) DistanceGrouped(
 func (r *RawClient) CaloriesBasalGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCaloriesBasalGroupedRequest,
+	request *v505.VitalsCaloriesBasalGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedCaloriesBasalResponse], error) {
+) (*core.Response[*v505.GroupedCaloriesBasalResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1669,7 +1669,7 @@ func (r *RawClient) CaloriesBasalGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedCaloriesBasalResponse
+	var response *v505.GroupedCaloriesBasalResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1681,13 +1681,13 @@ func (r *RawClient) CaloriesBasalGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedCaloriesBasalResponse]{
+	return &core.Response[*v505.GroupedCaloriesBasalResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1697,9 +1697,9 @@ func (r *RawClient) CaloriesBasalGrouped(
 func (r *RawClient) CaloriesActiveGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCaloriesActiveGroupedRequest,
+	request *v505.VitalsCaloriesActiveGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedCaloriesActiveResponse], error) {
+) (*core.Response[*v505.GroupedCaloriesActiveResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1721,7 +1721,7 @@ func (r *RawClient) CaloriesActiveGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedCaloriesActiveResponse
+	var response *v505.GroupedCaloriesActiveResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1733,13 +1733,13 @@ func (r *RawClient) CaloriesActiveGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedCaloriesActiveResponse]{
+	return &core.Response[*v505.GroupedCaloriesActiveResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1749,9 +1749,9 @@ func (r *RawClient) CaloriesActiveGrouped(
 func (r *RawClient) RespiratoryRateGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsRespiratoryRateGroupedRequest,
+	request *v505.VitalsRespiratoryRateGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedRespiratoryRateResponse], error) {
+) (*core.Response[*v505.GroupedRespiratoryRateResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1773,7 +1773,7 @@ func (r *RawClient) RespiratoryRateGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedRespiratoryRateResponse
+	var response *v505.GroupedRespiratoryRateResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1785,13 +1785,13 @@ func (r *RawClient) RespiratoryRateGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedRespiratoryRateResponse]{
+	return &core.Response[*v505.GroupedRespiratoryRateResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1801,9 +1801,9 @@ func (r *RawClient) RespiratoryRateGrouped(
 func (r *RawClient) NoteGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsNoteGroupedRequest,
+	request *v505.VitalsNoteGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedNoteResponse], error) {
+) (*core.Response[*v505.GroupedNoteResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1825,7 +1825,7 @@ func (r *RawClient) NoteGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedNoteResponse
+	var response *v505.GroupedNoteResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1837,13 +1837,13 @@ func (r *RawClient) NoteGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedNoteResponse]{
+	return &core.Response[*v505.GroupedNoteResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1853,9 +1853,9 @@ func (r *RawClient) NoteGrouped(
 func (r *RawClient) InsulinInjectionGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsInsulinInjectionGroupedRequest,
+	request *v505.VitalsInsulinInjectionGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedInsulinInjectionResponse], error) {
+) (*core.Response[*v505.GroupedInsulinInjectionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1877,7 +1877,7 @@ func (r *RawClient) InsulinInjectionGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedInsulinInjectionResponse
+	var response *v505.GroupedInsulinInjectionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1889,13 +1889,13 @@ func (r *RawClient) InsulinInjectionGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedInsulinInjectionResponse]{
+	return &core.Response[*v505.GroupedInsulinInjectionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1905,9 +1905,9 @@ func (r *RawClient) InsulinInjectionGrouped(
 func (r *RawClient) IgeGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsIgeGroupedRequest,
+	request *v505.VitalsIgeGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedIgeResponse], error) {
+) (*core.Response[*v505.GroupedIgeResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1929,7 +1929,7 @@ func (r *RawClient) IgeGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedIgeResponse
+	var response *v505.GroupedIgeResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1941,13 +1941,13 @@ func (r *RawClient) IgeGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedIgeResponse]{
+	return &core.Response[*v505.GroupedIgeResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1957,9 +1957,9 @@ func (r *RawClient) IgeGrouped(
 func (r *RawClient) IggGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsIggGroupedRequest,
+	request *v505.VitalsIggGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedIggResponse], error) {
+) (*core.Response[*v505.GroupedIggResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1981,7 +1981,7 @@ func (r *RawClient) IggGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedIggResponse
+	var response *v505.GroupedIggResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1993,13 +1993,13 @@ func (r *RawClient) IggGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedIggResponse]{
+	return &core.Response[*v505.GroupedIggResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2009,9 +2009,9 @@ func (r *RawClient) IggGrouped(
 func (r *RawClient) HypnogramGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHypnogramGroupedRequest,
+	request *v505.VitalsHypnogramGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedHypnogramResponse], error) {
+) (*core.Response[*v505.GroupedHypnogramResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2033,7 +2033,7 @@ func (r *RawClient) HypnogramGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedHypnogramResponse
+	var response *v505.GroupedHypnogramResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2045,13 +2045,13 @@ func (r *RawClient) HypnogramGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedHypnogramResponse]{
+	return &core.Response[*v505.GroupedHypnogramResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2061,9 +2061,9 @@ func (r *RawClient) HypnogramGrouped(
 func (r *RawClient) HrvGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHrvGroupedRequest,
+	request *v505.VitalsHrvGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedHrvResponse], error) {
+) (*core.Response[*v505.GroupedHrvResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2085,7 +2085,7 @@ func (r *RawClient) HrvGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedHrvResponse
+	var response *v505.GroupedHrvResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2097,13 +2097,13 @@ func (r *RawClient) HrvGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedHrvResponse]{
+	return &core.Response[*v505.GroupedHrvResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2113,9 +2113,9 @@ func (r *RawClient) HrvGrouped(
 func (r *RawClient) HeartrateGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHeartrateGroupedRequest,
+	request *v505.VitalsHeartrateGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedHeartRateResponse], error) {
+) (*core.Response[*v505.GroupedHeartRateResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2137,7 +2137,7 @@ func (r *RawClient) HeartrateGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedHeartRateResponse
+	var response *v505.GroupedHeartRateResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2149,13 +2149,13 @@ func (r *RawClient) HeartrateGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedHeartRateResponse]{
+	return &core.Response[*v505.GroupedHeartRateResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2165,9 +2165,9 @@ func (r *RawClient) HeartrateGrouped(
 func (r *RawClient) GlucoseGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsGlucoseGroupedRequest,
+	request *v505.VitalsGlucoseGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedGlucoseResponse], error) {
+) (*core.Response[*v505.GroupedGlucoseResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2189,7 +2189,7 @@ func (r *RawClient) GlucoseGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedGlucoseResponse
+	var response *v505.GroupedGlucoseResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2201,13 +2201,13 @@ func (r *RawClient) GlucoseGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedGlucoseResponse]{
+	return &core.Response[*v505.GroupedGlucoseResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2217,9 +2217,9 @@ func (r *RawClient) GlucoseGrouped(
 func (r *RawClient) CholesterolGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCholesterolGroupedRequest,
+	request *v505.VitalsCholesterolGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedCholesterolResponse], error) {
+) (*core.Response[*v505.GroupedCholesterolResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2241,7 +2241,7 @@ func (r *RawClient) CholesterolGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedCholesterolResponse
+	var response *v505.GroupedCholesterolResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2253,13 +2253,13 @@ func (r *RawClient) CholesterolGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedCholesterolResponse]{
+	return &core.Response[*v505.GroupedCholesterolResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2269,9 +2269,9 @@ func (r *RawClient) CholesterolGrouped(
 func (r *RawClient) CarbohydratesGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCarbohydratesGroupedRequest,
+	request *v505.VitalsCarbohydratesGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedCarbohydratesResponse], error) {
+) (*core.Response[*v505.GroupedCarbohydratesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2293,7 +2293,7 @@ func (r *RawClient) CarbohydratesGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedCarbohydratesResponse
+	var response *v505.GroupedCarbohydratesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2305,13 +2305,13 @@ func (r *RawClient) CarbohydratesGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedCarbohydratesResponse]{
+	return &core.Response[*v505.GroupedCarbohydratesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2321,9 +2321,9 @@ func (r *RawClient) CarbohydratesGrouped(
 func (r *RawClient) BodyTemperatureDeltaGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBodyTemperatureDeltaGroupedRequest,
+	request *v505.VitalsBodyTemperatureDeltaGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBodyTemperatureDeltaResponse], error) {
+) (*core.Response[*v505.GroupedBodyTemperatureDeltaResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2345,7 +2345,7 @@ func (r *RawClient) BodyTemperatureDeltaGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBodyTemperatureDeltaResponse
+	var response *v505.GroupedBodyTemperatureDeltaResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2357,13 +2357,13 @@ func (r *RawClient) BodyTemperatureDeltaGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBodyTemperatureDeltaResponse]{
+	return &core.Response[*v505.GroupedBodyTemperatureDeltaResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2373,9 +2373,9 @@ func (r *RawClient) BodyTemperatureDeltaGrouped(
 func (r *RawClient) BodyTemperatureGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBodyTemperatureGroupedRequest,
+	request *v505.VitalsBodyTemperatureGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBodyTemperatureResponse], error) {
+) (*core.Response[*v505.GroupedBodyTemperatureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2397,7 +2397,7 @@ func (r *RawClient) BodyTemperatureGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBodyTemperatureResponse
+	var response *v505.GroupedBodyTemperatureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2409,13 +2409,13 @@ func (r *RawClient) BodyTemperatureGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBodyTemperatureResponse]{
+	return &core.Response[*v505.GroupedBodyTemperatureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2425,9 +2425,9 @@ func (r *RawClient) BodyTemperatureGrouped(
 func (r *RawClient) BodyWeightGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBodyWeightGroupedRequest,
+	request *v505.VitalsBodyWeightGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBodyWeightResponse], error) {
+) (*core.Response[*v505.GroupedBodyWeightResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2449,7 +2449,7 @@ func (r *RawClient) BodyWeightGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBodyWeightResponse
+	var response *v505.GroupedBodyWeightResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2461,13 +2461,13 @@ func (r *RawClient) BodyWeightGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBodyWeightResponse]{
+	return &core.Response[*v505.GroupedBodyWeightResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2477,9 +2477,9 @@ func (r *RawClient) BodyWeightGrouped(
 func (r *RawClient) BodyFatGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBodyFatGroupedRequest,
+	request *v505.VitalsBodyFatGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBodyFatResponse], error) {
+) (*core.Response[*v505.GroupedBodyFatResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2501,7 +2501,7 @@ func (r *RawClient) BodyFatGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBodyFatResponse
+	var response *v505.GroupedBodyFatResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2513,13 +2513,13 @@ func (r *RawClient) BodyFatGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBodyFatResponse]{
+	return &core.Response[*v505.GroupedBodyFatResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2529,9 +2529,9 @@ func (r *RawClient) BodyFatGrouped(
 func (r *RawClient) BloodOxygenGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBloodOxygenGroupedRequest,
+	request *v505.VitalsBloodOxygenGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBloodOxygenResponse], error) {
+) (*core.Response[*v505.GroupedBloodOxygenResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2553,7 +2553,7 @@ func (r *RawClient) BloodOxygenGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBloodOxygenResponse
+	var response *v505.GroupedBloodOxygenResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2565,13 +2565,13 @@ func (r *RawClient) BloodOxygenGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBloodOxygenResponse]{
+	return &core.Response[*v505.GroupedBloodOxygenResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2581,9 +2581,9 @@ func (r *RawClient) BloodOxygenGrouped(
 func (r *RawClient) ElectrocardiogramVoltageGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsElectrocardiogramVoltageGroupedRequest,
+	request *v505.VitalsElectrocardiogramVoltageGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedElectrocardiogramVoltageResponse], error) {
+) (*core.Response[*v505.GroupedElectrocardiogramVoltageResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2605,7 +2605,7 @@ func (r *RawClient) ElectrocardiogramVoltageGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedElectrocardiogramVoltageResponse
+	var response *v505.GroupedElectrocardiogramVoltageResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2617,13 +2617,13 @@ func (r *RawClient) ElectrocardiogramVoltageGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedElectrocardiogramVoltageResponse]{
+	return &core.Response[*v505.GroupedElectrocardiogramVoltageResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2633,9 +2633,9 @@ func (r *RawClient) ElectrocardiogramVoltageGrouped(
 func (r *RawClient) BloodPressureGrouped(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBloodPressureGroupedRequest,
+	request *v505.VitalsBloodPressureGroupedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.GroupedBloodPressureResponse], error) {
+) (*core.Response[*v505.GroupedBloodPressureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2657,7 +2657,7 @@ func (r *RawClient) BloodPressureGrouped(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.GroupedBloodPressureResponse
+	var response *v505.GroupedBloodPressureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2669,13 +2669,13 @@ func (r *RawClient) BloodPressureGrouped(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.GroupedBloodPressureResponse]{
+	return &core.Response[*v505.GroupedBloodPressureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2685,9 +2685,9 @@ func (r *RawClient) BloodPressureGrouped(
 func (r *RawClient) Vo2Max(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsVo2MaxRequest,
+	request *v505.VitalsVo2MaxRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingVo2MaxTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingVo2MaxTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2709,7 +2709,7 @@ func (r *RawClient) Vo2Max(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingVo2MaxTimeseries
+	var response []*v505.ClientFacingVo2MaxTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2721,13 +2721,13 @@ func (r *RawClient) Vo2Max(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingVo2MaxTimeseries]{
+	return &core.Response[[]*v505.ClientFacingVo2MaxTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2737,9 +2737,9 @@ func (r *RawClient) Vo2Max(
 func (r *RawClient) StressLevel(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsStressLevelRequest,
+	request *v505.VitalsStressLevelRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingStressLevelTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingStressLevelTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2761,7 +2761,7 @@ func (r *RawClient) StressLevel(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingStressLevelTimeseries
+	var response []*v505.ClientFacingStressLevelTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2773,13 +2773,13 @@ func (r *RawClient) StressLevel(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingStressLevelTimeseries]{
+	return &core.Response[[]*v505.ClientFacingStressLevelTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2789,9 +2789,9 @@ func (r *RawClient) StressLevel(
 func (r *RawClient) MindfulnessMinutes(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsMindfulnessMinutesRequest,
+	request *v505.VitalsMindfulnessMinutesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingMindfulnessMinutesTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingMindfulnessMinutesTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2813,7 +2813,7 @@ func (r *RawClient) MindfulnessMinutes(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingMindfulnessMinutesTimeseries
+	var response []*v505.ClientFacingMindfulnessMinutesTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2825,13 +2825,13 @@ func (r *RawClient) MindfulnessMinutes(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingMindfulnessMinutesTimeseries]{
+	return &core.Response[[]*v505.ClientFacingMindfulnessMinutesTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2841,9 +2841,9 @@ func (r *RawClient) MindfulnessMinutes(
 func (r *RawClient) Caffeine(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCaffeineRequest,
+	request *v505.VitalsCaffeineRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCaffeineTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCaffeineTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2865,7 +2865,7 @@ func (r *RawClient) Caffeine(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCaffeineTimeseries
+	var response []*v505.ClientFacingCaffeineTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2877,13 +2877,13 @@ func (r *RawClient) Caffeine(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCaffeineTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCaffeineTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2893,9 +2893,9 @@ func (r *RawClient) Caffeine(
 func (r *RawClient) Water(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsWaterRequest,
+	request *v505.VitalsWaterRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingWaterTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingWaterTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2917,7 +2917,7 @@ func (r *RawClient) Water(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingWaterTimeseries
+	var response []*v505.ClientFacingWaterTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2929,13 +2929,13 @@ func (r *RawClient) Water(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingWaterTimeseries]{
+	return &core.Response[[]*v505.ClientFacingWaterTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2945,9 +2945,9 @@ func (r *RawClient) Water(
 func (r *RawClient) Steps(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsStepsRequest,
+	request *v505.VitalsStepsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingStepsTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingStepsTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2969,7 +2969,7 @@ func (r *RawClient) Steps(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingStepsTimeseries
+	var response []*v505.ClientFacingStepsTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2981,13 +2981,13 @@ func (r *RawClient) Steps(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingStepsTimeseries]{
+	return &core.Response[[]*v505.ClientFacingStepsTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2997,9 +2997,9 @@ func (r *RawClient) Steps(
 func (r *RawClient) FloorsClimbed(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsFloorsClimbedRequest,
+	request *v505.VitalsFloorsClimbedRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingFloorsClimbedTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingFloorsClimbedTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3021,7 +3021,7 @@ func (r *RawClient) FloorsClimbed(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingFloorsClimbedTimeseries
+	var response []*v505.ClientFacingFloorsClimbedTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3033,13 +3033,13 @@ func (r *RawClient) FloorsClimbed(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingFloorsClimbedTimeseries]{
+	return &core.Response[[]*v505.ClientFacingFloorsClimbedTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3049,9 +3049,9 @@ func (r *RawClient) FloorsClimbed(
 func (r *RawClient) Distance(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsDistanceRequest,
+	request *v505.VitalsDistanceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingDistanceTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingDistanceTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3073,7 +3073,7 @@ func (r *RawClient) Distance(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingDistanceTimeseries
+	var response []*v505.ClientFacingDistanceTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3085,13 +3085,13 @@ func (r *RawClient) Distance(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingDistanceTimeseries]{
+	return &core.Response[[]*v505.ClientFacingDistanceTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3101,9 +3101,9 @@ func (r *RawClient) Distance(
 func (r *RawClient) CaloriesBasal(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCaloriesBasalRequest,
+	request *v505.VitalsCaloriesBasalRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCaloriesBasalTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCaloriesBasalTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3125,7 +3125,7 @@ func (r *RawClient) CaloriesBasal(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCaloriesBasalTimeseries
+	var response []*v505.ClientFacingCaloriesBasalTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3137,13 +3137,13 @@ func (r *RawClient) CaloriesBasal(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCaloriesBasalTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCaloriesBasalTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3153,9 +3153,9 @@ func (r *RawClient) CaloriesBasal(
 func (r *RawClient) CaloriesActive(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCaloriesActiveRequest,
+	request *v505.VitalsCaloriesActiveRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCaloriesActiveTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCaloriesActiveTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3177,7 +3177,7 @@ func (r *RawClient) CaloriesActive(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCaloriesActiveTimeseries
+	var response []*v505.ClientFacingCaloriesActiveTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3189,13 +3189,13 @@ func (r *RawClient) CaloriesActive(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCaloriesActiveTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCaloriesActiveTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3205,9 +3205,9 @@ func (r *RawClient) CaloriesActive(
 func (r *RawClient) RespiratoryRate(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsRespiratoryRateRequest,
+	request *v505.VitalsRespiratoryRateRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingRespiratoryRateTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingRespiratoryRateTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3229,7 +3229,7 @@ func (r *RawClient) RespiratoryRate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingRespiratoryRateTimeseries
+	var response []*v505.ClientFacingRespiratoryRateTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3241,13 +3241,13 @@ func (r *RawClient) RespiratoryRate(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingRespiratoryRateTimeseries]{
+	return &core.Response[[]*v505.ClientFacingRespiratoryRateTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3257,9 +3257,9 @@ func (r *RawClient) RespiratoryRate(
 func (r *RawClient) Ige(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsIgeRequest,
+	request *v505.VitalsIgeRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingIgeTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingIgeTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3281,7 +3281,7 @@ func (r *RawClient) Ige(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingIgeTimeseries
+	var response []*v505.ClientFacingIgeTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3293,13 +3293,13 @@ func (r *RawClient) Ige(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingIgeTimeseries]{
+	return &core.Response[[]*v505.ClientFacingIgeTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3309,9 +3309,9 @@ func (r *RawClient) Ige(
 func (r *RawClient) Igg(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsIggRequest,
+	request *v505.VitalsIggRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingIggTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingIggTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3333,7 +3333,7 @@ func (r *RawClient) Igg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingIggTimeseries
+	var response []*v505.ClientFacingIggTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3345,13 +3345,13 @@ func (r *RawClient) Igg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingIggTimeseries]{
+	return &core.Response[[]*v505.ClientFacingIggTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3361,9 +3361,9 @@ func (r *RawClient) Igg(
 func (r *RawClient) Hypnogram(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHypnogramRequest,
+	request *v505.VitalsHypnogramRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingHypnogramTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingHypnogramTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3385,7 +3385,7 @@ func (r *RawClient) Hypnogram(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingHypnogramTimeseries
+	var response []*v505.ClientFacingHypnogramTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3397,13 +3397,13 @@ func (r *RawClient) Hypnogram(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingHypnogramTimeseries]{
+	return &core.Response[[]*v505.ClientFacingHypnogramTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3413,9 +3413,9 @@ func (r *RawClient) Hypnogram(
 func (r *RawClient) Hrv(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHrvRequest,
+	request *v505.VitalsHrvRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingHrvTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingHrvTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3437,7 +3437,7 @@ func (r *RawClient) Hrv(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingHrvTimeseries
+	var response []*v505.ClientFacingHrvTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3449,13 +3449,13 @@ func (r *RawClient) Hrv(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingHrvTimeseries]{
+	return &core.Response[[]*v505.ClientFacingHrvTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3465,9 +3465,9 @@ func (r *RawClient) Hrv(
 func (r *RawClient) Heartrate(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsHeartrateRequest,
+	request *v505.VitalsHeartrateRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingHeartRateTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingHeartRateTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3489,7 +3489,7 @@ func (r *RawClient) Heartrate(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingHeartRateTimeseries
+	var response []*v505.ClientFacingHeartRateTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3501,13 +3501,13 @@ func (r *RawClient) Heartrate(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingHeartRateTimeseries]{
+	return &core.Response[[]*v505.ClientFacingHeartRateTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3517,9 +3517,9 @@ func (r *RawClient) Heartrate(
 func (r *RawClient) Glucose(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsGlucoseRequest,
+	request *v505.VitalsGlucoseRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingGlucoseTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingGlucoseTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3541,7 +3541,7 @@ func (r *RawClient) Glucose(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingGlucoseTimeseries
+	var response []*v505.ClientFacingGlucoseTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3553,13 +3553,13 @@ func (r *RawClient) Glucose(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingGlucoseTimeseries]{
+	return &core.Response[[]*v505.ClientFacingGlucoseTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3569,9 +3569,9 @@ func (r *RawClient) Glucose(
 func (r *RawClient) CholesterolTriglycerides(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCholesterolTriglyceridesRequest,
+	request *v505.VitalsCholesterolTriglyceridesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3593,7 +3593,7 @@ func (r *RawClient) CholesterolTriglycerides(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCholesterolTimeseries
+	var response []*v505.ClientFacingCholesterolTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3605,13 +3605,13 @@ func (r *RawClient) CholesterolTriglycerides(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCholesterolTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3621,9 +3621,9 @@ func (r *RawClient) CholesterolTriglycerides(
 func (r *RawClient) CholesterolTotal(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCholesterolTotalRequest,
+	request *v505.VitalsCholesterolTotalRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3645,7 +3645,7 @@ func (r *RawClient) CholesterolTotal(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCholesterolTimeseries
+	var response []*v505.ClientFacingCholesterolTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3657,13 +3657,13 @@ func (r *RawClient) CholesterolTotal(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCholesterolTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3673,9 +3673,9 @@ func (r *RawClient) CholesterolTotal(
 func (r *RawClient) CholesterolLdl(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCholesterolLdlRequest,
+	request *v505.VitalsCholesterolLdlRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3697,7 +3697,7 @@ func (r *RawClient) CholesterolLdl(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCholesterolTimeseries
+	var response []*v505.ClientFacingCholesterolTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3709,13 +3709,13 @@ func (r *RawClient) CholesterolLdl(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCholesterolTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3725,9 +3725,9 @@ func (r *RawClient) CholesterolLdl(
 func (r *RawClient) CholesterolHdl(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCholesterolHdlRequest,
+	request *v505.VitalsCholesterolHdlRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3749,7 +3749,7 @@ func (r *RawClient) CholesterolHdl(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCholesterolTimeseries
+	var response []*v505.ClientFacingCholesterolTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3761,13 +3761,13 @@ func (r *RawClient) CholesterolHdl(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCholesterolTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3777,9 +3777,9 @@ func (r *RawClient) CholesterolHdl(
 func (r *RawClient) Cholesterol(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsCholesterolRequest,
+	request *v505.VitalsCholesterolRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingCholesterolTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3801,7 +3801,7 @@ func (r *RawClient) Cholesterol(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingCholesterolTimeseries
+	var response []*v505.ClientFacingCholesterolTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3813,13 +3813,13 @@ func (r *RawClient) Cholesterol(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingCholesterolTimeseries]{
+	return &core.Response[[]*v505.ClientFacingCholesterolTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3829,9 +3829,9 @@ func (r *RawClient) Cholesterol(
 func (r *RawClient) BodyWeight(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBodyWeightRequest,
+	request *v505.VitalsBodyWeightRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingBodyWeightTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingBodyWeightTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3853,7 +3853,7 @@ func (r *RawClient) BodyWeight(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingBodyWeightTimeseries
+	var response []*v505.ClientFacingBodyWeightTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3865,13 +3865,13 @@ func (r *RawClient) BodyWeight(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingBodyWeightTimeseries]{
+	return &core.Response[[]*v505.ClientFacingBodyWeightTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3881,9 +3881,9 @@ func (r *RawClient) BodyWeight(
 func (r *RawClient) BodyFat(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBodyFatRequest,
+	request *v505.VitalsBodyFatRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingBodyFatTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingBodyFatTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3905,7 +3905,7 @@ func (r *RawClient) BodyFat(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingBodyFatTimeseries
+	var response []*v505.ClientFacingBodyFatTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3917,13 +3917,13 @@ func (r *RawClient) BodyFat(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingBodyFatTimeseries]{
+	return &core.Response[[]*v505.ClientFacingBodyFatTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3933,9 +3933,9 @@ func (r *RawClient) BodyFat(
 func (r *RawClient) BloodOxygen(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBloodOxygenRequest,
+	request *v505.VitalsBloodOxygenRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingBloodOxygenTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingBloodOxygenTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -3957,7 +3957,7 @@ func (r *RawClient) BloodOxygen(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingBloodOxygenTimeseries
+	var response []*v505.ClientFacingBloodOxygenTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -3969,13 +3969,13 @@ func (r *RawClient) BloodOxygen(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingBloodOxygenTimeseries]{
+	return &core.Response[[]*v505.ClientFacingBloodOxygenTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -3985,9 +3985,9 @@ func (r *RawClient) BloodOxygen(
 func (r *RawClient) ElectrocardiogramVoltage(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsElectrocardiogramVoltageRequest,
+	request *v505.VitalsElectrocardiogramVoltageRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingElectrocardiogramVoltageTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingElectrocardiogramVoltageTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -4009,7 +4009,7 @@ func (r *RawClient) ElectrocardiogramVoltage(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingElectrocardiogramVoltageTimeseries
+	var response []*v505.ClientFacingElectrocardiogramVoltageTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -4021,13 +4021,13 @@ func (r *RawClient) ElectrocardiogramVoltage(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingElectrocardiogramVoltageTimeseries]{
+	return &core.Response[[]*v505.ClientFacingElectrocardiogramVoltageTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -4037,9 +4037,9 @@ func (r *RawClient) ElectrocardiogramVoltage(
 func (r *RawClient) BloodPressure(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.VitalsBloodPressureRequest,
+	request *v505.VitalsBloodPressureRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingBloodPressureTimeseries], error) {
+) (*core.Response[[]*v505.ClientFacingBloodPressureTimeseries], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -4061,7 +4061,7 @@ func (r *RawClient) BloodPressure(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingBloodPressureTimeseries
+	var response []*v505.ClientFacingBloodPressureTimeseries
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -4073,13 +4073,13 @@ func (r *RawClient) BloodPressure(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingBloodPressureTimeseries]{
+	return &core.Response[[]*v505.ClientFacingBloodPressureTimeseries]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

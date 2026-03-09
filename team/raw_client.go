@@ -4,7 +4,7 @@ package team
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetLinkConfig(
 	ctx context.Context,
-	request *vitalgo.TeamGetLinkConfigRequest,
+	request *v505.TeamGetLinkConfigRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -62,7 +62,7 @@ func (r *RawClient) GetLinkConfig(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -79,7 +79,7 @@ func (r *RawClient) Get(
 	ctx context.Context,
 	teamId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingTeam], error) {
+) (*core.Response[*v505.ClientFacingTeam], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -94,7 +94,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingTeam
+	var response *v505.ClientFacingTeam
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -106,13 +106,13 @@ func (r *RawClient) Get(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingTeam]{
+	return &core.Response[*v505.ClientFacingTeam]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -121,9 +121,9 @@ func (r *RawClient) Get(
 
 func (r *RawClient) GetUserById(
 	ctx context.Context,
-	request *vitalgo.TeamGetUserByIdRequest,
+	request *v505.TeamGetUserByIdRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingUser], error) {
+) (*core.Response[[]*v505.ClientFacingUser], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -142,7 +142,7 @@ func (r *RawClient) GetUserById(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingUser
+	var response []*v505.ClientFacingUser
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -154,13 +154,13 @@ func (r *RawClient) GetUserById(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingUser]{
+	return &core.Response[[]*v505.ClientFacingUser]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -208,7 +208,7 @@ func (r *RawClient) GetSvixUrl(
 
 func (r *RawClient) GetSourcePriorities(
 	ctx context.Context,
-	request *vitalgo.TeamGetSourcePrioritiesRequest,
+	request *v505.TeamGetSourcePrioritiesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]map[string]any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -241,7 +241,7 @@ func (r *RawClient) GetSourcePriorities(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -297,7 +297,7 @@ func (r *RawClient) GetPhysicians(
 	ctx context.Context,
 	teamId string,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingPhysician], error) {
+) (*core.Response[[]*v505.ClientFacingPhysician], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -312,7 +312,7 @@ func (r *RawClient) GetPhysicians(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingPhysician
+	var response []*v505.ClientFacingPhysician
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -324,13 +324,13 @@ func (r *RawClient) GetPhysicians(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingPhysician]{
+	return &core.Response[[]*v505.ClientFacingPhysician]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
