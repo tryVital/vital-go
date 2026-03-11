@@ -4,7 +4,7 @@ package providers
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Get Provider list
 func (c *Client) GetAll(
 	ctx context.Context,
-	request *vitalgo.ProvidersGetAllRequest,
+	request *v505.ProvidersGetAllRequest,
 	opts ...option.RequestOption,
-) ([]*vitalgo.ClientFacingProviderDetailed, error) {
+) ([]*v505.ClientFacingProviderDetailed, error) {
 	response, err := c.WithRawResponse.GetAll(
 		ctx,
 		request,
