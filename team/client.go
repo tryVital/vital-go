@@ -4,10 +4,10 @@ package team
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 )
 
 type Client struct {
@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Post teams.
 func (c *Client) GetLinkConfig(
 	ctx context.Context,
-	request *vitalgo.TeamGetLinkConfigRequest,
+	request *v505.TeamGetLinkConfigRequest,
 	opts ...option.RequestOption,
 ) (map[string]any, error) {
 	response, err := c.WithRawResponse.GetLinkConfig(
@@ -54,7 +54,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	teamId string,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingTeam, error) {
+) (*v505.ClientFacingTeam, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		teamId,
@@ -69,9 +69,9 @@ func (c *Client) Get(
 // Search team users by user_id
 func (c *Client) GetUserById(
 	ctx context.Context,
-	request *vitalgo.TeamGetUserByIdRequest,
+	request *v505.TeamGetUserByIdRequest,
 	opts ...option.RequestOption,
-) ([]*vitalgo.ClientFacingUser, error) {
+) ([]*v505.ClientFacingUser, error) {
 	response, err := c.WithRawResponse.GetUserById(
 		ctx,
 		request,
@@ -100,7 +100,7 @@ func (c *Client) GetSvixUrl(
 // GET source priorities.
 func (c *Client) GetSourcePriorities(
 	ctx context.Context,
-	request *vitalgo.TeamGetSourcePrioritiesRequest,
+	request *v505.TeamGetSourcePrioritiesRequest,
 	opts ...option.RequestOption,
 ) ([]map[string]any, error) {
 	response, err := c.WithRawResponse.GetSourcePriorities(
@@ -133,7 +133,7 @@ func (c *Client) GetPhysicians(
 	ctx context.Context,
 	teamId string,
 	opts ...option.RequestOption,
-) ([]*vitalgo.ClientFacingPhysician, error) {
+) ([]*v505.ClientFacingPhysician, error) {
 	response, err := c.WithRawResponse.GetPhysicians(
 		ctx,
 		teamId,

@@ -4,10 +4,10 @@ package insurance
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 )
 
 type Client struct {
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) SearchGetPayorInfo(
 	ctx context.Context,
-	request *vitalgo.InsuranceSearchGetPayorInfoRequest,
+	request *v505.InsuranceSearchGetPayorInfoRequest,
 	opts ...option.RequestOption,
-) ([]*vitalgo.ClientFacingPayorSearchResponse, error) {
+) ([]*v505.ClientFacingPayorSearchResponse, error) {
 	response, err := c.WithRawResponse.SearchGetPayorInfo(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) SearchGetPayorInfo(
 
 func (c *Client) SearchPayorInfo(
 	ctx context.Context,
-	request *vitalgo.PayorSearchRequest,
+	request *v505.PayorSearchRequest,
 	opts ...option.RequestOption,
-) ([]*vitalgo.ClientFacingPayorSearchResponseDeprecated, error) {
+) ([]*v505.ClientFacingPayorSearchResponseDeprecated, error) {
 	response, err := c.WithRawResponse.SearchPayorInfo(
 		ctx,
 		request,
@@ -66,9 +66,9 @@ func (c *Client) SearchPayorInfo(
 
 func (c *Client) SearchDiagnosis(
 	ctx context.Context,
-	request *vitalgo.InsuranceSearchDiagnosisRequest,
+	request *v505.InsuranceSearchDiagnosisRequest,
 	opts ...option.RequestOption,
-) ([]*vitalgo.ClientFacingDiagnosisInformation, error) {
+) ([]*v505.ClientFacingDiagnosisInformation, error) {
 	response, err := c.WithRawResponse.SearchDiagnosis(
 		ctx,
 		request,

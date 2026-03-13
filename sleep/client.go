@@ -4,10 +4,10 @@ package sleep
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 )
 
 type Client struct {
@@ -36,9 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.SleepGetRequest,
+	request *v505.SleepGetRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientSleepResponse, error) {
+) (*v505.ClientSleepResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		userId,
@@ -55,9 +55,9 @@ func (c *Client) Get(
 func (c *Client) GetRaw(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.SleepGetRawRequest,
+	request *v505.SleepGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawSleep, error) {
+) (*v505.RawSleep, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,
@@ -76,7 +76,7 @@ func (c *Client) GetStreamBySleepId(
 	// The Vital Sleep ID
 	sleepId string,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingSleepStream, error) {
+) (*v505.ClientFacingSleepStream, error) {
 	response, err := c.WithRawResponse.GetStreamBySleepId(
 		ctx,
 		sleepId,
