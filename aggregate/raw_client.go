@@ -4,10 +4,10 @@ package aggregate
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) QueryOne(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.QueryBatch,
+	request *v505.QueryBatch,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.AggregationResponse], error) {
+) (*core.Response[*v505.AggregationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -52,7 +52,7 @@ func (r *RawClient) QueryOne(
 	)
 	headers.Add("accept", "*/*")
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.AggregationResponse
+	var response *v505.AggregationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) QueryOne(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.AggregationResponse]{
+	return &core.Response[*v505.AggregationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -83,7 +83,7 @@ func (r *RawClient) GetResultTableForContinuousQuery(
 	userId string,
 	queryIdOrSlug string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.AggregationResult], error) {
+) (*core.Response[*v505.AggregationResult], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -100,7 +100,7 @@ func (r *RawClient) GetResultTableForContinuousQuery(
 		options.ToHeader(),
 	)
 	headers.Add("accept", "*/*")
-	var response *vitalgo.AggregationResult
+	var response *v505.AggregationResult
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -112,13 +112,13 @@ func (r *RawClient) GetResultTableForContinuousQuery(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.AggregationResult]{
+	return &core.Response[*v505.AggregationResult]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -129,9 +129,9 @@ func (r *RawClient) GetTaskHistoryForContinuousQuery(
 	ctx context.Context,
 	userId string,
 	queryIdOrSlug string,
-	request *vitalgo.AggregateGetTaskHistoryForContinuousQueryRequest,
+	request *v505.AggregateGetTaskHistoryForContinuousQueryRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ContinuousQueryTaskHistoryResponse], error) {
+) (*core.Response[*v505.ContinuousQueryTaskHistoryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -154,7 +154,7 @@ func (r *RawClient) GetTaskHistoryForContinuousQuery(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ContinuousQueryTaskHistoryResponse
+	var response *v505.ContinuousQueryTaskHistoryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -166,13 +166,13 @@ func (r *RawClient) GetTaskHistoryForContinuousQuery(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ContinuousQueryTaskHistoryResponse]{
+	return &core.Response[*v505.ContinuousQueryTaskHistoryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
