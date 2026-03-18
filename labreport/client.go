@@ -4,10 +4,10 @@ package labreport
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 )
 
 type Client struct {
@@ -32,13 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Creates a parse job, uploads the file to provider, persists the job row,
+// Creates a parse job, uploads the file(s) to provider, persists the job row,
 // and starts the ParseLabReport. Returns a generated job_id.
 func (c *Client) ParserCreateJob(
 	ctx context.Context,
-	request *vitalgo.BodyCreateLabReportParserJob,
+	request *v505.BodyCreateLabReportParserJob,
 	opts ...option.RequestOption,
-) (*vitalgo.ParsingJob, error) {
+) (*v505.ParsingJob, error) {
 	response, err := c.WithRawResponse.ParserCreateJob(
 		ctx,
 		request,
@@ -59,7 +59,7 @@ func (c *Client) ParserGetJob(
 	ctx context.Context,
 	jobId string,
 	opts ...option.RequestOption,
-) (*vitalgo.ParsingJob, error) {
+) (*v505.ParsingJob, error) {
 	response, err := c.WithRawResponse.ParserGetJob(
 		ctx,
 		jobId,

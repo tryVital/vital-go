@@ -4,10 +4,10 @@ package payor
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) CreatePayor(
 	ctx context.Context,
-	request *vitalgo.CreatePayorBody,
+	request *v505.CreatePayorBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingPayor], error) {
+) (*core.Response[*v505.ClientFacingPayor], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,7 +47,7 @@ func (r *RawClient) CreatePayor(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingPayor
+	var response *v505.ClientFacingPayor
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -60,13 +60,13 @@ func (r *RawClient) CreatePayor(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingPayor]{
+	return &core.Response[*v505.ClientFacingPayor]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

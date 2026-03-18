@@ -4,10 +4,10 @@ package testkit
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 )
 
 type Client struct {
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) Register(
 	ctx context.Context,
-	request *vitalgo.RegisterTestkitRequest,
+	request *v505.RegisterTestkitRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.PostOrderResponse, error) {
+) (*v505.PostOrderResponse, error) {
 	response, err := c.WithRawResponse.Register(
 		ctx,
 		request,
@@ -51,9 +51,9 @@ func (c *Client) Register(
 // Creates an order for an unregistered testkit
 func (c *Client) CreateOrder(
 	ctx context.Context,
-	request *vitalgo.CreateRegistrableTestkitOrderRequest,
+	request *v505.CreateRegistrableTestkitOrderRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.PostOrderResponse, error) {
+) (*v505.PostOrderResponse, error) {
 	response, err := c.WithRawResponse.CreateOrder(
 		ctx,
 		request,
