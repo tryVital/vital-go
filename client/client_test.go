@@ -4,7 +4,7 @@ package client
 
 import (
 	assert "github.com/stretchr/testify/assert"
-	option "github.com/tryVital/vital-go/option"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 	testing "testing"
 	time "time"

@@ -5,10 +5,10 @@ package labreport
 import (
 	context "context"
 	fmt "fmt"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ParserCreateJob(
 	ctx context.Context,
-	request *vitalgo.BodyCreateLabReportParserJob,
+	request *v505.BodyCreateLabReportParserJob,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ParsingJob], error) {
+) (*core.Response[*v505.ParsingJob], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -48,8 +48,10 @@ func (r *RawClient) ParserCreateJob(
 		options.ToHeader(),
 	)
 	writer := internal.NewMultipartWriter()
-	if err := writer.WriteFile("file", request.File); err != nil {
-		return nil, err
+	for _, f := range request.File {
+		if err := writer.WriteFile("file", f); err != nil {
+			return nil, err
+		}
 	}
 	if err := writer.WriteField("user_id", request.UserId); err != nil {
 		return nil, err
@@ -64,7 +66,7 @@ func (r *RawClient) ParserCreateJob(
 	}
 	headers.Set("Content-Type", writer.ContentType())
 
-	var response *vitalgo.ParsingJob
+	var response *v505.ParsingJob
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -77,13 +79,13 @@ func (r *RawClient) ParserCreateJob(
 			Client:          options.HTTPClient,
 			Request:         writer.Buffer(),
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ParsingJob]{
+	return &core.Response[*v505.ParsingJob]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -94,7 +96,7 @@ func (r *RawClient) ParserGetJob(
 	ctx context.Context,
 	jobId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ParsingJob], error) {
+) (*core.Response[*v505.ParsingJob], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -109,7 +111,7 @@ func (r *RawClient) ParserGetJob(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ParsingJob
+	var response *v505.ParsingJob
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -121,13 +123,13 @@ func (r *RawClient) ParserGetJob(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ParsingJob]{
+	return &core.Response[*v505.ParsingJob]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
