@@ -4,10 +4,10 @@ package testkit
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Register(
 	ctx context.Context,
-	request *vitalgo.RegisterTestkitRequest,
+	request *v505.RegisterTestkitRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PostOrderResponse], error) {
+) (*core.Response[*v505.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,7 +47,7 @@ func (r *RawClient) Register(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.PostOrderResponse
+	var response *v505.PostOrderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -60,13 +60,13 @@ func (r *RawClient) Register(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PostOrderResponse]{
+	return &core.Response[*v505.PostOrderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -75,9 +75,9 @@ func (r *RawClient) Register(
 
 func (r *RawClient) CreateOrder(
 	ctx context.Context,
-	request *vitalgo.CreateRegistrableTestkitOrderRequest,
+	request *v505.CreateRegistrableTestkitOrderRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PostOrderResponse], error) {
+) (*core.Response[*v505.PostOrderResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -90,7 +90,7 @@ func (r *RawClient) CreateOrder(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.PostOrderResponse
+	var response *v505.PostOrderResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -103,13 +103,13 @@ func (r *RawClient) CreateOrder(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PostOrderResponse]{
+	return &core.Response[*v505.PostOrderResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
