@@ -726,11 +726,7 @@ Check link token state - can be hit continuously used as heartbeat
 <dd>
 
 ```go
-request := &vitalgo.LinkTokenStateRequest{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
-    }
+request := &vitalgo.LinkTokenStateRequest{}
 client.Link.TokenState(
         context.TODO(),
         request,
@@ -790,9 +786,6 @@ Deprecated. Use `POST /v2/link/provider/email/{provider}` instead.
 
 ```go
 request := &vitalgo.EmailAuthLink{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
         Email: "email",
         Provider: vitalgo.ProvidersOura,
         AuthType: vitalgo.AuthTypePassword,
@@ -888,9 +881,6 @@ Deprecated. Use `POST /v2/link/provider/password/{provider}` instead.
 
 ```go
 request := &vitalgo.PasswordAuthLink{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
         Username: "username",
         Password: "password",
         Provider: vitalgo.ProvidersOura,
@@ -986,11 +976,7 @@ This endpoint generates an OAuth link for oauth provider
 <dd>
 
 ```go
-request := &vitalgo.LinkGenerateOauthLinkRequest{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
-    }
+request := &vitalgo.LinkGenerateOauthLinkRequest{}
 client.Link.GenerateOauthLink(
         context.TODO(),
         vitalgo.OAuthProvidersOura.Ptr(),
@@ -1059,9 +1045,6 @@ This connects auth providers that are password based.
 
 ```go
 request := &vitalgo.IndividualProviderData{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
         Username: "username",
         Password: "password",
     }
@@ -1157,9 +1140,6 @@ This connects auth providers that are password based.
 
 ```go
 request := &vitalgo.CompletePasswordProviderMfaBody{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
         MfaCode: "mfa_code",
     }
 client.Link.CompletePasswordProviderMfa(
@@ -1238,9 +1218,6 @@ This connects auth providers that are email based.
 
 ```go
 request := &vitalgo.EmailProviderAuthLink{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
         Email: "email",
     }
 client.Link.ConnectEmailAuthProvider(
@@ -1336,11 +1313,7 @@ GET List of all available providers given the generated link token.
 <dd>
 
 ```go
-request := &vitalgo.LinkGetAllProvidersRequest{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
-    }
+request := &vitalgo.LinkGetAllProvidersRequest{}
 client.Link.GetAllProviders(
         context.TODO(),
         request,
@@ -1416,6 +1389,22 @@ client.Link.ConnectManualProvider(
 <dl>
 <dd>
 
+**vitalIosSdkVersion:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vitalAndroidSdkVersion:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **userId:** `string` 
     
 </dd>
@@ -1425,6 +1414,14 @@ client.Link.ConnectManualProvider(
 <dd>
 
 **providerId:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**grantedPermissions:** `[]string` 
     
 </dd>
 </dl>
@@ -10647,7 +10644,7 @@ request := &vitalgo.UserInfoCreateRequest{
         PhoneNumber: "phone_number",
         Gender: "gender",
         Dob: "dob",
-        Address: &vitalgo.Address{
+        Address: &vitalgo.UserAddress{
             FirstLine: "first_line",
             Country: "country",
             Zip: "zip",
@@ -10731,7 +10728,7 @@ client.User.UpsertUserInfo(
 <dl>
 <dd>
 
-**address:** `*vitalgo.Address` 
+**address:** `*vitalgo.UserAddress` 
     
 </dd>
 </dl>
@@ -11446,11 +11443,7 @@ Post teams.
 <dd>
 
 ```go
-request := &vitalgo.TeamGetLinkConfigRequest{
-        VitalLinkToken: vitalgo.String(
-            "x-vital-link-token",
-        ),
-    }
+request := &vitalgo.TeamGetLinkConfigRequest{}
 client.Team.GetLinkConfig(
         context.TODO(),
         request,
@@ -12242,6 +12235,22 @@ client.LabTests.Create(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**labAccountId:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**labSlug:** `*vitalgo.Labs` 
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -12396,7 +12405,7 @@ client.LabTests.UpdateLabTest(
 <dl>
 <dd>
 
-GET all the markers for the given lab.
+List active and orderable markers for a given Lab. Note that reflex markers are not included.
 </dd>
 </dl>
 </dd>
@@ -12412,6 +12421,9 @@ GET all the markers for the given lab.
 
 ```go
 request := &vitalgo.LabTestsGetMarkersRequest{
+        LabSlug: vitalgo.String(
+            "lab_slug",
+        ),
         Name: vitalgo.String(
             "name",
         ),
@@ -12448,6 +12460,14 @@ client.LabTests.GetMarkers(
 <dd>
 
 **labId:** `*int` — The identifier Vital assigned to a lab partner.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**labSlug:** `*string` — The slug of the lab for these markers. If both lab_id and lab_slug are provided, lab_slug will be used.
     
 </dd>
 </dl>
@@ -12571,6 +12591,20 @@ client.LabTests.GetMarkersForOrderSet(
 <details><summary><code>client.LabTests.GetMarkersForLabTest(LabTestId) -> *vitalgo.GetMarkersResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List all markers for a given Lab Test, as well as any associated reflex markers.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -13038,6 +13072,9 @@ request := &vitalgo.LabTestsGetOrdersRequest{
         ShippingRecipientName: vitalgo.String(
             "shipping_recipient_name",
         ),
+        OrderTransactionId: vitalgo.String(
+            "order_transaction_id",
+        ),
         Page: vitalgo.Int(
             1,
         ),
@@ -13185,6 +13222,14 @@ client.LabTests.GetOrders(
 <dd>
 
 **orderIds:** `*string` — Filter by order ids.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderTransactionId:** `*string` — Filter by order transaction ID
     
 </dd>
 </dl>
@@ -13433,6 +13478,14 @@ client.LabTests.RequestPhlebotomyAppointment(
 <dd>
 
 **provider:** `*vitalgo.AppointmentProvider` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**appointmentNotes:** `*string` 
     
 </dd>
 </dl>
@@ -14211,9 +14264,7 @@ client.LabTests.GetLabelsPdf(
 
 ```go
 request := &vitalgo.LabTestsGetPscAppointmentAvailabilityRequest{
-        Lab: vitalgo.AppointmentPscLabs(
-            "quest",
-        ),
+        Lab: vitalgo.AppointmentPscLabsQuest,
         StartDate: vitalgo.String(
             "start_date",
         ),
@@ -14221,6 +14272,9 @@ request := &vitalgo.LabTestsGetPscAppointmentAvailabilityRequest{
             "zip_code",
         ),
         Radius: vitalgo.AllowedRadiusTen.Ptr(),
+        AllowStale: vitalgo.Bool(
+            true,
+        ),
     }
 client.LabTests.GetPscAppointmentAvailability(
         context.TODO(),
@@ -14241,7 +14295,7 @@ client.LabTests.GetPscAppointmentAvailability(
 <dl>
 <dd>
 
-**lab:** `vitalgo.AppointmentPscLabs` — Lab to check for availability
+**lab:** `*vitalgo.AppointmentPscLabs` — Lab to check for availability
     
 </dd>
 </dl>
@@ -14277,6 +14331,14 @@ client.LabTests.GetPscAppointmentAvailability(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**allowStale:** `*bool` — If true, allows cached availability data to be returned.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -14298,8 +14360,10 @@ client.LabTests.GetPscAppointmentAvailability(
 <dd>
 
 ```go
-request := &vitalgo.AppointmentBookingRequest{
-        BookingKey: "booking_key",
+request := &vitalgo.LabTestsBookPscAppointmentRequest{
+        Body: &vitalgo.AppointmentBookingRequest{
+            BookingKey: "booking_key",
+        },
     }
 client.LabTests.BookPscAppointment(
         context.TODO(),
@@ -14322,6 +14386,22 @@ client.LabTests.BookPscAppointment(
 <dd>
 
 **orderId:** `string` — Your Order ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*string` — [!] This feature (Idempotency Key) is under closed beta. Idempotency Key support for booking PSC appointment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyError:** `*string` — If `no-cache`, applies idempotency only to successful outcomes.
     
 </dd>
 </dl>
@@ -14793,9 +14873,6 @@ client.LabTests.GetOrder(
 
 ```go
 request := &vitalgo.CreateOrderRequestCompatible{
-        IdempotencyKey: vitalgo.String(
-            "X-Idempotency-Key",
-        ),
         UserId: "user_id",
         PatientDetails: &vitalgo.PatientDetailsWithValidation{
             FirstName: "first_name",
@@ -14945,6 +15022,14 @@ client.LabTests.CreateOrder(
 <dd>
 
 **passthrough:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**clinicalNotes:** `*string` 
     
 </dd>
 </dl>
@@ -15363,6 +15448,383 @@ client.LabTests.ValidateIcdCodes(
 <dd>
 
 **codes:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Compendium
+<details><summary><code>client.Compendium.Search(request) -> *vitalgo.SearchCompendiumResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &vitalgo.SearchCompendiumBody{
+        TeamId: vitalgo.CompendiumSearchRequestTeamIdInferFromContext.Ptr(),
+        Mode: vitalgo.SearchModeCanonical,
+    }
+client.Compendium.Search(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**teamId:** `*vitalgo.CompendiumSearchRequestTeamId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mode:** `*vitalgo.SearchMode` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**query:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cptCodes:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**loincSetHash:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**labs:** `[]*vitalgo.CompendiumSearchLabs` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeRelated:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Compendium.Convert(request) -> *vitalgo.ConvertCompendiumResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &vitalgo.ConvertCompendiumBody{
+        TeamId: vitalgo.CompendiumConvertRequestTeamIdInferFromContext.Ptr(),
+        TargetLab: vitalgo.CompendiumSearchLabsLabcorp,
+    }
+client.Compendium.Convert(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**teamId:** `*vitalgo.CompendiumConvertRequestTeamId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**labTestId:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**providerIds:** `[]string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetLab:** `*vitalgo.CompendiumSearchLabs` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## LabAccount
+<details><summary><code>client.LabAccount.GetTeamLabAccounts() -> *vitalgo.GetTeamLabAccountsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &vitalgo.LabAccountGetTeamLabAccountsRequest{
+        LabAccountId: vitalgo.String(
+            "lab_account_id",
+        ),
+        Status: vitalgo.LabAccountStatusActive.Ptr(),
+    }
+client.LabAccount.GetTeamLabAccounts(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**labAccountId:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*vitalgo.LabAccountStatus` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## OrderTransaction
+<details><summary><code>client.OrderTransaction.GetTransaction(TransactionId) -> *vitalgo.GetOrderTransactionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.OrderTransaction.GetTransaction(
+        context.TODO(),
+        "transaction_id",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transactionId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.OrderTransaction.GetTransactionResult(TransactionId) -> *vitalgo.LabResultsRaw</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.OrderTransaction.GetTransactionResult(
+        context.TODO(),
+        "transaction_id",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transactionId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.OrderTransaction.GetTransactionResultPdf(TransactionId) -> string</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.OrderTransaction.GetTransactionResultPdf(
+        context.TODO(),
+        "transaction_id",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transactionId:** `string` 
     
 </dd>
 </dl>
@@ -15934,7 +16396,7 @@ client.Payor.CreatePayor(
 <dl>
 <dd>
 
-Creates a parse job, uploads the file to provider, persists the job row,
+Creates a parse job, uploads the file(s) to provider, persists the job row,
 and starts the ParseLabReport. Returns a generated job_id.
 </dd>
 </dl>
