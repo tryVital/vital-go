@@ -3,32 +3,35 @@
 package client
 
 import (
-	activity "github.com/tryVital/vital-go/activity"
-	aggregate "github.com/tryVital/vital-go/aggregate"
-	body "github.com/tryVital/vital-go/body"
-	core "github.com/tryVital/vital-go/core"
-	devices "github.com/tryVital/vital-go/devices"
-	electrocardiogram "github.com/tryVital/vital-go/electrocardiogram"
-	insurance "github.com/tryVital/vital-go/insurance"
-	internal "github.com/tryVital/vital-go/internal"
-	introspect "github.com/tryVital/vital-go/introspect"
-	labreport "github.com/tryVital/vital-go/labreport"
-	labtests "github.com/tryVital/vital-go/labtests"
-	link "github.com/tryVital/vital-go/link"
-	meal "github.com/tryVital/vital-go/meal"
-	menstrualcycle "github.com/tryVital/vital-go/menstrualcycle"
-	option "github.com/tryVital/vital-go/option"
-	order "github.com/tryVital/vital-go/order"
-	payor "github.com/tryVital/vital-go/payor"
-	profile "github.com/tryVital/vital-go/profile"
-	providers "github.com/tryVital/vital-go/providers"
-	sleep "github.com/tryVital/vital-go/sleep"
-	sleepcycle "github.com/tryVital/vital-go/sleepcycle"
-	team "github.com/tryVital/vital-go/team"
-	testkit "github.com/tryVital/vital-go/testkit"
-	user "github.com/tryVital/vital-go/user"
-	vitals "github.com/tryVital/vital-go/vitals"
-	workouts "github.com/tryVital/vital-go/workouts"
+	activity "github.com/tryVital/vital-go/v2/activity"
+	aggregate "github.com/tryVital/vital-go/v2/aggregate"
+	body "github.com/tryVital/vital-go/v2/body"
+	compendium "github.com/tryVital/vital-go/v2/compendium"
+	core "github.com/tryVital/vital-go/v2/core"
+	devices "github.com/tryVital/vital-go/v2/devices"
+	electrocardiogram "github.com/tryVital/vital-go/v2/electrocardiogram"
+	insurance "github.com/tryVital/vital-go/v2/insurance"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	introspect "github.com/tryVital/vital-go/v2/introspect"
+	labaccount "github.com/tryVital/vital-go/v2/labaccount"
+	labreport "github.com/tryVital/vital-go/v2/labreport"
+	labtests "github.com/tryVital/vital-go/v2/labtests"
+	link "github.com/tryVital/vital-go/v2/link"
+	meal "github.com/tryVital/vital-go/v2/meal"
+	menstrualcycle "github.com/tryVital/vital-go/v2/menstrualcycle"
+	option "github.com/tryVital/vital-go/v2/option"
+	order "github.com/tryVital/vital-go/v2/order"
+	ordertransaction "github.com/tryVital/vital-go/v2/ordertransaction"
+	payor "github.com/tryVital/vital-go/v2/payor"
+	profile "github.com/tryVital/vital-go/v2/profile"
+	providers "github.com/tryVital/vital-go/v2/providers"
+	sleep "github.com/tryVital/vital-go/v2/sleep"
+	sleepcycle "github.com/tryVital/vital-go/v2/sleepcycle"
+	team "github.com/tryVital/vital-go/v2/team"
+	testkit "github.com/tryVital/vital-go/v2/testkit"
+	user "github.com/tryVital/vital-go/v2/user"
+	vitals "github.com/tryVital/vital-go/v2/vitals"
+	workouts "github.com/tryVital/vital-go/v2/workouts"
 )
 
 type Client struct {
@@ -49,6 +52,9 @@ type Client struct {
 	Providers         *providers.Client
 	Introspect        *introspect.Client
 	LabTests          *labtests.Client
+	Compendium        *compendium.Client
+	LabAccount        *labaccount.Client
+	OrderTransaction  *ordertransaction.Client
 	Testkit           *testkit.Client
 	Order             *order.Client
 	Insurance         *insurance.Client
@@ -81,6 +87,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Providers:         providers.NewClient(options),
 		Introspect:        introspect.NewClient(options),
 		LabTests:          labtests.NewClient(options),
+		Compendium:        compendium.NewClient(options),
+		LabAccount:        labaccount.NewClient(options),
+		OrderTransaction:  ordertransaction.NewClient(options),
 		Testkit:           testkit.NewClient(options),
 		Order:             order.NewClient(options),
 		Insurance:         insurance.NewClient(options),
