@@ -4,10 +4,10 @@ package link
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	vitalgo "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -856,6 +856,12 @@ func (r *RawClient) ConnectManualProvider(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.VitalIosSdkVersion != nil {
+		headers.Add("x-vital-ios-sdk-version", *request.VitalIosSdkVersion)
+	}
+	if request.VitalAndroidSdkVersion != nil {
+		headers.Add("x-vital-android-sdk-version", *request.VitalAndroidSdkVersion)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response map[string]bool
 	raw, err := r.caller.Call(
