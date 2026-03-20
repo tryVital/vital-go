@@ -4,7 +4,7 @@ package api
 
 import (
 	json "encoding/json"
-	core "github.com/tryVital/vital-go/core"
+	core "github.com/tryVital/vital-go/v2/core"
 )
 
 // Bad Request

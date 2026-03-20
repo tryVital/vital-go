@@ -1,4 +1,4 @@
-module github.com/tryVital/vital-go
+module github.com/tryVital/vital-go/v2
 
 go 1.21
 
