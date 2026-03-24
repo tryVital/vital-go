@@ -12,7 +12,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/tryVital/vital-go/core"
+	"github.com/tryVital/vital-go/v2/core"
 )
 
 type RetryTestCase struct {
