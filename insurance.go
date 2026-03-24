@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/tryVital/vital-go/internal"
+	internal "github.com/tryVital/vital-go/v2/internal"
 	big "math/big"
 )
 
@@ -118,6 +118,27 @@ func (p *PayorSearchRequest) SetProvider(provider *PayorCodeExternalProvider) {
 func (p *PayorSearchRequest) SetProviderId(providerId *string) {
 	p.ProviderId = providerId
 	p.require(payorSearchRequestFieldProviderId)
+}
+
+func (p *PayorSearchRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayorSearchRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PayorSearchRequest(body)
+	return nil
+}
+
+func (p *PayorSearchRequest) MarshalJSON() ([]byte, error) {
+	type embed PayorSearchRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
