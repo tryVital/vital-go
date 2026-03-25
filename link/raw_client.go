@@ -856,6 +856,12 @@ func (r *RawClient) ConnectManualProvider(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.VitalIosSdkVersion != nil {
+		headers.Add("x-vital-ios-sdk-version", *request.VitalIosSdkVersion)
+	}
+	if request.VitalAndroidSdkVersion != nil {
+		headers.Add("x-vital-android-sdk-version", *request.VitalAndroidSdkVersion)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response map[string]bool
 	raw, err := r.caller.Call(
