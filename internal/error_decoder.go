@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/tryVital/vital-go/core"
+	"github.com/tryVital/vital-go/v2/core"
 )
 
 // ErrorCodes maps HTTP status codes to error constructors.
