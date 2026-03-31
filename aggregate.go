@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/tryVital/vital-go/internal"
+	internal "github.com/tryVital/vital-go/v2/internal"
 	big "math/big"
 	time "time"
 )
@@ -51,8 +51,8 @@ var (
 )
 
 type QueryBatch struct {
-	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
-	Queries   []*Query             `json:"queries,omitempty" url:"-"`
+	Timeframe *QueryBatchTimeframe `json:"timeframe" url:"-"`
+	Queries   []*Query             `json:"queries" url:"-"`
 	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
 	accept    string
 
@@ -380,24 +380,26 @@ func (a *AggregateExpr) String() string {
 }
 
 type AggregateExprArg struct {
-	SleepColumnExpr               *SleepColumnExpr
-	ActivityColumnExpr            *ActivityColumnExpr
-	WorkoutColumnExpr             *WorkoutColumnExpr
-	BodyColumnExpr                *BodyColumnExpr
-	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
-	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
-	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
-	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
-	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
-	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
-	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
-	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
-	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
-	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
-	NoteTimeseriesExpr            *NoteTimeseriesExpr
-	IndexColumnExpr               *IndexColumnExpr
+	SleepColumnExpr                *SleepColumnExpr
+	DerivedReadinessColumnExpr     *DerivedReadinessColumnExpr
+	ActivityColumnExpr             *ActivityColumnExpr
+	WorkoutColumnExpr              *WorkoutColumnExpr
+	BodyColumnExpr                 *BodyColumnExpr
+	MealColumnExpr                 *MealColumnExpr
+	ProfileColumnExpr              *ProfileColumnExpr
+	SleepScoreValueMacroExpr       *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr       *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr         *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr          *AwakeAtValueMacroExpr
+	UnrecognizedValueMacroExpr     *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr         *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr         *IntervalTimeseriesExpr
+	InsulinInjectionTimeseriesExpr *InsulinInjectionTimeseriesExpr
+	BloodPressureTimeseriesExpr    *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr      *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr  *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr             *NoteTimeseriesExpr
+	IndexColumnExpr                *IndexColumnExpr
 
 	typ string
 }
@@ -407,6 +409,13 @@ func (a *AggregateExprArg) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return a.SleepColumnExpr
+}
+
+func (a *AggregateExprArg) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if a == nil {
+		return nil
+	}
+	return a.DerivedReadinessColumnExpr
 }
 
 func (a *AggregateExprArg) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -493,6 +502,13 @@ func (a *AggregateExprArg) GetIntervalTimeseriesExpr() *IntervalTimeseriesExpr {
 	return a.IntervalTimeseriesExpr
 }
 
+func (a *AggregateExprArg) GetInsulinInjectionTimeseriesExpr() *InsulinInjectionTimeseriesExpr {
+	if a == nil {
+		return nil
+	}
+	return a.InsulinInjectionTimeseriesExpr
+}
+
 func (a *AggregateExprArg) GetBloodPressureTimeseriesExpr() *BloodPressureTimeseriesExpr {
 	if a == nil {
 		return nil
@@ -533,6 +549,12 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
 		a.typ = "SleepColumnExpr"
 		a.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		a.typ = "DerivedReadinessColumnExpr"
+		a.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
 		return nil
 	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
@@ -607,6 +629,12 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
 		return nil
 	}
+	valueInsulinInjectionTimeseriesExpr := new(InsulinInjectionTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueInsulinInjectionTimeseriesExpr); err == nil {
+		a.typ = "InsulinInjectionTimeseriesExpr"
+		a.InsulinInjectionTimeseriesExpr = valueInsulinInjectionTimeseriesExpr
+		return nil
+	}
 	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
 	if err := json.Unmarshal(data, &valueBloodPressureTimeseriesExpr); err == nil {
 		a.typ = "BloodPressureTimeseriesExpr"
@@ -644,6 +672,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.typ == "SleepColumnExpr" || a.SleepColumnExpr != nil {
 		return json.Marshal(a.SleepColumnExpr)
 	}
+	if a.typ == "DerivedReadinessColumnExpr" || a.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(a.DerivedReadinessColumnExpr)
+	}
 	if a.typ == "ActivityColumnExpr" || a.ActivityColumnExpr != nil {
 		return json.Marshal(a.ActivityColumnExpr)
 	}
@@ -680,6 +711,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.typ == "IntervalTimeseriesExpr" || a.IntervalTimeseriesExpr != nil {
 		return json.Marshal(a.IntervalTimeseriesExpr)
 	}
+	if a.typ == "InsulinInjectionTimeseriesExpr" || a.InsulinInjectionTimeseriesExpr != nil {
+		return json.Marshal(a.InsulinInjectionTimeseriesExpr)
+	}
 	if a.typ == "BloodPressureTimeseriesExpr" || a.BloodPressureTimeseriesExpr != nil {
 		return json.Marshal(a.BloodPressureTimeseriesExpr)
 	}
@@ -700,6 +734,7 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 
 type AggregateExprArgVisitor interface {
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
@@ -712,6 +747,7 @@ type AggregateExprArgVisitor interface {
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitInsulinInjectionTimeseriesExpr(*InsulinInjectionTimeseriesExpr) error
 	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
@@ -722,6 +758,9 @@ type AggregateExprArgVisitor interface {
 func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	if a.typ == "SleepColumnExpr" || a.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(a.SleepColumnExpr)
+	}
+	if a.typ == "DerivedReadinessColumnExpr" || a.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(a.DerivedReadinessColumnExpr)
 	}
 	if a.typ == "ActivityColumnExpr" || a.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(a.ActivityColumnExpr)
@@ -758,6 +797,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.typ == "IntervalTimeseriesExpr" || a.IntervalTimeseriesExpr != nil {
 		return visitor.VisitIntervalTimeseriesExpr(a.IntervalTimeseriesExpr)
+	}
+	if a.typ == "InsulinInjectionTimeseriesExpr" || a.InsulinInjectionTimeseriesExpr != nil {
+		return visitor.VisitInsulinInjectionTimeseriesExpr(a.InsulinInjectionTimeseriesExpr)
 	}
 	if a.typ == "BloodPressureTimeseriesExpr" || a.BloodPressureTimeseriesExpr != nil {
 		return visitor.VisitBloodPressureTimeseriesExpr(a.BloodPressureTimeseriesExpr)
@@ -2190,6 +2232,126 @@ func (d *DateTruncExprArg) Accept(visitor DateTruncExprArgVisitor) error {
 }
 
 var (
+	derivedReadinessColumnExprFieldDerivedReadiness = big.NewInt(1 << 0)
+)
+
+type DerivedReadinessColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	DerivedReadiness DerivedReadinessColumnExprDerivedReadiness `json:"derived_readiness" url:"derived_readiness"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DerivedReadinessColumnExpr) GetDerivedReadiness() DerivedReadinessColumnExprDerivedReadiness {
+	if d == nil {
+		return ""
+	}
+	return d.DerivedReadiness
+}
+
+func (d *DerivedReadinessColumnExpr) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DerivedReadinessColumnExpr) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetDerivedReadiness sets the DerivedReadiness field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DerivedReadinessColumnExpr) SetDerivedReadiness(derivedReadiness DerivedReadinessColumnExprDerivedReadiness) {
+	d.DerivedReadiness = derivedReadiness
+	d.require(derivedReadinessColumnExprFieldDerivedReadiness)
+}
+
+func (d *DerivedReadinessColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler DerivedReadinessColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DerivedReadinessColumnExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DerivedReadinessColumnExpr) MarshalJSON() ([]byte, error) {
+	type embed DerivedReadinessColumnExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DerivedReadinessColumnExpr) String() string {
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type DerivedReadinessColumnExprDerivedReadiness string
+
+const (
+	DerivedReadinessColumnExprDerivedReadinessDate          DerivedReadinessColumnExprDerivedReadiness = "date"
+	DerivedReadinessColumnExprDerivedReadinessChronotype    DerivedReadinessColumnExprDerivedReadiness = "chronotype"
+	DerivedReadinessColumnExprDerivedReadinessSleepScore    DerivedReadinessColumnExprDerivedReadiness = "sleep_score"
+	DerivedReadinessColumnExprDerivedReadinessRecoveryScore DerivedReadinessColumnExprDerivedReadiness = "recovery_score"
+	DerivedReadinessColumnExprDerivedReadinessRecoveryZone  DerivedReadinessColumnExprDerivedReadiness = "recovery_zone"
+	DerivedReadinessColumnExprDerivedReadinessStressScore   DerivedReadinessColumnExprDerivedReadiness = "stress_score"
+	DerivedReadinessColumnExprDerivedReadinessStrainScore   DerivedReadinessColumnExprDerivedReadiness = "strain_score"
+	DerivedReadinessColumnExprDerivedReadinessStrainZone    DerivedReadinessColumnExprDerivedReadiness = "strain_zone"
+)
+
+func NewDerivedReadinessColumnExprDerivedReadinessFromString(s string) (DerivedReadinessColumnExprDerivedReadiness, error) {
+	switch s {
+	case "date":
+		return DerivedReadinessColumnExprDerivedReadinessDate, nil
+	case "chronotype":
+		return DerivedReadinessColumnExprDerivedReadinessChronotype, nil
+	case "sleep_score":
+		return DerivedReadinessColumnExprDerivedReadinessSleepScore, nil
+	case "recovery_score":
+		return DerivedReadinessColumnExprDerivedReadinessRecoveryScore, nil
+	case "recovery_zone":
+		return DerivedReadinessColumnExprDerivedReadinessRecoveryZone, nil
+	case "stress_score":
+		return DerivedReadinessColumnExprDerivedReadinessStressScore, nil
+	case "strain_score":
+		return DerivedReadinessColumnExprDerivedReadinessStrainScore, nil
+	case "strain_zone":
+		return DerivedReadinessColumnExprDerivedReadinessStrainZone, nil
+	}
+	var t DerivedReadinessColumnExprDerivedReadiness
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DerivedReadinessColumnExprDerivedReadiness) Ptr() *DerivedReadinessColumnExprDerivedReadiness {
+	return &d
+}
+
+var (
 	discreteTimeseriesExprFieldTimeseries = big.NewInt(1 << 0)
 	discreteTimeseriesExprFieldField      = big.NewInt(1 << 1)
 )
@@ -2602,19 +2764,22 @@ func (i *IndexColumnExpr) String() string {
 type IndexColumnExprIndex string
 
 const (
-	IndexColumnExprIndexSleep      IndexColumnExprIndex = "sleep"
-	IndexColumnExprIndexActivity   IndexColumnExprIndex = "activity"
-	IndexColumnExprIndexWorkout    IndexColumnExprIndex = "workout"
-	IndexColumnExprIndexBody       IndexColumnExprIndex = "body"
-	IndexColumnExprIndexMeal       IndexColumnExprIndex = "meal"
-	IndexColumnExprIndexProfile    IndexColumnExprIndex = "profile"
-	IndexColumnExprIndexTimeseries IndexColumnExprIndex = "timeseries"
+	IndexColumnExprIndexSleep            IndexColumnExprIndex = "sleep"
+	IndexColumnExprIndexDerivedReadiness IndexColumnExprIndex = "derived_readiness"
+	IndexColumnExprIndexActivity         IndexColumnExprIndex = "activity"
+	IndexColumnExprIndexWorkout          IndexColumnExprIndex = "workout"
+	IndexColumnExprIndexBody             IndexColumnExprIndex = "body"
+	IndexColumnExprIndexMeal             IndexColumnExprIndex = "meal"
+	IndexColumnExprIndexProfile          IndexColumnExprIndex = "profile"
+	IndexColumnExprIndexTimeseries       IndexColumnExprIndex = "timeseries"
 )
 
 func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 	switch s {
 	case "sleep":
 		return IndexColumnExprIndexSleep, nil
+	case "derived_readiness":
+		return IndexColumnExprIndexDerivedReadiness, nil
 	case "activity":
 		return IndexColumnExprIndexActivity, nil
 	case "workout":
@@ -2633,6 +2798,154 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 }
 
 func (i IndexColumnExprIndex) Ptr() *IndexColumnExprIndex {
+	return &i
+}
+
+var (
+	insulinInjectionTimeseriesExprFieldField = big.NewInt(1 << 0)
+)
+
+type InsulinInjectionTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	Field InsulinInjectionTimeseriesExprField `json:"field" url:"field"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+	timeseries     string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *InsulinInjectionTimeseriesExpr) GetField() InsulinInjectionTimeseriesExprField {
+	if i == nil {
+		return ""
+	}
+	return i.Field
+}
+
+func (i *InsulinInjectionTimeseriesExpr) Timeseries() string {
+	return i.timeseries
+}
+
+func (i *InsulinInjectionTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *InsulinInjectionTimeseriesExpr) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetField sets the Field field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *InsulinInjectionTimeseriesExpr) SetField(field InsulinInjectionTimeseriesExprField) {
+	i.Field = field
+	i.require(insulinInjectionTimeseriesExprFieldField)
+}
+
+func (i *InsulinInjectionTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type embed InsulinInjectionTimeseriesExpr
+	var unmarshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*i = InsulinInjectionTimeseriesExpr(unmarshaler.embed)
+	if unmarshaler.Timeseries != "insulin_injection" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", i, "insulin_injection", unmarshaler.Timeseries)
+	}
+	i.timeseries = unmarshaler.Timeseries
+	extraProperties, err := internal.ExtractExtraProperties(data, *i, "timeseries")
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *InsulinInjectionTimeseriesExpr) MarshalJSON() ([]byte, error) {
+	type embed InsulinInjectionTimeseriesExpr
+	var marshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed:      embed(*i),
+		Timeseries: "insulin_injection",
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *InsulinInjectionTimeseriesExpr) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type InsulinInjectionTimeseriesExprField string
+
+const (
+	InsulinInjectionTimeseriesExprFieldSourceProvider  InsulinInjectionTimeseriesExprField = "source_provider"
+	InsulinInjectionTimeseriesExprFieldSourceType      InsulinInjectionTimeseriesExprField = "source_type"
+	InsulinInjectionTimeseriesExprFieldSourceAppId     InsulinInjectionTimeseriesExprField = "source_app_id"
+	InsulinInjectionTimeseriesExprFieldSourceWorkoutId InsulinInjectionTimeseriesExprField = "source_workout_id"
+	InsulinInjectionTimeseriesExprFieldSourceSport     InsulinInjectionTimeseriesExprField = "source_sport"
+	InsulinInjectionTimeseriesExprFieldTimezoneOffset  InsulinInjectionTimeseriesExprField = "timezone_offset"
+	InsulinInjectionTimeseriesExprFieldType            InsulinInjectionTimeseriesExprField = "type"
+	InsulinInjectionTimeseriesExprFieldDuration        InsulinInjectionTimeseriesExprField = "duration"
+	InsulinInjectionTimeseriesExprFieldValue           InsulinInjectionTimeseriesExprField = "value"
+	InsulinInjectionTimeseriesExprFieldDeliveryMode    InsulinInjectionTimeseriesExprField = "delivery_mode"
+	InsulinInjectionTimeseriesExprFieldDeliveryForm    InsulinInjectionTimeseriesExprField = "delivery_form"
+	InsulinInjectionTimeseriesExprFieldBolusPurpose    InsulinInjectionTimeseriesExprField = "bolus_purpose"
+)
+
+func NewInsulinInjectionTimeseriesExprFieldFromString(s string) (InsulinInjectionTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return InsulinInjectionTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return InsulinInjectionTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return InsulinInjectionTimeseriesExprFieldSourceAppId, nil
+	case "source_workout_id":
+		return InsulinInjectionTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return InsulinInjectionTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return InsulinInjectionTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return InsulinInjectionTimeseriesExprFieldType, nil
+	case "duration":
+		return InsulinInjectionTimeseriesExprFieldDuration, nil
+	case "value":
+		return InsulinInjectionTimeseriesExprFieldValue, nil
+	case "delivery_mode":
+		return InsulinInjectionTimeseriesExprFieldDeliveryMode, nil
+	case "delivery_form":
+		return InsulinInjectionTimeseriesExprFieldDeliveryForm, nil
+	case "bolus_purpose":
+		return InsulinInjectionTimeseriesExprFieldBolusPurpose, nil
+	}
+	var t InsulinInjectionTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i InsulinInjectionTimeseriesExprField) Ptr() *InsulinInjectionTimeseriesExprField {
 	return &i
 }
 
@@ -2786,7 +3099,6 @@ const (
 	IntervalTimeseriesExprTimeseriesHeartRateAlert             IntervalTimeseriesExprTimeseries = "heart_rate_alert"
 	IntervalTimeseriesExprTimeseriesStandHour                  IntervalTimeseriesExprTimeseries = "stand_hour"
 	IntervalTimeseriesExprTimeseriesSleepBreathingDisturbance  IntervalTimeseriesExprTimeseries = "sleep_breathing_disturbance"
-	IntervalTimeseriesExprTimeseriesInsulinInjection           IntervalTimeseriesExprTimeseries = "insulin_injection"
 	IntervalTimeseriesExprTimeseriesWater                      IntervalTimeseriesExprTimeseries = "water"
 	IntervalTimeseriesExprTimeseriesCaffeine                   IntervalTimeseriesExprTimeseries = "caffeine"
 	IntervalTimeseriesExprTimeseriesMindfulnessMinutes         IntervalTimeseriesExprTimeseries = "mindfulness_minutes"
@@ -2829,8 +3141,6 @@ func NewIntervalTimeseriesExprTimeseriesFromString(s string) (IntervalTimeseries
 		return IntervalTimeseriesExprTimeseriesStandHour, nil
 	case "sleep_breathing_disturbance":
 		return IntervalTimeseriesExprTimeseriesSleepBreathingDisturbance, nil
-	case "insulin_injection":
-		return IntervalTimeseriesExprTimeseriesInsulinInjection, nil
 	case "water":
 		return IntervalTimeseriesExprTimeseriesWater, nil
 	case "caffeine":
@@ -3864,26 +4174,28 @@ func (q *QueryConfigProviderPriorityOverridesItem) Accept(visitor QueryConfigPro
 }
 
 type QueryGroupByItem struct {
-	DateTruncExpr                 *DateTruncExpr
-	DatePartExpr                  *DatePartExpr
-	SleepColumnExpr               *SleepColumnExpr
-	ActivityColumnExpr            *ActivityColumnExpr
-	WorkoutColumnExpr             *WorkoutColumnExpr
-	BodyColumnExpr                *BodyColumnExpr
-	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
-	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
-	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
-	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
-	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
-	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
-	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
-	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
-	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
-	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
-	NoteTimeseriesExpr            *NoteTimeseriesExpr
-	SourceColumnExpr              *SourceColumnExpr
+	DateTruncExpr                  *DateTruncExpr
+	DatePartExpr                   *DatePartExpr
+	SleepColumnExpr                *SleepColumnExpr
+	DerivedReadinessColumnExpr     *DerivedReadinessColumnExpr
+	ActivityColumnExpr             *ActivityColumnExpr
+	WorkoutColumnExpr              *WorkoutColumnExpr
+	BodyColumnExpr                 *BodyColumnExpr
+	MealColumnExpr                 *MealColumnExpr
+	ProfileColumnExpr              *ProfileColumnExpr
+	SleepScoreValueMacroExpr       *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr       *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr         *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr          *AwakeAtValueMacroExpr
+	UnrecognizedValueMacroExpr     *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr         *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr         *IntervalTimeseriesExpr
+	InsulinInjectionTimeseriesExpr *InsulinInjectionTimeseriesExpr
+	BloodPressureTimeseriesExpr    *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr      *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr  *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr             *NoteTimeseriesExpr
+	SourceColumnExpr               *SourceColumnExpr
 
 	typ string
 }
@@ -3907,6 +4219,13 @@ func (q *QueryGroupByItem) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return q.SleepColumnExpr
+}
+
+func (q *QueryGroupByItem) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.DerivedReadinessColumnExpr
 }
 
 func (q *QueryGroupByItem) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -3993,6 +4312,13 @@ func (q *QueryGroupByItem) GetIntervalTimeseriesExpr() *IntervalTimeseriesExpr {
 	return q.IntervalTimeseriesExpr
 }
 
+func (q *QueryGroupByItem) GetInsulinInjectionTimeseriesExpr() *InsulinInjectionTimeseriesExpr {
+	if q == nil {
+		return nil
+	}
+	return q.InsulinInjectionTimeseriesExpr
+}
+
 func (q *QueryGroupByItem) GetBloodPressureTimeseriesExpr() *BloodPressureTimeseriesExpr {
 	if q == nil {
 		return nil
@@ -4045,6 +4371,12 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
 		q.typ = "SleepColumnExpr"
 		q.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		q.typ = "DerivedReadinessColumnExpr"
+		q.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
 		return nil
 	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
@@ -4119,6 +4451,12 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 		q.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
 		return nil
 	}
+	valueInsulinInjectionTimeseriesExpr := new(InsulinInjectionTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueInsulinInjectionTimeseriesExpr); err == nil {
+		q.typ = "InsulinInjectionTimeseriesExpr"
+		q.InsulinInjectionTimeseriesExpr = valueInsulinInjectionTimeseriesExpr
+		return nil
+	}
 	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
 	if err := json.Unmarshal(data, &valueBloodPressureTimeseriesExpr); err == nil {
 		q.typ = "BloodPressureTimeseriesExpr"
@@ -4162,6 +4500,9 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return json.Marshal(q.ActivityColumnExpr)
 	}
@@ -4198,6 +4539,9 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return json.Marshal(q.IntervalTimeseriesExpr)
 	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return json.Marshal(q.InsulinInjectionTimeseriesExpr)
+	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return json.Marshal(q.BloodPressureTimeseriesExpr)
 	}
@@ -4220,6 +4564,7 @@ type QueryGroupByItemVisitor interface {
 	VisitDateTruncExpr(*DateTruncExpr) error
 	VisitDatePartExpr(*DatePartExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
@@ -4232,6 +4577,7 @@ type QueryGroupByItemVisitor interface {
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitInsulinInjectionTimeseriesExpr(*InsulinInjectionTimeseriesExpr) error
 	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
@@ -4248,6 +4594,9 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	}
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
+	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(q.DerivedReadinessColumnExpr)
 	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
@@ -4285,6 +4634,9 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return visitor.VisitIntervalTimeseriesExpr(q.IntervalTimeseriesExpr)
 	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return visitor.VisitInsulinInjectionTimeseriesExpr(q.InsulinInjectionTimeseriesExpr)
+	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return visitor.VisitBloodPressureTimeseriesExpr(q.BloodPressureTimeseriesExpr)
 	}
@@ -4304,27 +4656,29 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 }
 
 type QuerySelectItem struct {
-	AggregateExpr                 *AggregateExpr
-	GroupKeyColumnExpr            *GroupKeyColumnExpr
-	SleepColumnExpr               *SleepColumnExpr
-	ActivityColumnExpr            *ActivityColumnExpr
-	WorkoutColumnExpr             *WorkoutColumnExpr
-	BodyColumnExpr                *BodyColumnExpr
-	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
-	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
-	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
-	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
-	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
-	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
-	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
-	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
-	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
-	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
-	NoteTimeseriesExpr            *NoteTimeseriesExpr
-	IndexColumnExpr               *IndexColumnExpr
-	SourceColumnExpr              *SourceColumnExpr
+	AggregateExpr                  *AggregateExpr
+	GroupKeyColumnExpr             *GroupKeyColumnExpr
+	SleepColumnExpr                *SleepColumnExpr
+	DerivedReadinessColumnExpr     *DerivedReadinessColumnExpr
+	ActivityColumnExpr             *ActivityColumnExpr
+	WorkoutColumnExpr              *WorkoutColumnExpr
+	BodyColumnExpr                 *BodyColumnExpr
+	MealColumnExpr                 *MealColumnExpr
+	ProfileColumnExpr              *ProfileColumnExpr
+	SleepScoreValueMacroExpr       *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr       *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr         *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr          *AwakeAtValueMacroExpr
+	UnrecognizedValueMacroExpr     *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr         *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr         *IntervalTimeseriesExpr
+	InsulinInjectionTimeseriesExpr *InsulinInjectionTimeseriesExpr
+	BloodPressureTimeseriesExpr    *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr      *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr  *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr             *NoteTimeseriesExpr
+	IndexColumnExpr                *IndexColumnExpr
+	SourceColumnExpr               *SourceColumnExpr
 
 	typ string
 }
@@ -4348,6 +4702,13 @@ func (q *QuerySelectItem) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return q.SleepColumnExpr
+}
+
+func (q *QuerySelectItem) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.DerivedReadinessColumnExpr
 }
 
 func (q *QuerySelectItem) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -4434,6 +4795,13 @@ func (q *QuerySelectItem) GetIntervalTimeseriesExpr() *IntervalTimeseriesExpr {
 	return q.IntervalTimeseriesExpr
 }
 
+func (q *QuerySelectItem) GetInsulinInjectionTimeseriesExpr() *InsulinInjectionTimeseriesExpr {
+	if q == nil {
+		return nil
+	}
+	return q.InsulinInjectionTimeseriesExpr
+}
+
 func (q *QuerySelectItem) GetBloodPressureTimeseriesExpr() *BloodPressureTimeseriesExpr {
 	if q == nil {
 		return nil
@@ -4493,6 +4861,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
 		q.typ = "SleepColumnExpr"
 		q.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		q.typ = "DerivedReadinessColumnExpr"
+		q.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
 		return nil
 	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
@@ -4567,6 +4941,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
 		return nil
 	}
+	valueInsulinInjectionTimeseriesExpr := new(InsulinInjectionTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueInsulinInjectionTimeseriesExpr); err == nil {
+		q.typ = "InsulinInjectionTimeseriesExpr"
+		q.InsulinInjectionTimeseriesExpr = valueInsulinInjectionTimeseriesExpr
+		return nil
+	}
 	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
 	if err := json.Unmarshal(data, &valueBloodPressureTimeseriesExpr); err == nil {
 		q.typ = "BloodPressureTimeseriesExpr"
@@ -4616,6 +4996,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return json.Marshal(q.ActivityColumnExpr)
 	}
@@ -4652,6 +5035,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return json.Marshal(q.IntervalTimeseriesExpr)
 	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return json.Marshal(q.InsulinInjectionTimeseriesExpr)
+	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return json.Marshal(q.BloodPressureTimeseriesExpr)
 	}
@@ -4677,6 +5063,7 @@ type QuerySelectItemVisitor interface {
 	VisitAggregateExpr(*AggregateExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
@@ -4689,6 +5076,7 @@ type QuerySelectItemVisitor interface {
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitInsulinInjectionTimeseriesExpr(*InsulinInjectionTimeseriesExpr) error
 	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
@@ -4706,6 +5094,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
+	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(q.DerivedReadinessColumnExpr)
 	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
@@ -4742,6 +5133,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return visitor.VisitIntervalTimeseriesExpr(q.IntervalTimeseriesExpr)
+	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return visitor.VisitInsulinInjectionTimeseriesExpr(q.InsulinInjectionTimeseriesExpr)
 	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return visitor.VisitBloodPressureTimeseriesExpr(q.BloodPressureTimeseriesExpr)
@@ -4976,36 +5370,37 @@ func (s *SleepColumnExpr) String() string {
 type SleepColumnExprSleep string
 
 const (
-	SleepColumnExprSleepId                   SleepColumnExprSleep = "id"
-	SleepColumnExprSleepSessionStart         SleepColumnExprSleep = "session_start"
-	SleepColumnExprSleepSessionEnd           SleepColumnExprSleep = "session_end"
-	SleepColumnExprSleepState                SleepColumnExprSleep = "state"
-	SleepColumnExprSleepType                 SleepColumnExprSleep = "type"
-	SleepColumnExprSleepDurationSecond       SleepColumnExprSleep = "duration_second"
-	SleepColumnExprSleepStageAsleepSecond    SleepColumnExprSleep = "stage_asleep_second"
-	SleepColumnExprSleepStageAwakeSecond     SleepColumnExprSleep = "stage_awake_second"
-	SleepColumnExprSleepStageLightSecond     SleepColumnExprSleep = "stage_light_second"
-	SleepColumnExprSleepStageRemSecond       SleepColumnExprSleep = "stage_rem_second"
-	SleepColumnExprSleepStageDeepSecond      SleepColumnExprSleep = "stage_deep_second"
-	SleepColumnExprSleepStageUnknownSecond   SleepColumnExprSleep = "stage_unknown_second"
-	SleepColumnExprSleepLatencySecond        SleepColumnExprSleep = "latency_second"
-	SleepColumnExprSleepHeartRateMinimum     SleepColumnExprSleep = "heart_rate_minimum"
-	SleepColumnExprSleepHeartRateMean        SleepColumnExprSleep = "heart_rate_mean"
-	SleepColumnExprSleepHeartRateMaximum     SleepColumnExprSleep = "heart_rate_maximum"
-	SleepColumnExprSleepHeartRateDip         SleepColumnExprSleep = "heart_rate_dip"
-	SleepColumnExprSleepHeartRateResting     SleepColumnExprSleep = "heart_rate_resting"
-	SleepColumnExprSleepEfficiency           SleepColumnExprSleep = "efficiency"
-	SleepColumnExprSleepHrvMeanRmssd         SleepColumnExprSleep = "hrv_mean_rmssd"
-	SleepColumnExprSleepHrvMeanSdnn          SleepColumnExprSleep = "hrv_mean_sdnn"
-	SleepColumnExprSleepSkinTemperature      SleepColumnExprSleep = "skin_temperature"
-	SleepColumnExprSleepSkinTemperatureDelta SleepColumnExprSleep = "skin_temperature_delta"
-	SleepColumnExprSleepRespiratoryRate      SleepColumnExprSleep = "respiratory_rate"
-	SleepColumnExprSleepScore                SleepColumnExprSleep = "score"
-	SleepColumnExprSleepSourceType           SleepColumnExprSleep = "source_type"
-	SleepColumnExprSleepSourceProvider       SleepColumnExprSleep = "source_provider"
-	SleepColumnExprSleepSourceAppId          SleepColumnExprSleep = "source_app_id"
-	SleepColumnExprSleepSourceDeviceId       SleepColumnExprSleep = "source_device_id"
-	SleepColumnExprSleepTimeZone             SleepColumnExprSleep = "time_zone"
+	SleepColumnExprSleepId                     SleepColumnExprSleep = "id"
+	SleepColumnExprSleepSessionStart           SleepColumnExprSleep = "session_start"
+	SleepColumnExprSleepSessionEnd             SleepColumnExprSleep = "session_end"
+	SleepColumnExprSleepState                  SleepColumnExprSleep = "state"
+	SleepColumnExprSleepType                   SleepColumnExprSleep = "type"
+	SleepColumnExprSleepDurationSecond         SleepColumnExprSleep = "duration_second"
+	SleepColumnExprSleepStageAsleepSecond      SleepColumnExprSleep = "stage_asleep_second"
+	SleepColumnExprSleepStageAwakeSecond       SleepColumnExprSleep = "stage_awake_second"
+	SleepColumnExprSleepStageLightSecond       SleepColumnExprSleep = "stage_light_second"
+	SleepColumnExprSleepStageRemSecond         SleepColumnExprSleep = "stage_rem_second"
+	SleepColumnExprSleepStageDeepSecond        SleepColumnExprSleep = "stage_deep_second"
+	SleepColumnExprSleepStageUnknownSecond     SleepColumnExprSleep = "stage_unknown_second"
+	SleepColumnExprSleepLatencySecond          SleepColumnExprSleep = "latency_second"
+	SleepColumnExprSleepHeartRateMinimum       SleepColumnExprSleep = "heart_rate_minimum"
+	SleepColumnExprSleepHeartRateMean          SleepColumnExprSleep = "heart_rate_mean"
+	SleepColumnExprSleepHeartRateMaximum       SleepColumnExprSleep = "heart_rate_maximum"
+	SleepColumnExprSleepHeartRateDip           SleepColumnExprSleep = "heart_rate_dip"
+	SleepColumnExprSleepHeartRateResting       SleepColumnExprSleep = "heart_rate_resting"
+	SleepColumnExprSleepEfficiency             SleepColumnExprSleep = "efficiency"
+	SleepColumnExprSleepHrvMeanRmssd           SleepColumnExprSleep = "hrv_mean_rmssd"
+	SleepColumnExprSleepHrvMeanSdnn            SleepColumnExprSleep = "hrv_mean_sdnn"
+	SleepColumnExprSleepSkinTemperature        SleepColumnExprSleep = "skin_temperature"
+	SleepColumnExprSleepSkinTemperatureDelta   SleepColumnExprSleep = "skin_temperature_delta"
+	SleepColumnExprSleepRespiratoryRate        SleepColumnExprSleep = "respiratory_rate"
+	SleepColumnExprSleepScore                  SleepColumnExprSleep = "score"
+	SleepColumnExprSleepRecoveryReadinessScore SleepColumnExprSleep = "recovery_readiness_score"
+	SleepColumnExprSleepSourceType             SleepColumnExprSleep = "source_type"
+	SleepColumnExprSleepSourceProvider         SleepColumnExprSleep = "source_provider"
+	SleepColumnExprSleepSourceAppId            SleepColumnExprSleep = "source_app_id"
+	SleepColumnExprSleepSourceDeviceId         SleepColumnExprSleep = "source_device_id"
+	SleepColumnExprSleepTimeZone               SleepColumnExprSleep = "time_zone"
 )
 
 func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
@@ -5060,6 +5455,8 @@ func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 		return SleepColumnExprSleepRespiratoryRate, nil
 	case "score":
 		return SleepColumnExprSleepScore, nil
+	case "recovery_readiness_score":
+		return SleepColumnExprSleepRecoveryReadinessScore, nil
 	case "source_type":
 		return SleepColumnExprSleepSourceType, nil
 	case "source_provider":
