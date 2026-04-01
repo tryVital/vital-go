@@ -11,21 +11,23 @@ import (
 )
 
 var (
-	addressFieldFirstLine  = big.NewInt(1 << 0)
-	addressFieldSecondLine = big.NewInt(1 << 1)
-	addressFieldCountry    = big.NewInt(1 << 2)
-	addressFieldZip        = big.NewInt(1 << 3)
-	addressFieldCity       = big.NewInt(1 << 4)
-	addressFieldState      = big.NewInt(1 << 5)
+	addressFieldFirstLine   = big.NewInt(1 << 0)
+	addressFieldSecondLine  = big.NewInt(1 << 1)
+	addressFieldCountry     = big.NewInt(1 << 2)
+	addressFieldZip         = big.NewInt(1 << 3)
+	addressFieldCity        = big.NewInt(1 << 4)
+	addressFieldState       = big.NewInt(1 << 5)
+	addressFieldAccessNotes = big.NewInt(1 << 6)
 )
 
 type Address struct {
-	FirstLine  string  `json:"first_line" url:"first_line"`
-	SecondLine *string `json:"second_line,omitempty" url:"second_line,omitempty"`
-	Country    string  `json:"country" url:"country"`
-	Zip        string  `json:"zip" url:"zip"`
-	City       string  `json:"city" url:"city"`
-	State      string  `json:"state" url:"state"`
+	FirstLine   string  `json:"first_line" url:"first_line"`
+	SecondLine  *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	Country     string  `json:"country" url:"country"`
+	Zip         string  `json:"zip" url:"zip"`
+	City        string  `json:"city" url:"city"`
+	State       string  `json:"state" url:"state"`
+	AccessNotes *string `json:"access_notes,omitempty" url:"access_notes,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -74,6 +76,13 @@ func (a *Address) GetState() string {
 		return ""
 	}
 	return a.State
+}
+
+func (a *Address) GetAccessNotes() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AccessNotes
 }
 
 func (a *Address) GetExtraProperties() map[string]interface{} {
@@ -127,6 +136,13 @@ func (a *Address) SetCity(city string) {
 func (a *Address) SetState(state string) {
 	a.State = state
 	a.require(addressFieldState)
+}
+
+// SetAccessNotes sets the AccessNotes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *Address) SetAccessNotes(accessNotes *string) {
+	a.AccessNotes = accessNotes
+	a.require(addressFieldAccessNotes)
 }
 
 func (a *Address) UnmarshalJSON(data []byte) error {
@@ -383,6 +399,381 @@ func NewBillingFromString(s string) (Billing, error) {
 
 func (b Billing) Ptr() *Billing {
 	return &b
+}
+
+// Represent the schema for an individual biomarker result.
+var (
+	biomarkerResultFieldName                 = big.NewInt(1 << 0)
+	biomarkerResultFieldSlug                 = big.NewInt(1 << 1)
+	biomarkerResultFieldResult               = big.NewInt(1 << 2)
+	biomarkerResultFieldType                 = big.NewInt(1 << 3)
+	biomarkerResultFieldUnit                 = big.NewInt(1 << 4)
+	biomarkerResultFieldTimestamp            = big.NewInt(1 << 5)
+	biomarkerResultFieldNotes                = big.NewInt(1 << 6)
+	biomarkerResultFieldReferenceRange       = big.NewInt(1 << 7)
+	biomarkerResultFieldMinRangeValue        = big.NewInt(1 << 8)
+	biomarkerResultFieldMaxRangeValue        = big.NewInt(1 << 9)
+	biomarkerResultFieldIsAboveMaxRange      = big.NewInt(1 << 10)
+	biomarkerResultFieldIsBelowMinRange      = big.NewInt(1 << 11)
+	biomarkerResultFieldInterpretation       = big.NewInt(1 << 12)
+	biomarkerResultFieldLoinc                = big.NewInt(1 << 13)
+	biomarkerResultFieldLoincSlug            = big.NewInt(1 << 14)
+	biomarkerResultFieldProviderId           = big.NewInt(1 << 15)
+	biomarkerResultFieldSourceMarkers        = big.NewInt(1 << 16)
+	biomarkerResultFieldPerformingLaboratory = big.NewInt(1 << 17)
+	biomarkerResultFieldSourceSampleId       = big.NewInt(1 << 18)
+)
+
+type BiomarkerResult struct {
+	Name                 string                 `json:"name" url:"name"`
+	Slug                 *string                `json:"slug,omitempty" url:"slug,omitempty"`
+	Result               string                 `json:"result" url:"result"`
+	Type                 ResultType             `json:"type" url:"type"`
+	Unit                 *string                `json:"unit,omitempty" url:"unit,omitempty"`
+	Timestamp            *time.Time             `json:"timestamp,omitempty" url:"timestamp,omitempty"`
+	Notes                *string                `json:"notes,omitempty" url:"notes,omitempty"`
+	ReferenceRange       *string                `json:"reference_range,omitempty" url:"reference_range,omitempty"`
+	MinRangeValue        *float64               `json:"min_range_value,omitempty" url:"min_range_value,omitempty"`
+	MaxRangeValue        *float64               `json:"max_range_value,omitempty" url:"max_range_value,omitempty"`
+	IsAboveMaxRange      *bool                  `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
+	IsBelowMinRange      *bool                  `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
+	Interpretation       *string                `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	Loinc                *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
+	LoincSlug            *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
+	ProviderId           *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	SourceMarkers        []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
+	PerformingLaboratory *string                `json:"performing_laboratory,omitempty" url:"performing_laboratory,omitempty"`
+	SourceSampleId       *string                `json:"source_sample_id,omitempty" url:"source_sample_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BiomarkerResult) GetName() string {
+	if b == nil {
+		return ""
+	}
+	return b.Name
+}
+
+func (b *BiomarkerResult) GetSlug() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Slug
+}
+
+func (b *BiomarkerResult) GetResult() string {
+	if b == nil {
+		return ""
+	}
+	return b.Result
+}
+
+func (b *BiomarkerResult) GetType() ResultType {
+	if b == nil {
+		return ""
+	}
+	return b.Type
+}
+
+func (b *BiomarkerResult) GetUnit() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Unit
+}
+
+func (b *BiomarkerResult) GetTimestamp() *time.Time {
+	if b == nil {
+		return nil
+	}
+	return b.Timestamp
+}
+
+func (b *BiomarkerResult) GetNotes() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Notes
+}
+
+func (b *BiomarkerResult) GetReferenceRange() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ReferenceRange
+}
+
+func (b *BiomarkerResult) GetMinRangeValue() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.MinRangeValue
+}
+
+func (b *BiomarkerResult) GetMaxRangeValue() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.MaxRangeValue
+}
+
+func (b *BiomarkerResult) GetIsAboveMaxRange() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsAboveMaxRange
+}
+
+func (b *BiomarkerResult) GetIsBelowMinRange() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsBelowMinRange
+}
+
+func (b *BiomarkerResult) GetInterpretation() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Interpretation
+}
+
+func (b *BiomarkerResult) GetLoinc() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Loinc
+}
+
+func (b *BiomarkerResult) GetLoincSlug() *string {
+	if b == nil {
+		return nil
+	}
+	return b.LoincSlug
+}
+
+func (b *BiomarkerResult) GetProviderId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ProviderId
+}
+
+func (b *BiomarkerResult) GetSourceMarkers() []*ParentBiomarkerData {
+	if b == nil {
+		return nil
+	}
+	return b.SourceMarkers
+}
+
+func (b *BiomarkerResult) GetPerformingLaboratory() *string {
+	if b == nil {
+		return nil
+	}
+	return b.PerformingLaboratory
+}
+
+func (b *BiomarkerResult) GetSourceSampleId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.SourceSampleId
+}
+
+func (b *BiomarkerResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BiomarkerResult) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetName(name string) {
+	b.Name = name
+	b.require(biomarkerResultFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetSlug(slug *string) {
+	b.Slug = slug
+	b.require(biomarkerResultFieldSlug)
+}
+
+// SetResult sets the Result field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetResult(result string) {
+	b.Result = result
+	b.require(biomarkerResultFieldResult)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetType(type_ ResultType) {
+	b.Type = type_
+	b.require(biomarkerResultFieldType)
+}
+
+// SetUnit sets the Unit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetUnit(unit *string) {
+	b.Unit = unit
+	b.require(biomarkerResultFieldUnit)
+}
+
+// SetTimestamp sets the Timestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetTimestamp(timestamp *time.Time) {
+	b.Timestamp = timestamp
+	b.require(biomarkerResultFieldTimestamp)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetNotes(notes *string) {
+	b.Notes = notes
+	b.require(biomarkerResultFieldNotes)
+}
+
+// SetReferenceRange sets the ReferenceRange field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetReferenceRange(referenceRange *string) {
+	b.ReferenceRange = referenceRange
+	b.require(biomarkerResultFieldReferenceRange)
+}
+
+// SetMinRangeValue sets the MinRangeValue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetMinRangeValue(minRangeValue *float64) {
+	b.MinRangeValue = minRangeValue
+	b.require(biomarkerResultFieldMinRangeValue)
+}
+
+// SetMaxRangeValue sets the MaxRangeValue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetMaxRangeValue(maxRangeValue *float64) {
+	b.MaxRangeValue = maxRangeValue
+	b.require(biomarkerResultFieldMaxRangeValue)
+}
+
+// SetIsAboveMaxRange sets the IsAboveMaxRange field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetIsAboveMaxRange(isAboveMaxRange *bool) {
+	b.IsAboveMaxRange = isAboveMaxRange
+	b.require(biomarkerResultFieldIsAboveMaxRange)
+}
+
+// SetIsBelowMinRange sets the IsBelowMinRange field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetIsBelowMinRange(isBelowMinRange *bool) {
+	b.IsBelowMinRange = isBelowMinRange
+	b.require(biomarkerResultFieldIsBelowMinRange)
+}
+
+// SetInterpretation sets the Interpretation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetInterpretation(interpretation *string) {
+	b.Interpretation = interpretation
+	b.require(biomarkerResultFieldInterpretation)
+}
+
+// SetLoinc sets the Loinc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetLoinc(loinc *string) {
+	b.Loinc = loinc
+	b.require(biomarkerResultFieldLoinc)
+}
+
+// SetLoincSlug sets the LoincSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetLoincSlug(loincSlug *string) {
+	b.LoincSlug = loincSlug
+	b.require(biomarkerResultFieldLoincSlug)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetProviderId(providerId *string) {
+	b.ProviderId = providerId
+	b.require(biomarkerResultFieldProviderId)
+}
+
+// SetSourceMarkers sets the SourceMarkers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetSourceMarkers(sourceMarkers []*ParentBiomarkerData) {
+	b.SourceMarkers = sourceMarkers
+	b.require(biomarkerResultFieldSourceMarkers)
+}
+
+// SetPerformingLaboratory sets the PerformingLaboratory field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetPerformingLaboratory(performingLaboratory *string) {
+	b.PerformingLaboratory = performingLaboratory
+	b.require(biomarkerResultFieldPerformingLaboratory)
+}
+
+// SetSourceSampleId sets the SourceSampleId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BiomarkerResult) SetSourceSampleId(sourceSampleId *string) {
+	b.SourceSampleId = sourceSampleId
+	b.require(biomarkerResultFieldSourceSampleId)
+}
+
+func (b *BiomarkerResult) UnmarshalJSON(data []byte) error {
+	type embed BiomarkerResult
+	var unmarshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BiomarkerResult(unmarshaler.embed)
+	b.Timestamp = unmarshaler.Timestamp.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BiomarkerResult) MarshalJSON() ([]byte, error) {
+	type embed BiomarkerResult
+	var marshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp,omitempty"`
+	}{
+		embed:     embed(*b),
+		Timestamp: internal.NewOptionalDateTime(b.Timestamp),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BiomarkerResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
 }
 
 var (
@@ -12273,6 +12664,290 @@ func (c *ClientFacingLab) String() string {
 }
 
 var (
+	clientFacingLabReportParsingJobCreatedEventFieldUserId       = big.NewInt(1 << 0)
+	clientFacingLabReportParsingJobCreatedEventFieldClientUserId = big.NewInt(1 << 1)
+	clientFacingLabReportParsingJobCreatedEventFieldTeamId       = big.NewInt(1 << 2)
+	clientFacingLabReportParsingJobCreatedEventFieldData         = big.NewInt(1 << 3)
+)
+
+type ClientFacingLabReportParsingJobCreatedEvent struct {
+	UserId       string      `json:"user_id" url:"user_id"`
+	ClientUserId string      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string      `json:"team_id" url:"team_id"`
+	Data         *ParsingJob `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+	eventType      string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) GetUserId() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserId
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) GetClientUserId() string {
+	if c == nil {
+		return ""
+	}
+	return c.ClientUserId
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) GetTeamId() string {
+	if c == nil {
+		return ""
+	}
+	return c.TeamId
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) GetData() *ParsingJob {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobCreatedEvent) SetUserId(userId string) {
+	c.UserId = userId
+	c.require(clientFacingLabReportParsingJobCreatedEventFieldUserId)
+}
+
+// SetClientUserId sets the ClientUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobCreatedEvent) SetClientUserId(clientUserId string) {
+	c.ClientUserId = clientUserId
+	c.require(clientFacingLabReportParsingJobCreatedEventFieldClientUserId)
+}
+
+// SetTeamId sets the TeamId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobCreatedEvent) SetTeamId(teamId string) {
+	c.TeamId = teamId
+	c.require(clientFacingLabReportParsingJobCreatedEventFieldTeamId)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobCreatedEvent) SetData(data *ParsingJob) {
+	c.Data = data
+	c.require(clientFacingLabReportParsingJobCreatedEventFieldData)
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingLabReportParsingJobCreatedEvent
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingLabReportParsingJobCreatedEvent(unmarshaler.embed)
+	if unmarshaler.EventType != "lab_report.parsing_job.created" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "lab_report.parsing_job.created", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingLabReportParsingJobCreatedEvent
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "lab_report.parsing_job.created",
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientFacingLabReportParsingJobCreatedEvent) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	clientFacingLabReportParsingJobUpdatedEventFieldUserId       = big.NewInt(1 << 0)
+	clientFacingLabReportParsingJobUpdatedEventFieldClientUserId = big.NewInt(1 << 1)
+	clientFacingLabReportParsingJobUpdatedEventFieldTeamId       = big.NewInt(1 << 2)
+	clientFacingLabReportParsingJobUpdatedEventFieldData         = big.NewInt(1 << 3)
+)
+
+type ClientFacingLabReportParsingJobUpdatedEvent struct {
+	UserId       string      `json:"user_id" url:"user_id"`
+	ClientUserId string      `json:"client_user_id" url:"client_user_id"`
+	TeamId       string      `json:"team_id" url:"team_id"`
+	Data         *ParsingJob `json:"data" url:"data"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+	eventType      string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) GetUserId() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserId
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) GetClientUserId() string {
+	if c == nil {
+		return ""
+	}
+	return c.ClientUserId
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) GetTeamId() string {
+	if c == nil {
+		return ""
+	}
+	return c.TeamId
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) GetData() *ParsingJob {
+	if c == nil {
+		return nil
+	}
+	return c.Data
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) EventType() string {
+	return c.eventType
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) SetUserId(userId string) {
+	c.UserId = userId
+	c.require(clientFacingLabReportParsingJobUpdatedEventFieldUserId)
+}
+
+// SetClientUserId sets the ClientUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) SetClientUserId(clientUserId string) {
+	c.ClientUserId = clientUserId
+	c.require(clientFacingLabReportParsingJobUpdatedEventFieldClientUserId)
+}
+
+// SetTeamId sets the TeamId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) SetTeamId(teamId string) {
+	c.TeamId = teamId
+	c.require(clientFacingLabReportParsingJobUpdatedEventFieldTeamId)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) SetData(data *ParsingJob) {
+	c.Data = data
+	c.require(clientFacingLabReportParsingJobUpdatedEventFieldData)
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingLabReportParsingJobUpdatedEvent
+	var unmarshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingLabReportParsingJobUpdatedEvent(unmarshaler.embed)
+	if unmarshaler.EventType != "lab_report.parsing_job.updated" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "lab_report.parsing_job.updated", unmarshaler.EventType)
+	}
+	c.eventType = unmarshaler.EventType
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "event_type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingLabReportParsingJobUpdatedEvent
+	var marshaler = struct {
+		embed
+		EventType string `json:"event_type"`
+	}{
+		embed:     embed(*c),
+		EventType: "lab_report.parsing_job.updated",
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientFacingLabReportParsingJobUpdatedEvent) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
 	clientFacingLabTestFieldId                        = big.NewInt(1 << 0)
 	clientFacingLabTestFieldSlug                      = big.NewInt(1 << 1)
 	clientFacingLabTestFieldName                      = big.NewInt(1 << 2)
@@ -14626,24 +15301,28 @@ var (
 	clientFacingOrderFieldDetails               = big.NewInt(1 << 6)
 	clientFacingOrderFieldSampleId              = big.NewInt(1 << 7)
 	clientFacingOrderFieldNotes                 = big.NewInt(1 << 8)
-	clientFacingOrderFieldCreatedAt             = big.NewInt(1 << 9)
-	clientFacingOrderFieldUpdatedAt             = big.NewInt(1 << 10)
-	clientFacingOrderFieldEvents                = big.NewInt(1 << 11)
-	clientFacingOrderFieldStatus                = big.NewInt(1 << 12)
-	clientFacingOrderFieldPhysician             = big.NewInt(1 << 13)
-	clientFacingOrderFieldHealthInsuranceId     = big.NewInt(1 << 14)
-	clientFacingOrderFieldRequisitionFormUrl    = big.NewInt(1 << 15)
-	clientFacingOrderFieldPriority              = big.NewInt(1 << 16)
-	clientFacingOrderFieldShippingDetails       = big.NewInt(1 << 17)
-	clientFacingOrderFieldActivateBy            = big.NewInt(1 << 18)
-	clientFacingOrderFieldPassthrough           = big.NewInt(1 << 19)
-	clientFacingOrderFieldBillingType           = big.NewInt(1 << 20)
-	clientFacingOrderFieldIcdCodes              = big.NewInt(1 << 21)
-	clientFacingOrderFieldHasAbn                = big.NewInt(1 << 22)
-	clientFacingOrderFieldInterpretation        = big.NewInt(1 << 23)
-	clientFacingOrderFieldHasMissingResults     = big.NewInt(1 << 24)
-	clientFacingOrderFieldExpectedResultByDate  = big.NewInt(1 << 25)
-	clientFacingOrderFieldWorstCaseResultByDate = big.NewInt(1 << 26)
+	clientFacingOrderFieldClinicalNotes         = big.NewInt(1 << 9)
+	clientFacingOrderFieldCreatedAt             = big.NewInt(1 << 10)
+	clientFacingOrderFieldUpdatedAt             = big.NewInt(1 << 11)
+	clientFacingOrderFieldEvents                = big.NewInt(1 << 12)
+	clientFacingOrderFieldStatus                = big.NewInt(1 << 13)
+	clientFacingOrderFieldLastEvent             = big.NewInt(1 << 14)
+	clientFacingOrderFieldPhysician             = big.NewInt(1 << 15)
+	clientFacingOrderFieldHealthInsuranceId     = big.NewInt(1 << 16)
+	clientFacingOrderFieldRequisitionFormUrl    = big.NewInt(1 << 17)
+	clientFacingOrderFieldPriority              = big.NewInt(1 << 18)
+	clientFacingOrderFieldShippingDetails       = big.NewInt(1 << 19)
+	clientFacingOrderFieldActivateBy            = big.NewInt(1 << 20)
+	clientFacingOrderFieldPassthrough           = big.NewInt(1 << 21)
+	clientFacingOrderFieldBillingType           = big.NewInt(1 << 22)
+	clientFacingOrderFieldIcdCodes              = big.NewInt(1 << 23)
+	clientFacingOrderFieldHasAbn                = big.NewInt(1 << 24)
+	clientFacingOrderFieldInterpretation        = big.NewInt(1 << 25)
+	clientFacingOrderFieldHasMissingResults     = big.NewInt(1 << 26)
+	clientFacingOrderFieldExpectedResultByDate  = big.NewInt(1 << 27)
+	clientFacingOrderFieldWorstCaseResultByDate = big.NewInt(1 << 28)
+	clientFacingOrderFieldOrigin                = big.NewInt(1 << 29)
+	clientFacingOrderFieldOrderTransaction      = big.NewInt(1 << 30)
 )
 
 type ClientFacingOrder struct {
@@ -14663,14 +15342,18 @@ type ClientFacingOrder struct {
 	// Sample ID
 	SampleId *string `json:"sample_id,omitempty" url:"sample_id,omitempty"`
 	// Notes associated with the order
-	Notes *string `json:"notes,omitempty" url:"notes,omitempty"`
+	Notes         *string `json:"notes,omitempty" url:"notes,omitempty"`
+	ClinicalNotes *string `json:"clinical_notes,omitempty" url:"clinical_notes,omitempty"`
 	// When your order was created
 	CreatedAt time.Time `json:"created_at" url:"created_at"`
 	// When your order was last updated.
 	UpdatedAt time.Time                 `json:"updated_at" url:"updated_at"`
 	Events    []*ClientFacingOrderEvent `json:"events" url:"events"`
-	Status    *OrderTopLevelStatus      `json:"status,omitempty" url:"status,omitempty"`
-	Physician *ClientFacingPhysician    `json:"physician,omitempty" url:"physician,omitempty"`
+	// The top-level status of the latest event for this order. This field is deprecated. Please use `last_event` instead.
+	Status *OrderTopLevelStatus `json:"status,omitempty" url:"status,omitempty"`
+	// The latest event in the order's lifecycle.
+	LastEvent *ClientFacingOrderEvent `json:"last_event" url:"last_event"`
+	Physician *ClientFacingPhysician  `json:"physician,omitempty" url:"physician,omitempty"`
 	// Vital ID of the health insurance.
 	HealthInsuranceId *string `json:"health_insurance_id,omitempty" url:"health_insurance_id,omitempty"`
 	// DEPRECATED. Requistion form url.
@@ -14693,7 +15376,9 @@ type ClientFacingOrder struct {
 	// The common-case date by which the order result is expected to be available.
 	ExpectedResultByDate *string `json:"expected_result_by_date,omitempty" url:"expected_result_by_date,omitempty"`
 	// The latest date by which the order result is expected to be available.
-	WorstCaseResultByDate *string `json:"worst_case_result_by_date,omitempty" url:"worst_case_result_by_date,omitempty"`
+	WorstCaseResultByDate *string                       `json:"worst_case_result_by_date,omitempty" url:"worst_case_result_by_date,omitempty"`
+	Origin                *OrderOrigin                  `json:"origin,omitempty" url:"origin,omitempty"`
+	OrderTransaction      *ClientFacingOrderTransaction `json:"order_transaction,omitempty" url:"order_transaction,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -14765,6 +15450,13 @@ func (c *ClientFacingOrder) GetNotes() *string {
 	return c.Notes
 }
 
+func (c *ClientFacingOrder) GetClinicalNotes() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClinicalNotes
+}
+
 func (c *ClientFacingOrder) GetCreatedAt() time.Time {
 	if c == nil {
 		return time.Time{}
@@ -14791,6 +15483,13 @@ func (c *ClientFacingOrder) GetStatus() *OrderTopLevelStatus {
 		return nil
 	}
 	return c.Status
+}
+
+func (c *ClientFacingOrder) GetLastEvent() *ClientFacingOrderEvent {
+	if c == nil {
+		return nil
+	}
+	return c.LastEvent
 }
 
 func (c *ClientFacingOrder) GetPhysician() *ClientFacingPhysician {
@@ -14891,6 +15590,20 @@ func (c *ClientFacingOrder) GetWorstCaseResultByDate() *string {
 	return c.WorstCaseResultByDate
 }
 
+func (c *ClientFacingOrder) GetOrigin() *OrderOrigin {
+	if c == nil {
+		return nil
+	}
+	return c.Origin
+}
+
+func (c *ClientFacingOrder) GetOrderTransaction() *ClientFacingOrderTransaction {
+	if c == nil {
+		return nil
+	}
+	return c.OrderTransaction
+}
+
 func (c *ClientFacingOrder) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
@@ -14965,6 +15678,13 @@ func (c *ClientFacingOrder) SetNotes(notes *string) {
 	c.require(clientFacingOrderFieldNotes)
 }
 
+// SetClinicalNotes sets the ClinicalNotes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrder) SetClinicalNotes(clinicalNotes *string) {
+	c.ClinicalNotes = clinicalNotes
+	c.require(clientFacingOrderFieldClinicalNotes)
+}
+
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *ClientFacingOrder) SetCreatedAt(createdAt time.Time) {
@@ -14991,6 +15711,13 @@ func (c *ClientFacingOrder) SetEvents(events []*ClientFacingOrderEvent) {
 func (c *ClientFacingOrder) SetStatus(status *OrderTopLevelStatus) {
 	c.Status = status
 	c.require(clientFacingOrderFieldStatus)
+}
+
+// SetLastEvent sets the LastEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrder) SetLastEvent(lastEvent *ClientFacingOrderEvent) {
+	c.LastEvent = lastEvent
+	c.require(clientFacingOrderFieldLastEvent)
 }
 
 // SetPhysician sets the Physician field and marks it as non-optional;
@@ -15089,6 +15816,20 @@ func (c *ClientFacingOrder) SetExpectedResultByDate(expectedResultByDate *string
 func (c *ClientFacingOrder) SetWorstCaseResultByDate(worstCaseResultByDate *string) {
 	c.WorstCaseResultByDate = worstCaseResultByDate
 	c.require(clientFacingOrderFieldWorstCaseResultByDate)
+}
+
+// SetOrigin sets the Origin field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrder) SetOrigin(origin *OrderOrigin) {
+	c.Origin = origin
+	c.require(clientFacingOrderFieldOrigin)
+}
+
+// SetOrderTransaction sets the OrderTransaction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrder) SetOrderTransaction(orderTransaction *ClientFacingOrderTransaction) {
+	c.OrderTransaction = orderTransaction
+	c.require(clientFacingOrderFieldOrderTransaction)
 }
 
 func (c *ClientFacingOrder) UnmarshalJSON(data []byte) error {
@@ -15472,15 +16213,17 @@ func (c *ClientFacingOrderDetails) validate() error {
 }
 
 var (
-	clientFacingOrderEventFieldId        = big.NewInt(1 << 0)
-	clientFacingOrderEventFieldCreatedAt = big.NewInt(1 << 1)
-	clientFacingOrderEventFieldStatus    = big.NewInt(1 << 2)
+	clientFacingOrderEventFieldId           = big.NewInt(1 << 0)
+	clientFacingOrderEventFieldCreatedAt    = big.NewInt(1 << 1)
+	clientFacingOrderEventFieldStatus       = big.NewInt(1 << 2)
+	clientFacingOrderEventFieldStatusDetail = big.NewInt(1 << 3)
 )
 
 type ClientFacingOrderEvent struct {
-	Id        int         `json:"id" url:"id"`
-	CreatedAt time.Time   `json:"created_at" url:"created_at"`
-	Status    OrderStatus `json:"status" url:"status"`
+	Id           int                `json:"id" url:"id"`
+	CreatedAt    time.Time          `json:"created_at" url:"created_at"`
+	Status       OrderStatus        `json:"status" url:"status"`
+	StatusDetail *OrderStatusDetail `json:"status_detail,omitempty" url:"status_detail,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -15508,6 +16251,13 @@ func (c *ClientFacingOrderEvent) GetStatus() OrderStatus {
 		return ""
 	}
 	return c.Status
+}
+
+func (c *ClientFacingOrderEvent) GetStatusDetail() *OrderStatusDetail {
+	if c == nil {
+		return nil
+	}
+	return c.StatusDetail
 }
 
 func (c *ClientFacingOrderEvent) GetExtraProperties() map[string]interface{} {
@@ -15540,6 +16290,13 @@ func (c *ClientFacingOrderEvent) SetCreatedAt(createdAt time.Time) {
 func (c *ClientFacingOrderEvent) SetStatus(status OrderStatus) {
 	c.Status = status
 	c.require(clientFacingOrderEventFieldStatus)
+}
+
+// SetStatusDetail sets the StatusDetail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderEvent) SetStatusDetail(statusDetail *OrderStatusDetail) {
+	c.StatusDetail = statusDetail
+	c.require(clientFacingOrderEventFieldStatusDetail)
 }
 
 func (c *ClientFacingOrderEvent) UnmarshalJSON(data []byte) error {
@@ -15578,6 +16335,308 @@ func (c *ClientFacingOrderEvent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientFacingOrderEvent) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Minimal order info for embedding in order_transaction payload.
+var (
+	clientFacingOrderInTransactionFieldId                      = big.NewInt(1 << 0)
+	clientFacingOrderInTransactionFieldLowLevelStatus          = big.NewInt(1 << 1)
+	clientFacingOrderInTransactionFieldLowLevelStatusCreatedAt = big.NewInt(1 << 2)
+	clientFacingOrderInTransactionFieldOrigin                  = big.NewInt(1 << 3)
+	clientFacingOrderInTransactionFieldParentId                = big.NewInt(1 << 4)
+	clientFacingOrderInTransactionFieldCreatedAt               = big.NewInt(1 << 5)
+	clientFacingOrderInTransactionFieldUpdatedAt               = big.NewInt(1 << 6)
+)
+
+type ClientFacingOrderInTransaction struct {
+	Id                      string               `json:"id" url:"id"`
+	LowLevelStatus          *OrderLowLevelStatus `json:"low_level_status,omitempty" url:"low_level_status,omitempty"`
+	LowLevelStatusCreatedAt *time.Time           `json:"low_level_status_created_at,omitempty" url:"low_level_status_created_at,omitempty"`
+	Origin                  *OrderOrigin         `json:"origin,omitempty" url:"origin,omitempty"`
+	ParentId                *string              `json:"parent_id,omitempty" url:"parent_id,omitempty"`
+	CreatedAt               time.Time            `json:"created_at" url:"created_at"`
+	UpdatedAt               time.Time            `json:"updated_at" url:"updated_at"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientFacingOrderInTransaction) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *ClientFacingOrderInTransaction) GetLowLevelStatus() *OrderLowLevelStatus {
+	if c == nil {
+		return nil
+	}
+	return c.LowLevelStatus
+}
+
+func (c *ClientFacingOrderInTransaction) GetLowLevelStatusCreatedAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.LowLevelStatusCreatedAt
+}
+
+func (c *ClientFacingOrderInTransaction) GetOrigin() *OrderOrigin {
+	if c == nil {
+		return nil
+	}
+	return c.Origin
+}
+
+func (c *ClientFacingOrderInTransaction) GetParentId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ParentId
+}
+
+func (c *ClientFacingOrderInTransaction) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ClientFacingOrderInTransaction) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *ClientFacingOrderInTransaction) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingOrderInTransaction) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetId(id string) {
+	c.Id = id
+	c.require(clientFacingOrderInTransactionFieldId)
+}
+
+// SetLowLevelStatus sets the LowLevelStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetLowLevelStatus(lowLevelStatus *OrderLowLevelStatus) {
+	c.LowLevelStatus = lowLevelStatus
+	c.require(clientFacingOrderInTransactionFieldLowLevelStatus)
+}
+
+// SetLowLevelStatusCreatedAt sets the LowLevelStatusCreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetLowLevelStatusCreatedAt(lowLevelStatusCreatedAt *time.Time) {
+	c.LowLevelStatusCreatedAt = lowLevelStatusCreatedAt
+	c.require(clientFacingOrderInTransactionFieldLowLevelStatusCreatedAt)
+}
+
+// SetOrigin sets the Origin field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetOrigin(origin *OrderOrigin) {
+	c.Origin = origin
+	c.require(clientFacingOrderInTransactionFieldOrigin)
+}
+
+// SetParentId sets the ParentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetParentId(parentId *string) {
+	c.ParentId = parentId
+	c.require(clientFacingOrderInTransactionFieldParentId)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(clientFacingOrderInTransactionFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderInTransaction) SetUpdatedAt(updatedAt time.Time) {
+	c.UpdatedAt = updatedAt
+	c.require(clientFacingOrderInTransactionFieldUpdatedAt)
+}
+
+func (c *ClientFacingOrderInTransaction) UnmarshalJSON(data []byte) error {
+	type embed ClientFacingOrderInTransaction
+	var unmarshaler = struct {
+		embed
+		LowLevelStatusCreatedAt *internal.DateTime `json:"low_level_status_created_at,omitempty"`
+		CreatedAt               *internal.DateTime `json:"created_at"`
+		UpdatedAt               *internal.DateTime `json:"updated_at"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientFacingOrderInTransaction(unmarshaler.embed)
+	c.LowLevelStatusCreatedAt = unmarshaler.LowLevelStatusCreatedAt.TimePtr()
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingOrderInTransaction) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingOrderInTransaction
+	var marshaler = struct {
+		embed
+		LowLevelStatusCreatedAt *internal.DateTime `json:"low_level_status_created_at,omitempty"`
+		CreatedAt               *internal.DateTime `json:"created_at"`
+		UpdatedAt               *internal.DateTime `json:"updated_at"`
+	}{
+		embed:                   embed(*c),
+		LowLevelStatusCreatedAt: internal.NewOptionalDateTime(c.LowLevelStatusCreatedAt),
+		CreatedAt:               internal.NewDateTime(c.CreatedAt),
+		UpdatedAt:               internal.NewDateTime(c.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientFacingOrderInTransaction) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Order transaction info.
+var (
+	clientFacingOrderTransactionFieldId     = big.NewInt(1 << 0)
+	clientFacingOrderTransactionFieldStatus = big.NewInt(1 << 1)
+	clientFacingOrderTransactionFieldOrders = big.NewInt(1 << 2)
+)
+
+type ClientFacingOrderTransaction struct {
+	Id     string                            `json:"id" url:"id"`
+	Status OrderTransactionStatus            `json:"status" url:"status"`
+	Orders []*ClientFacingOrderInTransaction `json:"orders" url:"orders"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientFacingOrderTransaction) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *ClientFacingOrderTransaction) GetStatus() OrderTransactionStatus {
+	if c == nil {
+		return ""
+	}
+	return c.Status
+}
+
+func (c *ClientFacingOrderTransaction) GetOrders() []*ClientFacingOrderInTransaction {
+	if c == nil {
+		return nil
+	}
+	return c.Orders
+}
+
+func (c *ClientFacingOrderTransaction) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientFacingOrderTransaction) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderTransaction) SetId(id string) {
+	c.Id = id
+	c.require(clientFacingOrderTransactionFieldId)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderTransaction) SetStatus(status OrderTransactionStatus) {
+	c.Status = status
+	c.require(clientFacingOrderTransactionFieldStatus)
+}
+
+// SetOrders sets the Orders field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingOrderTransaction) SetOrders(orders []*ClientFacingOrderInTransaction) {
+	c.Orders = orders
+	c.require(clientFacingOrderTransactionFieldOrders)
+}
+
+func (c *ClientFacingOrderTransaction) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClientFacingOrderTransaction
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClientFacingOrderTransaction(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientFacingOrderTransaction) MarshalJSON() ([]byte, error) {
+	type embed ClientFacingOrderTransaction
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClientFacingOrderTransaction) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -24959,6 +26018,132 @@ func (c *ClientUserIdConflictResponse) String() string {
 }
 
 var (
+	clinicalInformationFieldFasting     = big.NewInt(1 << 0)
+	clinicalInformationFieldNotes       = big.NewInt(1 << 1)
+	clinicalInformationFieldInformation = big.NewInt(1 << 2)
+	clinicalInformationFieldTotalVolume = big.NewInt(1 << 3)
+)
+
+type ClinicalInformation struct {
+	Fasting     *bool   `json:"fasting,omitempty" url:"fasting,omitempty"`
+	Notes       *string `json:"notes,omitempty" url:"notes,omitempty"`
+	Information *string `json:"information,omitempty" url:"information,omitempty"`
+	TotalVolume *string `json:"total_volume,omitempty" url:"total_volume,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClinicalInformation) GetFasting() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Fasting
+}
+
+func (c *ClinicalInformation) GetNotes() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Notes
+}
+
+func (c *ClinicalInformation) GetInformation() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Information
+}
+
+func (c *ClinicalInformation) GetTotalVolume() *string {
+	if c == nil {
+		return nil
+	}
+	return c.TotalVolume
+}
+
+func (c *ClinicalInformation) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClinicalInformation) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetFasting sets the Fasting field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClinicalInformation) SetFasting(fasting *bool) {
+	c.Fasting = fasting
+	c.require(clinicalInformationFieldFasting)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClinicalInformation) SetNotes(notes *string) {
+	c.Notes = notes
+	c.require(clinicalInformationFieldNotes)
+}
+
+// SetInformation sets the Information field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClinicalInformation) SetInformation(information *string) {
+	c.Information = information
+	c.require(clinicalInformationFieldInformation)
+}
+
+// SetTotalVolume sets the TotalVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClinicalInformation) SetTotalVolume(totalVolume *string) {
+	c.TotalVolume = totalVolume
+	c.require(clinicalInformationFieldTotalVolume)
+}
+
+func (c *ClinicalInformation) UnmarshalJSON(data []byte) error {
+	type unmarshaler ClinicalInformation
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ClinicalInformation(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClinicalInformation) MarshalJSON() ([]byte, error) {
+	type embed ClinicalInformation
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ClinicalInformation) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
 	connectedSourceClientFacingFieldProvider  = big.NewInt(1 << 0)
 	connectedSourceClientFacingFieldCreatedOn = big.NewInt(1 << 1)
 	connectedSourceClientFacingFieldSource    = big.NewInt(1 << 2)
@@ -25369,6 +26554,56 @@ func NewEthnicityFromString(s string) (Ethnicity, error) {
 
 func (e Ethnicity) Ptr() *Ethnicity {
 	return &e
+}
+
+// ℹ️ This enum is non-exhaustive.
+type FailureType string
+
+const (
+	FailureTypeQuantityNotSufficientFailure FailureType = "quantity_not_sufficient_failure"
+	FailureTypeCollectionProcessFailure     FailureType = "collection_process_failure"
+	FailureTypeDropOffFailure               FailureType = "drop_off_failure"
+	FailureTypeInternalLabFailure           FailureType = "internal_lab_failure"
+	FailureTypeOrderEntryFailure            FailureType = "order_entry_failure"
+	FailureTypeNonFailure                   FailureType = "non_failure"
+	FailureTypeUnknownFailure               FailureType = "unknown_failure"
+	FailureTypePatientConditionFailure      FailureType = "patient_condition_failure"
+	FailureTypeMissingResultCalcFailure     FailureType = "missing_result_calc_failure"
+	FailureTypeMissingDemoAoeCalcFailure    FailureType = "missing_demo_aoe_calc_failure"
+	FailureTypeInsufficientVolume           FailureType = "insufficient_volume"
+)
+
+func NewFailureTypeFromString(s string) (FailureType, error) {
+	switch s {
+	case "quantity_not_sufficient_failure":
+		return FailureTypeQuantityNotSufficientFailure, nil
+	case "collection_process_failure":
+		return FailureTypeCollectionProcessFailure, nil
+	case "drop_off_failure":
+		return FailureTypeDropOffFailure, nil
+	case "internal_lab_failure":
+		return FailureTypeInternalLabFailure, nil
+	case "order_entry_failure":
+		return FailureTypeOrderEntryFailure, nil
+	case "non_failure":
+		return FailureTypeNonFailure, nil
+	case "unknown_failure":
+		return FailureTypeUnknownFailure, nil
+	case "patient_condition_failure":
+		return FailureTypePatientConditionFailure, nil
+	case "missing_result_calc_failure":
+		return FailureTypeMissingResultCalcFailure, nil
+	case "missing_demo_aoe_calc_failure":
+		return FailureTypeMissingDemoAoeCalcFailure, nil
+	case "insufficient_volume":
+		return FailureTypeInsufficientVolume, nil
+	}
+	var t FailureType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f FailureType) Ptr() *FailureType {
+	return &f
 }
 
 var (
@@ -26275,19 +27510,18 @@ var (
 	historicalPullCompletedFieldUserId    = big.NewInt(1 << 0)
 	historicalPullCompletedFieldStartDate = big.NewInt(1 << 1)
 	historicalPullCompletedFieldEndDate   = big.NewInt(1 << 2)
-	historicalPullCompletedFieldIsFinal   = big.NewInt(1 << 3)
-	historicalPullCompletedFieldProvider  = big.NewInt(1 << 4)
+	historicalPullCompletedFieldProvider  = big.NewInt(1 << 3)
 )
 
 type HistoricalPullCompleted struct {
 	UserId    string    `json:"user_id" url:"user_id"`
 	StartDate time.Time `json:"start_date" url:"start_date"`
 	EndDate   time.Time `json:"end_date" url:"end_date"`
-	IsFinal   bool      `json:"is_final" url:"is_final"`
 	Provider  string    `json:"provider" url:"provider"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
+	isFinal        bool
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -26314,18 +27548,15 @@ func (h *HistoricalPullCompleted) GetEndDate() time.Time {
 	return h.EndDate
 }
 
-func (h *HistoricalPullCompleted) GetIsFinal() bool {
-	if h == nil {
-		return false
-	}
-	return h.IsFinal
-}
-
 func (h *HistoricalPullCompleted) GetProvider() string {
 	if h == nil {
 		return ""
 	}
 	return h.Provider
+}
+
+func (h *HistoricalPullCompleted) IsFinal() bool {
+	return h.isFinal
 }
 
 func (h *HistoricalPullCompleted) GetExtraProperties() map[string]interface{} {
@@ -26360,13 +27591,6 @@ func (h *HistoricalPullCompleted) SetEndDate(endDate time.Time) {
 	h.require(historicalPullCompletedFieldEndDate)
 }
 
-// SetIsFinal sets the IsFinal field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (h *HistoricalPullCompleted) SetIsFinal(isFinal bool) {
-	h.IsFinal = isFinal
-	h.require(historicalPullCompletedFieldIsFinal)
-}
-
 // SetProvider sets the Provider field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (h *HistoricalPullCompleted) SetProvider(provider string) {
@@ -26380,6 +27604,7 @@ func (h *HistoricalPullCompleted) UnmarshalJSON(data []byte) error {
 		embed
 		StartDate *internal.DateTime `json:"start_date"`
 		EndDate   *internal.DateTime `json:"end_date"`
+		IsFinal   bool               `json:"is_final"`
 	}{
 		embed: embed(*h),
 	}
@@ -26389,7 +27614,11 @@ func (h *HistoricalPullCompleted) UnmarshalJSON(data []byte) error {
 	*h = HistoricalPullCompleted(unmarshaler.embed)
 	h.StartDate = unmarshaler.StartDate.Time()
 	h.EndDate = unmarshaler.EndDate.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if unmarshaler.IsFinal != true {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", h, true, unmarshaler.IsFinal)
+	}
+	h.isFinal = unmarshaler.IsFinal
+	extraProperties, err := internal.ExtractExtraProperties(data, *h, "is_final")
 	if err != nil {
 		return err
 	}
@@ -26404,10 +27633,12 @@ func (h *HistoricalPullCompleted) MarshalJSON() ([]byte, error) {
 		embed
 		StartDate *internal.DateTime `json:"start_date"`
 		EndDate   *internal.DateTime `json:"end_date"`
+		IsFinal   bool               `json:"is_final"`
 	}{
 		embed:     embed(*h),
 		StartDate: internal.NewDateTime(h.StartDate),
 		EndDate:   internal.NewDateTime(h.EndDate),
+		IsFinal:   true,
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, h.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -26626,6 +27857,496 @@ func (j *Jpeg) String() string {
 	return fmt.Sprintf("%#v", j)
 }
 
+var (
+	labResultsMetadataFieldAge            = big.NewInt(1 << 0)
+	labResultsMetadataFieldDob            = big.NewInt(1 << 1)
+	labResultsMetadataFieldClia           = big.NewInt(1 << 2)
+	labResultsMetadataFieldPatient        = big.NewInt(1 << 3)
+	labResultsMetadataFieldProvider       = big.NewInt(1 << 4)
+	labResultsMetadataFieldLaboratory     = big.NewInt(1 << 5)
+	labResultsMetadataFieldDateReported   = big.NewInt(1 << 6)
+	labResultsMetadataFieldDateCollected  = big.NewInt(1 << 7)
+	labResultsMetadataFieldSpecimenNumber = big.NewInt(1 << 8)
+	labResultsMetadataFieldDateReceived   = big.NewInt(1 << 9)
+	labResultsMetadataFieldStatus         = big.NewInt(1 << 10)
+	labResultsMetadataFieldInterpretation = big.NewInt(1 << 11)
+	labResultsMetadataFieldPatientId      = big.NewInt(1 << 12)
+	labResultsMetadataFieldAccountId      = big.NewInt(1 << 13)
+)
+
+type LabResultsMetadata struct {
+	Age            string  `json:"age" url:"age"`
+	Dob            string  `json:"dob" url:"dob"`
+	Clia           *string `json:"clia_#,omitempty" url:"clia_#,omitempty"`
+	Patient        string  `json:"patient" url:"patient"`
+	Provider       *string `json:"provider,omitempty" url:"provider,omitempty"`
+	Laboratory     *string `json:"laboratory,omitempty" url:"laboratory,omitempty"`
+	DateReported   string  `json:"date_reported" url:"date_reported"`
+	DateCollected  *string `json:"date_collected,omitempty" url:"date_collected,omitempty"`
+	SpecimenNumber string  `json:"specimen_number" url:"specimen_number"`
+	DateReceived   *string `json:"date_received,omitempty" url:"date_received,omitempty"`
+	Status         *string `json:"status,omitempty" url:"status,omitempty"`
+	Interpretation *string `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	PatientId      *string `json:"patient_id,omitempty" url:"patient_id,omitempty"`
+	AccountId      *string `json:"account_id,omitempty" url:"account_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *LabResultsMetadata) GetAge() string {
+	if l == nil {
+		return ""
+	}
+	return l.Age
+}
+
+func (l *LabResultsMetadata) GetDob() string {
+	if l == nil {
+		return ""
+	}
+	return l.Dob
+}
+
+func (l *LabResultsMetadata) GetClia() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Clia
+}
+
+func (l *LabResultsMetadata) GetPatient() string {
+	if l == nil {
+		return ""
+	}
+	return l.Patient
+}
+
+func (l *LabResultsMetadata) GetProvider() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Provider
+}
+
+func (l *LabResultsMetadata) GetLaboratory() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Laboratory
+}
+
+func (l *LabResultsMetadata) GetDateReported() string {
+	if l == nil {
+		return ""
+	}
+	return l.DateReported
+}
+
+func (l *LabResultsMetadata) GetDateCollected() *string {
+	if l == nil {
+		return nil
+	}
+	return l.DateCollected
+}
+
+func (l *LabResultsMetadata) GetSpecimenNumber() string {
+	if l == nil {
+		return ""
+	}
+	return l.SpecimenNumber
+}
+
+func (l *LabResultsMetadata) GetDateReceived() *string {
+	if l == nil {
+		return nil
+	}
+	return l.DateReceived
+}
+
+func (l *LabResultsMetadata) GetStatus() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Status
+}
+
+func (l *LabResultsMetadata) GetInterpretation() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Interpretation
+}
+
+func (l *LabResultsMetadata) GetPatientId() *string {
+	if l == nil {
+		return nil
+	}
+	return l.PatientId
+}
+
+func (l *LabResultsMetadata) GetAccountId() *string {
+	if l == nil {
+		return nil
+	}
+	return l.AccountId
+}
+
+func (l *LabResultsMetadata) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LabResultsMetadata) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetAge sets the Age field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetAge(age string) {
+	l.Age = age
+	l.require(labResultsMetadataFieldAge)
+}
+
+// SetDob sets the Dob field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetDob(dob string) {
+	l.Dob = dob
+	l.require(labResultsMetadataFieldDob)
+}
+
+// SetClia sets the Clia field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetClia(clia *string) {
+	l.Clia = clia
+	l.require(labResultsMetadataFieldClia)
+}
+
+// SetPatient sets the Patient field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetPatient(patient string) {
+	l.Patient = patient
+	l.require(labResultsMetadataFieldPatient)
+}
+
+// SetProvider sets the Provider field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetProvider(provider *string) {
+	l.Provider = provider
+	l.require(labResultsMetadataFieldProvider)
+}
+
+// SetLaboratory sets the Laboratory field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetLaboratory(laboratory *string) {
+	l.Laboratory = laboratory
+	l.require(labResultsMetadataFieldLaboratory)
+}
+
+// SetDateReported sets the DateReported field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetDateReported(dateReported string) {
+	l.DateReported = dateReported
+	l.require(labResultsMetadataFieldDateReported)
+}
+
+// SetDateCollected sets the DateCollected field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetDateCollected(dateCollected *string) {
+	l.DateCollected = dateCollected
+	l.require(labResultsMetadataFieldDateCollected)
+}
+
+// SetSpecimenNumber sets the SpecimenNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetSpecimenNumber(specimenNumber string) {
+	l.SpecimenNumber = specimenNumber
+	l.require(labResultsMetadataFieldSpecimenNumber)
+}
+
+// SetDateReceived sets the DateReceived field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetDateReceived(dateReceived *string) {
+	l.DateReceived = dateReceived
+	l.require(labResultsMetadataFieldDateReceived)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetStatus(status *string) {
+	l.Status = status
+	l.require(labResultsMetadataFieldStatus)
+}
+
+// SetInterpretation sets the Interpretation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetInterpretation(interpretation *string) {
+	l.Interpretation = interpretation
+	l.require(labResultsMetadataFieldInterpretation)
+}
+
+// SetPatientId sets the PatientId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetPatientId(patientId *string) {
+	l.PatientId = patientId
+	l.require(labResultsMetadataFieldPatientId)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsMetadata) SetAccountId(accountId *string) {
+	l.AccountId = accountId
+	l.require(labResultsMetadataFieldAccountId)
+}
+
+func (l *LabResultsMetadata) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabResultsMetadata
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabResultsMetadata(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabResultsMetadata) MarshalJSON() ([]byte, error) {
+	type embed LabResultsMetadata
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *LabResultsMetadata) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
+	labResultsRawFieldMetadata          = big.NewInt(1 << 0)
+	labResultsRawFieldResults           = big.NewInt(1 << 1)
+	labResultsRawFieldMissingResults    = big.NewInt(1 << 2)
+	labResultsRawFieldSampleInformation = big.NewInt(1 << 3)
+	labResultsRawFieldOrderTransaction  = big.NewInt(1 << 4)
+)
+
+type LabResultsRaw struct {
+	Metadata          *LabResultsMetadata           `json:"metadata" url:"metadata"`
+	Results           *LabResultsRawResults         `json:"results" url:"results"`
+	MissingResults    []*MissingBiomarkerResult     `json:"missing_results,omitempty" url:"missing_results,omitempty"`
+	SampleInformation map[string]*SampleData        `json:"sample_information,omitempty" url:"sample_information,omitempty"`
+	OrderTransaction  *ClientFacingOrderTransaction `json:"order_transaction,omitempty" url:"order_transaction,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *LabResultsRaw) GetMetadata() *LabResultsMetadata {
+	if l == nil {
+		return nil
+	}
+	return l.Metadata
+}
+
+func (l *LabResultsRaw) GetResults() *LabResultsRawResults {
+	if l == nil {
+		return nil
+	}
+	return l.Results
+}
+
+func (l *LabResultsRaw) GetMissingResults() []*MissingBiomarkerResult {
+	if l == nil {
+		return nil
+	}
+	return l.MissingResults
+}
+
+func (l *LabResultsRaw) GetSampleInformation() map[string]*SampleData {
+	if l == nil {
+		return nil
+	}
+	return l.SampleInformation
+}
+
+func (l *LabResultsRaw) GetOrderTransaction() *ClientFacingOrderTransaction {
+	if l == nil {
+		return nil
+	}
+	return l.OrderTransaction
+}
+
+func (l *LabResultsRaw) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LabResultsRaw) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetMetadata sets the Metadata field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsRaw) SetMetadata(metadata *LabResultsMetadata) {
+	l.Metadata = metadata
+	l.require(labResultsRawFieldMetadata)
+}
+
+// SetResults sets the Results field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsRaw) SetResults(results *LabResultsRawResults) {
+	l.Results = results
+	l.require(labResultsRawFieldResults)
+}
+
+// SetMissingResults sets the MissingResults field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsRaw) SetMissingResults(missingResults []*MissingBiomarkerResult) {
+	l.MissingResults = missingResults
+	l.require(labResultsRawFieldMissingResults)
+}
+
+// SetSampleInformation sets the SampleInformation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsRaw) SetSampleInformation(sampleInformation map[string]*SampleData) {
+	l.SampleInformation = sampleInformation
+	l.require(labResultsRawFieldSampleInformation)
+}
+
+// SetOrderTransaction sets the OrderTransaction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LabResultsRaw) SetOrderTransaction(orderTransaction *ClientFacingOrderTransaction) {
+	l.OrderTransaction = orderTransaction
+	l.require(labResultsRawFieldOrderTransaction)
+}
+
+func (l *LabResultsRaw) UnmarshalJSON(data []byte) error {
+	type unmarshaler LabResultsRaw
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LabResultsRaw(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LabResultsRaw) MarshalJSON() ([]byte, error) {
+	type embed LabResultsRaw
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *LabResultsRaw) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+type LabResultsRawResults struct {
+	BiomarkerResultList []*BiomarkerResult
+	StringUnknownMap    map[string]interface{}
+
+	typ string
+}
+
+func (l *LabResultsRawResults) GetBiomarkerResultList() []*BiomarkerResult {
+	if l == nil {
+		return nil
+	}
+	return l.BiomarkerResultList
+}
+
+func (l *LabResultsRawResults) GetStringUnknownMap() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.StringUnknownMap
+}
+
+func (l *LabResultsRawResults) UnmarshalJSON(data []byte) error {
+	var valueBiomarkerResultList []*BiomarkerResult
+	if err := json.Unmarshal(data, &valueBiomarkerResultList); err == nil {
+		l.typ = "BiomarkerResultList"
+		l.BiomarkerResultList = valueBiomarkerResultList
+		return nil
+	}
+	var valueStringUnknownMap map[string]interface{}
+	if err := json.Unmarshal(data, &valueStringUnknownMap); err == nil {
+		l.typ = "StringUnknownMap"
+		l.StringUnknownMap = valueStringUnknownMap
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, l)
+}
+
+func (l LabResultsRawResults) MarshalJSON() ([]byte, error) {
+	if l.typ == "BiomarkerResultList" || l.BiomarkerResultList != nil {
+		return json.Marshal(l.BiomarkerResultList)
+	}
+	if l.typ == "StringUnknownMap" || l.StringUnknownMap != nil {
+		return json.Marshal(l.StringUnknownMap)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+type LabResultsRawResultsVisitor interface {
+	VisitBiomarkerResultList([]*BiomarkerResult) error
+	VisitStringUnknownMap(map[string]interface{}) error
+}
+
+func (l *LabResultsRawResults) Accept(visitor LabResultsRawResultsVisitor) error {
+	if l.typ == "BiomarkerResultList" || l.BiomarkerResultList != nil {
+		return visitor.VisitBiomarkerResultList(l.BiomarkerResultList)
+	}
+	if l.typ == "StringUnknownMap" || l.StringUnknownMap != nil {
+		return visitor.VisitStringUnknownMap(l.StringUnknownMap)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
 // The method used to perform a lab test. ℹ️ This enum is non-exhaustive.
 type LabTestCollectionMethod string
 
@@ -26721,6 +28442,7 @@ const (
 	LabsSpiriplex    Labs = "spiriplex"
 	LabsUssl         Labs = "ussl"
 	LabsQuest        Labs = "quest"
+	LabsSonoraQuest  Labs = "sonora_quest"
 	LabsLabcorp      Labs = "labcorp"
 	LabsBioreference Labs = "bioreference"
 	LabsUsBiotek     Labs = "us_biotek"
@@ -26729,6 +28451,7 @@ const (
 	LabsIhd          Labs = "ihd"
 	LabsNexus        Labs = "nexus"
 	LabsMyUti        Labs = "my_uti"
+	LabsCrl          Labs = "crl"
 )
 
 func NewLabsFromString(s string) (Labs, error) {
@@ -26741,6 +28464,8 @@ func NewLabsFromString(s string) (Labs, error) {
 		return LabsUssl, nil
 	case "quest":
 		return LabsQuest, nil
+	case "sonora_quest":
+		return LabsSonoraQuest, nil
 	case "labcorp":
 		return LabsLabcorp, nil
 	case "bioreference":
@@ -26757,6 +28482,8 @@ func NewLabsFromString(s string) (Labs, error) {
 		return LabsNexus, nil
 	case "my_uti":
 		return LabsMyUti, nil
+	case "crl":
+		return LabsCrl, nil
 	}
 	var t Labs
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -26831,6 +28558,196 @@ func NewMineralsFromString(s string) (Minerals, error) {
 
 func (m Minerals) Ptr() *Minerals {
 	return &m
+}
+
+var (
+	missingBiomarkerResultFieldName                = big.NewInt(1 << 0)
+	missingBiomarkerResultFieldSlug                = big.NewInt(1 << 1)
+	missingBiomarkerResultFieldInferredFailureType = big.NewInt(1 << 2)
+	missingBiomarkerResultFieldNote                = big.NewInt(1 << 3)
+	missingBiomarkerResultFieldLoinc               = big.NewInt(1 << 4)
+	missingBiomarkerResultFieldLoincSlug           = big.NewInt(1 << 5)
+	missingBiomarkerResultFieldProviderId          = big.NewInt(1 << 6)
+	missingBiomarkerResultFieldSourceMarkers       = big.NewInt(1 << 7)
+)
+
+type MissingBiomarkerResult struct {
+	Name                string                 `json:"name" url:"name"`
+	Slug                string                 `json:"slug" url:"slug"`
+	InferredFailureType FailureType            `json:"inferred_failure_type" url:"inferred_failure_type"`
+	Note                *string                `json:"note,omitempty" url:"note,omitempty"`
+	Loinc               *string                `json:"loinc,omitempty" url:"loinc,omitempty"`
+	LoincSlug           *string                `json:"loinc_slug,omitempty" url:"loinc_slug,omitempty"`
+	ProviderId          *string                `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	SourceMarkers       []*ParentBiomarkerData `json:"source_markers,omitempty" url:"source_markers,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MissingBiomarkerResult) GetName() string {
+	if m == nil {
+		return ""
+	}
+	return m.Name
+}
+
+func (m *MissingBiomarkerResult) GetSlug() string {
+	if m == nil {
+		return ""
+	}
+	return m.Slug
+}
+
+func (m *MissingBiomarkerResult) GetInferredFailureType() FailureType {
+	if m == nil {
+		return ""
+	}
+	return m.InferredFailureType
+}
+
+func (m *MissingBiomarkerResult) GetNote() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Note
+}
+
+func (m *MissingBiomarkerResult) GetLoinc() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Loinc
+}
+
+func (m *MissingBiomarkerResult) GetLoincSlug() *string {
+	if m == nil {
+		return nil
+	}
+	return m.LoincSlug
+}
+
+func (m *MissingBiomarkerResult) GetProviderId() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ProviderId
+}
+
+func (m *MissingBiomarkerResult) GetSourceMarkers() []*ParentBiomarkerData {
+	if m == nil {
+		return nil
+	}
+	return m.SourceMarkers
+}
+
+func (m *MissingBiomarkerResult) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MissingBiomarkerResult) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetName(name string) {
+	m.Name = name
+	m.require(missingBiomarkerResultFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetSlug(slug string) {
+	m.Slug = slug
+	m.require(missingBiomarkerResultFieldSlug)
+}
+
+// SetInferredFailureType sets the InferredFailureType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetInferredFailureType(inferredFailureType FailureType) {
+	m.InferredFailureType = inferredFailureType
+	m.require(missingBiomarkerResultFieldInferredFailureType)
+}
+
+// SetNote sets the Note field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetNote(note *string) {
+	m.Note = note
+	m.require(missingBiomarkerResultFieldNote)
+}
+
+// SetLoinc sets the Loinc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetLoinc(loinc *string) {
+	m.Loinc = loinc
+	m.require(missingBiomarkerResultFieldLoinc)
+}
+
+// SetLoincSlug sets the LoincSlug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetLoincSlug(loincSlug *string) {
+	m.LoincSlug = loincSlug
+	m.require(missingBiomarkerResultFieldLoincSlug)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetProviderId(providerId *string) {
+	m.ProviderId = providerId
+	m.require(missingBiomarkerResultFieldProviderId)
+}
+
+// SetSourceMarkers sets the SourceMarkers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MissingBiomarkerResult) SetSourceMarkers(sourceMarkers []*ParentBiomarkerData) {
+	m.SourceMarkers = sourceMarkers
+	m.require(missingBiomarkerResultFieldSourceMarkers)
+}
+
+func (m *MissingBiomarkerResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler MissingBiomarkerResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MissingBiomarkerResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MissingBiomarkerResult) MarshalJSON() ([]byte, error) {
+	type embed MissingBiomarkerResult
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MissingBiomarkerResult) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
 }
 
 var (
@@ -26912,6 +28829,130 @@ func (n *NotFoundErrorBody) String() string {
 }
 
 // ℹ️ This enum is non-exhaustive.
+type OrderLowLevelStatus string
+
+const (
+	OrderLowLevelStatusOrdered                    OrderLowLevelStatus = "ordered"
+	OrderLowLevelStatusRequisitionCreated         OrderLowLevelStatus = "requisition_created"
+	OrderLowLevelStatusRequisitionBypassed        OrderLowLevelStatus = "requisition_bypassed"
+	OrderLowLevelStatusTransitCustomer            OrderLowLevelStatus = "transit_customer"
+	OrderLowLevelStatusOutForDelivery             OrderLowLevelStatus = "out_for_delivery"
+	OrderLowLevelStatusWithCustomer               OrderLowLevelStatus = "with_customer"
+	OrderLowLevelStatusTransitLab                 OrderLowLevelStatus = "transit_lab"
+	OrderLowLevelStatusDeliveredToLab             OrderLowLevelStatus = "delivered_to_lab"
+	OrderLowLevelStatusCompleted                  OrderLowLevelStatus = "completed"
+	OrderLowLevelStatusFailureToDeliverToLab      OrderLowLevelStatus = "failure_to_deliver_to_lab"
+	OrderLowLevelStatusFailureToDeliverToCustomer OrderLowLevelStatus = "failure_to_deliver_to_customer"
+	OrderLowLevelStatusProblemInTransitLab        OrderLowLevelStatus = "problem_in_transit_lab"
+	OrderLowLevelStatusProblemInTransitCustomer   OrderLowLevelStatus = "problem_in_transit_customer"
+	OrderLowLevelStatusSampleError                OrderLowLevelStatus = "sample_error"
+	OrderLowLevelStatusAppointmentScheduled       OrderLowLevelStatus = "appointment_scheduled"
+	OrderLowLevelStatusAppointmentCancelled       OrderLowLevelStatus = "appointment_cancelled"
+	OrderLowLevelStatusAppointmentPending         OrderLowLevelStatus = "appointment_pending"
+	OrderLowLevelStatusDrawCompleted              OrderLowLevelStatus = "draw_completed"
+	OrderLowLevelStatusCancelled                  OrderLowLevelStatus = "cancelled"
+	OrderLowLevelStatusLost                       OrderLowLevelStatus = "lost"
+	OrderLowLevelStatusDoNotProcess               OrderLowLevelStatus = "do_not_process"
+	OrderLowLevelStatusPartialResults             OrderLowLevelStatus = "partial_results"
+	OrderLowLevelStatusAwaitingRegistration       OrderLowLevelStatus = "awaiting_registration"
+	OrderLowLevelStatusRegistered                 OrderLowLevelStatus = "registered"
+	OrderLowLevelStatusRedrawAvailable            OrderLowLevelStatus = "redraw_available"
+	OrderLowLevelStatusCorrected                  OrderLowLevelStatus = "corrected"
+	OrderLowLevelStatusLabProcessingBlocked       OrderLowLevelStatus = "lab_processing_blocked"
+)
+
+func NewOrderLowLevelStatusFromString(s string) (OrderLowLevelStatus, error) {
+	switch s {
+	case "ordered":
+		return OrderLowLevelStatusOrdered, nil
+	case "requisition_created":
+		return OrderLowLevelStatusRequisitionCreated, nil
+	case "requisition_bypassed":
+		return OrderLowLevelStatusRequisitionBypassed, nil
+	case "transit_customer":
+		return OrderLowLevelStatusTransitCustomer, nil
+	case "out_for_delivery":
+		return OrderLowLevelStatusOutForDelivery, nil
+	case "with_customer":
+		return OrderLowLevelStatusWithCustomer, nil
+	case "transit_lab":
+		return OrderLowLevelStatusTransitLab, nil
+	case "delivered_to_lab":
+		return OrderLowLevelStatusDeliveredToLab, nil
+	case "completed":
+		return OrderLowLevelStatusCompleted, nil
+	case "failure_to_deliver_to_lab":
+		return OrderLowLevelStatusFailureToDeliverToLab, nil
+	case "failure_to_deliver_to_customer":
+		return OrderLowLevelStatusFailureToDeliverToCustomer, nil
+	case "problem_in_transit_lab":
+		return OrderLowLevelStatusProblemInTransitLab, nil
+	case "problem_in_transit_customer":
+		return OrderLowLevelStatusProblemInTransitCustomer, nil
+	case "sample_error":
+		return OrderLowLevelStatusSampleError, nil
+	case "appointment_scheduled":
+		return OrderLowLevelStatusAppointmentScheduled, nil
+	case "appointment_cancelled":
+		return OrderLowLevelStatusAppointmentCancelled, nil
+	case "appointment_pending":
+		return OrderLowLevelStatusAppointmentPending, nil
+	case "draw_completed":
+		return OrderLowLevelStatusDrawCompleted, nil
+	case "cancelled":
+		return OrderLowLevelStatusCancelled, nil
+	case "lost":
+		return OrderLowLevelStatusLost, nil
+	case "do_not_process":
+		return OrderLowLevelStatusDoNotProcess, nil
+	case "partial_results":
+		return OrderLowLevelStatusPartialResults, nil
+	case "awaiting_registration":
+		return OrderLowLevelStatusAwaitingRegistration, nil
+	case "registered":
+		return OrderLowLevelStatusRegistered, nil
+	case "redraw_available":
+		return OrderLowLevelStatusRedrawAvailable, nil
+	case "corrected":
+		return OrderLowLevelStatusCorrected, nil
+	case "lab_processing_blocked":
+		return OrderLowLevelStatusLabProcessingBlocked, nil
+	}
+	var t OrderLowLevelStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderLowLevelStatus) Ptr() *OrderLowLevelStatus {
+	return &o
+}
+
+// ℹ️ This enum is non-exhaustive.
+type OrderOrigin string
+
+const (
+	OrderOriginInitial    OrderOrigin = "initial"
+	OrderOriginRedraw     OrderOrigin = "redraw"
+	OrderOriginRecreation OrderOrigin = "recreation"
+)
+
+func NewOrderOriginFromString(s string) (OrderOrigin, error) {
+	switch s {
+	case "initial":
+		return OrderOriginInitial, nil
+	case "redraw":
+		return OrderOriginRedraw, nil
+	case "recreation":
+		return OrderOriginRecreation, nil
+	}
+	var t OrderOrigin
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderOrigin) Ptr() *OrderOrigin {
+	return &o
+}
+
+// ℹ️ This enum is non-exhaustive.
 type OrderStatus string
 
 const (
@@ -26947,6 +28988,7 @@ const (
 	OrderStatusCollectingSampleTestkitWithCustomer                  OrderStatus = "collecting_sample.testkit.with_customer"
 	OrderStatusCollectingSampleTestkitTransitLab                    OrderStatus = "collecting_sample.testkit.transit_lab"
 	OrderStatusSampleWithLabTestkitDeliveredToLab                   OrderStatus = "sample_with_lab.testkit.delivered_to_lab"
+	OrderStatusSampleWithLabTestkitLabProcessingBlocked             OrderStatus = "sample_with_lab.testkit.lab_processing_blocked"
 	OrderStatusCompletedTestkitCompleted                            OrderStatus = "completed.testkit.completed"
 	OrderStatusFailedTestkitFailureToDeliverToCustomer              OrderStatus = "failed.testkit.failure_to_deliver_to_customer"
 	OrderStatusFailedTestkitFailureToDeliverToLab                   OrderStatus = "failed.testkit.failure_to_deliver_to_lab"
@@ -26964,6 +29006,10 @@ const (
 	OrderStatusCancelledOnSiteCollectionCancelled                   OrderStatus = "cancelled.on_site_collection.cancelled"
 	OrderStatusSampleWithLabOnSiteCollectionPartialResults          OrderStatus = "sample_with_lab.on_site_collection.partial_results"
 	OrderStatusFailedOnSiteCollectionSampleError                    OrderStatus = "failed.on_site_collection.sample_error"
+	OrderStatusCompletedWalkInTestCorrected                         OrderStatus = "completed.walk_in_test.corrected"
+	OrderStatusCompletedAtHomePhlebotomyCorrected                   OrderStatus = "completed.at_home_phlebotomy.corrected"
+	OrderStatusCompletedOnSiteCollectionCorrected                   OrderStatus = "completed.on_site_collection.corrected"
+	OrderStatusCompletedTestkitCorrected                            OrderStatus = "completed.testkit.corrected"
 )
 
 func NewOrderStatusFromString(s string) (OrderStatus, error) {
@@ -27032,6 +29078,8 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusCollectingSampleTestkitTransitLab, nil
 	case "sample_with_lab.testkit.delivered_to_lab":
 		return OrderStatusSampleWithLabTestkitDeliveredToLab, nil
+	case "sample_with_lab.testkit.lab_processing_blocked":
+		return OrderStatusSampleWithLabTestkitLabProcessingBlocked, nil
 	case "completed.testkit.completed":
 		return OrderStatusCompletedTestkitCompleted, nil
 	case "failed.testkit.failure_to_deliver_to_customer":
@@ -27066,12 +29114,49 @@ func NewOrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatusSampleWithLabOnSiteCollectionPartialResults, nil
 	case "failed.on_site_collection.sample_error":
 		return OrderStatusFailedOnSiteCollectionSampleError, nil
+	case "completed.walk_in_test.corrected":
+		return OrderStatusCompletedWalkInTestCorrected, nil
+	case "completed.at_home_phlebotomy.corrected":
+		return OrderStatusCompletedAtHomePhlebotomyCorrected, nil
+	case "completed.on_site_collection.corrected":
+		return OrderStatusCompletedOnSiteCollectionCorrected, nil
+	case "completed.testkit.corrected":
+		return OrderStatusCompletedTestkitCorrected, nil
 	}
 	var t OrderStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
 func (o OrderStatus) Ptr() *OrderStatus {
+	return &o
+}
+
+// ℹ️ This enum is non-exhaustive.
+type OrderStatusDetail string
+
+const (
+	OrderStatusDetailFulfillmentError                  OrderStatusDetail = "fulfillment_error"
+	OrderStatusDetailDateOfCollectionUnspecified       OrderStatusDetail = "date_of_collection_unspecified"
+	OrderStatusDetailDemographicInformationUnspecified OrderStatusDetail = "demographic_information_unspecified"
+	OrderStatusDetailDemographicInformationMismatch    OrderStatusDetail = "demographic_information_mismatch"
+)
+
+func NewOrderStatusDetailFromString(s string) (OrderStatusDetail, error) {
+	switch s {
+	case "fulfillment_error":
+		return OrderStatusDetailFulfillmentError, nil
+	case "date_of_collection_unspecified":
+		return OrderStatusDetailDateOfCollectionUnspecified, nil
+	case "demographic_information_unspecified":
+		return OrderStatusDetailDemographicInformationUnspecified, nil
+	case "demographic_information_mismatch":
+		return OrderStatusDetailDemographicInformationMismatch, nil
+	}
+	var t OrderStatusDetail
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderStatusDetail) Ptr() *OrderStatusDetail {
 	return &o
 }
 
@@ -27110,6 +29195,158 @@ func (o OrderTopLevelStatus) Ptr() *OrderTopLevelStatus {
 	return &o
 }
 
+// ℹ️ This enum is non-exhaustive.
+type OrderTransactionStatus string
+
+const (
+	OrderTransactionStatusActive    OrderTransactionStatus = "active"
+	OrderTransactionStatusCompleted OrderTransactionStatus = "completed"
+	OrderTransactionStatusCancelled OrderTransactionStatus = "cancelled"
+)
+
+func NewOrderTransactionStatusFromString(s string) (OrderTransactionStatus, error) {
+	switch s {
+	case "active":
+		return OrderTransactionStatusActive, nil
+	case "completed":
+		return OrderTransactionStatusCompleted, nil
+	case "cancelled":
+		return OrderTransactionStatusCancelled, nil
+	}
+	var t OrderTransactionStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OrderTransactionStatus) Ptr() *OrderTransactionStatus {
+	return &o
+}
+
+var (
+	parentBiomarkerDataFieldMarkerId   = big.NewInt(1 << 0)
+	parentBiomarkerDataFieldName       = big.NewInt(1 << 1)
+	parentBiomarkerDataFieldSlug       = big.NewInt(1 << 2)
+	parentBiomarkerDataFieldProviderId = big.NewInt(1 << 3)
+)
+
+type ParentBiomarkerData struct {
+	MarkerId   int     `json:"marker_id" url:"marker_id"`
+	Name       string  `json:"name" url:"name"`
+	Slug       string  `json:"slug" url:"slug"`
+	ProviderId *string `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *ParentBiomarkerData) GetMarkerId() int {
+	if p == nil {
+		return 0
+	}
+	return p.MarkerId
+}
+
+func (p *ParentBiomarkerData) GetName() string {
+	if p == nil {
+		return ""
+	}
+	return p.Name
+}
+
+func (p *ParentBiomarkerData) GetSlug() string {
+	if p == nil {
+		return ""
+	}
+	return p.Slug
+}
+
+func (p *ParentBiomarkerData) GetProviderId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ProviderId
+}
+
+func (p *ParentBiomarkerData) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ParentBiomarkerData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetMarkerId sets the MarkerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ParentBiomarkerData) SetMarkerId(markerId int) {
+	p.MarkerId = markerId
+	p.require(parentBiomarkerDataFieldMarkerId)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ParentBiomarkerData) SetName(name string) {
+	p.Name = name
+	p.require(parentBiomarkerDataFieldName)
+}
+
+// SetSlug sets the Slug field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ParentBiomarkerData) SetSlug(slug string) {
+	p.Slug = slug
+	p.require(parentBiomarkerDataFieldSlug)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ParentBiomarkerData) SetProviderId(providerId *string) {
+	p.ProviderId = providerId
+	p.require(parentBiomarkerDataFieldProviderId)
+}
+
+func (p *ParentBiomarkerData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ParentBiomarkerData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ParentBiomarkerData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ParentBiomarkerData) MarshalJSON() ([]byte, error) {
+	type embed ParentBiomarkerData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *ParentBiomarkerData) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 var (
 	patientAddressCompatibleFieldReceiverName = big.NewInt(1 << 0)
 	patientAddressCompatibleFieldFirstLine    = big.NewInt(1 << 1)
@@ -27118,7 +29355,8 @@ var (
 	patientAddressCompatibleFieldState        = big.NewInt(1 << 4)
 	patientAddressCompatibleFieldZip          = big.NewInt(1 << 5)
 	patientAddressCompatibleFieldCountry      = big.NewInt(1 << 6)
-	patientAddressCompatibleFieldPhoneNumber  = big.NewInt(1 << 7)
+	patientAddressCompatibleFieldAccessNotes  = big.NewInt(1 << 7)
+	patientAddressCompatibleFieldPhoneNumber  = big.NewInt(1 << 8)
 )
 
 type PatientAddressCompatible struct {
@@ -27129,6 +29367,7 @@ type PatientAddressCompatible struct {
 	State        string  `json:"state" url:"state"`
 	Zip          string  `json:"zip" url:"zip"`
 	Country      string  `json:"country" url:"country"`
+	AccessNotes  *string `json:"access_notes,omitempty" url:"access_notes,omitempty"`
 	PhoneNumber  *string `json:"phone_number,omitempty" url:"phone_number,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -27185,6 +29424,13 @@ func (p *PatientAddressCompatible) GetCountry() string {
 		return ""
 	}
 	return p.Country
+}
+
+func (p *PatientAddressCompatible) GetAccessNotes() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AccessNotes
 }
 
 func (p *PatientAddressCompatible) GetPhoneNumber() *string {
@@ -27254,6 +29500,13 @@ func (p *PatientAddressCompatible) SetCountry(country string) {
 	p.require(patientAddressCompatibleFieldCountry)
 }
 
+// SetAccessNotes sets the AccessNotes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatientAddressCompatible) SetAccessNotes(accessNotes *string) {
+	p.AccessNotes = accessNotes
+	p.require(patientAddressCompatibleFieldAccessNotes)
+}
+
 // SetPhoneNumber sets the PhoneNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (p *PatientAddressCompatible) SetPhoneNumber(phoneNumber *string) {
@@ -27308,7 +29561,8 @@ var (
 	patientAddressWithValidationFieldState        = big.NewInt(1 << 4)
 	patientAddressWithValidationFieldZip          = big.NewInt(1 << 5)
 	patientAddressWithValidationFieldCountry      = big.NewInt(1 << 6)
-	patientAddressWithValidationFieldPhoneNumber  = big.NewInt(1 << 7)
+	patientAddressWithValidationFieldAccessNotes  = big.NewInt(1 << 7)
+	patientAddressWithValidationFieldPhoneNumber  = big.NewInt(1 << 8)
 )
 
 type PatientAddressWithValidation struct {
@@ -27319,6 +29573,7 @@ type PatientAddressWithValidation struct {
 	State        string  `json:"state" url:"state"`
 	Zip          string  `json:"zip" url:"zip"`
 	Country      string  `json:"country" url:"country"`
+	AccessNotes  *string `json:"access_notes,omitempty" url:"access_notes,omitempty"`
 	PhoneNumber  *string `json:"phone_number,omitempty" url:"phone_number,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -27375,6 +29630,13 @@ func (p *PatientAddressWithValidation) GetCountry() string {
 		return ""
 	}
 	return p.Country
+}
+
+func (p *PatientAddressWithValidation) GetAccessNotes() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AccessNotes
 }
 
 func (p *PatientAddressWithValidation) GetPhoneNumber() *string {
@@ -27442,6 +29704,13 @@ func (p *PatientAddressWithValidation) SetZip(zip string) {
 func (p *PatientAddressWithValidation) SetCountry(country string) {
 	p.Country = country
 	p.require(patientAddressWithValidationFieldCountry)
+}
+
+// SetAccessNotes sets the AccessNotes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatientAddressWithValidation) SetAccessNotes(accessNotes *string) {
+	p.AccessNotes = accessNotes
+	p.require(patientAddressWithValidationFieldAccessNotes)
 }
 
 // SetPhoneNumber sets the PhoneNumber field and marks it as non-optional;
@@ -27777,6 +30046,8 @@ const (
 	PayorCodeExternalProviderStedi            PayorCodeExternalProvider = "stedi"
 	PayorCodeExternalProviderWaystar          PayorCodeExternalProvider = "waystar"
 	PayorCodeExternalProviderClaimMd          PayorCodeExternalProvider = "claim_md"
+	PayorCodeExternalProviderApero            PayorCodeExternalProvider = "apero"
+	PayorCodeExternalProviderPverify          PayorCodeExternalProvider = "pverify"
 )
 
 func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider, error) {
@@ -27791,6 +30062,10 @@ func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider
 		return PayorCodeExternalProviderWaystar, nil
 	case "claim_md":
 		return PayorCodeExternalProviderClaimMd, nil
+	case "apero":
+		return PayorCodeExternalProviderApero, nil
+	case "pverify":
+		return PayorCodeExternalProviderPverify, nil
 	}
 	var t PayorCodeExternalProvider
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -27798,6 +30073,132 @@ func NewPayorCodeExternalProviderFromString(s string) (PayorCodeExternalProvider
 
 func (p PayorCodeExternalProvider) Ptr() *PayorCodeExternalProvider {
 	return &p
+}
+
+var (
+	performingLaboratoryFieldName            = big.NewInt(1 << 0)
+	performingLaboratoryFieldPhoneNumber     = big.NewInt(1 << 1)
+	performingLaboratoryFieldMedicalDirector = big.NewInt(1 << 2)
+	performingLaboratoryFieldAddress         = big.NewInt(1 << 3)
+)
+
+type PerformingLaboratory struct {
+	Name            string   `json:"name" url:"name"`
+	PhoneNumber     *string  `json:"phone_number,omitempty" url:"phone_number,omitempty"`
+	MedicalDirector *string  `json:"medical_director,omitempty" url:"medical_director,omitempty"`
+	Address         *Address `json:"address,omitempty" url:"address,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PerformingLaboratory) GetName() string {
+	if p == nil {
+		return ""
+	}
+	return p.Name
+}
+
+func (p *PerformingLaboratory) GetPhoneNumber() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PhoneNumber
+}
+
+func (p *PerformingLaboratory) GetMedicalDirector() *string {
+	if p == nil {
+		return nil
+	}
+	return p.MedicalDirector
+}
+
+func (p *PerformingLaboratory) GetAddress() *Address {
+	if p == nil {
+		return nil
+	}
+	return p.Address
+}
+
+func (p *PerformingLaboratory) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PerformingLaboratory) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PerformingLaboratory) SetName(name string) {
+	p.Name = name
+	p.require(performingLaboratoryFieldName)
+}
+
+// SetPhoneNumber sets the PhoneNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PerformingLaboratory) SetPhoneNumber(phoneNumber *string) {
+	p.PhoneNumber = phoneNumber
+	p.require(performingLaboratoryFieldPhoneNumber)
+}
+
+// SetMedicalDirector sets the MedicalDirector field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PerformingLaboratory) SetMedicalDirector(medicalDirector *string) {
+	p.MedicalDirector = medicalDirector
+	p.require(performingLaboratoryFieldMedicalDirector)
+}
+
+// SetAddress sets the Address field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PerformingLaboratory) SetAddress(address *Address) {
+	p.Address = address
+	p.require(performingLaboratoryFieldAddress)
+}
+
+func (p *PerformingLaboratory) UnmarshalJSON(data []byte) error {
+	type unmarshaler PerformingLaboratory
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PerformingLaboratory(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PerformingLaboratory) MarshalJSON() ([]byte, error) {
+	type embed PerformingLaboratory
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PerformingLaboratory) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
 }
 
 var (
@@ -28352,6 +30753,7 @@ const (
 	ProvidersZwift             Providers = "zwift"
 	ProvidersFreestyleLibre    Providers = "freestyle_libre"
 	ProvidersAbbottLibreview   Providers = "abbott_libreview"
+	ProvidersTandemSource      Providers = "tandem_source"
 	ProvidersFreestyleLibreBle Providers = "freestyle_libre_ble"
 	ProvidersEightSleep        Providers = "eight_sleep"
 	ProvidersWithings          Providers = "withings"
@@ -28371,6 +30773,7 @@ const (
 	ProvidersHammerhead        Providers = "hammerhead"
 	ProvidersMyFitnessPal      Providers = "my_fitness_pal"
 	ProvidersHealthConnect     Providers = "health_connect"
+	ProvidersSamsungHealth     Providers = "samsung_health"
 	ProvidersPolar             Providers = "polar"
 	ProvidersCronometer        Providers = "cronometer"
 	ProvidersKardia            Providers = "kardia"
@@ -28405,6 +30808,8 @@ func NewProvidersFromString(s string) (Providers, error) {
 		return ProvidersFreestyleLibre, nil
 	case "abbott_libreview":
 		return ProvidersAbbottLibreview, nil
+	case "tandem_source":
+		return ProvidersTandemSource, nil
 	case "freestyle_libre_ble":
 		return ProvidersFreestyleLibreBle, nil
 	case "eight_sleep":
@@ -28443,6 +30848,8 @@ func NewProvidersFromString(s string) (Providers, error) {
 		return ProvidersMyFitnessPal, nil
 	case "health_connect":
 		return ProvidersHealthConnect, nil
+	case "samsung_health":
+		return ProvidersSamsungHealth, nil
 	case "polar":
 		return ProvidersPolar, nil
 	case "cronometer":
@@ -28762,6 +31169,395 @@ func NewResponsibleRelationshipFromString(s string) (ResponsibleRelationship, er
 
 func (r ResponsibleRelationship) Ptr() *ResponsibleRelationship {
 	return &r
+}
+
+// ℹ️ This enum is non-exhaustive.
+type ResultType string
+
+const (
+	ResultTypeNumeric    ResultType = "numeric"
+	ResultTypeRange      ResultType = "range"
+	ResultTypeComment    ResultType = "comment"
+	ResultTypeCodedValue ResultType = "coded_value"
+)
+
+func NewResultTypeFromString(s string) (ResultType, error) {
+	switch s {
+	case "numeric":
+		return ResultTypeNumeric, nil
+	case "range":
+		return ResultTypeRange, nil
+	case "comment":
+		return ResultTypeComment, nil
+	case "coded_value":
+		return ResultTypeCodedValue, nil
+	}
+	var t ResultType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r ResultType) Ptr() *ResultType {
+	return &r
+}
+
+var (
+	sampleDataFieldSampleId               = big.NewInt(1 << 0)
+	sampleDataFieldControlNumber          = big.NewInt(1 << 1)
+	sampleDataFieldDateCollected          = big.NewInt(1 << 2)
+	sampleDataFieldDateReceived           = big.NewInt(1 << 3)
+	sampleDataFieldDateReported           = big.NewInt(1 << 4)
+	sampleDataFieldPerformingLaboratories = big.NewInt(1 << 5)
+	sampleDataFieldClinicalInformation    = big.NewInt(1 << 6)
+)
+
+type SampleData struct {
+	SampleId               *string                          `json:"sample_id,omitempty" url:"sample_id,omitempty"`
+	ControlNumber          *string                          `json:"control_number,omitempty" url:"control_number,omitempty"`
+	DateCollected          *SampleDataDateCollected         `json:"date_collected,omitempty" url:"date_collected,omitempty"`
+	DateReceived           *SampleDataDateReceived          `json:"date_received,omitempty" url:"date_received,omitempty"`
+	DateReported           *SampleDataDateReported          `json:"date_reported,omitempty" url:"date_reported,omitempty"`
+	PerformingLaboratories map[string]*PerformingLaboratory `json:"performing_laboratories,omitempty" url:"performing_laboratories,omitempty"`
+	ClinicalInformation    *ClinicalInformation             `json:"clinical_information,omitempty" url:"clinical_information,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SampleData) GetSampleId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.SampleId
+}
+
+func (s *SampleData) GetControlNumber() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ControlNumber
+}
+
+func (s *SampleData) GetDateCollected() *SampleDataDateCollected {
+	if s == nil {
+		return nil
+	}
+	return s.DateCollected
+}
+
+func (s *SampleData) GetDateReceived() *SampleDataDateReceived {
+	if s == nil {
+		return nil
+	}
+	return s.DateReceived
+}
+
+func (s *SampleData) GetDateReported() *SampleDataDateReported {
+	if s == nil {
+		return nil
+	}
+	return s.DateReported
+}
+
+func (s *SampleData) GetPerformingLaboratories() map[string]*PerformingLaboratory {
+	if s == nil {
+		return nil
+	}
+	return s.PerformingLaboratories
+}
+
+func (s *SampleData) GetClinicalInformation() *ClinicalInformation {
+	if s == nil {
+		return nil
+	}
+	return s.ClinicalInformation
+}
+
+func (s *SampleData) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SampleData) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetSampleId sets the SampleId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SampleData) SetSampleId(sampleId *string) {
+	s.SampleId = sampleId
+	s.require(sampleDataFieldSampleId)
+}
+
+// SetControlNumber sets the ControlNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SampleData) SetControlNumber(controlNumber *string) {
+	s.ControlNumber = controlNumber
+	s.require(sampleDataFieldControlNumber)
+}
+
+// SetDateCollected sets the DateCollected field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SampleData) SetDateCollected(dateCollected *SampleDataDateCollected) {
+	s.DateCollected = dateCollected
+	s.require(sampleDataFieldDateCollected)
+}
+
+// SetDateReceived sets the DateReceived field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SampleData) SetDateReceived(dateReceived *SampleDataDateReceived) {
+	s.DateReceived = dateReceived
+	s.require(sampleDataFieldDateReceived)
+}
+
+// SetDateReported sets the DateReported field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SampleData) SetDateReported(dateReported *SampleDataDateReported) {
+	s.DateReported = dateReported
+	s.require(sampleDataFieldDateReported)
+}
+
+// SetPerformingLaboratories sets the PerformingLaboratories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SampleData) SetPerformingLaboratories(performingLaboratories map[string]*PerformingLaboratory) {
+	s.PerformingLaboratories = performingLaboratories
+	s.require(sampleDataFieldPerformingLaboratories)
+}
+
+// SetClinicalInformation sets the ClinicalInformation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SampleData) SetClinicalInformation(clinicalInformation *ClinicalInformation) {
+	s.ClinicalInformation = clinicalInformation
+	s.require(sampleDataFieldClinicalInformation)
+}
+
+func (s *SampleData) UnmarshalJSON(data []byte) error {
+	type unmarshaler SampleData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SampleData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SampleData) MarshalJSON() ([]byte, error) {
+	type embed SampleData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SampleData) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SampleDataDateCollected struct {
+	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
+	String                         string
+
+	typ string
+}
+
+func (s *SampleDataDateCollected) GetUtcTimestampWithTimezoneOffset() *UtcTimestampWithTimezoneOffset {
+	if s == nil {
+		return nil
+	}
+	return s.UtcTimestampWithTimezoneOffset
+}
+
+func (s *SampleDataDateCollected) GetString() string {
+	if s == nil {
+		return ""
+	}
+	return s.String
+}
+
+func (s *SampleDataDateCollected) UnmarshalJSON(data []byte) error {
+	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
+	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
+		s.typ = "UtcTimestampWithTimezoneOffset"
+		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		s.typ = "String"
+		s.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SampleDataDateCollected) MarshalJSON() ([]byte, error) {
+	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
+		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.typ == "String" || s.String != "" {
+		return json.Marshal(s.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateCollectedVisitor interface {
+	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
+	VisitString(string) error
+}
+
+func (s *SampleDataDateCollected) Accept(visitor SampleDataDateCollectedVisitor) error {
+	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
+		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.typ == "String" || s.String != "" {
+		return visitor.VisitString(s.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReceived struct {
+	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
+	String                         string
+
+	typ string
+}
+
+func (s *SampleDataDateReceived) GetUtcTimestampWithTimezoneOffset() *UtcTimestampWithTimezoneOffset {
+	if s == nil {
+		return nil
+	}
+	return s.UtcTimestampWithTimezoneOffset
+}
+
+func (s *SampleDataDateReceived) GetString() string {
+	if s == nil {
+		return ""
+	}
+	return s.String
+}
+
+func (s *SampleDataDateReceived) UnmarshalJSON(data []byte) error {
+	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
+	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
+		s.typ = "UtcTimestampWithTimezoneOffset"
+		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		s.typ = "String"
+		s.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SampleDataDateReceived) MarshalJSON() ([]byte, error) {
+	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
+		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.typ == "String" || s.String != "" {
+		return json.Marshal(s.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReceivedVisitor interface {
+	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
+	VisitString(string) error
+}
+
+func (s *SampleDataDateReceived) Accept(visitor SampleDataDateReceivedVisitor) error {
+	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
+		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.typ == "String" || s.String != "" {
+		return visitor.VisitString(s.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReported struct {
+	UtcTimestampWithTimezoneOffset *UtcTimestampWithTimezoneOffset
+	String                         string
+
+	typ string
+}
+
+func (s *SampleDataDateReported) GetUtcTimestampWithTimezoneOffset() *UtcTimestampWithTimezoneOffset {
+	if s == nil {
+		return nil
+	}
+	return s.UtcTimestampWithTimezoneOffset
+}
+
+func (s *SampleDataDateReported) GetString() string {
+	if s == nil {
+		return ""
+	}
+	return s.String
+}
+
+func (s *SampleDataDateReported) UnmarshalJSON(data []byte) error {
+	valueUtcTimestampWithTimezoneOffset := new(UtcTimestampWithTimezoneOffset)
+	if err := json.Unmarshal(data, &valueUtcTimestampWithTimezoneOffset); err == nil {
+		s.typ = "UtcTimestampWithTimezoneOffset"
+		s.UtcTimestampWithTimezoneOffset = valueUtcTimestampWithTimezoneOffset
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		s.typ = "String"
+		s.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SampleDataDateReported) MarshalJSON() ([]byte, error) {
+	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
+		return json.Marshal(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.typ == "String" || s.String != "" {
+		return json.Marshal(s.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SampleDataDateReportedVisitor interface {
+	VisitUtcTimestampWithTimezoneOffset(*UtcTimestampWithTimezoneOffset) error
+	VisitString(string) error
+}
+
+func (s *SampleDataDateReported) Accept(visitor SampleDataDateReportedVisitor) error {
+	if s.typ == "UtcTimestampWithTimezoneOffset" || s.UtcTimestampWithTimezoneOffset != nil {
+		return visitor.VisitUtcTimestampWithTimezoneOffset(s.UtcTimestampWithTimezoneOffset)
+	}
+	if s.typ == "String" || s.String != "" {
+		return visitor.VisitString(s.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
 }
 
 // ℹ️ This enum is non-exhaustive.
@@ -29242,15 +32038,13 @@ func (t TraceElements) Ptr() *TraceElements {
 }
 
 var (
-	userRefreshErrorResponseFieldSuccess       = big.NewInt(1 << 0)
-	userRefreshErrorResponseFieldUserId        = big.NewInt(1 << 1)
-	userRefreshErrorResponseFieldError         = big.NewInt(1 << 2)
-	userRefreshErrorResponseFieldFailedSources = big.NewInt(1 << 3)
+	userRefreshErrorResponseFieldUserId        = big.NewInt(1 << 0)
+	userRefreshErrorResponseFieldError         = big.NewInt(1 << 1)
+	userRefreshErrorResponseFieldFailedSources = big.NewInt(1 << 2)
 )
 
 type UserRefreshErrorResponse struct {
 	// Whether operation was successful or not
-	Success bool `json:"success" url:"success"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	UserId        string   `json:"user_id" url:"user_id"`
 	Error         string   `json:"error" url:"error"`
@@ -29258,16 +32052,10 @@ type UserRefreshErrorResponse struct {
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
+	success        bool
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (u *UserRefreshErrorResponse) GetSuccess() bool {
-	if u == nil {
-		return false
-	}
-	return u.Success
 }
 
 func (u *UserRefreshErrorResponse) GetUserId() string {
@@ -29291,6 +32079,10 @@ func (u *UserRefreshErrorResponse) GetFailedSources() []string {
 	return u.FailedSources
 }
 
+func (u *UserRefreshErrorResponse) Success() bool {
+	return u.success
+}
+
 func (u *UserRefreshErrorResponse) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
@@ -29300,13 +32092,6 @@ func (u *UserRefreshErrorResponse) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserRefreshErrorResponse) SetSuccess(success bool) {
-	u.Success = success
-	u.require(userRefreshErrorResponseFieldSuccess)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
@@ -29331,13 +32116,22 @@ func (u *UserRefreshErrorResponse) SetFailedSources(failedSources []string) {
 }
 
 func (u *UserRefreshErrorResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserRefreshErrorResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed UserRefreshErrorResponse
+	var unmarshaler = struct {
+		embed
+		Success bool `json:"success"`
+	}{
+		embed: embed(*u),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*u = UserRefreshErrorResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	*u = UserRefreshErrorResponse(unmarshaler.embed)
+	if unmarshaler.Success != false {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, false, unmarshaler.Success)
+	}
+	u.success = unmarshaler.Success
+	extraProperties, err := internal.ExtractExtraProperties(data, *u, "success")
 	if err != nil {
 		return err
 	}
@@ -29350,14 +32144,118 @@ func (u *UserRefreshErrorResponse) MarshalJSON() ([]byte, error) {
 	type embed UserRefreshErrorResponse
 	var marshaler = struct {
 		embed
+		Success bool `json:"success"`
 	}{
-		embed: embed(*u),
+		embed:   embed(*u),
+		Success: false,
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (u *UserRefreshErrorResponse) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
+	utcTimestampWithTimezoneOffsetFieldTimestamp      = big.NewInt(1 << 0)
+	utcTimestampWithTimezoneOffsetFieldTimezoneOffset = big.NewInt(1 << 1)
+)
+
+type UtcTimestampWithTimezoneOffset struct {
+	Timestamp      time.Time `json:"timestamp" url:"timestamp"`
+	TimezoneOffset int       `json:"timezone_offset" url:"timezone_offset"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UtcTimestampWithTimezoneOffset) GetTimestamp() time.Time {
+	if u == nil {
+		return time.Time{}
+	}
+	return u.Timestamp
+}
+
+func (u *UtcTimestampWithTimezoneOffset) GetTimezoneOffset() int {
+	if u == nil {
+		return 0
+	}
+	return u.TimezoneOffset
+}
+
+func (u *UtcTimestampWithTimezoneOffset) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UtcTimestampWithTimezoneOffset) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetTimestamp sets the Timestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UtcTimestampWithTimezoneOffset) SetTimestamp(timestamp time.Time) {
+	u.Timestamp = timestamp
+	u.require(utcTimestampWithTimezoneOffsetFieldTimestamp)
+}
+
+// SetTimezoneOffset sets the TimezoneOffset field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UtcTimestampWithTimezoneOffset) SetTimezoneOffset(timezoneOffset int) {
+	u.TimezoneOffset = timezoneOffset
+	u.require(utcTimestampWithTimezoneOffsetFieldTimezoneOffset)
+}
+
+func (u *UtcTimestampWithTimezoneOffset) UnmarshalJSON(data []byte) error {
+	type embed UtcTimestampWithTimezoneOffset
+	var unmarshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+	}{
+		embed: embed(*u),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*u = UtcTimestampWithTimezoneOffset(unmarshaler.embed)
+	u.Timestamp = unmarshaler.Timestamp.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UtcTimestampWithTimezoneOffset) MarshalJSON() ([]byte, error) {
+	type embed UtcTimestampWithTimezoneOffset
+	var marshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+	}{
+		embed:     embed(*u),
+		Timestamp: internal.NewDateTime(u.Timestamp),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UtcTimestampWithTimezoneOffset) String() string {
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
