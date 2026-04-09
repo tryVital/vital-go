@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/tryVital/vital-go/internal"
+	internal "github.com/tryVital/vital-go/v2/internal"
 	big "math/big"
 	time "time"
 )
@@ -475,6 +475,7 @@ const (
 	ClientFacingSleepCycleSourceTypeCuff            ClientFacingSleepCycleSourceType = "cuff"
 	ClientFacingSleepCycleSourceTypeManualScan      ClientFacingSleepCycleSourceType = "manual_scan"
 	ClientFacingSleepCycleSourceTypeAutomatic       ClientFacingSleepCycleSourceType = "automatic"
+	ClientFacingSleepCycleSourceTypeInsulinPump     ClientFacingSleepCycleSourceType = "insulin_pump"
 	ClientFacingSleepCycleSourceTypeScale           ClientFacingSleepCycleSourceType = "scale"
 	ClientFacingSleepCycleSourceTypeChestStrap      ClientFacingSleepCycleSourceType = "chest_strap"
 	ClientFacingSleepCycleSourceTypeRing            ClientFacingSleepCycleSourceType = "ring"
@@ -503,6 +504,8 @@ func NewClientFacingSleepCycleSourceTypeFromString(s string) (ClientFacingSleepC
 		return ClientFacingSleepCycleSourceTypeManualScan, nil
 	case "automatic":
 		return ClientFacingSleepCycleSourceTypeAutomatic, nil
+	case "insulin_pump":
+		return ClientFacingSleepCycleSourceTypeInsulinPump, nil
 	case "scale":
 		return ClientFacingSleepCycleSourceTypeScale, nil
 	case "chest_strap":
