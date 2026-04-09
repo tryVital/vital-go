@@ -5,10 +5,10 @@ package labreport
 import (
 	context "context"
 	fmt "fmt"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	vitalgo "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -48,8 +48,10 @@ func (r *RawClient) ParserCreateJob(
 		options.ToHeader(),
 	)
 	writer := internal.NewMultipartWriter()
-	if err := writer.WriteFile("file", request.File); err != nil {
-		return nil, err
+	for _, f := range request.File {
+		if err := writer.WriteFile("file", f); err != nil {
+			return nil, err
+		}
 	}
 	if err := writer.WriteField("user_id", request.UserId); err != nil {
 		return nil, err

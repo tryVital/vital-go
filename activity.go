@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/tryVital/vital-go/internal"
+	internal "github.com/tryVital/vital-go/v2/internal"
 	big "math/big"
 	time "time"
 )
@@ -621,13 +621,6 @@ func (c *ClientFacingActivity) GetHeartRate() *ClientFacingHeartRate {
 		return nil
 	}
 	return c.HeartRate
-}
-
-func (c *ClientFacingActivity) GetWheelchairUse() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.WheelchairUse
 }
 
 func (c *ClientFacingActivity) GetWheelchairPush() *int {
