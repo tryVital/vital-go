@@ -103,36 +103,37 @@ func (s *SleepGetRawRequest) SetEndDate(endDate *string) {
 }
 
 var (
-	clientFacingSleepFieldId               = big.NewInt(1 << 0)
-	clientFacingSleepFieldUserId           = big.NewInt(1 << 1)
-	clientFacingSleepFieldDate             = big.NewInt(1 << 2)
-	clientFacingSleepFieldCalendarDate     = big.NewInt(1 << 3)
-	clientFacingSleepFieldBedtimeStart     = big.NewInt(1 << 4)
-	clientFacingSleepFieldBedtimeStop      = big.NewInt(1 << 5)
-	clientFacingSleepFieldType             = big.NewInt(1 << 6)
-	clientFacingSleepFieldTimezoneOffset   = big.NewInt(1 << 7)
-	clientFacingSleepFieldDuration         = big.NewInt(1 << 8)
-	clientFacingSleepFieldTotal            = big.NewInt(1 << 9)
-	clientFacingSleepFieldAwake            = big.NewInt(1 << 10)
-	clientFacingSleepFieldLight            = big.NewInt(1 << 11)
-	clientFacingSleepFieldRem              = big.NewInt(1 << 12)
-	clientFacingSleepFieldDeep             = big.NewInt(1 << 13)
-	clientFacingSleepFieldScore            = big.NewInt(1 << 14)
-	clientFacingSleepFieldHrLowest         = big.NewInt(1 << 15)
-	clientFacingSleepFieldHrAverage        = big.NewInt(1 << 16)
-	clientFacingSleepFieldHrResting        = big.NewInt(1 << 17)
-	clientFacingSleepFieldEfficiency       = big.NewInt(1 << 18)
-	clientFacingSleepFieldLatency          = big.NewInt(1 << 19)
-	clientFacingSleepFieldTemperatureDelta = big.NewInt(1 << 20)
-	clientFacingSleepFieldSkinTemperature  = big.NewInt(1 << 21)
-	clientFacingSleepFieldHrDip            = big.NewInt(1 << 22)
-	clientFacingSleepFieldState            = big.NewInt(1 << 23)
-	clientFacingSleepFieldAverageHrv       = big.NewInt(1 << 24)
-	clientFacingSleepFieldRespiratoryRate  = big.NewInt(1 << 25)
-	clientFacingSleepFieldSource           = big.NewInt(1 << 26)
-	clientFacingSleepFieldSleepStream      = big.NewInt(1 << 27)
-	clientFacingSleepFieldCreatedAt        = big.NewInt(1 << 28)
-	clientFacingSleepFieldUpdatedAt        = big.NewInt(1 << 29)
+	clientFacingSleepFieldId                     = big.NewInt(1 << 0)
+	clientFacingSleepFieldUserId                 = big.NewInt(1 << 1)
+	clientFacingSleepFieldDate                   = big.NewInt(1 << 2)
+	clientFacingSleepFieldCalendarDate           = big.NewInt(1 << 3)
+	clientFacingSleepFieldBedtimeStart           = big.NewInt(1 << 4)
+	clientFacingSleepFieldBedtimeStop            = big.NewInt(1 << 5)
+	clientFacingSleepFieldType                   = big.NewInt(1 << 6)
+	clientFacingSleepFieldTimezoneOffset         = big.NewInt(1 << 7)
+	clientFacingSleepFieldDuration               = big.NewInt(1 << 8)
+	clientFacingSleepFieldTotal                  = big.NewInt(1 << 9)
+	clientFacingSleepFieldAwake                  = big.NewInt(1 << 10)
+	clientFacingSleepFieldLight                  = big.NewInt(1 << 11)
+	clientFacingSleepFieldRem                    = big.NewInt(1 << 12)
+	clientFacingSleepFieldDeep                   = big.NewInt(1 << 13)
+	clientFacingSleepFieldScore                  = big.NewInt(1 << 14)
+	clientFacingSleepFieldRecoveryReadinessScore = big.NewInt(1 << 15)
+	clientFacingSleepFieldHrLowest               = big.NewInt(1 << 16)
+	clientFacingSleepFieldHrAverage              = big.NewInt(1 << 17)
+	clientFacingSleepFieldHrResting              = big.NewInt(1 << 18)
+	clientFacingSleepFieldEfficiency             = big.NewInt(1 << 19)
+	clientFacingSleepFieldLatency                = big.NewInt(1 << 20)
+	clientFacingSleepFieldTemperatureDelta       = big.NewInt(1 << 21)
+	clientFacingSleepFieldSkinTemperature        = big.NewInt(1 << 22)
+	clientFacingSleepFieldHrDip                  = big.NewInt(1 << 23)
+	clientFacingSleepFieldState                  = big.NewInt(1 << 24)
+	clientFacingSleepFieldAverageHrv             = big.NewInt(1 << 25)
+	clientFacingSleepFieldRespiratoryRate        = big.NewInt(1 << 26)
+	clientFacingSleepFieldSource                 = big.NewInt(1 << 27)
+	clientFacingSleepFieldSleepStream            = big.NewInt(1 << 28)
+	clientFacingSleepFieldCreatedAt              = big.NewInt(1 << 29)
+	clientFacingSleepFieldUpdatedAt              = big.NewInt(1 << 30)
 )
 
 type ClientFacingSleep struct {
@@ -168,6 +169,8 @@ type ClientFacingSleep struct {
 	Deep int `json:"deep" url:"deep"`
 	// A value between 1 and 100 representing how well the user slept. Currently only available for Withings, Oura, Whoop and Garmin::scalar
 	Score *int `json:"score,omitempty" url:"score,omitempty"`
+	// A value between 0 and 100 representing the provider's recovery/readiness proxy. Currently sourced from Oura readiness score, Whoop recovery score, and Ultrahuman recovery::scalar
+	RecoveryReadinessScore *int `json:"recovery_readiness_score,omitempty" url:"recovery_readiness_score,omitempty"`
 	// The lowest heart rate (5 minutes sliding average) registered during the sleep period::beats per minute
 	HrLowest *int `json:"hr_lowest,omitempty" url:"hr_lowest,omitempty"`
 	// The average heart rate registered during the sleep period::beats per minute
@@ -306,6 +309,13 @@ func (c *ClientFacingSleep) GetScore() *int {
 		return nil
 	}
 	return c.Score
+}
+
+func (c *ClientFacingSleep) GetRecoveryReadinessScore() *int {
+	if c == nil {
+		return nil
+	}
+	return c.RecoveryReadinessScore
 }
 
 func (c *ClientFacingSleep) GetHrLowest() *int {
@@ -527,6 +537,13 @@ func (c *ClientFacingSleep) SetDeep(deep int) {
 func (c *ClientFacingSleep) SetScore(score *int) {
 	c.Score = score
 	c.require(clientFacingSleepFieldScore)
+}
+
+// SetRecoveryReadinessScore sets the RecoveryReadinessScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingSleep) SetRecoveryReadinessScore(recoveryReadinessScore *int) {
+	c.RecoveryReadinessScore = recoveryReadinessScore
+	c.require(clientFacingSleepFieldRecoveryReadinessScore)
 }
 
 // SetHrLowest sets the HrLowest field and marks it as non-optional;
