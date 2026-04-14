@@ -103,36 +103,37 @@ func (s *SleepGetRawRequest) SetEndDate(endDate *string) {
 }
 
 var (
-	clientFacingSleepFieldId               = big.NewInt(1 << 0)
-	clientFacingSleepFieldUserId           = big.NewInt(1 << 1)
-	clientFacingSleepFieldDate             = big.NewInt(1 << 2)
-	clientFacingSleepFieldCalendarDate     = big.NewInt(1 << 3)
-	clientFacingSleepFieldBedtimeStart     = big.NewInt(1 << 4)
-	clientFacingSleepFieldBedtimeStop      = big.NewInt(1 << 5)
-	clientFacingSleepFieldType             = big.NewInt(1 << 6)
-	clientFacingSleepFieldTimezoneOffset   = big.NewInt(1 << 7)
-	clientFacingSleepFieldDuration         = big.NewInt(1 << 8)
-	clientFacingSleepFieldTotal            = big.NewInt(1 << 9)
-	clientFacingSleepFieldAwake            = big.NewInt(1 << 10)
-	clientFacingSleepFieldLight            = big.NewInt(1 << 11)
-	clientFacingSleepFieldRem              = big.NewInt(1 << 12)
-	clientFacingSleepFieldDeep             = big.NewInt(1 << 13)
-	clientFacingSleepFieldScore            = big.NewInt(1 << 14)
-	clientFacingSleepFieldHrLowest         = big.NewInt(1 << 15)
-	clientFacingSleepFieldHrAverage        = big.NewInt(1 << 16)
-	clientFacingSleepFieldHrResting        = big.NewInt(1 << 17)
-	clientFacingSleepFieldEfficiency       = big.NewInt(1 << 18)
-	clientFacingSleepFieldLatency          = big.NewInt(1 << 19)
-	clientFacingSleepFieldTemperatureDelta = big.NewInt(1 << 20)
-	clientFacingSleepFieldSkinTemperature  = big.NewInt(1 << 21)
-	clientFacingSleepFieldHrDip            = big.NewInt(1 << 22)
-	clientFacingSleepFieldState            = big.NewInt(1 << 23)
-	clientFacingSleepFieldAverageHrv       = big.NewInt(1 << 24)
-	clientFacingSleepFieldRespiratoryRate  = big.NewInt(1 << 25)
-	clientFacingSleepFieldSource           = big.NewInt(1 << 26)
-	clientFacingSleepFieldSleepStream      = big.NewInt(1 << 27)
-	clientFacingSleepFieldCreatedAt        = big.NewInt(1 << 28)
-	clientFacingSleepFieldUpdatedAt        = big.NewInt(1 << 29)
+	clientFacingSleepFieldId                     = big.NewInt(1 << 0)
+	clientFacingSleepFieldUserId                 = big.NewInt(1 << 1)
+	clientFacingSleepFieldDate                   = big.NewInt(1 << 2)
+	clientFacingSleepFieldCalendarDate           = big.NewInt(1 << 3)
+	clientFacingSleepFieldBedtimeStart           = big.NewInt(1 << 4)
+	clientFacingSleepFieldBedtimeStop            = big.NewInt(1 << 5)
+	clientFacingSleepFieldType                   = big.NewInt(1 << 6)
+	clientFacingSleepFieldTimezoneOffset         = big.NewInt(1 << 7)
+	clientFacingSleepFieldDuration               = big.NewInt(1 << 8)
+	clientFacingSleepFieldTotal                  = big.NewInt(1 << 9)
+	clientFacingSleepFieldAwake                  = big.NewInt(1 << 10)
+	clientFacingSleepFieldLight                  = big.NewInt(1 << 11)
+	clientFacingSleepFieldRem                    = big.NewInt(1 << 12)
+	clientFacingSleepFieldDeep                   = big.NewInt(1 << 13)
+	clientFacingSleepFieldScore                  = big.NewInt(1 << 14)
+	clientFacingSleepFieldRecoveryReadinessScore = big.NewInt(1 << 15)
+	clientFacingSleepFieldHrLowest               = big.NewInt(1 << 16)
+	clientFacingSleepFieldHrAverage              = big.NewInt(1 << 17)
+	clientFacingSleepFieldHrResting              = big.NewInt(1 << 18)
+	clientFacingSleepFieldEfficiency             = big.NewInt(1 << 19)
+	clientFacingSleepFieldLatency                = big.NewInt(1 << 20)
+	clientFacingSleepFieldTemperatureDelta       = big.NewInt(1 << 21)
+	clientFacingSleepFieldSkinTemperature        = big.NewInt(1 << 22)
+	clientFacingSleepFieldHrDip                  = big.NewInt(1 << 23)
+	clientFacingSleepFieldState                  = big.NewInt(1 << 24)
+	clientFacingSleepFieldAverageHrv             = big.NewInt(1 << 25)
+	clientFacingSleepFieldRespiratoryRate        = big.NewInt(1 << 26)
+	clientFacingSleepFieldSource                 = big.NewInt(1 << 27)
+	clientFacingSleepFieldSleepStream            = big.NewInt(1 << 28)
+	clientFacingSleepFieldCreatedAt              = big.NewInt(1 << 29)
+	clientFacingSleepFieldUpdatedAt              = big.NewInt(1 << 30)
 )
 
 type ClientFacingSleep struct {
@@ -168,6 +169,8 @@ type ClientFacingSleep struct {
 	Deep int `json:"deep" url:"deep"`
 	// A value between 1 and 100 representing how well the user slept. Currently only available for Withings, Oura, Whoop and Garmin::scalar
 	Score *int `json:"score,omitempty" url:"score,omitempty"`
+	// A value between 0 and 100 representing the provider's recovery/readiness proxy. Currently sourced from Oura readiness score, Whoop recovery score, and Ultrahuman recovery::scalar
+	RecoveryReadinessScore *int `json:"recovery_readiness_score,omitempty" url:"recovery_readiness_score,omitempty"`
 	// The lowest heart rate (5 minutes sliding average) registered during the sleep period::beats per minute
 	HrLowest *int `json:"hr_lowest,omitempty" url:"hr_lowest,omitempty"`
 	// The average heart rate registered during the sleep period::beats per minute
@@ -306,6 +309,13 @@ func (c *ClientFacingSleep) GetScore() *int {
 		return nil
 	}
 	return c.Score
+}
+
+func (c *ClientFacingSleep) GetRecoveryReadinessScore() *int {
+	if c == nil {
+		return nil
+	}
+	return c.RecoveryReadinessScore
 }
 
 func (c *ClientFacingSleep) GetHrLowest() *int {
@@ -527,6 +537,13 @@ func (c *ClientFacingSleep) SetDeep(deep int) {
 func (c *ClientFacingSleep) SetScore(score *int) {
 	c.Score = score
 	c.require(clientFacingSleepFieldScore)
+}
+
+// SetRecoveryReadinessScore sets the RecoveryReadinessScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingSleep) SetRecoveryReadinessScore(recoveryReadinessScore *int) {
+	c.RecoveryReadinessScore = recoveryReadinessScore
+	c.require(clientFacingSleepFieldRecoveryReadinessScore)
 }
 
 // SetHrLowest sets the HrLowest field and marks it as non-optional;
@@ -1034,31 +1051,31 @@ func (s SleepType) Ptr() *SleepType {
 var (
 	sleepV2InDbFieldTimestamp      = big.NewInt(1 << 0)
 	sleepV2InDbFieldData           = big.NewInt(1 << 1)
-	sleepV2InDbFieldProviderId     = big.NewInt(1 << 2)
-	sleepV2InDbFieldUserId         = big.NewInt(1 << 3)
+	sleepV2InDbFieldUserId         = big.NewInt(1 << 2)
+	sleepV2InDbFieldProviderId     = big.NewInt(1 << 3)
 	sleepV2InDbFieldSourceId       = big.NewInt(1 << 4)
 	sleepV2InDbFieldPriorityId     = big.NewInt(1 << 5)
 	sleepV2InDbFieldId             = big.NewInt(1 << 6)
-	sleepV2InDbFieldSource         = big.NewInt(1 << 7)
-	sleepV2InDbFieldPriority       = big.NewInt(1 << 8)
-	sleepV2InDbFieldSourceDeviceId = big.NewInt(1 << 9)
-	sleepV2InDbFieldCreatedAt      = big.NewInt(1 << 10)
-	sleepV2InDbFieldUpdatedAt      = big.NewInt(1 << 11)
+	sleepV2InDbFieldSourceDeviceId = big.NewInt(1 << 7)
+	sleepV2InDbFieldCreatedAt      = big.NewInt(1 << 8)
+	sleepV2InDbFieldUpdatedAt      = big.NewInt(1 << 9)
+	sleepV2InDbFieldSource         = big.NewInt(1 << 10)
+	sleepV2InDbFieldPriority       = big.NewInt(1 << 11)
 )
 
 type SleepV2InDb struct {
 	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
 	Data           map[string]interface{} `json:"data" url:"data"`
-	ProviderId     string                 `json:"provider_id" url:"provider_id"`
 	UserId         string                 `json:"user_id" url:"user_id"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
 	SourceId       int                    `json:"source_id" url:"source_id"`
 	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
 	Id             string                 `json:"id" url:"id"`
-	Source         *ClientFacingProvider  `json:"source" url:"source"`
-	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
 	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
 	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
 	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Source         *ClientFacingProvider  `json:"source" url:"source"`
+	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1081,18 +1098,18 @@ func (s *SleepV2InDb) GetData() map[string]interface{} {
 	return s.Data
 }
 
-func (s *SleepV2InDb) GetProviderId() string {
-	if s == nil {
-		return ""
-	}
-	return s.ProviderId
-}
-
 func (s *SleepV2InDb) GetUserId() string {
 	if s == nil {
 		return ""
 	}
 	return s.UserId
+}
+
+func (s *SleepV2InDb) GetProviderId() string {
+	if s == nil {
+		return ""
+	}
+	return s.ProviderId
 }
 
 func (s *SleepV2InDb) GetSourceId() int {
@@ -1116,20 +1133,6 @@ func (s *SleepV2InDb) GetId() string {
 	return s.Id
 }
 
-func (s *SleepV2InDb) GetSource() *ClientFacingProvider {
-	if s == nil {
-		return nil
-	}
-	return s.Source
-}
-
-func (s *SleepV2InDb) GetPriority() *int {
-	if s == nil {
-		return nil
-	}
-	return s.Priority
-}
-
 func (s *SleepV2InDb) GetSourceDeviceId() *string {
 	if s == nil {
 		return nil
@@ -1149,6 +1152,20 @@ func (s *SleepV2InDb) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return s.UpdatedAt
+}
+
+func (s *SleepV2InDb) GetSource() *ClientFacingProvider {
+	if s == nil {
+		return nil
+	}
+	return s.Source
+}
+
+func (s *SleepV2InDb) GetPriority() *int {
+	if s == nil {
+		return nil
+	}
+	return s.Priority
 }
 
 func (s *SleepV2InDb) GetExtraProperties() map[string]interface{} {
@@ -1176,18 +1193,18 @@ func (s *SleepV2InDb) SetData(data map[string]interface{}) {
 	s.require(sleepV2InDbFieldData)
 }
 
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetProviderId(providerId string) {
-	s.ProviderId = providerId
-	s.require(sleepV2InDbFieldProviderId)
-}
-
 // SetUserId sets the UserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (s *SleepV2InDb) SetUserId(userId string) {
 	s.UserId = userId
 	s.require(sleepV2InDbFieldUserId)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SleepV2InDb) SetProviderId(providerId string) {
+	s.ProviderId = providerId
+	s.require(sleepV2InDbFieldProviderId)
 }
 
 // SetSourceId sets the SourceId field and marks it as non-optional;
@@ -1211,20 +1228,6 @@ func (s *SleepV2InDb) SetId(id string) {
 	s.require(sleepV2InDbFieldId)
 }
 
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetSource(source *ClientFacingProvider) {
-	s.Source = source
-	s.require(sleepV2InDbFieldSource)
-}
-
-// SetPriority sets the Priority field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetPriority(priority *int) {
-	s.Priority = priority
-	s.require(sleepV2InDbFieldPriority)
-}
-
 // SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (s *SleepV2InDb) SetSourceDeviceId(sourceDeviceId *string) {
@@ -1244,6 +1247,20 @@ func (s *SleepV2InDb) SetCreatedAt(createdAt *time.Time) {
 func (s *SleepV2InDb) SetUpdatedAt(updatedAt *time.Time) {
 	s.UpdatedAt = updatedAt
 	s.require(sleepV2InDbFieldUpdatedAt)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SleepV2InDb) SetSource(source *ClientFacingProvider) {
+	s.Source = source
+	s.require(sleepV2InDbFieldSource)
+}
+
+// SetPriority sets the Priority field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SleepV2InDb) SetPriority(priority *int) {
+	s.Priority = priority
+	s.require(sleepV2InDbFieldPriority)
 }
 
 func (s *SleepV2InDb) UnmarshalJSON(data []byte) error {
