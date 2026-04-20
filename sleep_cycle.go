@@ -87,8 +87,9 @@ type ClientFacingSleepCycle struct {
 	// `3`: Rapid Eye Movement sleep;
 	// `4`: Awake period;
 	// `5`: Manually classified stage.
-	StageType      []VitalSleepStage                     `json:"stage_type" url:"stage_type"`
-	TimeZone       *string                               `json:"time_zone,omitempty" url:"time_zone,omitempty"`
+	StageType []VitalSleepStage `json:"stage_type" url:"stage_type"`
+	TimeZone  *string           `json:"time_zone,omitempty" url:"time_zone,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
 	SourceProvider *ClientFacingSleepCycleSourceProvider `json:"source_provider" url:"source_provider"`
 	// ℹ️ This enum is non-exhaustive.
 	SourceType     ClientFacingSleepCycleSourceType `json:"source_type" url:"source_type"`
@@ -400,6 +401,7 @@ func (c *ClientFacingSleepCycle) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingSleepCycleSourceProvider struct {
 	Providers Providers
 	Labs      Labs
@@ -475,6 +477,7 @@ const (
 	ClientFacingSleepCycleSourceTypeCuff            ClientFacingSleepCycleSourceType = "cuff"
 	ClientFacingSleepCycleSourceTypeManualScan      ClientFacingSleepCycleSourceType = "manual_scan"
 	ClientFacingSleepCycleSourceTypeAutomatic       ClientFacingSleepCycleSourceType = "automatic"
+	ClientFacingSleepCycleSourceTypeInsulinPump     ClientFacingSleepCycleSourceType = "insulin_pump"
 	ClientFacingSleepCycleSourceTypeScale           ClientFacingSleepCycleSourceType = "scale"
 	ClientFacingSleepCycleSourceTypeChestStrap      ClientFacingSleepCycleSourceType = "chest_strap"
 	ClientFacingSleepCycleSourceTypeRing            ClientFacingSleepCycleSourceType = "ring"
@@ -503,6 +506,8 @@ func NewClientFacingSleepCycleSourceTypeFromString(s string) (ClientFacingSleepC
 		return ClientFacingSleepCycleSourceTypeManualScan, nil
 	case "automatic":
 		return ClientFacingSleepCycleSourceTypeAutomatic, nil
+	case "insulin_pump":
+		return ClientFacingSleepCycleSourceTypeInsulinPump, nil
 	case "scale":
 		return ClientFacingSleepCycleSourceTypeScale, nil
 	case "chest_strap":
