@@ -103,7 +103,7 @@ func (c *Client) UpdateLabTest(
 	return response.Body, nil
 }
 
-// GET all the markers for the given lab.
+// List active and orderable markers for a given Lab. Note that reflex markers are not included.
 func (c *Client) GetMarkers(
 	ctx context.Context,
 	request *vitalgo.LabTestsGetMarkersRequest,
@@ -136,6 +136,7 @@ func (c *Client) GetMarkersForOrderSet(
 	return response.Body, nil
 }
 
+// List all markers for a given Lab Test, as well as any associated reflex markers.
 func (c *Client) GetMarkersForLabTest(
 	ctx context.Context,
 	labTestId string,
@@ -518,7 +519,7 @@ func (c *Client) BookPscAppointment(
 	ctx context.Context,
 	// Your Order ID.
 	orderId string,
-	request *vitalgo.AppointmentBookingRequest,
+	request *vitalgo.LabTestsBookPscAppointmentRequest,
 	opts ...option.RequestOption,
 ) (*vitalgo.ClientFacingAppointment, error) {
 	response, err := c.WithRawResponse.BookPscAppointment(
