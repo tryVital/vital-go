@@ -78,15 +78,17 @@ var (
 type ClientFacingProfile struct {
 	Id string `json:"id" url:"id"`
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
-	UserId        string              `json:"user_id" url:"user_id"`
-	Height        *int                `json:"height,omitempty" url:"height,omitempty"`
-	BirthDate     *string             `json:"birth_date,omitempty" url:"birth_date,omitempty"`
-	WheelchairUse *bool               `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
-	Gender        *Gender             `json:"gender,omitempty" url:"gender,omitempty"`
-	Sex           *Sex                `json:"sex,omitempty" url:"sex,omitempty"`
-	Source        *ClientFacingSource `json:"source" url:"source"`
-	CreatedAt     time.Time           `json:"created_at" url:"created_at"`
-	UpdatedAt     time.Time           `json:"updated_at" url:"updated_at"`
+	UserId        string  `json:"user_id" url:"user_id"`
+	Height        *int    `json:"height,omitempty" url:"height,omitempty"`
+	BirthDate     *string `json:"birth_date,omitempty" url:"birth_date,omitempty"`
+	WheelchairUse *bool   `json:"wheelchair_use,omitempty" url:"wheelchair_use,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Gender *Gender `json:"gender,omitempty" url:"gender,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Sex       *Sex                `json:"sex,omitempty" url:"sex,omitempty"`
+	Source    *ClientFacingSource `json:"source" url:"source"`
+	CreatedAt time.Time           `json:"created_at" url:"created_at"`
+	UpdatedAt time.Time           `json:"updated_at" url:"updated_at"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -121,13 +123,6 @@ func (c *ClientFacingProfile) GetBirthDate() *string {
 		return nil
 	}
 	return c.BirthDate
-}
-
-func (c *ClientFacingProfile) GetWheelchairUse() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.WheelchairUse
 }
 
 func (c *ClientFacingProfile) GetGender() *Gender {
