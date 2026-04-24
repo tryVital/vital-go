@@ -299,8 +299,9 @@ type ClientFacingTeam struct {
 	LabTestsPatientSmsCommunicationEnabled   bool                  `json:"lab_tests_patient_sms_communication_enabled" url:"lab_tests_patient_sms_communication_enabled"`
 	LabTestsPatientEmailCommunicationEnabled bool                  `json:"lab_tests_patient_email_communication_enabled" url:"lab_tests_patient_email_communication_enabled"`
 	LogoUrl                                  *string               `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	DelegatedFlow                            DelegatedFlowType     `json:"delegated_flow" url:"delegated_flow"`
-	CriticalResultNotificationEmail          *string               `json:"critical_result_notification_email,omitempty" url:"critical_result_notification_email,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	DelegatedFlow                   DelegatedFlowType `json:"delegated_flow" url:"delegated_flow"`
+	CriticalResultNotificationEmail *string           `json:"critical_result_notification_email,omitempty" url:"critical_result_notification_email,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
