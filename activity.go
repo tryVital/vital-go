@@ -105,29 +105,29 @@ func (a *ActivityGetRawRequest) SetEndDate(endDate *string) {
 var (
 	activityV2InDbFieldTimestamp      = big.NewInt(1 << 0)
 	activityV2InDbFieldData           = big.NewInt(1 << 1)
-	activityV2InDbFieldProviderId     = big.NewInt(1 << 2)
-	activityV2InDbFieldUserId         = big.NewInt(1 << 3)
+	activityV2InDbFieldUserId         = big.NewInt(1 << 2)
+	activityV2InDbFieldProviderId     = big.NewInt(1 << 3)
 	activityV2InDbFieldSourceId       = big.NewInt(1 << 4)
 	activityV2InDbFieldPriorityId     = big.NewInt(1 << 5)
 	activityV2InDbFieldId             = big.NewInt(1 << 6)
-	activityV2InDbFieldSource         = big.NewInt(1 << 7)
-	activityV2InDbFieldSourceDeviceId = big.NewInt(1 << 8)
-	activityV2InDbFieldCreatedAt      = big.NewInt(1 << 9)
-	activityV2InDbFieldUpdatedAt      = big.NewInt(1 << 10)
+	activityV2InDbFieldSourceDeviceId = big.NewInt(1 << 7)
+	activityV2InDbFieldCreatedAt      = big.NewInt(1 << 8)
+	activityV2InDbFieldUpdatedAt      = big.NewInt(1 << 9)
+	activityV2InDbFieldSource         = big.NewInt(1 << 10)
 )
 
 type ActivityV2InDb struct {
 	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
 	Data           map[string]interface{} `json:"data" url:"data"`
-	ProviderId     string                 `json:"provider_id" url:"provider_id"`
 	UserId         string                 `json:"user_id" url:"user_id"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
 	SourceId       int                    `json:"source_id" url:"source_id"`
 	PriorityId     int                    `json:"priority_id" url:"priority_id"`
 	Id             string                 `json:"id" url:"id"`
-	Source         *ClientFacingProvider  `json:"source" url:"source"`
 	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
 	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
 	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Source         *ClientFacingProvider  `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -150,18 +150,18 @@ func (a *ActivityV2InDb) GetData() map[string]interface{} {
 	return a.Data
 }
 
-func (a *ActivityV2InDb) GetProviderId() string {
-	if a == nil {
-		return ""
-	}
-	return a.ProviderId
-}
-
 func (a *ActivityV2InDb) GetUserId() string {
 	if a == nil {
 		return ""
 	}
 	return a.UserId
+}
+
+func (a *ActivityV2InDb) GetProviderId() string {
+	if a == nil {
+		return ""
+	}
+	return a.ProviderId
 }
 
 func (a *ActivityV2InDb) GetSourceId() int {
@@ -185,13 +185,6 @@ func (a *ActivityV2InDb) GetId() string {
 	return a.Id
 }
 
-func (a *ActivityV2InDb) GetSource() *ClientFacingProvider {
-	if a == nil {
-		return nil
-	}
-	return a.Source
-}
-
 func (a *ActivityV2InDb) GetSourceDeviceId() *string {
 	if a == nil {
 		return nil
@@ -211,6 +204,13 @@ func (a *ActivityV2InDb) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return a.UpdatedAt
+}
+
+func (a *ActivityV2InDb) GetSource() *ClientFacingProvider {
+	if a == nil {
+		return nil
+	}
+	return a.Source
 }
 
 func (a *ActivityV2InDb) GetExtraProperties() map[string]interface{} {
@@ -238,18 +238,18 @@ func (a *ActivityV2InDb) SetData(data map[string]interface{}) {
 	a.require(activityV2InDbFieldData)
 }
 
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetProviderId(providerId string) {
-	a.ProviderId = providerId
-	a.require(activityV2InDbFieldProviderId)
-}
-
 // SetUserId sets the UserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *ActivityV2InDb) SetUserId(userId string) {
 	a.UserId = userId
 	a.require(activityV2InDbFieldUserId)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivityV2InDb) SetProviderId(providerId string) {
+	a.ProviderId = providerId
+	a.require(activityV2InDbFieldProviderId)
 }
 
 // SetSourceId sets the SourceId field and marks it as non-optional;
@@ -273,13 +273,6 @@ func (a *ActivityV2InDb) SetId(id string) {
 	a.require(activityV2InDbFieldId)
 }
 
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetSource(source *ClientFacingProvider) {
-	a.Source = source
-	a.require(activityV2InDbFieldSource)
-}
-
 // SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *ActivityV2InDb) SetSourceDeviceId(sourceDeviceId *string) {
@@ -299,6 +292,13 @@ func (a *ActivityV2InDb) SetCreatedAt(createdAt *time.Time) {
 func (a *ActivityV2InDb) SetUpdatedAt(updatedAt *time.Time) {
 	a.UpdatedAt = updatedAt
 	a.require(activityV2InDbFieldUpdatedAt)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ActivityV2InDb) SetSource(source *ClientFacingProvider) {
+	a.Source = source
+	a.require(activityV2InDbFieldSource)
 }
 
 func (a *ActivityV2InDb) UnmarshalJSON(data []byte) error {
@@ -621,13 +621,6 @@ func (c *ClientFacingActivity) GetHeartRate() *ClientFacingHeartRate {
 		return nil
 	}
 	return c.HeartRate
-}
-
-func (c *ClientFacingActivity) GetWheelchairUse() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.WheelchairUse
 }
 
 func (c *ClientFacingActivity) GetWheelchairPush() *int {
