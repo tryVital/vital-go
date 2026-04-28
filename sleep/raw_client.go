@@ -87,7 +87,7 @@ func (r *RawClient) GetRaw(
 	userId string,
 	request *vitalgo.SleepGetRawRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.RawSleep], error) {
+) (*core.Response[*vitalgo.RawSleepResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -109,7 +109,7 @@ func (r *RawClient) GetRaw(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.RawSleep
+	var response *vitalgo.RawSleepResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -127,7 +127,7 @@ func (r *RawClient) GetRaw(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.RawSleep]{
+	return &core.Response[*vitalgo.RawSleepResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

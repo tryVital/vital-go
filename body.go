@@ -103,276 +103,6 @@ func (b *BodyGetRawRequest) SetEndDate(endDate *string) {
 }
 
 var (
-	bodyV2InDbFieldTimestamp      = big.NewInt(1 << 0)
-	bodyV2InDbFieldData           = big.NewInt(1 << 1)
-	bodyV2InDbFieldProviderId     = big.NewInt(1 << 2)
-	bodyV2InDbFieldUserId         = big.NewInt(1 << 3)
-	bodyV2InDbFieldSourceId       = big.NewInt(1 << 4)
-	bodyV2InDbFieldPriorityId     = big.NewInt(1 << 5)
-	bodyV2InDbFieldId             = big.NewInt(1 << 6)
-	bodyV2InDbFieldSource         = big.NewInt(1 << 7)
-	bodyV2InDbFieldPriority       = big.NewInt(1 << 8)
-	bodyV2InDbFieldSourceDeviceId = big.NewInt(1 << 9)
-	bodyV2InDbFieldCreatedAt      = big.NewInt(1 << 10)
-	bodyV2InDbFieldUpdatedAt      = big.NewInt(1 << 11)
-)
-
-type BodyV2InDb struct {
-	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
-	Data           map[string]interface{} `json:"data" url:"data"`
-	ProviderId     string                 `json:"provider_id" url:"provider_id"`
-	UserId         string                 `json:"user_id" url:"user_id"`
-	SourceId       int                    `json:"source_id" url:"source_id"`
-	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
-	Id             string                 `json:"id" url:"id"`
-	Source         *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
-	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
-	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
-	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
-	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BodyV2InDb) GetTimestamp() time.Time {
-	if b == nil {
-		return time.Time{}
-	}
-	return b.Timestamp
-}
-
-func (b *BodyV2InDb) GetData() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.Data
-}
-
-func (b *BodyV2InDb) GetProviderId() string {
-	if b == nil {
-		return ""
-	}
-	return b.ProviderId
-}
-
-func (b *BodyV2InDb) GetUserId() string {
-	if b == nil {
-		return ""
-	}
-	return b.UserId
-}
-
-func (b *BodyV2InDb) GetSourceId() int {
-	if b == nil {
-		return 0
-	}
-	return b.SourceId
-}
-
-func (b *BodyV2InDb) GetPriorityId() *int {
-	if b == nil {
-		return nil
-	}
-	return b.PriorityId
-}
-
-func (b *BodyV2InDb) GetId() string {
-	if b == nil {
-		return ""
-	}
-	return b.Id
-}
-
-func (b *BodyV2InDb) GetSource() *ClientFacingProvider {
-	if b == nil {
-		return nil
-	}
-	return b.Source
-}
-
-func (b *BodyV2InDb) GetPriority() *int {
-	if b == nil {
-		return nil
-	}
-	return b.Priority
-}
-
-func (b *BodyV2InDb) GetSourceDeviceId() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SourceDeviceId
-}
-
-func (b *BodyV2InDb) GetCreatedAt() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.CreatedAt
-}
-
-func (b *BodyV2InDb) GetUpdatedAt() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.UpdatedAt
-}
-
-func (b *BodyV2InDb) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BodyV2InDb) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetTimestamp sets the Timestamp field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetTimestamp(timestamp time.Time) {
-	b.Timestamp = timestamp
-	b.require(bodyV2InDbFieldTimestamp)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetData(data map[string]interface{}) {
-	b.Data = data
-	b.require(bodyV2InDbFieldData)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetProviderId(providerId string) {
-	b.ProviderId = providerId
-	b.require(bodyV2InDbFieldProviderId)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetUserId(userId string) {
-	b.UserId = userId
-	b.require(bodyV2InDbFieldUserId)
-}
-
-// SetSourceId sets the SourceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetSourceId(sourceId int) {
-	b.SourceId = sourceId
-	b.require(bodyV2InDbFieldSourceId)
-}
-
-// SetPriorityId sets the PriorityId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetPriorityId(priorityId *int) {
-	b.PriorityId = priorityId
-	b.require(bodyV2InDbFieldPriorityId)
-}
-
-// SetId sets the Id field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetId(id string) {
-	b.Id = id
-	b.require(bodyV2InDbFieldId)
-}
-
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetSource(source *ClientFacingProvider) {
-	b.Source = source
-	b.require(bodyV2InDbFieldSource)
-}
-
-// SetPriority sets the Priority field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetPriority(priority *int) {
-	b.Priority = priority
-	b.require(bodyV2InDbFieldPriority)
-}
-
-// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetSourceDeviceId(sourceDeviceId *string) {
-	b.SourceDeviceId = sourceDeviceId
-	b.require(bodyV2InDbFieldSourceDeviceId)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetCreatedAt(createdAt *time.Time) {
-	b.CreatedAt = createdAt
-	b.require(bodyV2InDbFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetUpdatedAt(updatedAt *time.Time) {
-	b.UpdatedAt = updatedAt
-	b.require(bodyV2InDbFieldUpdatedAt)
-}
-
-func (b *BodyV2InDb) UnmarshalJSON(data []byte) error {
-	type embed BodyV2InDb
-	var unmarshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*b),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*b = BodyV2InDb(unmarshaler.embed)
-	b.Timestamp = unmarshaler.Timestamp.Time()
-	b.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	b.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BodyV2InDb) MarshalJSON() ([]byte, error) {
-	type embed BodyV2InDb
-	var marshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*b),
-		Timestamp: internal.NewDateTime(b.Timestamp),
-		CreatedAt: internal.NewOptionalDateTime(b.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(b.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BodyV2InDb) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
-var (
 	clientBodyResponseFieldBody = big.NewInt(1 << 0)
 )
 
@@ -794,11 +524,33 @@ func (c *ClientFacingBody) String() string {
 }
 
 var (
-	rawBodyFieldBody = big.NewInt(1 << 0)
+	rawBodyFieldTimestamp      = big.NewInt(1 << 0)
+	rawBodyFieldData           = big.NewInt(1 << 1)
+	rawBodyFieldUserId         = big.NewInt(1 << 2)
+	rawBodyFieldProviderId     = big.NewInt(1 << 3)
+	rawBodyFieldSourceId       = big.NewInt(1 << 4)
+	rawBodyFieldPriorityId     = big.NewInt(1 << 5)
+	rawBodyFieldId             = big.NewInt(1 << 6)
+	rawBodyFieldSourceDeviceId = big.NewInt(1 << 7)
+	rawBodyFieldCreatedAt      = big.NewInt(1 << 8)
+	rawBodyFieldUpdatedAt      = big.NewInt(1 << 9)
+	rawBodyFieldPriority       = big.NewInt(1 << 10)
+	rawBodyFieldSource         = big.NewInt(1 << 11)
 )
 
 type RawBody struct {
-	Body []*BodyV2InDb `json:"body" url:"body"`
+	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
+	Data           map[string]interface{} `json:"data" url:"data"`
+	UserId         string                 `json:"user_id" url:"user_id"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
+	SourceId       int                    `json:"source_id" url:"source_id"`
+	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
+	Id             string                 `json:"id" url:"id"`
+	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
+	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
+	Source         *ClientFacingProvider  `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -807,11 +559,88 @@ type RawBody struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RawBody) GetBody() []*BodyV2InDb {
+func (r *RawBody) GetTimestamp() time.Time {
+	if r == nil {
+		return time.Time{}
+	}
+	return r.Timestamp
+}
+
+func (r *RawBody) GetData() map[string]interface{} {
 	if r == nil {
 		return nil
 	}
-	return r.Body
+	return r.Data
+}
+
+func (r *RawBody) GetUserId() string {
+	if r == nil {
+		return ""
+	}
+	return r.UserId
+}
+
+func (r *RawBody) GetProviderId() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderId
+}
+
+func (r *RawBody) GetSourceId() int {
+	if r == nil {
+		return 0
+	}
+	return r.SourceId
+}
+
+func (r *RawBody) GetPriorityId() *int {
+	if r == nil {
+		return nil
+	}
+	return r.PriorityId
+}
+
+func (r *RawBody) GetId() string {
+	if r == nil {
+		return ""
+	}
+	return r.Id
+}
+
+func (r *RawBody) GetSourceDeviceId() *string {
+	if r == nil {
+		return nil
+	}
+	return r.SourceDeviceId
+}
+
+func (r *RawBody) GetCreatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.CreatedAt
+}
+
+func (r *RawBody) GetUpdatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.UpdatedAt
+}
+
+func (r *RawBody) GetPriority() *int {
+	if r == nil {
+		return nil
+	}
+	return r.Priority
+}
+
+func (r *RawBody) GetSource() *ClientFacingProvider {
+	if r == nil {
+		return nil
+	}
+	return r.Source
 }
 
 func (r *RawBody) GetExtraProperties() map[string]interface{} {
@@ -825,20 +654,107 @@ func (r *RawBody) require(field *big.Int) {
 	r.explicitFields.Or(r.explicitFields, field)
 }
 
-// SetBody sets the Body field and marks it as non-optional;
+// SetTimestamp sets the Timestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RawBody) SetBody(body []*BodyV2InDb) {
-	r.Body = body
-	r.require(rawBodyFieldBody)
+func (r *RawBody) SetTimestamp(timestamp time.Time) {
+	r.Timestamp = timestamp
+	r.require(rawBodyFieldTimestamp)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetData(data map[string]interface{}) {
+	r.Data = data
+	r.require(rawBodyFieldData)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetUserId(userId string) {
+	r.UserId = userId
+	r.require(rawBodyFieldUserId)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetProviderId(providerId string) {
+	r.ProviderId = providerId
+	r.require(rawBodyFieldProviderId)
+}
+
+// SetSourceId sets the SourceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetSourceId(sourceId int) {
+	r.SourceId = sourceId
+	r.require(rawBodyFieldSourceId)
+}
+
+// SetPriorityId sets the PriorityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetPriorityId(priorityId *int) {
+	r.PriorityId = priorityId
+	r.require(rawBodyFieldPriorityId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetId(id string) {
+	r.Id = id
+	r.require(rawBodyFieldId)
+}
+
+// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetSourceDeviceId(sourceDeviceId *string) {
+	r.SourceDeviceId = sourceDeviceId
+	r.require(rawBodyFieldSourceDeviceId)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetCreatedAt(createdAt *time.Time) {
+	r.CreatedAt = createdAt
+	r.require(rawBodyFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetUpdatedAt(updatedAt *time.Time) {
+	r.UpdatedAt = updatedAt
+	r.require(rawBodyFieldUpdatedAt)
+}
+
+// SetPriority sets the Priority field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetPriority(priority *int) {
+	r.Priority = priority
+	r.require(rawBodyFieldPriority)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBody) SetSource(source *ClientFacingProvider) {
+	r.Source = source
+	r.require(rawBodyFieldSource)
 }
 
 func (r *RawBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler RawBody
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed RawBody
+	var unmarshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*r = RawBody(value)
+	*r = RawBody(unmarshaler.embed)
+	r.Timestamp = unmarshaler.Timestamp.Time()
+	r.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	r.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
@@ -852,6 +768,90 @@ func (r *RawBody) MarshalJSON() ([]byte, error) {
 	type embed RawBody
 	var marshaler = struct {
 		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*r),
+		Timestamp: internal.NewDateTime(r.Timestamp),
+		CreatedAt: internal.NewOptionalDateTime(r.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(r.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RawBody) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	rawBodyResponseFieldBody = big.NewInt(1 << 0)
+)
+
+type RawBodyResponse struct {
+	Body []*RawBody `json:"body" url:"body"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RawBodyResponse) GetBody() []*RawBody {
+	if r == nil {
+		return nil
+	}
+	return r.Body
+}
+
+func (r *RawBodyResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawBodyResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawBodyResponse) SetBody(body []*RawBody) {
+	r.Body = body
+	r.require(rawBodyResponseFieldBody)
+}
+
+func (r *RawBodyResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawBodyResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawBodyResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawBodyResponse) MarshalJSON() ([]byte, error) {
+	type embed RawBodyResponse
+	var marshaler = struct {
+		embed
 	}{
 		embed: embed(*r),
 	}
@@ -859,7 +859,7 @@ func (r *RawBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (r *RawBody) String() string {
+func (r *RawBodyResponse) String() string {
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value

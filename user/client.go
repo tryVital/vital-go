@@ -54,7 +54,7 @@ func (c *Client) Create(
 	ctx context.Context,
 	request *vitalgo.UserCreateBody,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingUserKey, error) {
+) (*vitalgo.ClientFacingUser, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,
