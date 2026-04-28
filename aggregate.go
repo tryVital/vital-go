@@ -51,8 +51,8 @@ var (
 )
 
 type QueryBatch struct {
-	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
-	Queries   []*Query             `json:"queries,omitempty" url:"-"`
+	Timeframe *QueryBatchTimeframe `json:"timeframe" url:"-"`
+	Queries   []*Query             `json:"queries" url:"-"`
 	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
 	accept    string
 
@@ -380,24 +380,29 @@ func (a *AggregateExpr) String() string {
 }
 
 type AggregateExprArg struct {
-	SleepColumnExpr               *SleepColumnExpr
-	ActivityColumnExpr            *ActivityColumnExpr
-	WorkoutColumnExpr             *WorkoutColumnExpr
-	BodyColumnExpr                *BodyColumnExpr
-	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
-	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
-	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
-	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
-	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
-	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
-	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
-	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
-	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
-	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
-	NoteTimeseriesExpr            *NoteTimeseriesExpr
-	IndexColumnExpr               *IndexColumnExpr
+	SleepColumnExpr                *SleepColumnExpr
+	DerivedReadinessColumnExpr     *DerivedReadinessColumnExpr
+	ActivityColumnExpr             *ActivityColumnExpr
+	WorkoutColumnExpr              *WorkoutColumnExpr
+	BodyColumnExpr                 *BodyColumnExpr
+	MealColumnExpr                 *MealColumnExpr
+	MenstrualCycleColumnExpr       *MenstrualCycleColumnExpr
+	ProfileColumnExpr              *ProfileColumnExpr
+	SleepScoreValueMacroExpr       *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr       *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr         *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr          *AwakeAtValueMacroExpr
+	AwakeningsValueMacroExpr       *AwakeningsValueMacroExpr
+	UnrecognizedValueMacroExpr     *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr         *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr         *IntervalTimeseriesExpr
+	InsulinInjectionTimeseriesExpr *InsulinInjectionTimeseriesExpr
+	BloodPressureTimeseriesExpr    *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr      *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr  *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr             *NoteTimeseriesExpr
+	IndexColumnExpr                *IndexColumnExpr
+	ScalarOutputSubqueryExpr       *ScalarOutputSubqueryExpr
 
 	typ string
 }
@@ -407,6 +412,13 @@ func (a *AggregateExprArg) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return a.SleepColumnExpr
+}
+
+func (a *AggregateExprArg) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if a == nil {
+		return nil
+	}
+	return a.DerivedReadinessColumnExpr
 }
 
 func (a *AggregateExprArg) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -435,6 +447,13 @@ func (a *AggregateExprArg) GetMealColumnExpr() *MealColumnExpr {
 		return nil
 	}
 	return a.MealColumnExpr
+}
+
+func (a *AggregateExprArg) GetMenstrualCycleColumnExpr() *MenstrualCycleColumnExpr {
+	if a == nil {
+		return nil
+	}
+	return a.MenstrualCycleColumnExpr
 }
 
 func (a *AggregateExprArg) GetProfileColumnExpr() *ProfileColumnExpr {
@@ -472,6 +491,13 @@ func (a *AggregateExprArg) GetAwakeAtValueMacroExpr() *AwakeAtValueMacroExpr {
 	return a.AwakeAtValueMacroExpr
 }
 
+func (a *AggregateExprArg) GetAwakeningsValueMacroExpr() *AwakeningsValueMacroExpr {
+	if a == nil {
+		return nil
+	}
+	return a.AwakeningsValueMacroExpr
+}
+
 func (a *AggregateExprArg) GetUnrecognizedValueMacroExpr() *UnrecognizedValueMacroExpr {
 	if a == nil {
 		return nil
@@ -491,6 +517,13 @@ func (a *AggregateExprArg) GetIntervalTimeseriesExpr() *IntervalTimeseriesExpr {
 		return nil
 	}
 	return a.IntervalTimeseriesExpr
+}
+
+func (a *AggregateExprArg) GetInsulinInjectionTimeseriesExpr() *InsulinInjectionTimeseriesExpr {
+	if a == nil {
+		return nil
+	}
+	return a.InsulinInjectionTimeseriesExpr
 }
 
 func (a *AggregateExprArg) GetBloodPressureTimeseriesExpr() *BloodPressureTimeseriesExpr {
@@ -528,11 +561,24 @@ func (a *AggregateExprArg) GetIndexColumnExpr() *IndexColumnExpr {
 	return a.IndexColumnExpr
 }
 
+func (a *AggregateExprArg) GetScalarOutputSubqueryExpr() *ScalarOutputSubqueryExpr {
+	if a == nil {
+		return nil
+	}
+	return a.ScalarOutputSubqueryExpr
+}
+
 func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 	valueSleepColumnExpr := new(SleepColumnExpr)
 	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
 		a.typ = "SleepColumnExpr"
 		a.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		a.typ = "DerivedReadinessColumnExpr"
+		a.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
 		return nil
 	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
@@ -557,6 +603,12 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueMealColumnExpr); err == nil {
 		a.typ = "MealColumnExpr"
 		a.MealColumnExpr = valueMealColumnExpr
+		return nil
+	}
+	valueMenstrualCycleColumnExpr := new(MenstrualCycleColumnExpr)
+	if err := json.Unmarshal(data, &valueMenstrualCycleColumnExpr); err == nil {
+		a.typ = "MenstrualCycleColumnExpr"
+		a.MenstrualCycleColumnExpr = valueMenstrualCycleColumnExpr
 		return nil
 	}
 	valueProfileColumnExpr := new(ProfileColumnExpr)
@@ -589,6 +641,12 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.AwakeAtValueMacroExpr = valueAwakeAtValueMacroExpr
 		return nil
 	}
+	valueAwakeningsValueMacroExpr := new(AwakeningsValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeningsValueMacroExpr); err == nil {
+		a.typ = "AwakeningsValueMacroExpr"
+		a.AwakeningsValueMacroExpr = valueAwakeningsValueMacroExpr
+		return nil
+	}
 	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
 	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
 		a.typ = "UnrecognizedValueMacroExpr"
@@ -605,6 +663,12 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueIntervalTimeseriesExpr); err == nil {
 		a.typ = "IntervalTimeseriesExpr"
 		a.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
+		return nil
+	}
+	valueInsulinInjectionTimeseriesExpr := new(InsulinInjectionTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueInsulinInjectionTimeseriesExpr); err == nil {
+		a.typ = "InsulinInjectionTimeseriesExpr"
+		a.InsulinInjectionTimeseriesExpr = valueInsulinInjectionTimeseriesExpr
 		return nil
 	}
 	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
@@ -637,12 +701,21 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.IndexColumnExpr = valueIndexColumnExpr
 		return nil
 	}
+	valueScalarOutputSubqueryExpr := new(ScalarOutputSubqueryExpr)
+	if err := json.Unmarshal(data, &valueScalarOutputSubqueryExpr); err == nil {
+		a.typ = "ScalarOutputSubqueryExpr"
+		a.ScalarOutputSubqueryExpr = valueScalarOutputSubqueryExpr
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
 }
 
 func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.typ == "SleepColumnExpr" || a.SleepColumnExpr != nil {
 		return json.Marshal(a.SleepColumnExpr)
+	}
+	if a.typ == "DerivedReadinessColumnExpr" || a.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(a.DerivedReadinessColumnExpr)
 	}
 	if a.typ == "ActivityColumnExpr" || a.ActivityColumnExpr != nil {
 		return json.Marshal(a.ActivityColumnExpr)
@@ -655,6 +728,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	}
 	if a.typ == "MealColumnExpr" || a.MealColumnExpr != nil {
 		return json.Marshal(a.MealColumnExpr)
+	}
+	if a.typ == "MenstrualCycleColumnExpr" || a.MenstrualCycleColumnExpr != nil {
+		return json.Marshal(a.MenstrualCycleColumnExpr)
 	}
 	if a.typ == "ProfileColumnExpr" || a.ProfileColumnExpr != nil {
 		return json.Marshal(a.ProfileColumnExpr)
@@ -671,6 +747,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.typ == "AwakeAtValueMacroExpr" || a.AwakeAtValueMacroExpr != nil {
 		return json.Marshal(a.AwakeAtValueMacroExpr)
 	}
+	if a.typ == "AwakeningsValueMacroExpr" || a.AwakeningsValueMacroExpr != nil {
+		return json.Marshal(a.AwakeningsValueMacroExpr)
+	}
 	if a.typ == "UnrecognizedValueMacroExpr" || a.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(a.UnrecognizedValueMacroExpr)
 	}
@@ -679,6 +758,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	}
 	if a.typ == "IntervalTimeseriesExpr" || a.IntervalTimeseriesExpr != nil {
 		return json.Marshal(a.IntervalTimeseriesExpr)
+	}
+	if a.typ == "InsulinInjectionTimeseriesExpr" || a.InsulinInjectionTimeseriesExpr != nil {
+		return json.Marshal(a.InsulinInjectionTimeseriesExpr)
 	}
 	if a.typ == "BloodPressureTimeseriesExpr" || a.BloodPressureTimeseriesExpr != nil {
 		return json.Marshal(a.BloodPressureTimeseriesExpr)
@@ -695,33 +777,44 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.typ == "IndexColumnExpr" || a.IndexColumnExpr != nil {
 		return json.Marshal(a.IndexColumnExpr)
 	}
+	if a.typ == "ScalarOutputSubqueryExpr" || a.ScalarOutputSubqueryExpr != nil {
+		return json.Marshal(a.ScalarOutputSubqueryExpr)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
 }
 
 type AggregateExprArgVisitor interface {
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitMealColumnExpr(*MealColumnExpr) error
+	VisitMenstrualCycleColumnExpr(*MenstrualCycleColumnExpr) error
 	VisitProfileColumnExpr(*ProfileColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
 	VisitAwakeAtValueMacroExpr(*AwakeAtValueMacroExpr) error
+	VisitAwakeningsValueMacroExpr(*AwakeningsValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitInsulinInjectionTimeseriesExpr(*InsulinInjectionTimeseriesExpr) error
 	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
 	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitScalarOutputSubqueryExpr(*ScalarOutputSubqueryExpr) error
 }
 
 func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	if a.typ == "SleepColumnExpr" || a.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(a.SleepColumnExpr)
+	}
+	if a.typ == "DerivedReadinessColumnExpr" || a.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(a.DerivedReadinessColumnExpr)
 	}
 	if a.typ == "ActivityColumnExpr" || a.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(a.ActivityColumnExpr)
@@ -734,6 +827,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.typ == "MealColumnExpr" || a.MealColumnExpr != nil {
 		return visitor.VisitMealColumnExpr(a.MealColumnExpr)
+	}
+	if a.typ == "MenstrualCycleColumnExpr" || a.MenstrualCycleColumnExpr != nil {
+		return visitor.VisitMenstrualCycleColumnExpr(a.MenstrualCycleColumnExpr)
 	}
 	if a.typ == "ProfileColumnExpr" || a.ProfileColumnExpr != nil {
 		return visitor.VisitProfileColumnExpr(a.ProfileColumnExpr)
@@ -750,6 +846,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	if a.typ == "AwakeAtValueMacroExpr" || a.AwakeAtValueMacroExpr != nil {
 		return visitor.VisitAwakeAtValueMacroExpr(a.AwakeAtValueMacroExpr)
 	}
+	if a.typ == "AwakeningsValueMacroExpr" || a.AwakeningsValueMacroExpr != nil {
+		return visitor.VisitAwakeningsValueMacroExpr(a.AwakeningsValueMacroExpr)
+	}
 	if a.typ == "UnrecognizedValueMacroExpr" || a.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(a.UnrecognizedValueMacroExpr)
 	}
@@ -758,6 +857,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.typ == "IntervalTimeseriesExpr" || a.IntervalTimeseriesExpr != nil {
 		return visitor.VisitIntervalTimeseriesExpr(a.IntervalTimeseriesExpr)
+	}
+	if a.typ == "InsulinInjectionTimeseriesExpr" || a.InsulinInjectionTimeseriesExpr != nil {
+		return visitor.VisitInsulinInjectionTimeseriesExpr(a.InsulinInjectionTimeseriesExpr)
 	}
 	if a.typ == "BloodPressureTimeseriesExpr" || a.BloodPressureTimeseriesExpr != nil {
 		return visitor.VisitBloodPressureTimeseriesExpr(a.BloodPressureTimeseriesExpr)
@@ -773,6 +875,9 @@ func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	}
 	if a.typ == "IndexColumnExpr" || a.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(a.IndexColumnExpr)
+	}
+	if a.typ == "ScalarOutputSubqueryExpr" || a.ScalarOutputSubqueryExpr != nil {
+		return visitor.VisitScalarOutputSubqueryExpr(a.ScalarOutputSubqueryExpr)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", a)
 }
@@ -818,6 +923,401 @@ func NewAggregateExprFuncFromString(s string) (AggregateExprFunc, error) {
 }
 
 func (a AggregateExprFunc) Ptr() *AggregateExprFunc {
+	return &a
+}
+
+// Aggregate over unnested list elements, optionally targeting a struct field.
+//
+// When arg is None, the aggregate operates on the list elements directly
+// (e.g., count-all, or mean/sum on a scalar numeric list).
+// When arg is a FieldExpr, the struct field is extracted before aggregating.
+var (
+	aggregateFieldExprFieldFunc = big.NewInt(1 << 0)
+	aggregateFieldExprFieldArg  = big.NewInt(1 << 1)
+)
+
+type AggregateFieldExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	Func AggregateFieldExprFunc `json:"func" url:"func"`
+	Arg  *AggregateFieldExprArg `json:"arg,omitempty" url:"arg,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AggregateFieldExpr) GetFunc() AggregateFieldExprFunc {
+	if a == nil {
+		return ""
+	}
+	return a.Func
+}
+
+func (a *AggregateFieldExpr) GetArg() *AggregateFieldExprArg {
+	if a == nil {
+		return nil
+	}
+	return a.Arg
+}
+
+func (a *AggregateFieldExpr) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AggregateFieldExpr) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetFunc sets the Func field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AggregateFieldExpr) SetFunc(func_ AggregateFieldExprFunc) {
+	a.Func = func_
+	a.require(aggregateFieldExprFieldFunc)
+}
+
+// SetArg sets the Arg field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AggregateFieldExpr) SetArg(arg *AggregateFieldExprArg) {
+	a.Arg = arg
+	a.require(aggregateFieldExprFieldArg)
+}
+
+func (a *AggregateFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler AggregateFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AggregateFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AggregateFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed AggregateFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AggregateFieldExpr) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AggregateFieldExprArg struct {
+	McMenstrualFlowFieldExpr          *McMenstrualFlowFieldExpr
+	McCervicalMucusFieldExpr          *McCervicalMucusFieldExpr
+	McIntermenstrualBleedingFieldExpr *McIntermenstrualBleedingFieldExpr
+	McContraceptiveFieldExpr          *McContraceptiveFieldExpr
+	McDetectedDeviationsFieldExpr     *McDetectedDeviationsFieldExpr
+	McOvulationTestFieldExpr          *McOvulationTestFieldExpr
+	McHomePregnancyTestFieldExpr      *McHomePregnancyTestFieldExpr
+	McHomeProgesteroneTestFieldExpr   *McHomeProgesteroneTestFieldExpr
+	McSexualActivityFieldExpr         *McSexualActivityFieldExpr
+	McBasalBodyTemperatureFieldExpr   *McBasalBodyTemperatureFieldExpr
+	ElementFieldExpr                  *ElementFieldExpr
+
+	typ string
+}
+
+func (a *AggregateFieldExprArg) GetMcMenstrualFlowFieldExpr() *McMenstrualFlowFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McMenstrualFlowFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcCervicalMucusFieldExpr() *McCervicalMucusFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McCervicalMucusFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcIntermenstrualBleedingFieldExpr() *McIntermenstrualBleedingFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McIntermenstrualBleedingFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcContraceptiveFieldExpr() *McContraceptiveFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McContraceptiveFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcDetectedDeviationsFieldExpr() *McDetectedDeviationsFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McDetectedDeviationsFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcOvulationTestFieldExpr() *McOvulationTestFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McOvulationTestFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcHomePregnancyTestFieldExpr() *McHomePregnancyTestFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McHomePregnancyTestFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcHomeProgesteroneTestFieldExpr() *McHomeProgesteroneTestFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McHomeProgesteroneTestFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcSexualActivityFieldExpr() *McSexualActivityFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McSexualActivityFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetMcBasalBodyTemperatureFieldExpr() *McBasalBodyTemperatureFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.McBasalBodyTemperatureFieldExpr
+}
+
+func (a *AggregateFieldExprArg) GetElementFieldExpr() *ElementFieldExpr {
+	if a == nil {
+		return nil
+	}
+	return a.ElementFieldExpr
+}
+
+func (a *AggregateFieldExprArg) UnmarshalJSON(data []byte) error {
+	valueMcMenstrualFlowFieldExpr := new(McMenstrualFlowFieldExpr)
+	if err := json.Unmarshal(data, &valueMcMenstrualFlowFieldExpr); err == nil {
+		a.typ = "McMenstrualFlowFieldExpr"
+		a.McMenstrualFlowFieldExpr = valueMcMenstrualFlowFieldExpr
+		return nil
+	}
+	valueMcCervicalMucusFieldExpr := new(McCervicalMucusFieldExpr)
+	if err := json.Unmarshal(data, &valueMcCervicalMucusFieldExpr); err == nil {
+		a.typ = "McCervicalMucusFieldExpr"
+		a.McCervicalMucusFieldExpr = valueMcCervicalMucusFieldExpr
+		return nil
+	}
+	valueMcIntermenstrualBleedingFieldExpr := new(McIntermenstrualBleedingFieldExpr)
+	if err := json.Unmarshal(data, &valueMcIntermenstrualBleedingFieldExpr); err == nil {
+		a.typ = "McIntermenstrualBleedingFieldExpr"
+		a.McIntermenstrualBleedingFieldExpr = valueMcIntermenstrualBleedingFieldExpr
+		return nil
+	}
+	valueMcContraceptiveFieldExpr := new(McContraceptiveFieldExpr)
+	if err := json.Unmarshal(data, &valueMcContraceptiveFieldExpr); err == nil {
+		a.typ = "McContraceptiveFieldExpr"
+		a.McContraceptiveFieldExpr = valueMcContraceptiveFieldExpr
+		return nil
+	}
+	valueMcDetectedDeviationsFieldExpr := new(McDetectedDeviationsFieldExpr)
+	if err := json.Unmarshal(data, &valueMcDetectedDeviationsFieldExpr); err == nil {
+		a.typ = "McDetectedDeviationsFieldExpr"
+		a.McDetectedDeviationsFieldExpr = valueMcDetectedDeviationsFieldExpr
+		return nil
+	}
+	valueMcOvulationTestFieldExpr := new(McOvulationTestFieldExpr)
+	if err := json.Unmarshal(data, &valueMcOvulationTestFieldExpr); err == nil {
+		a.typ = "McOvulationTestFieldExpr"
+		a.McOvulationTestFieldExpr = valueMcOvulationTestFieldExpr
+		return nil
+	}
+	valueMcHomePregnancyTestFieldExpr := new(McHomePregnancyTestFieldExpr)
+	if err := json.Unmarshal(data, &valueMcHomePregnancyTestFieldExpr); err == nil {
+		a.typ = "McHomePregnancyTestFieldExpr"
+		a.McHomePregnancyTestFieldExpr = valueMcHomePregnancyTestFieldExpr
+		return nil
+	}
+	valueMcHomeProgesteroneTestFieldExpr := new(McHomeProgesteroneTestFieldExpr)
+	if err := json.Unmarshal(data, &valueMcHomeProgesteroneTestFieldExpr); err == nil {
+		a.typ = "McHomeProgesteroneTestFieldExpr"
+		a.McHomeProgesteroneTestFieldExpr = valueMcHomeProgesteroneTestFieldExpr
+		return nil
+	}
+	valueMcSexualActivityFieldExpr := new(McSexualActivityFieldExpr)
+	if err := json.Unmarshal(data, &valueMcSexualActivityFieldExpr); err == nil {
+		a.typ = "McSexualActivityFieldExpr"
+		a.McSexualActivityFieldExpr = valueMcSexualActivityFieldExpr
+		return nil
+	}
+	valueMcBasalBodyTemperatureFieldExpr := new(McBasalBodyTemperatureFieldExpr)
+	if err := json.Unmarshal(data, &valueMcBasalBodyTemperatureFieldExpr); err == nil {
+		a.typ = "McBasalBodyTemperatureFieldExpr"
+		a.McBasalBodyTemperatureFieldExpr = valueMcBasalBodyTemperatureFieldExpr
+		return nil
+	}
+	valueElementFieldExpr := new(ElementFieldExpr)
+	if err := json.Unmarshal(data, &valueElementFieldExpr); err == nil {
+		a.typ = "ElementFieldExpr"
+		a.ElementFieldExpr = valueElementFieldExpr
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
+}
+
+func (a AggregateFieldExprArg) MarshalJSON() ([]byte, error) {
+	if a.typ == "McMenstrualFlowFieldExpr" || a.McMenstrualFlowFieldExpr != nil {
+		return json.Marshal(a.McMenstrualFlowFieldExpr)
+	}
+	if a.typ == "McCervicalMucusFieldExpr" || a.McCervicalMucusFieldExpr != nil {
+		return json.Marshal(a.McCervicalMucusFieldExpr)
+	}
+	if a.typ == "McIntermenstrualBleedingFieldExpr" || a.McIntermenstrualBleedingFieldExpr != nil {
+		return json.Marshal(a.McIntermenstrualBleedingFieldExpr)
+	}
+	if a.typ == "McContraceptiveFieldExpr" || a.McContraceptiveFieldExpr != nil {
+		return json.Marshal(a.McContraceptiveFieldExpr)
+	}
+	if a.typ == "McDetectedDeviationsFieldExpr" || a.McDetectedDeviationsFieldExpr != nil {
+		return json.Marshal(a.McDetectedDeviationsFieldExpr)
+	}
+	if a.typ == "McOvulationTestFieldExpr" || a.McOvulationTestFieldExpr != nil {
+		return json.Marshal(a.McOvulationTestFieldExpr)
+	}
+	if a.typ == "McHomePregnancyTestFieldExpr" || a.McHomePregnancyTestFieldExpr != nil {
+		return json.Marshal(a.McHomePregnancyTestFieldExpr)
+	}
+	if a.typ == "McHomeProgesteroneTestFieldExpr" || a.McHomeProgesteroneTestFieldExpr != nil {
+		return json.Marshal(a.McHomeProgesteroneTestFieldExpr)
+	}
+	if a.typ == "McSexualActivityFieldExpr" || a.McSexualActivityFieldExpr != nil {
+		return json.Marshal(a.McSexualActivityFieldExpr)
+	}
+	if a.typ == "McBasalBodyTemperatureFieldExpr" || a.McBasalBodyTemperatureFieldExpr != nil {
+		return json.Marshal(a.McBasalBodyTemperatureFieldExpr)
+	}
+	if a.typ == "ElementFieldExpr" || a.ElementFieldExpr != nil {
+		return json.Marshal(a.ElementFieldExpr)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type AggregateFieldExprArgVisitor interface {
+	VisitMcMenstrualFlowFieldExpr(*McMenstrualFlowFieldExpr) error
+	VisitMcCervicalMucusFieldExpr(*McCervicalMucusFieldExpr) error
+	VisitMcIntermenstrualBleedingFieldExpr(*McIntermenstrualBleedingFieldExpr) error
+	VisitMcContraceptiveFieldExpr(*McContraceptiveFieldExpr) error
+	VisitMcDetectedDeviationsFieldExpr(*McDetectedDeviationsFieldExpr) error
+	VisitMcOvulationTestFieldExpr(*McOvulationTestFieldExpr) error
+	VisitMcHomePregnancyTestFieldExpr(*McHomePregnancyTestFieldExpr) error
+	VisitMcHomeProgesteroneTestFieldExpr(*McHomeProgesteroneTestFieldExpr) error
+	VisitMcSexualActivityFieldExpr(*McSexualActivityFieldExpr) error
+	VisitMcBasalBodyTemperatureFieldExpr(*McBasalBodyTemperatureFieldExpr) error
+	VisitElementFieldExpr(*ElementFieldExpr) error
+}
+
+func (a *AggregateFieldExprArg) Accept(visitor AggregateFieldExprArgVisitor) error {
+	if a.typ == "McMenstrualFlowFieldExpr" || a.McMenstrualFlowFieldExpr != nil {
+		return visitor.VisitMcMenstrualFlowFieldExpr(a.McMenstrualFlowFieldExpr)
+	}
+	if a.typ == "McCervicalMucusFieldExpr" || a.McCervicalMucusFieldExpr != nil {
+		return visitor.VisitMcCervicalMucusFieldExpr(a.McCervicalMucusFieldExpr)
+	}
+	if a.typ == "McIntermenstrualBleedingFieldExpr" || a.McIntermenstrualBleedingFieldExpr != nil {
+		return visitor.VisitMcIntermenstrualBleedingFieldExpr(a.McIntermenstrualBleedingFieldExpr)
+	}
+	if a.typ == "McContraceptiveFieldExpr" || a.McContraceptiveFieldExpr != nil {
+		return visitor.VisitMcContraceptiveFieldExpr(a.McContraceptiveFieldExpr)
+	}
+	if a.typ == "McDetectedDeviationsFieldExpr" || a.McDetectedDeviationsFieldExpr != nil {
+		return visitor.VisitMcDetectedDeviationsFieldExpr(a.McDetectedDeviationsFieldExpr)
+	}
+	if a.typ == "McOvulationTestFieldExpr" || a.McOvulationTestFieldExpr != nil {
+		return visitor.VisitMcOvulationTestFieldExpr(a.McOvulationTestFieldExpr)
+	}
+	if a.typ == "McHomePregnancyTestFieldExpr" || a.McHomePregnancyTestFieldExpr != nil {
+		return visitor.VisitMcHomePregnancyTestFieldExpr(a.McHomePregnancyTestFieldExpr)
+	}
+	if a.typ == "McHomeProgesteroneTestFieldExpr" || a.McHomeProgesteroneTestFieldExpr != nil {
+		return visitor.VisitMcHomeProgesteroneTestFieldExpr(a.McHomeProgesteroneTestFieldExpr)
+	}
+	if a.typ == "McSexualActivityFieldExpr" || a.McSexualActivityFieldExpr != nil {
+		return visitor.VisitMcSexualActivityFieldExpr(a.McSexualActivityFieldExpr)
+	}
+	if a.typ == "McBasalBodyTemperatureFieldExpr" || a.McBasalBodyTemperatureFieldExpr != nil {
+		return visitor.VisitMcBasalBodyTemperatureFieldExpr(a.McBasalBodyTemperatureFieldExpr)
+	}
+	if a.typ == "ElementFieldExpr" || a.ElementFieldExpr != nil {
+		return visitor.VisitElementFieldExpr(a.ElementFieldExpr)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type AggregateFieldExprFunc string
+
+const (
+	AggregateFieldExprFuncMean   AggregateFieldExprFunc = "mean"
+	AggregateFieldExprFuncMin    AggregateFieldExprFunc = "min"
+	AggregateFieldExprFuncMax    AggregateFieldExprFunc = "max"
+	AggregateFieldExprFuncSum    AggregateFieldExprFunc = "sum"
+	AggregateFieldExprFuncCount  AggregateFieldExprFunc = "count"
+	AggregateFieldExprFuncMedian AggregateFieldExprFunc = "median"
+	AggregateFieldExprFuncStddev AggregateFieldExprFunc = "stddev"
+	AggregateFieldExprFuncOldest AggregateFieldExprFunc = "oldest"
+	AggregateFieldExprFuncNewest AggregateFieldExprFunc = "newest"
+)
+
+func NewAggregateFieldExprFuncFromString(s string) (AggregateFieldExprFunc, error) {
+	switch s {
+	case "mean":
+		return AggregateFieldExprFuncMean, nil
+	case "min":
+		return AggregateFieldExprFuncMin, nil
+	case "max":
+		return AggregateFieldExprFuncMax, nil
+	case "sum":
+		return AggregateFieldExprFuncSum, nil
+	case "count":
+		return AggregateFieldExprFuncCount, nil
+	case "median":
+		return AggregateFieldExprFuncMedian, nil
+	case "stddev":
+		return AggregateFieldExprFuncStddev, nil
+	case "oldest":
+		return AggregateFieldExprFuncOldest, nil
+	case "newest":
+		return AggregateFieldExprFuncNewest, nil
+	}
+	var t AggregateFieldExprFunc
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AggregateFieldExprFunc) Ptr() *AggregateFieldExprFunc {
 	return &a
 }
 
@@ -1141,6 +1641,93 @@ func (a *AwakeAtValueMacroExpr) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwakeAtValueMacroExpr) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	awakeningsValueMacroExprFieldVersion = big.NewInt(1 << 0)
+)
+
+type AwakeningsValueMacroExpr struct {
+	Version *string `json:"version,omitempty" url:"version,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+	valueMacro     string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AwakeningsValueMacroExpr) ValueMacro() string {
+	return a.valueMacro
+}
+
+func (a *AwakeningsValueMacroExpr) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AwakeningsValueMacroExpr) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetVersion sets the Version field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AwakeningsValueMacroExpr) SetVersion(version *string) {
+	a.Version = version
+	a.require(awakeningsValueMacroExprFieldVersion)
+}
+
+func (a *AwakeningsValueMacroExpr) UnmarshalJSON(data []byte) error {
+	type embed AwakeningsValueMacroExpr
+	var unmarshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*a = AwakeningsValueMacroExpr(unmarshaler.embed)
+	if unmarshaler.ValueMacro != "awakenings" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "awakenings", unmarshaler.ValueMacro)
+	}
+	a.valueMacro = unmarshaler.ValueMacro
+	extraProperties, err := internal.ExtractExtraProperties(data, *a, "value_macro")
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AwakeningsValueMacroExpr) MarshalJSON() ([]byte, error) {
+	type embed AwakeningsValueMacroExpr
+	var marshaler = struct {
+		embed
+		ValueMacro string `json:"value_macro"`
+	}{
+		embed:      embed(*a),
+		ValueMacro: "awakenings",
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AwakeningsValueMacroExpr) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1530,8 +2117,9 @@ var (
 )
 
 type ContinuousQueryTaskHistoryEntry struct {
-	QueryId      string                    `json:"query_id" url:"query_id"`
-	UserId       string                    `json:"user_id" url:"user_id"`
+	QueryId string `json:"query_id" url:"query_id"`
+	UserId  string `json:"user_id" url:"user_id"`
+	// ℹ️ This enum is non-exhaustive.
 	Status       ContinuousQueryTaskStatus `json:"status" url:"status"`
 	ScheduledAt  time.Time                 `json:"scheduled_at" url:"scheduled_at"`
 	StartedAt    *time.Time                `json:"started_at,omitempty" url:"started_at,omitempty"`
@@ -1811,6 +2399,7 @@ const (
 	ContinuousQueryTaskStatusStarted   ContinuousQueryTaskStatus = "started"
 	ContinuousQueryTaskStatusCompleted ContinuousQueryTaskStatus = "completed"
 	ContinuousQueryTaskStatusError     ContinuousQueryTaskStatus = "error"
+	ContinuousQueryTaskStatusSkipped   ContinuousQueryTaskStatus = "skipped"
 )
 
 func NewContinuousQueryTaskStatusFromString(s string) (ContinuousQueryTaskStatus, error) {
@@ -1823,6 +2412,8 @@ func NewContinuousQueryTaskStatusFromString(s string) (ContinuousQueryTaskStatus
 		return ContinuousQueryTaskStatusCompleted, nil
 	case "error":
 		return ContinuousQueryTaskStatusError, nil
+	case "skipped":
+		return ContinuousQueryTaskStatusSkipped, nil
 	}
 	var t ContinuousQueryTaskStatus
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -2190,6 +2781,126 @@ func (d *DateTruncExprArg) Accept(visitor DateTruncExprArgVisitor) error {
 }
 
 var (
+	derivedReadinessColumnExprFieldDerivedReadiness = big.NewInt(1 << 0)
+)
+
+type DerivedReadinessColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	DerivedReadiness DerivedReadinessColumnExprDerivedReadiness `json:"derived_readiness" url:"derived_readiness"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DerivedReadinessColumnExpr) GetDerivedReadiness() DerivedReadinessColumnExprDerivedReadiness {
+	if d == nil {
+		return ""
+	}
+	return d.DerivedReadiness
+}
+
+func (d *DerivedReadinessColumnExpr) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DerivedReadinessColumnExpr) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetDerivedReadiness sets the DerivedReadiness field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DerivedReadinessColumnExpr) SetDerivedReadiness(derivedReadiness DerivedReadinessColumnExprDerivedReadiness) {
+	d.DerivedReadiness = derivedReadiness
+	d.require(derivedReadinessColumnExprFieldDerivedReadiness)
+}
+
+func (d *DerivedReadinessColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler DerivedReadinessColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DerivedReadinessColumnExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DerivedReadinessColumnExpr) MarshalJSON() ([]byte, error) {
+	type embed DerivedReadinessColumnExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DerivedReadinessColumnExpr) String() string {
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type DerivedReadinessColumnExprDerivedReadiness string
+
+const (
+	DerivedReadinessColumnExprDerivedReadinessDate          DerivedReadinessColumnExprDerivedReadiness = "date"
+	DerivedReadinessColumnExprDerivedReadinessChronotype    DerivedReadinessColumnExprDerivedReadiness = "chronotype"
+	DerivedReadinessColumnExprDerivedReadinessSleepScore    DerivedReadinessColumnExprDerivedReadiness = "sleep_score"
+	DerivedReadinessColumnExprDerivedReadinessRecoveryScore DerivedReadinessColumnExprDerivedReadiness = "recovery_score"
+	DerivedReadinessColumnExprDerivedReadinessRecoveryZone  DerivedReadinessColumnExprDerivedReadiness = "recovery_zone"
+	DerivedReadinessColumnExprDerivedReadinessStressScore   DerivedReadinessColumnExprDerivedReadiness = "stress_score"
+	DerivedReadinessColumnExprDerivedReadinessStrainScore   DerivedReadinessColumnExprDerivedReadiness = "strain_score"
+	DerivedReadinessColumnExprDerivedReadinessStrainZone    DerivedReadinessColumnExprDerivedReadiness = "strain_zone"
+)
+
+func NewDerivedReadinessColumnExprDerivedReadinessFromString(s string) (DerivedReadinessColumnExprDerivedReadiness, error) {
+	switch s {
+	case "date":
+		return DerivedReadinessColumnExprDerivedReadinessDate, nil
+	case "chronotype":
+		return DerivedReadinessColumnExprDerivedReadinessChronotype, nil
+	case "sleep_score":
+		return DerivedReadinessColumnExprDerivedReadinessSleepScore, nil
+	case "recovery_score":
+		return DerivedReadinessColumnExprDerivedReadinessRecoveryScore, nil
+	case "recovery_zone":
+		return DerivedReadinessColumnExprDerivedReadinessRecoveryZone, nil
+	case "stress_score":
+		return DerivedReadinessColumnExprDerivedReadinessStressScore, nil
+	case "strain_score":
+		return DerivedReadinessColumnExprDerivedReadinessStrainScore, nil
+	case "strain_zone":
+		return DerivedReadinessColumnExprDerivedReadinessStrainZone, nil
+	}
+	var t DerivedReadinessColumnExprDerivedReadiness
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DerivedReadinessColumnExprDerivedReadiness) Ptr() *DerivedReadinessColumnExprDerivedReadiness {
+	return &d
+}
+
+var (
 	discreteTimeseriesExprFieldTimeseries = big.NewInt(1 << 0)
 	discreteTimeseriesExprFieldField      = big.NewInt(1 << 1)
 )
@@ -2377,6 +3088,85 @@ func NewDiscreteTimeseriesExprTimeseriesFromString(s string) (DiscreteTimeseries
 
 func (d DiscreteTimeseriesExprTimeseries) Ptr() *DiscreteTimeseriesExprTimeseries {
 	return &d
+}
+
+// References the element itself in a scalar-element list subquery arg.
+//
+// Symmetric with the reserved “element“ keyword in WHERE predicates.
+// Only valid when the UNNEST source is a “List[scalar]“.
+type ElementFieldExpr struct {
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+	element        bool
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *ElementFieldExpr) Element() bool {
+	return e.element
+}
+
+func (e *ElementFieldExpr) GetExtraProperties() map[string]interface{} {
+	return e.extraProperties
+}
+
+func (e *ElementFieldExpr) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+func (e *ElementFieldExpr) UnmarshalJSON(data []byte) error {
+	type embed ElementFieldExpr
+	var unmarshaler = struct {
+		embed
+		Element bool `json:"element"`
+	}{
+		embed: embed(*e),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*e = ElementFieldExpr(unmarshaler.embed)
+	if unmarshaler.Element != true {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, true, unmarshaler.Element)
+	}
+	e.element = unmarshaler.Element
+	extraProperties, err := internal.ExtractExtraProperties(data, *e, "element")
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *ElementFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed ElementFieldExpr
+	var marshaler = struct {
+		embed
+		Element bool `json:"element"`
+	}{
+		embed:   embed(*e),
+		Element: true,
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *ElementFieldExpr) String() string {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
 }
 
 var (
@@ -2602,19 +3392,23 @@ func (i *IndexColumnExpr) String() string {
 type IndexColumnExprIndex string
 
 const (
-	IndexColumnExprIndexSleep      IndexColumnExprIndex = "sleep"
-	IndexColumnExprIndexActivity   IndexColumnExprIndex = "activity"
-	IndexColumnExprIndexWorkout    IndexColumnExprIndex = "workout"
-	IndexColumnExprIndexBody       IndexColumnExprIndex = "body"
-	IndexColumnExprIndexMeal       IndexColumnExprIndex = "meal"
-	IndexColumnExprIndexProfile    IndexColumnExprIndex = "profile"
-	IndexColumnExprIndexTimeseries IndexColumnExprIndex = "timeseries"
+	IndexColumnExprIndexSleep            IndexColumnExprIndex = "sleep"
+	IndexColumnExprIndexDerivedReadiness IndexColumnExprIndex = "derived_readiness"
+	IndexColumnExprIndexActivity         IndexColumnExprIndex = "activity"
+	IndexColumnExprIndexWorkout          IndexColumnExprIndex = "workout"
+	IndexColumnExprIndexBody             IndexColumnExprIndex = "body"
+	IndexColumnExprIndexMeal             IndexColumnExprIndex = "meal"
+	IndexColumnExprIndexMenstrualCycle   IndexColumnExprIndex = "menstrual_cycle"
+	IndexColumnExprIndexProfile          IndexColumnExprIndex = "profile"
+	IndexColumnExprIndexTimeseries       IndexColumnExprIndex = "timeseries"
 )
 
 func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 	switch s {
 	case "sleep":
 		return IndexColumnExprIndexSleep, nil
+	case "derived_readiness":
+		return IndexColumnExprIndexDerivedReadiness, nil
 	case "activity":
 		return IndexColumnExprIndexActivity, nil
 	case "workout":
@@ -2623,6 +3417,8 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 		return IndexColumnExprIndexBody, nil
 	case "meal":
 		return IndexColumnExprIndexMeal, nil
+	case "menstrual_cycle":
+		return IndexColumnExprIndexMenstrualCycle, nil
 	case "profile":
 		return IndexColumnExprIndexProfile, nil
 	case "timeseries":
@@ -2633,6 +3429,154 @@ func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 }
 
 func (i IndexColumnExprIndex) Ptr() *IndexColumnExprIndex {
+	return &i
+}
+
+var (
+	insulinInjectionTimeseriesExprFieldField = big.NewInt(1 << 0)
+)
+
+type InsulinInjectionTimeseriesExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	Field InsulinInjectionTimeseriesExprField `json:"field" url:"field"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+	timeseries     string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *InsulinInjectionTimeseriesExpr) GetField() InsulinInjectionTimeseriesExprField {
+	if i == nil {
+		return ""
+	}
+	return i.Field
+}
+
+func (i *InsulinInjectionTimeseriesExpr) Timeseries() string {
+	return i.timeseries
+}
+
+func (i *InsulinInjectionTimeseriesExpr) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *InsulinInjectionTimeseriesExpr) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetField sets the Field field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *InsulinInjectionTimeseriesExpr) SetField(field InsulinInjectionTimeseriesExprField) {
+	i.Field = field
+	i.require(insulinInjectionTimeseriesExprFieldField)
+}
+
+func (i *InsulinInjectionTimeseriesExpr) UnmarshalJSON(data []byte) error {
+	type embed InsulinInjectionTimeseriesExpr
+	var unmarshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed: embed(*i),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*i = InsulinInjectionTimeseriesExpr(unmarshaler.embed)
+	if unmarshaler.Timeseries != "insulin_injection" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", i, "insulin_injection", unmarshaler.Timeseries)
+	}
+	i.timeseries = unmarshaler.Timeseries
+	extraProperties, err := internal.ExtractExtraProperties(data, *i, "timeseries")
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *InsulinInjectionTimeseriesExpr) MarshalJSON() ([]byte, error) {
+	type embed InsulinInjectionTimeseriesExpr
+	var marshaler = struct {
+		embed
+		Timeseries string `json:"timeseries"`
+	}{
+		embed:      embed(*i),
+		Timeseries: "insulin_injection",
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *InsulinInjectionTimeseriesExpr) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type InsulinInjectionTimeseriesExprField string
+
+const (
+	InsulinInjectionTimeseriesExprFieldSourceProvider  InsulinInjectionTimeseriesExprField = "source_provider"
+	InsulinInjectionTimeseriesExprFieldSourceType      InsulinInjectionTimeseriesExprField = "source_type"
+	InsulinInjectionTimeseriesExprFieldSourceAppId     InsulinInjectionTimeseriesExprField = "source_app_id"
+	InsulinInjectionTimeseriesExprFieldSourceWorkoutId InsulinInjectionTimeseriesExprField = "source_workout_id"
+	InsulinInjectionTimeseriesExprFieldSourceSport     InsulinInjectionTimeseriesExprField = "source_sport"
+	InsulinInjectionTimeseriesExprFieldTimezoneOffset  InsulinInjectionTimeseriesExprField = "timezone_offset"
+	InsulinInjectionTimeseriesExprFieldType            InsulinInjectionTimeseriesExprField = "type"
+	InsulinInjectionTimeseriesExprFieldDuration        InsulinInjectionTimeseriesExprField = "duration"
+	InsulinInjectionTimeseriesExprFieldValue           InsulinInjectionTimeseriesExprField = "value"
+	InsulinInjectionTimeseriesExprFieldDeliveryMode    InsulinInjectionTimeseriesExprField = "delivery_mode"
+	InsulinInjectionTimeseriesExprFieldDeliveryForm    InsulinInjectionTimeseriesExprField = "delivery_form"
+	InsulinInjectionTimeseriesExprFieldBolusPurpose    InsulinInjectionTimeseriesExprField = "bolus_purpose"
+)
+
+func NewInsulinInjectionTimeseriesExprFieldFromString(s string) (InsulinInjectionTimeseriesExprField, error) {
+	switch s {
+	case "source_provider":
+		return InsulinInjectionTimeseriesExprFieldSourceProvider, nil
+	case "source_type":
+		return InsulinInjectionTimeseriesExprFieldSourceType, nil
+	case "source_app_id":
+		return InsulinInjectionTimeseriesExprFieldSourceAppId, nil
+	case "source_workout_id":
+		return InsulinInjectionTimeseriesExprFieldSourceWorkoutId, nil
+	case "source_sport":
+		return InsulinInjectionTimeseriesExprFieldSourceSport, nil
+	case "timezone_offset":
+		return InsulinInjectionTimeseriesExprFieldTimezoneOffset, nil
+	case "type":
+		return InsulinInjectionTimeseriesExprFieldType, nil
+	case "duration":
+		return InsulinInjectionTimeseriesExprFieldDuration, nil
+	case "value":
+		return InsulinInjectionTimeseriesExprFieldValue, nil
+	case "delivery_mode":
+		return InsulinInjectionTimeseriesExprFieldDeliveryMode, nil
+	case "delivery_form":
+		return InsulinInjectionTimeseriesExprFieldDeliveryForm, nil
+	case "bolus_purpose":
+		return InsulinInjectionTimeseriesExprFieldBolusPurpose, nil
+	}
+	var t InsulinInjectionTimeseriesExprField
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (i InsulinInjectionTimeseriesExprField) Ptr() *InsulinInjectionTimeseriesExprField {
 	return &i
 }
 
@@ -2786,7 +3730,6 @@ const (
 	IntervalTimeseriesExprTimeseriesHeartRateAlert             IntervalTimeseriesExprTimeseries = "heart_rate_alert"
 	IntervalTimeseriesExprTimeseriesStandHour                  IntervalTimeseriesExprTimeseries = "stand_hour"
 	IntervalTimeseriesExprTimeseriesSleepBreathingDisturbance  IntervalTimeseriesExprTimeseries = "sleep_breathing_disturbance"
-	IntervalTimeseriesExprTimeseriesInsulinInjection           IntervalTimeseriesExprTimeseries = "insulin_injection"
 	IntervalTimeseriesExprTimeseriesWater                      IntervalTimeseriesExprTimeseries = "water"
 	IntervalTimeseriesExprTimeseriesCaffeine                   IntervalTimeseriesExprTimeseries = "caffeine"
 	IntervalTimeseriesExprTimeseriesMindfulnessMinutes         IntervalTimeseriesExprTimeseries = "mindfulness_minutes"
@@ -2829,8 +3772,6 @@ func NewIntervalTimeseriesExprTimeseriesFromString(s string) (IntervalTimeseries
 		return IntervalTimeseriesExprTimeseriesStandHour, nil
 	case "sleep_breathing_disturbance":
 		return IntervalTimeseriesExprTimeseriesSleepBreathingDisturbance, nil
-	case "insulin_injection":
-		return IntervalTimeseriesExprTimeseriesInsulinInjection, nil
 	case "water":
 		return IntervalTimeseriesExprTimeseriesWater, nil
 	case "caffeine":
@@ -2890,6 +3831,1092 @@ func NewIntervalTimeseriesExprTimeseriesFromString(s string) (IntervalTimeseries
 
 func (i IntervalTimeseriesExprTimeseries) Ptr() *IntervalTimeseriesExprTimeseries {
 	return &i
+}
+
+var (
+	mcBasalBodyTemperatureFieldExprFieldFieldFor             = big.NewInt(1 << 0)
+	mcBasalBodyTemperatureFieldExprFieldBasalBodyTemperature = big.NewInt(1 << 1)
+)
+
+type McBasalBodyTemperatureFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	BasalBodyTemperature McBasalBodyTemperatureFieldExprBasalBodyTemperature `json:"basal_body_temperature" url:"basal_body_temperature"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McBasalBodyTemperatureFieldExpr) GetBasalBodyTemperature() McBasalBodyTemperatureFieldExprBasalBodyTemperature {
+	if m == nil {
+		return ""
+	}
+	return m.BasalBodyTemperature
+}
+
+func (m *McBasalBodyTemperatureFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McBasalBodyTemperatureFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McBasalBodyTemperatureFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcBasalBodyTemperatureFieldExprFieldFieldFor)
+}
+
+// SetBasalBodyTemperature sets the BasalBodyTemperature field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McBasalBodyTemperatureFieldExpr) SetBasalBodyTemperature(basalBodyTemperature McBasalBodyTemperatureFieldExprBasalBodyTemperature) {
+	m.BasalBodyTemperature = basalBodyTemperature
+	m.require(mcBasalBodyTemperatureFieldExprFieldBasalBodyTemperature)
+}
+
+func (m *McBasalBodyTemperatureFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McBasalBodyTemperatureFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McBasalBodyTemperatureFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McBasalBodyTemperatureFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McBasalBodyTemperatureFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McBasalBodyTemperatureFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McBasalBodyTemperatureFieldExprBasalBodyTemperature string
+
+const (
+	McBasalBodyTemperatureFieldExprBasalBodyTemperatureDate  McBasalBodyTemperatureFieldExprBasalBodyTemperature = "date"
+	McBasalBodyTemperatureFieldExprBasalBodyTemperatureValue McBasalBodyTemperatureFieldExprBasalBodyTemperature = "value"
+)
+
+func NewMcBasalBodyTemperatureFieldExprBasalBodyTemperatureFromString(s string) (McBasalBodyTemperatureFieldExprBasalBodyTemperature, error) {
+	switch s {
+	case "date":
+		return McBasalBodyTemperatureFieldExprBasalBodyTemperatureDate, nil
+	case "value":
+		return McBasalBodyTemperatureFieldExprBasalBodyTemperatureValue, nil
+	}
+	var t McBasalBodyTemperatureFieldExprBasalBodyTemperature
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McBasalBodyTemperatureFieldExprBasalBodyTemperature) Ptr() *McBasalBodyTemperatureFieldExprBasalBodyTemperature {
+	return &m
+}
+
+var (
+	mcCervicalMucusFieldExprFieldFieldFor      = big.NewInt(1 << 0)
+	mcCervicalMucusFieldExprFieldCervicalMucus = big.NewInt(1 << 1)
+)
+
+type McCervicalMucusFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	CervicalMucus McCervicalMucusFieldExprCervicalMucus `json:"cervical_mucus" url:"cervical_mucus"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McCervicalMucusFieldExpr) GetCervicalMucus() McCervicalMucusFieldExprCervicalMucus {
+	if m == nil {
+		return ""
+	}
+	return m.CervicalMucus
+}
+
+func (m *McCervicalMucusFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McCervicalMucusFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McCervicalMucusFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcCervicalMucusFieldExprFieldFieldFor)
+}
+
+// SetCervicalMucus sets the CervicalMucus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McCervicalMucusFieldExpr) SetCervicalMucus(cervicalMucus McCervicalMucusFieldExprCervicalMucus) {
+	m.CervicalMucus = cervicalMucus
+	m.require(mcCervicalMucusFieldExprFieldCervicalMucus)
+}
+
+func (m *McCervicalMucusFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McCervicalMucusFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McCervicalMucusFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McCervicalMucusFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McCervicalMucusFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McCervicalMucusFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McCervicalMucusFieldExprCervicalMucus string
+
+const (
+	McCervicalMucusFieldExprCervicalMucusDate    McCervicalMucusFieldExprCervicalMucus = "date"
+	McCervicalMucusFieldExprCervicalMucusQuality McCervicalMucusFieldExprCervicalMucus = "quality"
+)
+
+func NewMcCervicalMucusFieldExprCervicalMucusFromString(s string) (McCervicalMucusFieldExprCervicalMucus, error) {
+	switch s {
+	case "date":
+		return McCervicalMucusFieldExprCervicalMucusDate, nil
+	case "quality":
+		return McCervicalMucusFieldExprCervicalMucusQuality, nil
+	}
+	var t McCervicalMucusFieldExprCervicalMucus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McCervicalMucusFieldExprCervicalMucus) Ptr() *McCervicalMucusFieldExprCervicalMucus {
+	return &m
+}
+
+var (
+	mcContraceptiveFieldExprFieldFieldFor      = big.NewInt(1 << 0)
+	mcContraceptiveFieldExprFieldContraceptive = big.NewInt(1 << 1)
+)
+
+type McContraceptiveFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Contraceptive McContraceptiveFieldExprContraceptive `json:"contraceptive" url:"contraceptive"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McContraceptiveFieldExpr) GetContraceptive() McContraceptiveFieldExprContraceptive {
+	if m == nil {
+		return ""
+	}
+	return m.Contraceptive
+}
+
+func (m *McContraceptiveFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McContraceptiveFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McContraceptiveFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcContraceptiveFieldExprFieldFieldFor)
+}
+
+// SetContraceptive sets the Contraceptive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McContraceptiveFieldExpr) SetContraceptive(contraceptive McContraceptiveFieldExprContraceptive) {
+	m.Contraceptive = contraceptive
+	m.require(mcContraceptiveFieldExprFieldContraceptive)
+}
+
+func (m *McContraceptiveFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McContraceptiveFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McContraceptiveFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McContraceptiveFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McContraceptiveFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McContraceptiveFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McContraceptiveFieldExprContraceptive string
+
+const (
+	McContraceptiveFieldExprContraceptiveDate McContraceptiveFieldExprContraceptive = "date"
+	McContraceptiveFieldExprContraceptiveType McContraceptiveFieldExprContraceptive = "type"
+)
+
+func NewMcContraceptiveFieldExprContraceptiveFromString(s string) (McContraceptiveFieldExprContraceptive, error) {
+	switch s {
+	case "date":
+		return McContraceptiveFieldExprContraceptiveDate, nil
+	case "type":
+		return McContraceptiveFieldExprContraceptiveType, nil
+	}
+	var t McContraceptiveFieldExprContraceptive
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McContraceptiveFieldExprContraceptive) Ptr() *McContraceptiveFieldExprContraceptive {
+	return &m
+}
+
+var (
+	mcDetectedDeviationsFieldExprFieldFieldFor           = big.NewInt(1 << 0)
+	mcDetectedDeviationsFieldExprFieldDetectedDeviations = big.NewInt(1 << 1)
+)
+
+type McDetectedDeviationsFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	DetectedDeviations McDetectedDeviationsFieldExprDetectedDeviations `json:"detected_deviations" url:"detected_deviations"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McDetectedDeviationsFieldExpr) GetDetectedDeviations() McDetectedDeviationsFieldExprDetectedDeviations {
+	if m == nil {
+		return ""
+	}
+	return m.DetectedDeviations
+}
+
+func (m *McDetectedDeviationsFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McDetectedDeviationsFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McDetectedDeviationsFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcDetectedDeviationsFieldExprFieldFieldFor)
+}
+
+// SetDetectedDeviations sets the DetectedDeviations field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McDetectedDeviationsFieldExpr) SetDetectedDeviations(detectedDeviations McDetectedDeviationsFieldExprDetectedDeviations) {
+	m.DetectedDeviations = detectedDeviations
+	m.require(mcDetectedDeviationsFieldExprFieldDetectedDeviations)
+}
+
+func (m *McDetectedDeviationsFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McDetectedDeviationsFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McDetectedDeviationsFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McDetectedDeviationsFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McDetectedDeviationsFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McDetectedDeviationsFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McDetectedDeviationsFieldExprDetectedDeviations string
+
+const (
+	McDetectedDeviationsFieldExprDetectedDeviationsDate      McDetectedDeviationsFieldExprDetectedDeviations = "date"
+	McDetectedDeviationsFieldExprDetectedDeviationsDeviation McDetectedDeviationsFieldExprDetectedDeviations = "deviation"
+)
+
+func NewMcDetectedDeviationsFieldExprDetectedDeviationsFromString(s string) (McDetectedDeviationsFieldExprDetectedDeviations, error) {
+	switch s {
+	case "date":
+		return McDetectedDeviationsFieldExprDetectedDeviationsDate, nil
+	case "deviation":
+		return McDetectedDeviationsFieldExprDetectedDeviationsDeviation, nil
+	}
+	var t McDetectedDeviationsFieldExprDetectedDeviations
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McDetectedDeviationsFieldExprDetectedDeviations) Ptr() *McDetectedDeviationsFieldExprDetectedDeviations {
+	return &m
+}
+
+var (
+	mcHomePregnancyTestFieldExprFieldFieldFor          = big.NewInt(1 << 0)
+	mcHomePregnancyTestFieldExprFieldHomePregnancyTest = big.NewInt(1 << 1)
+)
+
+type McHomePregnancyTestFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	HomePregnancyTest McHomePregnancyTestFieldExprHomePregnancyTest `json:"home_pregnancy_test" url:"home_pregnancy_test"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McHomePregnancyTestFieldExpr) GetHomePregnancyTest() McHomePregnancyTestFieldExprHomePregnancyTest {
+	if m == nil {
+		return ""
+	}
+	return m.HomePregnancyTest
+}
+
+func (m *McHomePregnancyTestFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McHomePregnancyTestFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McHomePregnancyTestFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcHomePregnancyTestFieldExprFieldFieldFor)
+}
+
+// SetHomePregnancyTest sets the HomePregnancyTest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McHomePregnancyTestFieldExpr) SetHomePregnancyTest(homePregnancyTest McHomePregnancyTestFieldExprHomePregnancyTest) {
+	m.HomePregnancyTest = homePregnancyTest
+	m.require(mcHomePregnancyTestFieldExprFieldHomePregnancyTest)
+}
+
+func (m *McHomePregnancyTestFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McHomePregnancyTestFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McHomePregnancyTestFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McHomePregnancyTestFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McHomePregnancyTestFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McHomePregnancyTestFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McHomePregnancyTestFieldExprHomePregnancyTest string
+
+const (
+	McHomePregnancyTestFieldExprHomePregnancyTestDate       McHomePregnancyTestFieldExprHomePregnancyTest = "date"
+	McHomePregnancyTestFieldExprHomePregnancyTestTestResult McHomePregnancyTestFieldExprHomePregnancyTest = "test_result"
+)
+
+func NewMcHomePregnancyTestFieldExprHomePregnancyTestFromString(s string) (McHomePregnancyTestFieldExprHomePregnancyTest, error) {
+	switch s {
+	case "date":
+		return McHomePregnancyTestFieldExprHomePregnancyTestDate, nil
+	case "test_result":
+		return McHomePregnancyTestFieldExprHomePregnancyTestTestResult, nil
+	}
+	var t McHomePregnancyTestFieldExprHomePregnancyTest
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McHomePregnancyTestFieldExprHomePregnancyTest) Ptr() *McHomePregnancyTestFieldExprHomePregnancyTest {
+	return &m
+}
+
+var (
+	mcHomeProgesteroneTestFieldExprFieldFieldFor             = big.NewInt(1 << 0)
+	mcHomeProgesteroneTestFieldExprFieldHomeProgesteroneTest = big.NewInt(1 << 1)
+)
+
+type McHomeProgesteroneTestFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	HomeProgesteroneTest McHomeProgesteroneTestFieldExprHomeProgesteroneTest `json:"home_progesterone_test" url:"home_progesterone_test"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McHomeProgesteroneTestFieldExpr) GetHomeProgesteroneTest() McHomeProgesteroneTestFieldExprHomeProgesteroneTest {
+	if m == nil {
+		return ""
+	}
+	return m.HomeProgesteroneTest
+}
+
+func (m *McHomeProgesteroneTestFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McHomeProgesteroneTestFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McHomeProgesteroneTestFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcHomeProgesteroneTestFieldExprFieldFieldFor)
+}
+
+// SetHomeProgesteroneTest sets the HomeProgesteroneTest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McHomeProgesteroneTestFieldExpr) SetHomeProgesteroneTest(homeProgesteroneTest McHomeProgesteroneTestFieldExprHomeProgesteroneTest) {
+	m.HomeProgesteroneTest = homeProgesteroneTest
+	m.require(mcHomeProgesteroneTestFieldExprFieldHomeProgesteroneTest)
+}
+
+func (m *McHomeProgesteroneTestFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McHomeProgesteroneTestFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McHomeProgesteroneTestFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McHomeProgesteroneTestFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McHomeProgesteroneTestFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McHomeProgesteroneTestFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McHomeProgesteroneTestFieldExprHomeProgesteroneTest string
+
+const (
+	McHomeProgesteroneTestFieldExprHomeProgesteroneTestDate       McHomeProgesteroneTestFieldExprHomeProgesteroneTest = "date"
+	McHomeProgesteroneTestFieldExprHomeProgesteroneTestTestResult McHomeProgesteroneTestFieldExprHomeProgesteroneTest = "test_result"
+)
+
+func NewMcHomeProgesteroneTestFieldExprHomeProgesteroneTestFromString(s string) (McHomeProgesteroneTestFieldExprHomeProgesteroneTest, error) {
+	switch s {
+	case "date":
+		return McHomeProgesteroneTestFieldExprHomeProgesteroneTestDate, nil
+	case "test_result":
+		return McHomeProgesteroneTestFieldExprHomeProgesteroneTestTestResult, nil
+	}
+	var t McHomeProgesteroneTestFieldExprHomeProgesteroneTest
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McHomeProgesteroneTestFieldExprHomeProgesteroneTest) Ptr() *McHomeProgesteroneTestFieldExprHomeProgesteroneTest {
+	return &m
+}
+
+var (
+	mcIntermenstrualBleedingFieldExprFieldFieldFor = big.NewInt(1 << 0)
+)
+
+type McIntermenstrualBleedingFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields         *big.Int `json:"-" url:"-"`
+	intermenstrualBleeding string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McIntermenstrualBleedingFieldExpr) IntermenstrualBleeding() string {
+	return m.intermenstrualBleeding
+}
+
+func (m *McIntermenstrualBleedingFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McIntermenstrualBleedingFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McIntermenstrualBleedingFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcIntermenstrualBleedingFieldExprFieldFieldFor)
+}
+
+func (m *McIntermenstrualBleedingFieldExpr) UnmarshalJSON(data []byte) error {
+	type embed McIntermenstrualBleedingFieldExpr
+	var unmarshaler = struct {
+		embed
+		IntermenstrualBleeding string `json:"intermenstrual_bleeding"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = McIntermenstrualBleedingFieldExpr(unmarshaler.embed)
+	if unmarshaler.IntermenstrualBleeding != "date" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", m, "date", unmarshaler.IntermenstrualBleeding)
+	}
+	m.intermenstrualBleeding = unmarshaler.IntermenstrualBleeding
+	extraProperties, err := internal.ExtractExtraProperties(data, *m, "intermenstrual_bleeding")
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McIntermenstrualBleedingFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McIntermenstrualBleedingFieldExpr
+	var marshaler = struct {
+		embed
+		IntermenstrualBleeding string `json:"intermenstrual_bleeding"`
+	}{
+		embed:                  embed(*m),
+		IntermenstrualBleeding: "date",
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McIntermenstrualBleedingFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+var (
+	mcMenstrualFlowFieldExprFieldFieldFor      = big.NewInt(1 << 0)
+	mcMenstrualFlowFieldExprFieldMenstrualFlow = big.NewInt(1 << 1)
+)
+
+type McMenstrualFlowFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	MenstrualFlow McMenstrualFlowFieldExprMenstrualFlow `json:"menstrual_flow" url:"menstrual_flow"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McMenstrualFlowFieldExpr) GetMenstrualFlow() McMenstrualFlowFieldExprMenstrualFlow {
+	if m == nil {
+		return ""
+	}
+	return m.MenstrualFlow
+}
+
+func (m *McMenstrualFlowFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McMenstrualFlowFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McMenstrualFlowFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcMenstrualFlowFieldExprFieldFieldFor)
+}
+
+// SetMenstrualFlow sets the MenstrualFlow field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McMenstrualFlowFieldExpr) SetMenstrualFlow(menstrualFlow McMenstrualFlowFieldExprMenstrualFlow) {
+	m.MenstrualFlow = menstrualFlow
+	m.require(mcMenstrualFlowFieldExprFieldMenstrualFlow)
+}
+
+func (m *McMenstrualFlowFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McMenstrualFlowFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McMenstrualFlowFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McMenstrualFlowFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McMenstrualFlowFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McMenstrualFlowFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McMenstrualFlowFieldExprMenstrualFlow string
+
+const (
+	McMenstrualFlowFieldExprMenstrualFlowDate McMenstrualFlowFieldExprMenstrualFlow = "date"
+	McMenstrualFlowFieldExprMenstrualFlowFlow McMenstrualFlowFieldExprMenstrualFlow = "flow"
+)
+
+func NewMcMenstrualFlowFieldExprMenstrualFlowFromString(s string) (McMenstrualFlowFieldExprMenstrualFlow, error) {
+	switch s {
+	case "date":
+		return McMenstrualFlowFieldExprMenstrualFlowDate, nil
+	case "flow":
+		return McMenstrualFlowFieldExprMenstrualFlowFlow, nil
+	}
+	var t McMenstrualFlowFieldExprMenstrualFlow
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McMenstrualFlowFieldExprMenstrualFlow) Ptr() *McMenstrualFlowFieldExprMenstrualFlow {
+	return &m
+}
+
+var (
+	mcOvulationTestFieldExprFieldFieldFor      = big.NewInt(1 << 0)
+	mcOvulationTestFieldExprFieldOvulationTest = big.NewInt(1 << 1)
+)
+
+type McOvulationTestFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	OvulationTest McOvulationTestFieldExprOvulationTest `json:"ovulation_test" url:"ovulation_test"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McOvulationTestFieldExpr) GetOvulationTest() McOvulationTestFieldExprOvulationTest {
+	if m == nil {
+		return ""
+	}
+	return m.OvulationTest
+}
+
+func (m *McOvulationTestFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McOvulationTestFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McOvulationTestFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcOvulationTestFieldExprFieldFieldFor)
+}
+
+// SetOvulationTest sets the OvulationTest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McOvulationTestFieldExpr) SetOvulationTest(ovulationTest McOvulationTestFieldExprOvulationTest) {
+	m.OvulationTest = ovulationTest
+	m.require(mcOvulationTestFieldExprFieldOvulationTest)
+}
+
+func (m *McOvulationTestFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McOvulationTestFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McOvulationTestFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McOvulationTestFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McOvulationTestFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McOvulationTestFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McOvulationTestFieldExprOvulationTest string
+
+const (
+	McOvulationTestFieldExprOvulationTestDate       McOvulationTestFieldExprOvulationTest = "date"
+	McOvulationTestFieldExprOvulationTestTestResult McOvulationTestFieldExprOvulationTest = "test_result"
+)
+
+func NewMcOvulationTestFieldExprOvulationTestFromString(s string) (McOvulationTestFieldExprOvulationTest, error) {
+	switch s {
+	case "date":
+		return McOvulationTestFieldExprOvulationTestDate, nil
+	case "test_result":
+		return McOvulationTestFieldExprOvulationTestTestResult, nil
+	}
+	var t McOvulationTestFieldExprOvulationTest
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McOvulationTestFieldExprOvulationTest) Ptr() *McOvulationTestFieldExprOvulationTest {
+	return &m
+}
+
+var (
+	mcSexualActivityFieldExprFieldFieldFor       = big.NewInt(1 << 0)
+	mcSexualActivityFieldExprFieldSexualActivity = big.NewInt(1 << 1)
+)
+
+type McSexualActivityFieldExpr struct {
+	FieldFor *string `json:"field_for,omitempty" url:"field_for,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	SexualActivity McSexualActivityFieldExprSexualActivity `json:"sexual_activity" url:"sexual_activity"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *McSexualActivityFieldExpr) GetSexualActivity() McSexualActivityFieldExprSexualActivity {
+	if m == nil {
+		return ""
+	}
+	return m.SexualActivity
+}
+
+func (m *McSexualActivityFieldExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *McSexualActivityFieldExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetFieldFor sets the FieldFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McSexualActivityFieldExpr) SetFieldFor(fieldFor *string) {
+	m.FieldFor = fieldFor
+	m.require(mcSexualActivityFieldExprFieldFieldFor)
+}
+
+// SetSexualActivity sets the SexualActivity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *McSexualActivityFieldExpr) SetSexualActivity(sexualActivity McSexualActivityFieldExprSexualActivity) {
+	m.SexualActivity = sexualActivity
+	m.require(mcSexualActivityFieldExprFieldSexualActivity)
+}
+
+func (m *McSexualActivityFieldExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler McSexualActivityFieldExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = McSexualActivityFieldExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *McSexualActivityFieldExpr) MarshalJSON() ([]byte, error) {
+	type embed McSexualActivityFieldExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *McSexualActivityFieldExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type McSexualActivityFieldExprSexualActivity string
+
+const (
+	McSexualActivityFieldExprSexualActivityDate           McSexualActivityFieldExprSexualActivity = "date"
+	McSexualActivityFieldExprSexualActivityProtectionUsed McSexualActivityFieldExprSexualActivity = "protection_used"
+)
+
+func NewMcSexualActivityFieldExprSexualActivityFromString(s string) (McSexualActivityFieldExprSexualActivity, error) {
+	switch s {
+	case "date":
+		return McSexualActivityFieldExprSexualActivityDate, nil
+	case "protection_used":
+		return McSexualActivityFieldExprSexualActivityProtectionUsed, nil
+	}
+	var t McSexualActivityFieldExprSexualActivity
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m McSexualActivityFieldExprSexualActivity) Ptr() *McSexualActivityFieldExprSexualActivity {
+	return &m
 }
 
 var (
@@ -3129,6 +5156,156 @@ func NewMealColumnExprMealFromString(s string) (MealColumnExprMeal, error) {
 }
 
 func (m MealColumnExprMeal) Ptr() *MealColumnExprMeal {
+	return &m
+}
+
+var (
+	menstrualCycleColumnExprFieldMenstrualCycle = big.NewInt(1 << 0)
+)
+
+type MenstrualCycleColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	MenstrualCycle MenstrualCycleColumnExprMenstrualCycle `json:"menstrual_cycle" url:"menstrual_cycle"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MenstrualCycleColumnExpr) GetMenstrualCycle() MenstrualCycleColumnExprMenstrualCycle {
+	if m == nil {
+		return ""
+	}
+	return m.MenstrualCycle
+}
+
+func (m *MenstrualCycleColumnExpr) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MenstrualCycleColumnExpr) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetMenstrualCycle sets the MenstrualCycle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MenstrualCycleColumnExpr) SetMenstrualCycle(menstrualCycle MenstrualCycleColumnExprMenstrualCycle) {
+	m.MenstrualCycle = menstrualCycle
+	m.require(menstrualCycleColumnExprFieldMenstrualCycle)
+}
+
+func (m *MenstrualCycleColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler MenstrualCycleColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MenstrualCycleColumnExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MenstrualCycleColumnExpr) MarshalJSON() ([]byte, error) {
+	type embed MenstrualCycleColumnExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MenstrualCycleColumnExpr) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type MenstrualCycleColumnExprMenstrualCycle string
+
+const (
+	MenstrualCycleColumnExprMenstrualCyclePeriodStart            MenstrualCycleColumnExprMenstrualCycle = "period_start"
+	MenstrualCycleColumnExprMenstrualCyclePeriodEnd              MenstrualCycleColumnExprMenstrualCycle = "period_end"
+	MenstrualCycleColumnExprMenstrualCycleCycleEnd               MenstrualCycleColumnExprMenstrualCycle = "cycle_end"
+	MenstrualCycleColumnExprMenstrualCycleIsPredicted            MenstrualCycleColumnExprMenstrualCycle = "is_predicted"
+	MenstrualCycleColumnExprMenstrualCycleMenstrualFlow          MenstrualCycleColumnExprMenstrualCycle = "menstrual_flow"
+	MenstrualCycleColumnExprMenstrualCycleCervicalMucus          MenstrualCycleColumnExprMenstrualCycle = "cervical_mucus"
+	MenstrualCycleColumnExprMenstrualCycleIntermenstrualBleeding MenstrualCycleColumnExprMenstrualCycle = "intermenstrual_bleeding"
+	MenstrualCycleColumnExprMenstrualCycleContraceptive          MenstrualCycleColumnExprMenstrualCycle = "contraceptive"
+	MenstrualCycleColumnExprMenstrualCycleDetectedDeviations     MenstrualCycleColumnExprMenstrualCycle = "detected_deviations"
+	MenstrualCycleColumnExprMenstrualCycleOvulationTest          MenstrualCycleColumnExprMenstrualCycle = "ovulation_test"
+	MenstrualCycleColumnExprMenstrualCycleHomePregnancyTest      MenstrualCycleColumnExprMenstrualCycle = "home_pregnancy_test"
+	MenstrualCycleColumnExprMenstrualCycleHomeProgesteroneTest   MenstrualCycleColumnExprMenstrualCycle = "home_progesterone_test"
+	MenstrualCycleColumnExprMenstrualCycleSexualActivity         MenstrualCycleColumnExprMenstrualCycle = "sexual_activity"
+	MenstrualCycleColumnExprMenstrualCycleBasalBodyTemperature   MenstrualCycleColumnExprMenstrualCycle = "basal_body_temperature"
+	MenstrualCycleColumnExprMenstrualCycleSourceType             MenstrualCycleColumnExprMenstrualCycle = "source_type"
+	MenstrualCycleColumnExprMenstrualCycleSourceProvider         MenstrualCycleColumnExprMenstrualCycle = "source_provider"
+	MenstrualCycleColumnExprMenstrualCycleSourceAppId            MenstrualCycleColumnExprMenstrualCycle = "source_app_id"
+	MenstrualCycleColumnExprMenstrualCycleSourceDeviceId         MenstrualCycleColumnExprMenstrualCycle = "source_device_id"
+)
+
+func NewMenstrualCycleColumnExprMenstrualCycleFromString(s string) (MenstrualCycleColumnExprMenstrualCycle, error) {
+	switch s {
+	case "period_start":
+		return MenstrualCycleColumnExprMenstrualCyclePeriodStart, nil
+	case "period_end":
+		return MenstrualCycleColumnExprMenstrualCyclePeriodEnd, nil
+	case "cycle_end":
+		return MenstrualCycleColumnExprMenstrualCycleCycleEnd, nil
+	case "is_predicted":
+		return MenstrualCycleColumnExprMenstrualCycleIsPredicted, nil
+	case "menstrual_flow":
+		return MenstrualCycleColumnExprMenstrualCycleMenstrualFlow, nil
+	case "cervical_mucus":
+		return MenstrualCycleColumnExprMenstrualCycleCervicalMucus, nil
+	case "intermenstrual_bleeding":
+		return MenstrualCycleColumnExprMenstrualCycleIntermenstrualBleeding, nil
+	case "contraceptive":
+		return MenstrualCycleColumnExprMenstrualCycleContraceptive, nil
+	case "detected_deviations":
+		return MenstrualCycleColumnExprMenstrualCycleDetectedDeviations, nil
+	case "ovulation_test":
+		return MenstrualCycleColumnExprMenstrualCycleOvulationTest, nil
+	case "home_pregnancy_test":
+		return MenstrualCycleColumnExprMenstrualCycleHomePregnancyTest, nil
+	case "home_progesterone_test":
+		return MenstrualCycleColumnExprMenstrualCycleHomeProgesteroneTest, nil
+	case "sexual_activity":
+		return MenstrualCycleColumnExprMenstrualCycleSexualActivity, nil
+	case "basal_body_temperature":
+		return MenstrualCycleColumnExprMenstrualCycleBasalBodyTemperature, nil
+	case "source_type":
+		return MenstrualCycleColumnExprMenstrualCycleSourceType, nil
+	case "source_provider":
+		return MenstrualCycleColumnExprMenstrualCycleSourceProvider, nil
+	case "source_app_id":
+		return MenstrualCycleColumnExprMenstrualCycleSourceAppId, nil
+	case "source_device_id":
+		return MenstrualCycleColumnExprMenstrualCycleSourceDeviceId, nil
+	}
+	var t MenstrualCycleColumnExprMenstrualCycle
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (m MenstrualCycleColumnExprMenstrualCycle) Ptr() *MenstrualCycleColumnExprMenstrualCycle {
 	return &m
 }
 
@@ -3401,25 +5578,18 @@ func (p PeriodUnit) Ptr() *PeriodUnit {
 	return &p
 }
 
-var (
-	placeholderFieldPlaceholder = big.NewInt(1 << 0)
-)
-
 type Placeholder struct {
-	Placeholder bool `json:"placeholder" url:"placeholder"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
+	placeholder    bool
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (p *Placeholder) GetPlaceholder() bool {
-	if p == nil {
-		return false
-	}
-	return p.Placeholder
+func (p *Placeholder) Placeholder() bool {
+	return p.placeholder
 }
 
 func (p *Placeholder) GetExtraProperties() map[string]interface{} {
@@ -3433,21 +5603,23 @@ func (p *Placeholder) require(field *big.Int) {
 	p.explicitFields.Or(p.explicitFields, field)
 }
 
-// SetPlaceholder sets the Placeholder field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *Placeholder) SetPlaceholder(placeholder bool) {
-	p.Placeholder = placeholder
-	p.require(placeholderFieldPlaceholder)
-}
-
 func (p *Placeholder) UnmarshalJSON(data []byte) error {
-	type unmarshaler Placeholder
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed Placeholder
+	var unmarshaler = struct {
+		embed
+		Placeholder bool `json:"placeholder"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*p = Placeholder(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	*p = Placeholder(unmarshaler.embed)
+	if unmarshaler.Placeholder != true {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, true, unmarshaler.Placeholder)
+	}
+	p.placeholder = unmarshaler.Placeholder
+	extraProperties, err := internal.ExtractExtraProperties(data, *p, "placeholder")
 	if err != nil {
 		return err
 	}
@@ -3460,8 +5632,10 @@ func (p *Placeholder) MarshalJSON() ([]byte, error) {
 	type embed Placeholder
 	var marshaler = struct {
 		embed
+		Placeholder bool `json:"placeholder"`
 	}{
-		embed: embed(*p),
+		embed:       embed(*p),
+		Placeholder: true,
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -3864,26 +6038,30 @@ func (q *QueryConfigProviderPriorityOverridesItem) Accept(visitor QueryConfigPro
 }
 
 type QueryGroupByItem struct {
-	DateTruncExpr                 *DateTruncExpr
-	DatePartExpr                  *DatePartExpr
-	SleepColumnExpr               *SleepColumnExpr
-	ActivityColumnExpr            *ActivityColumnExpr
-	WorkoutColumnExpr             *WorkoutColumnExpr
-	BodyColumnExpr                *BodyColumnExpr
-	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
-	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
-	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
-	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
-	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
-	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
-	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
-	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
-	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
-	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
-	NoteTimeseriesExpr            *NoteTimeseriesExpr
-	SourceColumnExpr              *SourceColumnExpr
+	DateTruncExpr                  *DateTruncExpr
+	DatePartExpr                   *DatePartExpr
+	SleepColumnExpr                *SleepColumnExpr
+	DerivedReadinessColumnExpr     *DerivedReadinessColumnExpr
+	ActivityColumnExpr             *ActivityColumnExpr
+	WorkoutColumnExpr              *WorkoutColumnExpr
+	BodyColumnExpr                 *BodyColumnExpr
+	MealColumnExpr                 *MealColumnExpr
+	MenstrualCycleColumnExpr       *MenstrualCycleColumnExpr
+	ProfileColumnExpr              *ProfileColumnExpr
+	SleepScoreValueMacroExpr       *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr       *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr         *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr          *AwakeAtValueMacroExpr
+	AwakeningsValueMacroExpr       *AwakeningsValueMacroExpr
+	UnrecognizedValueMacroExpr     *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr         *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr         *IntervalTimeseriesExpr
+	InsulinInjectionTimeseriesExpr *InsulinInjectionTimeseriesExpr
+	BloodPressureTimeseriesExpr    *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr      *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr  *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr             *NoteTimeseriesExpr
+	SourceColumnExpr               *SourceColumnExpr
 
 	typ string
 }
@@ -3907,6 +6085,13 @@ func (q *QueryGroupByItem) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return q.SleepColumnExpr
+}
+
+func (q *QueryGroupByItem) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.DerivedReadinessColumnExpr
 }
 
 func (q *QueryGroupByItem) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -3935,6 +6120,13 @@ func (q *QueryGroupByItem) GetMealColumnExpr() *MealColumnExpr {
 		return nil
 	}
 	return q.MealColumnExpr
+}
+
+func (q *QueryGroupByItem) GetMenstrualCycleColumnExpr() *MenstrualCycleColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.MenstrualCycleColumnExpr
 }
 
 func (q *QueryGroupByItem) GetProfileColumnExpr() *ProfileColumnExpr {
@@ -3972,6 +6164,13 @@ func (q *QueryGroupByItem) GetAwakeAtValueMacroExpr() *AwakeAtValueMacroExpr {
 	return q.AwakeAtValueMacroExpr
 }
 
+func (q *QueryGroupByItem) GetAwakeningsValueMacroExpr() *AwakeningsValueMacroExpr {
+	if q == nil {
+		return nil
+	}
+	return q.AwakeningsValueMacroExpr
+}
+
 func (q *QueryGroupByItem) GetUnrecognizedValueMacroExpr() *UnrecognizedValueMacroExpr {
 	if q == nil {
 		return nil
@@ -3991,6 +6190,13 @@ func (q *QueryGroupByItem) GetIntervalTimeseriesExpr() *IntervalTimeseriesExpr {
 		return nil
 	}
 	return q.IntervalTimeseriesExpr
+}
+
+func (q *QueryGroupByItem) GetInsulinInjectionTimeseriesExpr() *InsulinInjectionTimeseriesExpr {
+	if q == nil {
+		return nil
+	}
+	return q.InsulinInjectionTimeseriesExpr
 }
 
 func (q *QueryGroupByItem) GetBloodPressureTimeseriesExpr() *BloodPressureTimeseriesExpr {
@@ -4047,6 +6253,12 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 		q.SleepColumnExpr = valueSleepColumnExpr
 		return nil
 	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		q.typ = "DerivedReadinessColumnExpr"
+		q.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
+		return nil
+	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
 	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
 		q.typ = "ActivityColumnExpr"
@@ -4069,6 +6281,12 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueMealColumnExpr); err == nil {
 		q.typ = "MealColumnExpr"
 		q.MealColumnExpr = valueMealColumnExpr
+		return nil
+	}
+	valueMenstrualCycleColumnExpr := new(MenstrualCycleColumnExpr)
+	if err := json.Unmarshal(data, &valueMenstrualCycleColumnExpr); err == nil {
+		q.typ = "MenstrualCycleColumnExpr"
+		q.MenstrualCycleColumnExpr = valueMenstrualCycleColumnExpr
 		return nil
 	}
 	valueProfileColumnExpr := new(ProfileColumnExpr)
@@ -4101,6 +6319,12 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 		q.AwakeAtValueMacroExpr = valueAwakeAtValueMacroExpr
 		return nil
 	}
+	valueAwakeningsValueMacroExpr := new(AwakeningsValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeningsValueMacroExpr); err == nil {
+		q.typ = "AwakeningsValueMacroExpr"
+		q.AwakeningsValueMacroExpr = valueAwakeningsValueMacroExpr
+		return nil
+	}
 	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
 	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
 		q.typ = "UnrecognizedValueMacroExpr"
@@ -4117,6 +6341,12 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueIntervalTimeseriesExpr); err == nil {
 		q.typ = "IntervalTimeseriesExpr"
 		q.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
+		return nil
+	}
+	valueInsulinInjectionTimeseriesExpr := new(InsulinInjectionTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueInsulinInjectionTimeseriesExpr); err == nil {
+		q.typ = "InsulinInjectionTimeseriesExpr"
+		q.InsulinInjectionTimeseriesExpr = valueInsulinInjectionTimeseriesExpr
 		return nil
 	}
 	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
@@ -4162,6 +6392,9 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return json.Marshal(q.ActivityColumnExpr)
 	}
@@ -4173,6 +6406,9 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	}
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return json.Marshal(q.MealColumnExpr)
+	}
+	if q.typ == "MenstrualCycleColumnExpr" || q.MenstrualCycleColumnExpr != nil {
+		return json.Marshal(q.MenstrualCycleColumnExpr)
 	}
 	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
 		return json.Marshal(q.ProfileColumnExpr)
@@ -4189,6 +6425,9 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "AwakeAtValueMacroExpr" || q.AwakeAtValueMacroExpr != nil {
 		return json.Marshal(q.AwakeAtValueMacroExpr)
 	}
+	if q.typ == "AwakeningsValueMacroExpr" || q.AwakeningsValueMacroExpr != nil {
+		return json.Marshal(q.AwakeningsValueMacroExpr)
+	}
 	if q.typ == "UnrecognizedValueMacroExpr" || q.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(q.UnrecognizedValueMacroExpr)
 	}
@@ -4197,6 +6436,9 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	}
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return json.Marshal(q.IntervalTimeseriesExpr)
+	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return json.Marshal(q.InsulinInjectionTimeseriesExpr)
 	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return json.Marshal(q.BloodPressureTimeseriesExpr)
@@ -4220,18 +6462,22 @@ type QueryGroupByItemVisitor interface {
 	VisitDateTruncExpr(*DateTruncExpr) error
 	VisitDatePartExpr(*DatePartExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitMealColumnExpr(*MealColumnExpr) error
+	VisitMenstrualCycleColumnExpr(*MenstrualCycleColumnExpr) error
 	VisitProfileColumnExpr(*ProfileColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
 	VisitAwakeAtValueMacroExpr(*AwakeAtValueMacroExpr) error
+	VisitAwakeningsValueMacroExpr(*AwakeningsValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitInsulinInjectionTimeseriesExpr(*InsulinInjectionTimeseriesExpr) error
 	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
@@ -4249,6 +6495,9 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
 	}
@@ -4260,6 +6509,9 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	}
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return visitor.VisitMealColumnExpr(q.MealColumnExpr)
+	}
+	if q.typ == "MenstrualCycleColumnExpr" || q.MenstrualCycleColumnExpr != nil {
+		return visitor.VisitMenstrualCycleColumnExpr(q.MenstrualCycleColumnExpr)
 	}
 	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
 		return visitor.VisitProfileColumnExpr(q.ProfileColumnExpr)
@@ -4276,6 +6528,9 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	if q.typ == "AwakeAtValueMacroExpr" || q.AwakeAtValueMacroExpr != nil {
 		return visitor.VisitAwakeAtValueMacroExpr(q.AwakeAtValueMacroExpr)
 	}
+	if q.typ == "AwakeningsValueMacroExpr" || q.AwakeningsValueMacroExpr != nil {
+		return visitor.VisitAwakeningsValueMacroExpr(q.AwakeningsValueMacroExpr)
+	}
 	if q.typ == "UnrecognizedValueMacroExpr" || q.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
 	}
@@ -4284,6 +6539,9 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	}
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return visitor.VisitIntervalTimeseriesExpr(q.IntervalTimeseriesExpr)
+	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return visitor.VisitInsulinInjectionTimeseriesExpr(q.InsulinInjectionTimeseriesExpr)
 	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return visitor.VisitBloodPressureTimeseriesExpr(q.BloodPressureTimeseriesExpr)
@@ -4304,27 +6562,32 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 }
 
 type QuerySelectItem struct {
-	AggregateExpr                 *AggregateExpr
-	GroupKeyColumnExpr            *GroupKeyColumnExpr
-	SleepColumnExpr               *SleepColumnExpr
-	ActivityColumnExpr            *ActivityColumnExpr
-	WorkoutColumnExpr             *WorkoutColumnExpr
-	BodyColumnExpr                *BodyColumnExpr
-	MealColumnExpr                *MealColumnExpr
-	ProfileColumnExpr             *ProfileColumnExpr
-	SleepScoreValueMacroExpr      *SleepScoreValueMacroExpr
-	ChronotypeValueMacroExpr      *ChronotypeValueMacroExpr
-	AsleepAtValueMacroExpr        *AsleepAtValueMacroExpr
-	AwakeAtValueMacroExpr         *AwakeAtValueMacroExpr
-	UnrecognizedValueMacroExpr    *UnrecognizedValueMacroExpr
-	DiscreteTimeseriesExpr        *DiscreteTimeseriesExpr
-	IntervalTimeseriesExpr        *IntervalTimeseriesExpr
-	BloodPressureTimeseriesExpr   *BloodPressureTimeseriesExpr
-	TemperatureTimeseriesExpr     *TemperatureTimeseriesExpr
-	WorkoutDurationTimeseriesExpr *WorkoutDurationTimeseriesExpr
-	NoteTimeseriesExpr            *NoteTimeseriesExpr
-	IndexColumnExpr               *IndexColumnExpr
-	SourceColumnExpr              *SourceColumnExpr
+	AggregateExpr                  *AggregateExpr
+	GroupKeyColumnExpr             *GroupKeyColumnExpr
+	SleepColumnExpr                *SleepColumnExpr
+	DerivedReadinessColumnExpr     *DerivedReadinessColumnExpr
+	ActivityColumnExpr             *ActivityColumnExpr
+	WorkoutColumnExpr              *WorkoutColumnExpr
+	BodyColumnExpr                 *BodyColumnExpr
+	MealColumnExpr                 *MealColumnExpr
+	MenstrualCycleColumnExpr       *MenstrualCycleColumnExpr
+	ProfileColumnExpr              *ProfileColumnExpr
+	SleepScoreValueMacroExpr       *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr       *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr         *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr          *AwakeAtValueMacroExpr
+	AwakeningsValueMacroExpr       *AwakeningsValueMacroExpr
+	UnrecognizedValueMacroExpr     *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr         *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr         *IntervalTimeseriesExpr
+	InsulinInjectionTimeseriesExpr *InsulinInjectionTimeseriesExpr
+	BloodPressureTimeseriesExpr    *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr      *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr  *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr             *NoteTimeseriesExpr
+	IndexColumnExpr                *IndexColumnExpr
+	ScalarOutputSubqueryExpr       *ScalarOutputSubqueryExpr
+	SourceColumnExpr               *SourceColumnExpr
 
 	typ string
 }
@@ -4348,6 +6611,13 @@ func (q *QuerySelectItem) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return q.SleepColumnExpr
+}
+
+func (q *QuerySelectItem) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.DerivedReadinessColumnExpr
 }
 
 func (q *QuerySelectItem) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -4376,6 +6646,13 @@ func (q *QuerySelectItem) GetMealColumnExpr() *MealColumnExpr {
 		return nil
 	}
 	return q.MealColumnExpr
+}
+
+func (q *QuerySelectItem) GetMenstrualCycleColumnExpr() *MenstrualCycleColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.MenstrualCycleColumnExpr
 }
 
 func (q *QuerySelectItem) GetProfileColumnExpr() *ProfileColumnExpr {
@@ -4413,6 +6690,13 @@ func (q *QuerySelectItem) GetAwakeAtValueMacroExpr() *AwakeAtValueMacroExpr {
 	return q.AwakeAtValueMacroExpr
 }
 
+func (q *QuerySelectItem) GetAwakeningsValueMacroExpr() *AwakeningsValueMacroExpr {
+	if q == nil {
+		return nil
+	}
+	return q.AwakeningsValueMacroExpr
+}
+
 func (q *QuerySelectItem) GetUnrecognizedValueMacroExpr() *UnrecognizedValueMacroExpr {
 	if q == nil {
 		return nil
@@ -4432,6 +6716,13 @@ func (q *QuerySelectItem) GetIntervalTimeseriesExpr() *IntervalTimeseriesExpr {
 		return nil
 	}
 	return q.IntervalTimeseriesExpr
+}
+
+func (q *QuerySelectItem) GetInsulinInjectionTimeseriesExpr() *InsulinInjectionTimeseriesExpr {
+	if q == nil {
+		return nil
+	}
+	return q.InsulinInjectionTimeseriesExpr
 }
 
 func (q *QuerySelectItem) GetBloodPressureTimeseriesExpr() *BloodPressureTimeseriesExpr {
@@ -4469,6 +6760,13 @@ func (q *QuerySelectItem) GetIndexColumnExpr() *IndexColumnExpr {
 	return q.IndexColumnExpr
 }
 
+func (q *QuerySelectItem) GetScalarOutputSubqueryExpr() *ScalarOutputSubqueryExpr {
+	if q == nil {
+		return nil
+	}
+	return q.ScalarOutputSubqueryExpr
+}
+
 func (q *QuerySelectItem) GetSourceColumnExpr() *SourceColumnExpr {
 	if q == nil {
 		return nil
@@ -4495,6 +6793,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.SleepColumnExpr = valueSleepColumnExpr
 		return nil
 	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		q.typ = "DerivedReadinessColumnExpr"
+		q.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
+		return nil
+	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
 	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
 		q.typ = "ActivityColumnExpr"
@@ -4517,6 +6821,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueMealColumnExpr); err == nil {
 		q.typ = "MealColumnExpr"
 		q.MealColumnExpr = valueMealColumnExpr
+		return nil
+	}
+	valueMenstrualCycleColumnExpr := new(MenstrualCycleColumnExpr)
+	if err := json.Unmarshal(data, &valueMenstrualCycleColumnExpr); err == nil {
+		q.typ = "MenstrualCycleColumnExpr"
+		q.MenstrualCycleColumnExpr = valueMenstrualCycleColumnExpr
 		return nil
 	}
 	valueProfileColumnExpr := new(ProfileColumnExpr)
@@ -4549,6 +6859,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.AwakeAtValueMacroExpr = valueAwakeAtValueMacroExpr
 		return nil
 	}
+	valueAwakeningsValueMacroExpr := new(AwakeningsValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeningsValueMacroExpr); err == nil {
+		q.typ = "AwakeningsValueMacroExpr"
+		q.AwakeningsValueMacroExpr = valueAwakeningsValueMacroExpr
+		return nil
+	}
 	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
 	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
 		q.typ = "UnrecognizedValueMacroExpr"
@@ -4565,6 +6881,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &valueIntervalTimeseriesExpr); err == nil {
 		q.typ = "IntervalTimeseriesExpr"
 		q.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
+		return nil
+	}
+	valueInsulinInjectionTimeseriesExpr := new(InsulinInjectionTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueInsulinInjectionTimeseriesExpr); err == nil {
+		q.typ = "InsulinInjectionTimeseriesExpr"
+		q.InsulinInjectionTimeseriesExpr = valueInsulinInjectionTimeseriesExpr
 		return nil
 	}
 	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
@@ -4597,6 +6919,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.IndexColumnExpr = valueIndexColumnExpr
 		return nil
 	}
+	valueScalarOutputSubqueryExpr := new(ScalarOutputSubqueryExpr)
+	if err := json.Unmarshal(data, &valueScalarOutputSubqueryExpr); err == nil {
+		q.typ = "ScalarOutputSubqueryExpr"
+		q.ScalarOutputSubqueryExpr = valueScalarOutputSubqueryExpr
+		return nil
+	}
 	valueSourceColumnExpr := new(SourceColumnExpr)
 	if err := json.Unmarshal(data, &valueSourceColumnExpr); err == nil {
 		q.typ = "SourceColumnExpr"
@@ -4616,6 +6944,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return json.Marshal(q.ActivityColumnExpr)
 	}
@@ -4627,6 +6958,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	}
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return json.Marshal(q.MealColumnExpr)
+	}
+	if q.typ == "MenstrualCycleColumnExpr" || q.MenstrualCycleColumnExpr != nil {
+		return json.Marshal(q.MenstrualCycleColumnExpr)
 	}
 	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
 		return json.Marshal(q.ProfileColumnExpr)
@@ -4643,6 +6977,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "AwakeAtValueMacroExpr" || q.AwakeAtValueMacroExpr != nil {
 		return json.Marshal(q.AwakeAtValueMacroExpr)
 	}
+	if q.typ == "AwakeningsValueMacroExpr" || q.AwakeningsValueMacroExpr != nil {
+		return json.Marshal(q.AwakeningsValueMacroExpr)
+	}
 	if q.typ == "UnrecognizedValueMacroExpr" || q.UnrecognizedValueMacroExpr != nil {
 		return json.Marshal(q.UnrecognizedValueMacroExpr)
 	}
@@ -4651,6 +6988,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	}
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return json.Marshal(q.IntervalTimeseriesExpr)
+	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return json.Marshal(q.InsulinInjectionTimeseriesExpr)
 	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return json.Marshal(q.BloodPressureTimeseriesExpr)
@@ -4667,6 +7007,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "IndexColumnExpr" || q.IndexColumnExpr != nil {
 		return json.Marshal(q.IndexColumnExpr)
 	}
+	if q.typ == "ScalarOutputSubqueryExpr" || q.ScalarOutputSubqueryExpr != nil {
+		return json.Marshal(q.ScalarOutputSubqueryExpr)
+	}
 	if q.typ == "SourceColumnExpr" || q.SourceColumnExpr != nil {
 		return json.Marshal(q.SourceColumnExpr)
 	}
@@ -4677,23 +7020,28 @@ type QuerySelectItemVisitor interface {
 	VisitAggregateExpr(*AggregateExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
 	VisitMealColumnExpr(*MealColumnExpr) error
+	VisitMenstrualCycleColumnExpr(*MenstrualCycleColumnExpr) error
 	VisitProfileColumnExpr(*ProfileColumnExpr) error
 	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
 	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
 	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
 	VisitAwakeAtValueMacroExpr(*AwakeAtValueMacroExpr) error
+	VisitAwakeningsValueMacroExpr(*AwakeningsValueMacroExpr) error
 	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
 	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
 	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitInsulinInjectionTimeseriesExpr(*InsulinInjectionTimeseriesExpr) error
 	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
 	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
 	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
 	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
 	VisitIndexColumnExpr(*IndexColumnExpr) error
+	VisitScalarOutputSubqueryExpr(*ScalarOutputSubqueryExpr) error
 	VisitSourceColumnExpr(*SourceColumnExpr) error
 }
 
@@ -4707,6 +7055,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
 	}
@@ -4718,6 +7069,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.typ == "MealColumnExpr" || q.MealColumnExpr != nil {
 		return visitor.VisitMealColumnExpr(q.MealColumnExpr)
+	}
+	if q.typ == "MenstrualCycleColumnExpr" || q.MenstrualCycleColumnExpr != nil {
+		return visitor.VisitMenstrualCycleColumnExpr(q.MenstrualCycleColumnExpr)
 	}
 	if q.typ == "ProfileColumnExpr" || q.ProfileColumnExpr != nil {
 		return visitor.VisitProfileColumnExpr(q.ProfileColumnExpr)
@@ -4734,6 +7088,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	if q.typ == "AwakeAtValueMacroExpr" || q.AwakeAtValueMacroExpr != nil {
 		return visitor.VisitAwakeAtValueMacroExpr(q.AwakeAtValueMacroExpr)
 	}
+	if q.typ == "AwakeningsValueMacroExpr" || q.AwakeningsValueMacroExpr != nil {
+		return visitor.VisitAwakeningsValueMacroExpr(q.AwakeningsValueMacroExpr)
+	}
 	if q.typ == "UnrecognizedValueMacroExpr" || q.UnrecognizedValueMacroExpr != nil {
 		return visitor.VisitUnrecognizedValueMacroExpr(q.UnrecognizedValueMacroExpr)
 	}
@@ -4742,6 +7099,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.typ == "IntervalTimeseriesExpr" || q.IntervalTimeseriesExpr != nil {
 		return visitor.VisitIntervalTimeseriesExpr(q.IntervalTimeseriesExpr)
+	}
+	if q.typ == "InsulinInjectionTimeseriesExpr" || q.InsulinInjectionTimeseriesExpr != nil {
+		return visitor.VisitInsulinInjectionTimeseriesExpr(q.InsulinInjectionTimeseriesExpr)
 	}
 	if q.typ == "BloodPressureTimeseriesExpr" || q.BloodPressureTimeseriesExpr != nil {
 		return visitor.VisitBloodPressureTimeseriesExpr(q.BloodPressureTimeseriesExpr)
@@ -4757,6 +7117,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.typ == "IndexColumnExpr" || q.IndexColumnExpr != nil {
 		return visitor.VisitIndexColumnExpr(q.IndexColumnExpr)
+	}
+	if q.typ == "ScalarOutputSubqueryExpr" || q.ScalarOutputSubqueryExpr != nil {
+		return visitor.VisitScalarOutputSubqueryExpr(q.ScalarOutputSubqueryExpr)
 	}
 	if q.typ == "SourceColumnExpr" || q.SourceColumnExpr != nil {
 		return visitor.VisitSourceColumnExpr(q.SourceColumnExpr)
@@ -4874,6 +7237,241 @@ func (r *RelativeTimeframe) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+// A subquery that produces a single scalar value per row.
+var (
+	scalarOutputSubqueryExprFieldSelect = big.NewInt(1 << 0)
+	scalarOutputSubqueryExprFieldFrom   = big.NewInt(1 << 1)
+	scalarOutputSubqueryExprFieldWhere  = big.NewInt(1 << 2)
+)
+
+type ScalarOutputSubqueryExpr struct {
+	Select *ScalarOutputSubqueryExprSelect `json:"select" url:"select"`
+	From   *ScalarOutputSubqueryExprFrom   `json:"from" url:"from"`
+	Where  *string                         `json:"where,omitempty" url:"where,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ScalarOutputSubqueryExpr) GetSelect() *ScalarOutputSubqueryExprSelect {
+	if s == nil {
+		return nil
+	}
+	return s.Select
+}
+
+func (s *ScalarOutputSubqueryExpr) GetFrom() *ScalarOutputSubqueryExprFrom {
+	if s == nil {
+		return nil
+	}
+	return s.From
+}
+
+func (s *ScalarOutputSubqueryExpr) GetWhere() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Where
+}
+
+func (s *ScalarOutputSubqueryExpr) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *ScalarOutputSubqueryExpr) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetSelect sets the Select field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScalarOutputSubqueryExpr) SetSelect(select_ *ScalarOutputSubqueryExprSelect) {
+	s.Select = select_
+	s.require(scalarOutputSubqueryExprFieldSelect)
+}
+
+// SetFrom sets the From field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScalarOutputSubqueryExpr) SetFrom(from *ScalarOutputSubqueryExprFrom) {
+	s.From = from
+	s.require(scalarOutputSubqueryExprFieldFrom)
+}
+
+// SetWhere sets the Where field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScalarOutputSubqueryExpr) SetWhere(where *string) {
+	s.Where = where
+	s.require(scalarOutputSubqueryExprFieldWhere)
+}
+
+func (s *ScalarOutputSubqueryExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScalarOutputSubqueryExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ScalarOutputSubqueryExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ScalarOutputSubqueryExpr) MarshalJSON() ([]byte, error) {
+	type embed ScalarOutputSubqueryExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *ScalarOutputSubqueryExpr) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type ScalarOutputSubqueryExprFrom struct {
+	UnnestExpr  *UnnestExpr
+	Placeholder *Placeholder
+
+	typ string
+}
+
+func (s *ScalarOutputSubqueryExprFrom) GetUnnestExpr() *UnnestExpr {
+	if s == nil {
+		return nil
+	}
+	return s.UnnestExpr
+}
+
+func (s *ScalarOutputSubqueryExprFrom) GetPlaceholder() *Placeholder {
+	if s == nil {
+		return nil
+	}
+	return s.Placeholder
+}
+
+func (s *ScalarOutputSubqueryExprFrom) UnmarshalJSON(data []byte) error {
+	valueUnnestExpr := new(UnnestExpr)
+	if err := json.Unmarshal(data, &valueUnnestExpr); err == nil {
+		s.typ = "UnnestExpr"
+		s.UnnestExpr = valueUnnestExpr
+		return nil
+	}
+	valuePlaceholder := new(Placeholder)
+	if err := json.Unmarshal(data, &valuePlaceholder); err == nil {
+		s.typ = "Placeholder"
+		s.Placeholder = valuePlaceholder
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s ScalarOutputSubqueryExprFrom) MarshalJSON() ([]byte, error) {
+	if s.typ == "UnnestExpr" || s.UnnestExpr != nil {
+		return json.Marshal(s.UnnestExpr)
+	}
+	if s.typ == "Placeholder" || s.Placeholder != nil {
+		return json.Marshal(s.Placeholder)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type ScalarOutputSubqueryExprFromVisitor interface {
+	VisitUnnestExpr(*UnnestExpr) error
+	VisitPlaceholder(*Placeholder) error
+}
+
+func (s *ScalarOutputSubqueryExprFrom) Accept(visitor ScalarOutputSubqueryExprFromVisitor) error {
+	if s.typ == "UnnestExpr" || s.UnnestExpr != nil {
+		return visitor.VisitUnnestExpr(s.UnnestExpr)
+	}
+	if s.typ == "Placeholder" || s.Placeholder != nil {
+		return visitor.VisitPlaceholder(s.Placeholder)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type ScalarOutputSubqueryExprSelect struct {
+	AggregateFieldExpr *AggregateFieldExpr
+	Placeholder        *Placeholder
+
+	typ string
+}
+
+func (s *ScalarOutputSubqueryExprSelect) GetAggregateFieldExpr() *AggregateFieldExpr {
+	if s == nil {
+		return nil
+	}
+	return s.AggregateFieldExpr
+}
+
+func (s *ScalarOutputSubqueryExprSelect) GetPlaceholder() *Placeholder {
+	if s == nil {
+		return nil
+	}
+	return s.Placeholder
+}
+
+func (s *ScalarOutputSubqueryExprSelect) UnmarshalJSON(data []byte) error {
+	valueAggregateFieldExpr := new(AggregateFieldExpr)
+	if err := json.Unmarshal(data, &valueAggregateFieldExpr); err == nil {
+		s.typ = "AggregateFieldExpr"
+		s.AggregateFieldExpr = valueAggregateFieldExpr
+		return nil
+	}
+	valuePlaceholder := new(Placeholder)
+	if err := json.Unmarshal(data, &valuePlaceholder); err == nil {
+		s.typ = "Placeholder"
+		s.Placeholder = valuePlaceholder
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s ScalarOutputSubqueryExprSelect) MarshalJSON() ([]byte, error) {
+	if s.typ == "AggregateFieldExpr" || s.AggregateFieldExpr != nil {
+		return json.Marshal(s.AggregateFieldExpr)
+	}
+	if s.typ == "Placeholder" || s.Placeholder != nil {
+		return json.Marshal(s.Placeholder)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type ScalarOutputSubqueryExprSelectVisitor interface {
+	VisitAggregateFieldExpr(*AggregateFieldExpr) error
+	VisitPlaceholder(*Placeholder) error
+}
+
+func (s *ScalarOutputSubqueryExprSelect) Accept(visitor ScalarOutputSubqueryExprSelectVisitor) error {
+	if s.typ == "AggregateFieldExpr" || s.AggregateFieldExpr != nil {
+		return visitor.VisitAggregateFieldExpr(s.AggregateFieldExpr)
+	}
+	if s.typ == "Placeholder" || s.Placeholder != nil {
+		return visitor.VisitPlaceholder(s.Placeholder)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
 type Select string
 
 const (
@@ -4976,36 +7574,37 @@ func (s *SleepColumnExpr) String() string {
 type SleepColumnExprSleep string
 
 const (
-	SleepColumnExprSleepId                   SleepColumnExprSleep = "id"
-	SleepColumnExprSleepSessionStart         SleepColumnExprSleep = "session_start"
-	SleepColumnExprSleepSessionEnd           SleepColumnExprSleep = "session_end"
-	SleepColumnExprSleepState                SleepColumnExprSleep = "state"
-	SleepColumnExprSleepType                 SleepColumnExprSleep = "type"
-	SleepColumnExprSleepDurationSecond       SleepColumnExprSleep = "duration_second"
-	SleepColumnExprSleepStageAsleepSecond    SleepColumnExprSleep = "stage_asleep_second"
-	SleepColumnExprSleepStageAwakeSecond     SleepColumnExprSleep = "stage_awake_second"
-	SleepColumnExprSleepStageLightSecond     SleepColumnExprSleep = "stage_light_second"
-	SleepColumnExprSleepStageRemSecond       SleepColumnExprSleep = "stage_rem_second"
-	SleepColumnExprSleepStageDeepSecond      SleepColumnExprSleep = "stage_deep_second"
-	SleepColumnExprSleepStageUnknownSecond   SleepColumnExprSleep = "stage_unknown_second"
-	SleepColumnExprSleepLatencySecond        SleepColumnExprSleep = "latency_second"
-	SleepColumnExprSleepHeartRateMinimum     SleepColumnExprSleep = "heart_rate_minimum"
-	SleepColumnExprSleepHeartRateMean        SleepColumnExprSleep = "heart_rate_mean"
-	SleepColumnExprSleepHeartRateMaximum     SleepColumnExprSleep = "heart_rate_maximum"
-	SleepColumnExprSleepHeartRateDip         SleepColumnExprSleep = "heart_rate_dip"
-	SleepColumnExprSleepHeartRateResting     SleepColumnExprSleep = "heart_rate_resting"
-	SleepColumnExprSleepEfficiency           SleepColumnExprSleep = "efficiency"
-	SleepColumnExprSleepHrvMeanRmssd         SleepColumnExprSleep = "hrv_mean_rmssd"
-	SleepColumnExprSleepHrvMeanSdnn          SleepColumnExprSleep = "hrv_mean_sdnn"
-	SleepColumnExprSleepSkinTemperature      SleepColumnExprSleep = "skin_temperature"
-	SleepColumnExprSleepSkinTemperatureDelta SleepColumnExprSleep = "skin_temperature_delta"
-	SleepColumnExprSleepRespiratoryRate      SleepColumnExprSleep = "respiratory_rate"
-	SleepColumnExprSleepScore                SleepColumnExprSleep = "score"
-	SleepColumnExprSleepSourceType           SleepColumnExprSleep = "source_type"
-	SleepColumnExprSleepSourceProvider       SleepColumnExprSleep = "source_provider"
-	SleepColumnExprSleepSourceAppId          SleepColumnExprSleep = "source_app_id"
-	SleepColumnExprSleepSourceDeviceId       SleepColumnExprSleep = "source_device_id"
-	SleepColumnExprSleepTimeZone             SleepColumnExprSleep = "time_zone"
+	SleepColumnExprSleepId                     SleepColumnExprSleep = "id"
+	SleepColumnExprSleepSessionStart           SleepColumnExprSleep = "session_start"
+	SleepColumnExprSleepSessionEnd             SleepColumnExprSleep = "session_end"
+	SleepColumnExprSleepState                  SleepColumnExprSleep = "state"
+	SleepColumnExprSleepType                   SleepColumnExprSleep = "type"
+	SleepColumnExprSleepDurationSecond         SleepColumnExprSleep = "duration_second"
+	SleepColumnExprSleepStageAsleepSecond      SleepColumnExprSleep = "stage_asleep_second"
+	SleepColumnExprSleepStageAwakeSecond       SleepColumnExprSleep = "stage_awake_second"
+	SleepColumnExprSleepStageLightSecond       SleepColumnExprSleep = "stage_light_second"
+	SleepColumnExprSleepStageRemSecond         SleepColumnExprSleep = "stage_rem_second"
+	SleepColumnExprSleepStageDeepSecond        SleepColumnExprSleep = "stage_deep_second"
+	SleepColumnExprSleepStageUnknownSecond     SleepColumnExprSleep = "stage_unknown_second"
+	SleepColumnExprSleepLatencySecond          SleepColumnExprSleep = "latency_second"
+	SleepColumnExprSleepHeartRateMinimum       SleepColumnExprSleep = "heart_rate_minimum"
+	SleepColumnExprSleepHeartRateMean          SleepColumnExprSleep = "heart_rate_mean"
+	SleepColumnExprSleepHeartRateMaximum       SleepColumnExprSleep = "heart_rate_maximum"
+	SleepColumnExprSleepHeartRateDip           SleepColumnExprSleep = "heart_rate_dip"
+	SleepColumnExprSleepHeartRateResting       SleepColumnExprSleep = "heart_rate_resting"
+	SleepColumnExprSleepEfficiency             SleepColumnExprSleep = "efficiency"
+	SleepColumnExprSleepHrvMeanRmssd           SleepColumnExprSleep = "hrv_mean_rmssd"
+	SleepColumnExprSleepHrvMeanSdnn            SleepColumnExprSleep = "hrv_mean_sdnn"
+	SleepColumnExprSleepSkinTemperature        SleepColumnExprSleep = "skin_temperature"
+	SleepColumnExprSleepSkinTemperatureDelta   SleepColumnExprSleep = "skin_temperature_delta"
+	SleepColumnExprSleepRespiratoryRate        SleepColumnExprSleep = "respiratory_rate"
+	SleepColumnExprSleepScore                  SleepColumnExprSleep = "score"
+	SleepColumnExprSleepRecoveryReadinessScore SleepColumnExprSleep = "recovery_readiness_score"
+	SleepColumnExprSleepSourceType             SleepColumnExprSleep = "source_type"
+	SleepColumnExprSleepSourceProvider         SleepColumnExprSleep = "source_provider"
+	SleepColumnExprSleepSourceAppId            SleepColumnExprSleep = "source_app_id"
+	SleepColumnExprSleepSourceDeviceId         SleepColumnExprSleep = "source_device_id"
+	SleepColumnExprSleepTimeZone               SleepColumnExprSleep = "time_zone"
 )
 
 func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
@@ -5060,6 +7659,8 @@ func NewSleepColumnExprSleepFromString(s string) (SleepColumnExprSleep, error) {
 		return SleepColumnExprSleepRespiratoryRate, nil
 	case "score":
 		return SleepColumnExprSleepScore, nil
+	case "recovery_readiness_score":
+		return SleepColumnExprSleepRecoveryReadinessScore, nil
 	case "source_type":
 		return SleepColumnExprSleepSourceType, nil
 	case "source_provider":
@@ -5441,6 +8042,546 @@ func NewTemperatureTimeseriesExprTimeseriesFromString(s string) (TemperatureTime
 
 func (t TemperatureTimeseriesExprTimeseries) Ptr() *TemperatureTimeseriesExprTimeseries {
 	return &t
+}
+
+// FROM clause variant: unnest a list column into elements.
+var (
+	unnestExprFieldUnnest = big.NewInt(1 << 0)
+)
+
+type UnnestExpr struct {
+	Unnest *UnnestExprUnnest `json:"unnest" url:"unnest"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UnnestExpr) GetUnnest() *UnnestExprUnnest {
+	if u == nil {
+		return nil
+	}
+	return u.Unnest
+}
+
+func (u *UnnestExpr) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UnnestExpr) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetUnnest sets the Unnest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UnnestExpr) SetUnnest(unnest *UnnestExprUnnest) {
+	u.Unnest = unnest
+	u.require(unnestExprFieldUnnest)
+}
+
+func (u *UnnestExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler UnnestExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UnnestExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UnnestExpr) MarshalJSON() ([]byte, error) {
+	type embed UnnestExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UnnestExpr) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UnnestExprUnnest struct {
+	SleepColumnExpr                *SleepColumnExpr
+	DerivedReadinessColumnExpr     *DerivedReadinessColumnExpr
+	ActivityColumnExpr             *ActivityColumnExpr
+	WorkoutColumnExpr              *WorkoutColumnExpr
+	BodyColumnExpr                 *BodyColumnExpr
+	MealColumnExpr                 *MealColumnExpr
+	MenstrualCycleColumnExpr       *MenstrualCycleColumnExpr
+	ProfileColumnExpr              *ProfileColumnExpr
+	SleepScoreValueMacroExpr       *SleepScoreValueMacroExpr
+	ChronotypeValueMacroExpr       *ChronotypeValueMacroExpr
+	AsleepAtValueMacroExpr         *AsleepAtValueMacroExpr
+	AwakeAtValueMacroExpr          *AwakeAtValueMacroExpr
+	AwakeningsValueMacroExpr       *AwakeningsValueMacroExpr
+	UnrecognizedValueMacroExpr     *UnrecognizedValueMacroExpr
+	DiscreteTimeseriesExpr         *DiscreteTimeseriesExpr
+	IntervalTimeseriesExpr         *IntervalTimeseriesExpr
+	InsulinInjectionTimeseriesExpr *InsulinInjectionTimeseriesExpr
+	BloodPressureTimeseriesExpr    *BloodPressureTimeseriesExpr
+	TemperatureTimeseriesExpr      *TemperatureTimeseriesExpr
+	WorkoutDurationTimeseriesExpr  *WorkoutDurationTimeseriesExpr
+	NoteTimeseriesExpr             *NoteTimeseriesExpr
+
+	typ string
+}
+
+func (u *UnnestExprUnnest) GetSleepColumnExpr() *SleepColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.SleepColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.DerivedReadinessColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetActivityColumnExpr() *ActivityColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.ActivityColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetWorkoutColumnExpr() *WorkoutColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.WorkoutColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetBodyColumnExpr() *BodyColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.BodyColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetMealColumnExpr() *MealColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.MealColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetMenstrualCycleColumnExpr() *MenstrualCycleColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.MenstrualCycleColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetProfileColumnExpr() *ProfileColumnExpr {
+	if u == nil {
+		return nil
+	}
+	return u.ProfileColumnExpr
+}
+
+func (u *UnnestExprUnnest) GetSleepScoreValueMacroExpr() *SleepScoreValueMacroExpr {
+	if u == nil {
+		return nil
+	}
+	return u.SleepScoreValueMacroExpr
+}
+
+func (u *UnnestExprUnnest) GetChronotypeValueMacroExpr() *ChronotypeValueMacroExpr {
+	if u == nil {
+		return nil
+	}
+	return u.ChronotypeValueMacroExpr
+}
+
+func (u *UnnestExprUnnest) GetAsleepAtValueMacroExpr() *AsleepAtValueMacroExpr {
+	if u == nil {
+		return nil
+	}
+	return u.AsleepAtValueMacroExpr
+}
+
+func (u *UnnestExprUnnest) GetAwakeAtValueMacroExpr() *AwakeAtValueMacroExpr {
+	if u == nil {
+		return nil
+	}
+	return u.AwakeAtValueMacroExpr
+}
+
+func (u *UnnestExprUnnest) GetAwakeningsValueMacroExpr() *AwakeningsValueMacroExpr {
+	if u == nil {
+		return nil
+	}
+	return u.AwakeningsValueMacroExpr
+}
+
+func (u *UnnestExprUnnest) GetUnrecognizedValueMacroExpr() *UnrecognizedValueMacroExpr {
+	if u == nil {
+		return nil
+	}
+	return u.UnrecognizedValueMacroExpr
+}
+
+func (u *UnnestExprUnnest) GetDiscreteTimeseriesExpr() *DiscreteTimeseriesExpr {
+	if u == nil {
+		return nil
+	}
+	return u.DiscreteTimeseriesExpr
+}
+
+func (u *UnnestExprUnnest) GetIntervalTimeseriesExpr() *IntervalTimeseriesExpr {
+	if u == nil {
+		return nil
+	}
+	return u.IntervalTimeseriesExpr
+}
+
+func (u *UnnestExprUnnest) GetInsulinInjectionTimeseriesExpr() *InsulinInjectionTimeseriesExpr {
+	if u == nil {
+		return nil
+	}
+	return u.InsulinInjectionTimeseriesExpr
+}
+
+func (u *UnnestExprUnnest) GetBloodPressureTimeseriesExpr() *BloodPressureTimeseriesExpr {
+	if u == nil {
+		return nil
+	}
+	return u.BloodPressureTimeseriesExpr
+}
+
+func (u *UnnestExprUnnest) GetTemperatureTimeseriesExpr() *TemperatureTimeseriesExpr {
+	if u == nil {
+		return nil
+	}
+	return u.TemperatureTimeseriesExpr
+}
+
+func (u *UnnestExprUnnest) GetWorkoutDurationTimeseriesExpr() *WorkoutDurationTimeseriesExpr {
+	if u == nil {
+		return nil
+	}
+	return u.WorkoutDurationTimeseriesExpr
+}
+
+func (u *UnnestExprUnnest) GetNoteTimeseriesExpr() *NoteTimeseriesExpr {
+	if u == nil {
+		return nil
+	}
+	return u.NoteTimeseriesExpr
+}
+
+func (u *UnnestExprUnnest) UnmarshalJSON(data []byte) error {
+	valueSleepColumnExpr := new(SleepColumnExpr)
+	if err := json.Unmarshal(data, &valueSleepColumnExpr); err == nil {
+		u.typ = "SleepColumnExpr"
+		u.SleepColumnExpr = valueSleepColumnExpr
+		return nil
+	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		u.typ = "DerivedReadinessColumnExpr"
+		u.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
+		return nil
+	}
+	valueActivityColumnExpr := new(ActivityColumnExpr)
+	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
+		u.typ = "ActivityColumnExpr"
+		u.ActivityColumnExpr = valueActivityColumnExpr
+		return nil
+	}
+	valueWorkoutColumnExpr := new(WorkoutColumnExpr)
+	if err := json.Unmarshal(data, &valueWorkoutColumnExpr); err == nil {
+		u.typ = "WorkoutColumnExpr"
+		u.WorkoutColumnExpr = valueWorkoutColumnExpr
+		return nil
+	}
+	valueBodyColumnExpr := new(BodyColumnExpr)
+	if err := json.Unmarshal(data, &valueBodyColumnExpr); err == nil {
+		u.typ = "BodyColumnExpr"
+		u.BodyColumnExpr = valueBodyColumnExpr
+		return nil
+	}
+	valueMealColumnExpr := new(MealColumnExpr)
+	if err := json.Unmarshal(data, &valueMealColumnExpr); err == nil {
+		u.typ = "MealColumnExpr"
+		u.MealColumnExpr = valueMealColumnExpr
+		return nil
+	}
+	valueMenstrualCycleColumnExpr := new(MenstrualCycleColumnExpr)
+	if err := json.Unmarshal(data, &valueMenstrualCycleColumnExpr); err == nil {
+		u.typ = "MenstrualCycleColumnExpr"
+		u.MenstrualCycleColumnExpr = valueMenstrualCycleColumnExpr
+		return nil
+	}
+	valueProfileColumnExpr := new(ProfileColumnExpr)
+	if err := json.Unmarshal(data, &valueProfileColumnExpr); err == nil {
+		u.typ = "ProfileColumnExpr"
+		u.ProfileColumnExpr = valueProfileColumnExpr
+		return nil
+	}
+	valueSleepScoreValueMacroExpr := new(SleepScoreValueMacroExpr)
+	if err := json.Unmarshal(data, &valueSleepScoreValueMacroExpr); err == nil {
+		u.typ = "SleepScoreValueMacroExpr"
+		u.SleepScoreValueMacroExpr = valueSleepScoreValueMacroExpr
+		return nil
+	}
+	valueChronotypeValueMacroExpr := new(ChronotypeValueMacroExpr)
+	if err := json.Unmarshal(data, &valueChronotypeValueMacroExpr); err == nil {
+		u.typ = "ChronotypeValueMacroExpr"
+		u.ChronotypeValueMacroExpr = valueChronotypeValueMacroExpr
+		return nil
+	}
+	valueAsleepAtValueMacroExpr := new(AsleepAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAsleepAtValueMacroExpr); err == nil {
+		u.typ = "AsleepAtValueMacroExpr"
+		u.AsleepAtValueMacroExpr = valueAsleepAtValueMacroExpr
+		return nil
+	}
+	valueAwakeAtValueMacroExpr := new(AwakeAtValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeAtValueMacroExpr); err == nil {
+		u.typ = "AwakeAtValueMacroExpr"
+		u.AwakeAtValueMacroExpr = valueAwakeAtValueMacroExpr
+		return nil
+	}
+	valueAwakeningsValueMacroExpr := new(AwakeningsValueMacroExpr)
+	if err := json.Unmarshal(data, &valueAwakeningsValueMacroExpr); err == nil {
+		u.typ = "AwakeningsValueMacroExpr"
+		u.AwakeningsValueMacroExpr = valueAwakeningsValueMacroExpr
+		return nil
+	}
+	valueUnrecognizedValueMacroExpr := new(UnrecognizedValueMacroExpr)
+	if err := json.Unmarshal(data, &valueUnrecognizedValueMacroExpr); err == nil {
+		u.typ = "UnrecognizedValueMacroExpr"
+		u.UnrecognizedValueMacroExpr = valueUnrecognizedValueMacroExpr
+		return nil
+	}
+	valueDiscreteTimeseriesExpr := new(DiscreteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueDiscreteTimeseriesExpr); err == nil {
+		u.typ = "DiscreteTimeseriesExpr"
+		u.DiscreteTimeseriesExpr = valueDiscreteTimeseriesExpr
+		return nil
+	}
+	valueIntervalTimeseriesExpr := new(IntervalTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueIntervalTimeseriesExpr); err == nil {
+		u.typ = "IntervalTimeseriesExpr"
+		u.IntervalTimeseriesExpr = valueIntervalTimeseriesExpr
+		return nil
+	}
+	valueInsulinInjectionTimeseriesExpr := new(InsulinInjectionTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueInsulinInjectionTimeseriesExpr); err == nil {
+		u.typ = "InsulinInjectionTimeseriesExpr"
+		u.InsulinInjectionTimeseriesExpr = valueInsulinInjectionTimeseriesExpr
+		return nil
+	}
+	valueBloodPressureTimeseriesExpr := new(BloodPressureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueBloodPressureTimeseriesExpr); err == nil {
+		u.typ = "BloodPressureTimeseriesExpr"
+		u.BloodPressureTimeseriesExpr = valueBloodPressureTimeseriesExpr
+		return nil
+	}
+	valueTemperatureTimeseriesExpr := new(TemperatureTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueTemperatureTimeseriesExpr); err == nil {
+		u.typ = "TemperatureTimeseriesExpr"
+		u.TemperatureTimeseriesExpr = valueTemperatureTimeseriesExpr
+		return nil
+	}
+	valueWorkoutDurationTimeseriesExpr := new(WorkoutDurationTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueWorkoutDurationTimeseriesExpr); err == nil {
+		u.typ = "WorkoutDurationTimeseriesExpr"
+		u.WorkoutDurationTimeseriesExpr = valueWorkoutDurationTimeseriesExpr
+		return nil
+	}
+	valueNoteTimeseriesExpr := new(NoteTimeseriesExpr)
+	if err := json.Unmarshal(data, &valueNoteTimeseriesExpr); err == nil {
+		u.typ = "NoteTimeseriesExpr"
+		u.NoteTimeseriesExpr = valueNoteTimeseriesExpr
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
+}
+
+func (u UnnestExprUnnest) MarshalJSON() ([]byte, error) {
+	if u.typ == "SleepColumnExpr" || u.SleepColumnExpr != nil {
+		return json.Marshal(u.SleepColumnExpr)
+	}
+	if u.typ == "DerivedReadinessColumnExpr" || u.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(u.DerivedReadinessColumnExpr)
+	}
+	if u.typ == "ActivityColumnExpr" || u.ActivityColumnExpr != nil {
+		return json.Marshal(u.ActivityColumnExpr)
+	}
+	if u.typ == "WorkoutColumnExpr" || u.WorkoutColumnExpr != nil {
+		return json.Marshal(u.WorkoutColumnExpr)
+	}
+	if u.typ == "BodyColumnExpr" || u.BodyColumnExpr != nil {
+		return json.Marshal(u.BodyColumnExpr)
+	}
+	if u.typ == "MealColumnExpr" || u.MealColumnExpr != nil {
+		return json.Marshal(u.MealColumnExpr)
+	}
+	if u.typ == "MenstrualCycleColumnExpr" || u.MenstrualCycleColumnExpr != nil {
+		return json.Marshal(u.MenstrualCycleColumnExpr)
+	}
+	if u.typ == "ProfileColumnExpr" || u.ProfileColumnExpr != nil {
+		return json.Marshal(u.ProfileColumnExpr)
+	}
+	if u.typ == "SleepScoreValueMacroExpr" || u.SleepScoreValueMacroExpr != nil {
+		return json.Marshal(u.SleepScoreValueMacroExpr)
+	}
+	if u.typ == "ChronotypeValueMacroExpr" || u.ChronotypeValueMacroExpr != nil {
+		return json.Marshal(u.ChronotypeValueMacroExpr)
+	}
+	if u.typ == "AsleepAtValueMacroExpr" || u.AsleepAtValueMacroExpr != nil {
+		return json.Marshal(u.AsleepAtValueMacroExpr)
+	}
+	if u.typ == "AwakeAtValueMacroExpr" || u.AwakeAtValueMacroExpr != nil {
+		return json.Marshal(u.AwakeAtValueMacroExpr)
+	}
+	if u.typ == "AwakeningsValueMacroExpr" || u.AwakeningsValueMacroExpr != nil {
+		return json.Marshal(u.AwakeningsValueMacroExpr)
+	}
+	if u.typ == "UnrecognizedValueMacroExpr" || u.UnrecognizedValueMacroExpr != nil {
+		return json.Marshal(u.UnrecognizedValueMacroExpr)
+	}
+	if u.typ == "DiscreteTimeseriesExpr" || u.DiscreteTimeseriesExpr != nil {
+		return json.Marshal(u.DiscreteTimeseriesExpr)
+	}
+	if u.typ == "IntervalTimeseriesExpr" || u.IntervalTimeseriesExpr != nil {
+		return json.Marshal(u.IntervalTimeseriesExpr)
+	}
+	if u.typ == "InsulinInjectionTimeseriesExpr" || u.InsulinInjectionTimeseriesExpr != nil {
+		return json.Marshal(u.InsulinInjectionTimeseriesExpr)
+	}
+	if u.typ == "BloodPressureTimeseriesExpr" || u.BloodPressureTimeseriesExpr != nil {
+		return json.Marshal(u.BloodPressureTimeseriesExpr)
+	}
+	if u.typ == "TemperatureTimeseriesExpr" || u.TemperatureTimeseriesExpr != nil {
+		return json.Marshal(u.TemperatureTimeseriesExpr)
+	}
+	if u.typ == "WorkoutDurationTimeseriesExpr" || u.WorkoutDurationTimeseriesExpr != nil {
+		return json.Marshal(u.WorkoutDurationTimeseriesExpr)
+	}
+	if u.typ == "NoteTimeseriesExpr" || u.NoteTimeseriesExpr != nil {
+		return json.Marshal(u.NoteTimeseriesExpr)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UnnestExprUnnestVisitor interface {
+	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
+	VisitActivityColumnExpr(*ActivityColumnExpr) error
+	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
+	VisitBodyColumnExpr(*BodyColumnExpr) error
+	VisitMealColumnExpr(*MealColumnExpr) error
+	VisitMenstrualCycleColumnExpr(*MenstrualCycleColumnExpr) error
+	VisitProfileColumnExpr(*ProfileColumnExpr) error
+	VisitSleepScoreValueMacroExpr(*SleepScoreValueMacroExpr) error
+	VisitChronotypeValueMacroExpr(*ChronotypeValueMacroExpr) error
+	VisitAsleepAtValueMacroExpr(*AsleepAtValueMacroExpr) error
+	VisitAwakeAtValueMacroExpr(*AwakeAtValueMacroExpr) error
+	VisitAwakeningsValueMacroExpr(*AwakeningsValueMacroExpr) error
+	VisitUnrecognizedValueMacroExpr(*UnrecognizedValueMacroExpr) error
+	VisitDiscreteTimeseriesExpr(*DiscreteTimeseriesExpr) error
+	VisitIntervalTimeseriesExpr(*IntervalTimeseriesExpr) error
+	VisitInsulinInjectionTimeseriesExpr(*InsulinInjectionTimeseriesExpr) error
+	VisitBloodPressureTimeseriesExpr(*BloodPressureTimeseriesExpr) error
+	VisitTemperatureTimeseriesExpr(*TemperatureTimeseriesExpr) error
+	VisitWorkoutDurationTimeseriesExpr(*WorkoutDurationTimeseriesExpr) error
+	VisitNoteTimeseriesExpr(*NoteTimeseriesExpr) error
+}
+
+func (u *UnnestExprUnnest) Accept(visitor UnnestExprUnnestVisitor) error {
+	if u.typ == "SleepColumnExpr" || u.SleepColumnExpr != nil {
+		return visitor.VisitSleepColumnExpr(u.SleepColumnExpr)
+	}
+	if u.typ == "DerivedReadinessColumnExpr" || u.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(u.DerivedReadinessColumnExpr)
+	}
+	if u.typ == "ActivityColumnExpr" || u.ActivityColumnExpr != nil {
+		return visitor.VisitActivityColumnExpr(u.ActivityColumnExpr)
+	}
+	if u.typ == "WorkoutColumnExpr" || u.WorkoutColumnExpr != nil {
+		return visitor.VisitWorkoutColumnExpr(u.WorkoutColumnExpr)
+	}
+	if u.typ == "BodyColumnExpr" || u.BodyColumnExpr != nil {
+		return visitor.VisitBodyColumnExpr(u.BodyColumnExpr)
+	}
+	if u.typ == "MealColumnExpr" || u.MealColumnExpr != nil {
+		return visitor.VisitMealColumnExpr(u.MealColumnExpr)
+	}
+	if u.typ == "MenstrualCycleColumnExpr" || u.MenstrualCycleColumnExpr != nil {
+		return visitor.VisitMenstrualCycleColumnExpr(u.MenstrualCycleColumnExpr)
+	}
+	if u.typ == "ProfileColumnExpr" || u.ProfileColumnExpr != nil {
+		return visitor.VisitProfileColumnExpr(u.ProfileColumnExpr)
+	}
+	if u.typ == "SleepScoreValueMacroExpr" || u.SleepScoreValueMacroExpr != nil {
+		return visitor.VisitSleepScoreValueMacroExpr(u.SleepScoreValueMacroExpr)
+	}
+	if u.typ == "ChronotypeValueMacroExpr" || u.ChronotypeValueMacroExpr != nil {
+		return visitor.VisitChronotypeValueMacroExpr(u.ChronotypeValueMacroExpr)
+	}
+	if u.typ == "AsleepAtValueMacroExpr" || u.AsleepAtValueMacroExpr != nil {
+		return visitor.VisitAsleepAtValueMacroExpr(u.AsleepAtValueMacroExpr)
+	}
+	if u.typ == "AwakeAtValueMacroExpr" || u.AwakeAtValueMacroExpr != nil {
+		return visitor.VisitAwakeAtValueMacroExpr(u.AwakeAtValueMacroExpr)
+	}
+	if u.typ == "AwakeningsValueMacroExpr" || u.AwakeningsValueMacroExpr != nil {
+		return visitor.VisitAwakeningsValueMacroExpr(u.AwakeningsValueMacroExpr)
+	}
+	if u.typ == "UnrecognizedValueMacroExpr" || u.UnrecognizedValueMacroExpr != nil {
+		return visitor.VisitUnrecognizedValueMacroExpr(u.UnrecognizedValueMacroExpr)
+	}
+	if u.typ == "DiscreteTimeseriesExpr" || u.DiscreteTimeseriesExpr != nil {
+		return visitor.VisitDiscreteTimeseriesExpr(u.DiscreteTimeseriesExpr)
+	}
+	if u.typ == "IntervalTimeseriesExpr" || u.IntervalTimeseriesExpr != nil {
+		return visitor.VisitIntervalTimeseriesExpr(u.IntervalTimeseriesExpr)
+	}
+	if u.typ == "InsulinInjectionTimeseriesExpr" || u.InsulinInjectionTimeseriesExpr != nil {
+		return visitor.VisitInsulinInjectionTimeseriesExpr(u.InsulinInjectionTimeseriesExpr)
+	}
+	if u.typ == "BloodPressureTimeseriesExpr" || u.BloodPressureTimeseriesExpr != nil {
+		return visitor.VisitBloodPressureTimeseriesExpr(u.BloodPressureTimeseriesExpr)
+	}
+	if u.typ == "TemperatureTimeseriesExpr" || u.TemperatureTimeseriesExpr != nil {
+		return visitor.VisitTemperatureTimeseriesExpr(u.TemperatureTimeseriesExpr)
+	}
+	if u.typ == "WorkoutDurationTimeseriesExpr" || u.WorkoutDurationTimeseriesExpr != nil {
+		return visitor.VisitWorkoutDurationTimeseriesExpr(u.WorkoutDurationTimeseriesExpr)
+	}
+	if u.typ == "NoteTimeseriesExpr" || u.NoteTimeseriesExpr != nil {
+		return visitor.VisitNoteTimeseriesExpr(u.NoteTimeseriesExpr)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", u)
 }
 
 var (
