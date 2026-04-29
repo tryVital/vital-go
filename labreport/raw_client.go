@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ParserCreateJob(
 	ctx context.Context,
-	request *vitalgo.BodyCreateLabReportParserJob,
+	request *vitalgo.CreateLabReportParserJobBody,
 	opts ...option.RequestOption,
 ) (*core.Response[*vitalgo.ParsingJob], error) {
 	options := core.NewRequestOptions(opts...)
@@ -48,8 +48,10 @@ func (r *RawClient) ParserCreateJob(
 		options.ToHeader(),
 	)
 	writer := internal.NewMultipartWriter()
-	if err := writer.WriteFile("file", request.File); err != nil {
-		return nil, err
+	for _, f := range request.File {
+		if err := writer.WriteFile("file", f); err != nil {
+			return nil, err
+		}
 	}
 	if err := writer.WriteField("user_id", request.UserId); err != nil {
 		return nil, err

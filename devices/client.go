@@ -38,7 +38,7 @@ func (c *Client) GetRaw(
 	userId string,
 	request *vitalgo.DevicesGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawDevices, error) {
+) (*vitalgo.RawDevicesResponse, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,

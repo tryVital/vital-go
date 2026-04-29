@@ -87,7 +87,7 @@ func (r *RawClient) GetRaw(
 	userId string,
 	request *vitalgo.BodyGetRawRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.RawBody], error) {
+) (*core.Response[*vitalgo.RawBodyResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -109,7 +109,7 @@ func (r *RawClient) GetRaw(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.RawBody
+	var response *vitalgo.RawBodyResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -127,7 +127,7 @@ func (r *RawClient) GetRaw(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.RawBody]{
+	return &core.Response[*vitalgo.RawBodyResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
