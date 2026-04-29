@@ -57,7 +57,7 @@ func (c *Client) GetRaw(
 	userId string,
 	request *vitalgo.BodyGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawBody, error) {
+) (*vitalgo.RawBodyResponse, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,

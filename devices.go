@@ -36,15 +36,15 @@ func (d *DevicesGetRawRequest) SetProvider(provider *string) {
 }
 
 var (
-	deviceV2InDbFieldData       = big.NewInt(1 << 0)
-	deviceV2InDbFieldProviderId = big.NewInt(1 << 1)
-	deviceV2InDbFieldUserId     = big.NewInt(1 << 2)
-	deviceV2InDbFieldSourceId   = big.NewInt(1 << 3)
-	deviceV2InDbFieldId         = big.NewInt(1 << 4)
-	deviceV2InDbFieldSource     = big.NewInt(1 << 5)
+	rawDeviceFieldData       = big.NewInt(1 << 0)
+	rawDeviceFieldProviderId = big.NewInt(1 << 1)
+	rawDeviceFieldUserId     = big.NewInt(1 << 2)
+	rawDeviceFieldSourceId   = big.NewInt(1 << 3)
+	rawDeviceFieldId         = big.NewInt(1 << 4)
+	rawDeviceFieldSource     = big.NewInt(1 << 5)
 )
 
-type DeviceV2InDb struct {
+type RawDevice struct {
 	Data       map[string]interface{} `json:"data" url:"data"`
 	ProviderId string                 `json:"provider_id" url:"provider_id"`
 	UserId     string                 `json:"user_id" url:"user_id"`
@@ -59,186 +59,108 @@ type DeviceV2InDb struct {
 	rawJSON         json.RawMessage
 }
 
-func (d *DeviceV2InDb) GetData() map[string]interface{} {
-	if d == nil {
-		return nil
-	}
-	return d.Data
-}
-
-func (d *DeviceV2InDb) GetProviderId() string {
-	if d == nil {
-		return ""
-	}
-	return d.ProviderId
-}
-
-func (d *DeviceV2InDb) GetUserId() string {
-	if d == nil {
-		return ""
-	}
-	return d.UserId
-}
-
-func (d *DeviceV2InDb) GetSourceId() int {
-	if d == nil {
-		return 0
-	}
-	return d.SourceId
-}
-
-func (d *DeviceV2InDb) GetId() string {
-	if d == nil {
-		return ""
-	}
-	return d.Id
-}
-
-func (d *DeviceV2InDb) GetSource() *ClientFacingProvider {
-	if d == nil {
-		return nil
-	}
-	return d.Source
-}
-
-func (d *DeviceV2InDb) GetExtraProperties() map[string]interface{} {
-	return d.extraProperties
-}
-
-func (d *DeviceV2InDb) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeviceV2InDb) SetData(data map[string]interface{}) {
-	d.Data = data
-	d.require(deviceV2InDbFieldData)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeviceV2InDb) SetProviderId(providerId string) {
-	d.ProviderId = providerId
-	d.require(deviceV2InDbFieldProviderId)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeviceV2InDb) SetUserId(userId string) {
-	d.UserId = userId
-	d.require(deviceV2InDbFieldUserId)
-}
-
-// SetSourceId sets the SourceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeviceV2InDb) SetSourceId(sourceId int) {
-	d.SourceId = sourceId
-	d.require(deviceV2InDbFieldSourceId)
-}
-
-// SetId sets the Id field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeviceV2InDb) SetId(id string) {
-	d.Id = id
-	d.require(deviceV2InDbFieldId)
-}
-
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeviceV2InDb) SetSource(source *ClientFacingProvider) {
-	d.Source = source
-	d.require(deviceV2InDbFieldSource)
-}
-
-func (d *DeviceV2InDb) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeviceV2InDb
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeviceV2InDb(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeviceV2InDb) MarshalJSON() ([]byte, error) {
-	type embed DeviceV2InDb
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeviceV2InDb) String() string {
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	rawDevicesFieldDevices = big.NewInt(1 << 0)
-)
-
-type RawDevices struct {
-	Devices []*DeviceV2InDb `json:"devices" url:"devices"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (r *RawDevices) GetDevices() []*DeviceV2InDb {
+func (r *RawDevice) GetData() map[string]interface{} {
 	if r == nil {
 		return nil
 	}
-	return r.Devices
+	return r.Data
 }
 
-func (r *RawDevices) GetExtraProperties() map[string]interface{} {
+func (r *RawDevice) GetProviderId() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderId
+}
+
+func (r *RawDevice) GetUserId() string {
+	if r == nil {
+		return ""
+	}
+	return r.UserId
+}
+
+func (r *RawDevice) GetSourceId() int {
+	if r == nil {
+		return 0
+	}
+	return r.SourceId
+}
+
+func (r *RawDevice) GetId() string {
+	if r == nil {
+		return ""
+	}
+	return r.Id
+}
+
+func (r *RawDevice) GetSource() *ClientFacingProvider {
+	if r == nil {
+		return nil
+	}
+	return r.Source
+}
+
+func (r *RawDevice) GetExtraProperties() map[string]interface{} {
 	return r.extraProperties
 }
 
-func (r *RawDevices) require(field *big.Int) {
+func (r *RawDevice) require(field *big.Int) {
 	if r.explicitFields == nil {
 		r.explicitFields = big.NewInt(0)
 	}
 	r.explicitFields.Or(r.explicitFields, field)
 }
 
-// SetDevices sets the Devices field and marks it as non-optional;
+// SetData sets the Data field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RawDevices) SetDevices(devices []*DeviceV2InDb) {
-	r.Devices = devices
-	r.require(rawDevicesFieldDevices)
+func (r *RawDevice) SetData(data map[string]interface{}) {
+	r.Data = data
+	r.require(rawDeviceFieldData)
 }
 
-func (r *RawDevices) UnmarshalJSON(data []byte) error {
-	type unmarshaler RawDevices
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawDevice) SetProviderId(providerId string) {
+	r.ProviderId = providerId
+	r.require(rawDeviceFieldProviderId)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawDevice) SetUserId(userId string) {
+	r.UserId = userId
+	r.require(rawDeviceFieldUserId)
+}
+
+// SetSourceId sets the SourceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawDevice) SetSourceId(sourceId int) {
+	r.SourceId = sourceId
+	r.require(rawDeviceFieldSourceId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawDevice) SetId(id string) {
+	r.Id = id
+	r.require(rawDeviceFieldId)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawDevice) SetSource(source *ClientFacingProvider) {
+	r.Source = source
+	r.require(rawDeviceFieldSource)
+}
+
+func (r *RawDevice) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawDevice
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*r = RawDevices(value)
+	*r = RawDevice(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
@@ -248,8 +170,8 @@ func (r *RawDevices) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *RawDevices) MarshalJSON() ([]byte, error) {
-	type embed RawDevices
+func (r *RawDevice) MarshalJSON() ([]byte, error) {
+	type embed RawDevice
 	var marshaler = struct {
 		embed
 	}{
@@ -259,7 +181,85 @@ func (r *RawDevices) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (r *RawDevices) String() string {
+func (r *RawDevice) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	rawDevicesResponseFieldDevices = big.NewInt(1 << 0)
+)
+
+type RawDevicesResponse struct {
+	Devices []*RawDevice `json:"devices" url:"devices"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RawDevicesResponse) GetDevices() []*RawDevice {
+	if r == nil {
+		return nil
+	}
+	return r.Devices
+}
+
+func (r *RawDevicesResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawDevicesResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetDevices sets the Devices field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawDevicesResponse) SetDevices(devices []*RawDevice) {
+	r.Devices = devices
+	r.require(rawDevicesResponseFieldDevices)
+}
+
+func (r *RawDevicesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawDevicesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawDevicesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawDevicesResponse) MarshalJSON() ([]byte, error) {
+	type embed RawDevicesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RawDevicesResponse) String() string {
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
