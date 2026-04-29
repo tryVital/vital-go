@@ -30,51 +30,6 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 	}
 }
 
-func (r *RawClient) GetLinkConfig(
-	ctx context.Context,
-	request *vitalgo.TeamGetLinkConfigRequest,
-	opts ...option.RequestOption,
-) (*core.Response[map[string]any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.tryvital.io",
-	)
-	endpointURL := baseURL + "/v2/team/link/config"
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	if request.VitalLinkToken != nil {
-		headers.Add("x-vital-link-token", *request.VitalLinkToken)
-	}
-
-	var response map[string]any
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[map[string]any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
 func (r *RawClient) Get(
 	ctx context.Context,
 	teamId string,

@@ -11,17 +11,16 @@ import (
 )
 
 var (
-	bulkExportConnectionsBodyFieldTeamId    = big.NewInt(1 << 0)
-	bulkExportConnectionsBodyFieldUserIds   = big.NewInt(1 << 1)
-	bulkExportConnectionsBodyFieldProvider  = big.NewInt(1 << 2)
-	bulkExportConnectionsBodyFieldNextToken = big.NewInt(1 << 3)
+	bulkExportConnectionsBodyFieldUserIds   = big.NewInt(1 << 0)
+	bulkExportConnectionsBodyFieldProvider  = big.NewInt(1 << 1)
+	bulkExportConnectionsBodyFieldNextToken = big.NewInt(1 << 2)
 )
 
 type BulkExportConnectionsBody struct {
-	TeamId    *LinkBulkExportRequestTeamId `json:"-" url:"team_id,omitempty"`
-	UserIds   []string                     `json:"user_ids,omitempty" url:"-"`
-	Provider  OAuthProviders               `json:"provider" url:"-"`
-	NextToken *string                      `json:"next_token,omitempty" url:"-"`
+	UserIds []string `json:"user_ids,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Provider  OAuthProviders `json:"provider" url:"-"`
+	NextToken *string        `json:"next_token,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -32,13 +31,6 @@ func (b *BulkExportConnectionsBody) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetTeamId sets the TeamId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkExportConnectionsBody) SetTeamId(teamId *LinkBulkExportRequestTeamId) {
-	b.TeamId = teamId
-	b.require(bulkExportConnectionsBodyFieldTeamId)
 }
 
 // SetUserIds sets the UserIds field and marks it as non-optional;
@@ -62,17 +54,37 @@ func (b *BulkExportConnectionsBody) SetNextToken(nextToken *string) {
 	b.require(bulkExportConnectionsBodyFieldNextToken)
 }
 
+func (b *BulkExportConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkExportConnectionsBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkExportConnectionsBody(body)
+	return nil
+}
+
+func (b *BulkExportConnectionsBody) MarshalJSON() ([]byte, error) {
+	type embed BulkExportConnectionsBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
-	bulkImportConnectionsBodyFieldTeamId            = big.NewInt(1 << 0)
-	bulkImportConnectionsBodyFieldProvider          = big.NewInt(1 << 1)
-	bulkImportConnectionsBodyFieldConnections       = big.NewInt(1 << 2)
-	bulkImportConnectionsBodyFieldWaitForCompletion = big.NewInt(1 << 3)
+	bulkImportConnectionsBodyFieldProvider          = big.NewInt(1 << 0)
+	bulkImportConnectionsBodyFieldConnections       = big.NewInt(1 << 1)
+	bulkImportConnectionsBodyFieldWaitForCompletion = big.NewInt(1 << 2)
 )
 
 type BulkImportConnectionsBody struct {
-	TeamId      *LinkBulkImportRequestTeamId `json:"-" url:"team_id,omitempty"`
-	Provider    OAuthProviders               `json:"provider" url:"-"`
-	Connections []*ConnectionRecipe          `json:"connections,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Provider    OAuthProviders      `json:"provider" url:"-"`
+	Connections []*ConnectionRecipe `json:"connections" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
 	//
 	// When `wait_for_completion` is enabled, the endpoint may respond 200 OK if the Bulk Op takes less than 20 seconds to complete.
@@ -90,13 +102,6 @@ func (b *BulkImportConnectionsBody) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetTeamId sets the TeamId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkImportConnectionsBody) SetTeamId(teamId *LinkBulkImportRequestTeamId) {
-	b.TeamId = teamId
-	b.require(bulkImportConnectionsBodyFieldTeamId)
 }
 
 // SetProvider sets the Provider field and marks it as non-optional;
@@ -120,16 +125,36 @@ func (b *BulkImportConnectionsBody) SetWaitForCompletion(waitForCompletion *bool
 	b.require(bulkImportConnectionsBodyFieldWaitForCompletion)
 }
 
+func (b *BulkImportConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkImportConnectionsBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkImportConnectionsBody(body)
+	return nil
+}
+
+func (b *BulkImportConnectionsBody) MarshalJSON() ([]byte, error) {
+	type embed BulkImportConnectionsBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
-	bulkPauseConnectionsBodyFieldTeamId   = big.NewInt(1 << 0)
-	bulkPauseConnectionsBodyFieldUserIds  = big.NewInt(1 << 1)
-	bulkPauseConnectionsBodyFieldProvider = big.NewInt(1 << 2)
+	bulkPauseConnectionsBodyFieldUserIds  = big.NewInt(1 << 0)
+	bulkPauseConnectionsBodyFieldProvider = big.NewInt(1 << 1)
 )
 
 type BulkPauseConnectionsBody struct {
-	TeamId   *LinkBulkPauseRequestTeamId `json:"-" url:"team_id,omitempty"`
-	UserIds  []string                    `json:"user_ids,omitempty" url:"-"`
-	Provider OAuthProviders              `json:"provider" url:"-"`
+	UserIds []string `json:"user_ids" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Provider OAuthProviders `json:"provider" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -140,13 +165,6 @@ func (b *BulkPauseConnectionsBody) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetTeamId sets the TeamId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkPauseConnectionsBody) SetTeamId(teamId *LinkBulkPauseRequestTeamId) {
-	b.TeamId = teamId
-	b.require(bulkPauseConnectionsBodyFieldTeamId)
 }
 
 // SetUserIds sets the UserIds field and marks it as non-optional;
@@ -163,17 +181,37 @@ func (b *BulkPauseConnectionsBody) SetProvider(provider OAuthProviders) {
 	b.require(bulkPauseConnectionsBodyFieldProvider)
 }
 
+func (b *BulkPauseConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkPauseConnectionsBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkPauseConnectionsBody(body)
+	return nil
+}
+
+func (b *BulkPauseConnectionsBody) MarshalJSON() ([]byte, error) {
+	type embed BulkPauseConnectionsBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
-	bulkTriggerHistoricalPullBodyFieldTeamId            = big.NewInt(1 << 0)
-	bulkTriggerHistoricalPullBodyFieldUserIds           = big.NewInt(1 << 1)
-	bulkTriggerHistoricalPullBodyFieldProvider          = big.NewInt(1 << 2)
-	bulkTriggerHistoricalPullBodyFieldWaitForCompletion = big.NewInt(1 << 3)
+	bulkTriggerHistoricalPullBodyFieldUserIds           = big.NewInt(1 << 0)
+	bulkTriggerHistoricalPullBodyFieldProvider          = big.NewInt(1 << 1)
+	bulkTriggerHistoricalPullBodyFieldWaitForCompletion = big.NewInt(1 << 2)
 )
 
 type BulkTriggerHistoricalPullBody struct {
-	TeamId   *LinkBulkTriggerHistoricalPullRequestTeamId `json:"-" url:"team_id,omitempty"`
-	UserIds  []string                                    `json:"user_ids,omitempty" url:"-"`
-	Provider OAuthProviders                              `json:"provider" url:"-"`
+	UserIds []string `json:"user_ids" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Provider OAuthProviders `json:"provider" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
 	//
 	// When `wait_for_completion` is enabled, the endpoint may respond 200 OK if the Bulk Op takes less than 20 seconds to complete.
@@ -191,13 +229,6 @@ func (b *BulkTriggerHistoricalPullBody) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetTeamId sets the TeamId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BulkTriggerHistoricalPullBody) SetTeamId(teamId *LinkBulkTriggerHistoricalPullRequestTeamId) {
-	b.TeamId = teamId
-	b.require(bulkTriggerHistoricalPullBodyFieldTeamId)
 }
 
 // SetUserIds sets the UserIds field and marks it as non-optional;
@@ -219,6 +250,27 @@ func (b *BulkTriggerHistoricalPullBody) SetProvider(provider OAuthProviders) {
 func (b *BulkTriggerHistoricalPullBody) SetWaitForCompletion(waitForCompletion *bool) {
 	b.WaitForCompletion = waitForCompletion
 	b.require(bulkTriggerHistoricalPullBodyFieldWaitForCompletion)
+}
+
+func (b *BulkTriggerHistoricalPullBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkTriggerHistoricalPullBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkTriggerHistoricalPullBody(body)
+	return nil
+}
+
+func (b *BulkTriggerHistoricalPullBody) MarshalJSON() ([]byte, error) {
+	type embed BulkTriggerHistoricalPullBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -290,6 +342,27 @@ func (c *CompletePasswordProviderMfaBody) SetMfaCode(mfaCode string) {
 	c.require(completePasswordProviderMfaBodyFieldMfaCode)
 }
 
+func (c *CompletePasswordProviderMfaBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CompletePasswordProviderMfaBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CompletePasswordProviderMfaBody(body)
+	return nil
+}
+
+func (c *CompletePasswordProviderMfaBody) MarshalJSON() ([]byte, error) {
+	type embed CompletePasswordProviderMfaBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	demoConnectionCreationPayloadFieldUserId   = big.NewInt(1 << 0)
 	demoConnectionCreationPayloadFieldProvider = big.NewInt(1 << 1)
@@ -298,7 +371,7 @@ var (
 type DemoConnectionCreationPayload struct {
 	// Vital user ID
 	UserId string `json:"user_id" url:"-"`
-	// Demo provider. For more information, please check out our docs (https://docs.tryvital.io/wearables/providers/test_data)
+	// Demo provider. For more information, please check out our docs (https://docs.tryvital.io/wearables/providers/test_data) ℹ️ This enum is non-exhaustive.
 	Provider DemoProviders `json:"provider" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -326,6 +399,27 @@ func (d *DemoConnectionCreationPayload) SetProvider(provider DemoProviders) {
 	d.require(demoConnectionCreationPayloadFieldProvider)
 }
 
+func (d *DemoConnectionCreationPayload) UnmarshalJSON(data []byte) error {
+	type unmarshaler DemoConnectionCreationPayload
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*d = DemoConnectionCreationPayload(body)
+	return nil
+}
+
+func (d *DemoConnectionCreationPayload) MarshalJSON() ([]byte, error) {
+	type embed DemoConnectionCreationPayload
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	emailProviderAuthLinkFieldVitalLinkToken                = big.NewInt(1 << 0)
 	emailProviderAuthLinkFieldEmail                         = big.NewInt(1 << 1)
@@ -334,10 +428,12 @@ var (
 )
 
 type EmailProviderAuthLink struct {
-	VitalLinkToken                *string    `json:"-" url:"-"`
-	Email                         string     `json:"email" url:"-"`
+	VitalLinkToken *string `json:"-" url:"-"`
+	Email          string  `json:"email" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
 	EmailProviderAuthLinkProvider *Providers `json:"provider,omitempty" url:"-"`
-	Region                        *Region    `json:"region,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Region *Region `json:"region,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -378,38 +474,25 @@ func (e *EmailProviderAuthLink) SetRegion(region *Region) {
 	e.require(emailProviderAuthLinkFieldRegion)
 }
 
-var (
-	manualConnectionDataFieldUserId     = big.NewInt(1 << 0)
-	manualConnectionDataFieldProviderId = big.NewInt(1 << 1)
-)
-
-type ManualConnectionData struct {
-	UserId     string  `json:"user_id" url:"-"`
-	ProviderId *string `json:"provider_id,omitempty" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (m *ManualConnectionData) require(field *big.Int) {
-	if m.explicitFields == nil {
-		m.explicitFields = big.NewInt(0)
+func (e *EmailProviderAuthLink) UnmarshalJSON(data []byte) error {
+	type unmarshaler EmailProviderAuthLink
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
 	}
-	m.explicitFields.Or(m.explicitFields, field)
+	*e = EmailProviderAuthLink(body)
+	return nil
 }
 
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ManualConnectionData) SetUserId(userId string) {
-	m.UserId = userId
-	m.require(manualConnectionDataFieldUserId)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (m *ManualConnectionData) SetProviderId(providerId *string) {
-	m.ProviderId = providerId
-	m.require(manualConnectionDataFieldProviderId)
+func (e *EmailProviderAuthLink) MarshalJSON() ([]byte, error) {
+	type embed EmailProviderAuthLink
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -425,7 +508,7 @@ type IndividualProviderData struct {
 	Username string `json:"username" url:"-"`
 	// Password for provider
 	Password string `json:"password" url:"-"`
-	// Provider region to authenticate against. Only applicable to specific providers.
+	// Provider region to authenticate against. Only applicable to specific providers. ℹ️ This enum is non-exhaustive.
 	Region *Region `json:"region,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -467,65 +550,25 @@ func (i *IndividualProviderData) SetRegion(region *Region) {
 	i.require(individualProviderDataFieldRegion)
 }
 
-var (
-	emailAuthLinkFieldVitalLinkToken = big.NewInt(1 << 0)
-	emailAuthLinkFieldEmail          = big.NewInt(1 << 1)
-	emailAuthLinkFieldProvider       = big.NewInt(1 << 2)
-	emailAuthLinkFieldAuthType       = big.NewInt(1 << 3)
-	emailAuthLinkFieldRegion         = big.NewInt(1 << 4)
-)
-
-type EmailAuthLink struct {
-	VitalLinkToken *string   `json:"-" url:"-"`
-	Email          string    `json:"email" url:"-"`
-	Provider       Providers `json:"provider" url:"-"`
-	AuthType       AuthType  `json:"auth_type" url:"-"`
-	Region         *Region   `json:"region,omitempty" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (e *EmailAuthLink) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
+func (i *IndividualProviderData) UnmarshalJSON(data []byte) error {
+	type unmarshaler IndividualProviderData
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
 	}
-	e.explicitFields.Or(e.explicitFields, field)
+	*i = IndividualProviderData(body)
+	return nil
 }
 
-// SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EmailAuthLink) SetVitalLinkToken(vitalLinkToken *string) {
-	e.VitalLinkToken = vitalLinkToken
-	e.require(emailAuthLinkFieldVitalLinkToken)
-}
-
-// SetEmail sets the Email field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EmailAuthLink) SetEmail(email string) {
-	e.Email = email
-	e.require(emailAuthLinkFieldEmail)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EmailAuthLink) SetProvider(provider Providers) {
-	e.Provider = provider
-	e.require(emailAuthLinkFieldProvider)
-}
-
-// SetAuthType sets the AuthType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EmailAuthLink) SetAuthType(authType AuthType) {
-	e.AuthType = authType
-	e.require(emailAuthLinkFieldAuthType)
-}
-
-// SetRegion sets the Region field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EmailAuthLink) SetRegion(region *Region) {
-	e.Region = region
-	e.require(emailAuthLinkFieldRegion)
+func (i *IndividualProviderData) MarshalJSON() ([]byte, error) {
+	type embed IndividualProviderData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -579,40 +622,13 @@ func (l *LinkGetAllProvidersRequest) SetVitalLinkToken(vitalLinkToken *string) {
 }
 
 var (
-	linkTokenValidationRequestFieldToken = big.NewInt(1 << 0)
-)
-
-type LinkTokenValidationRequest struct {
-	Token string `json:"token" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (l *LinkTokenValidationRequest) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
-	}
-	l.explicitFields.Or(l.explicitFields, field)
-}
-
-// SetToken sets the Token field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LinkTokenValidationRequest) SetToken(token string) {
-	l.Token = token
-	l.require(linkTokenValidationRequestFieldToken)
-}
-
-var (
 	linkListBulkOpsRequestFieldNextCursor = big.NewInt(1 << 0)
 	linkListBulkOpsRequestFieldPageSize   = big.NewInt(1 << 1)
-	linkListBulkOpsRequestFieldTeamId     = big.NewInt(1 << 2)
 )
 
 type LinkListBulkOpsRequest struct {
-	NextCursor *string                       `json:"-" url:"next_cursor,omitempty"`
-	PageSize   *int                          `json:"-" url:"page_size,omitempty"`
-	TeamId     *LinkListBulkOpsRequestTeamId `json:"-" url:"team_id,omitempty"`
+	NextCursor *string `json:"-" url:"next_cursor,omitempty"`
+	PageSize   *int    `json:"-" url:"page_size,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -639,108 +655,6 @@ func (l *LinkListBulkOpsRequest) SetPageSize(pageSize *int) {
 	l.require(linkListBulkOpsRequestFieldPageSize)
 }
 
-// SetTeamId sets the TeamId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LinkListBulkOpsRequest) SetTeamId(teamId *LinkListBulkOpsRequestTeamId) {
-	l.TeamId = teamId
-	l.require(linkListBulkOpsRequestFieldTeamId)
-}
-
-var (
-	passwordAuthLinkFieldVitalLinkToken = big.NewInt(1 << 0)
-	passwordAuthLinkFieldUsername       = big.NewInt(1 << 1)
-	passwordAuthLinkFieldPassword       = big.NewInt(1 << 2)
-	passwordAuthLinkFieldProvider       = big.NewInt(1 << 3)
-	passwordAuthLinkFieldAuthType       = big.NewInt(1 << 4)
-)
-
-type PasswordAuthLink struct {
-	VitalLinkToken *string   `json:"-" url:"-"`
-	Username       string    `json:"username" url:"-"`
-	Password       string    `json:"password" url:"-"`
-	Provider       Providers `json:"provider" url:"-"`
-	AuthType       AuthType  `json:"auth_type" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (p *PasswordAuthLink) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PasswordAuthLink) SetVitalLinkToken(vitalLinkToken *string) {
-	p.VitalLinkToken = vitalLinkToken
-	p.require(passwordAuthLinkFieldVitalLinkToken)
-}
-
-// SetUsername sets the Username field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PasswordAuthLink) SetUsername(username string) {
-	p.Username = username
-	p.require(passwordAuthLinkFieldUsername)
-}
-
-// SetPassword sets the Password field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PasswordAuthLink) SetPassword(password string) {
-	p.Password = password
-	p.require(passwordAuthLinkFieldPassword)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PasswordAuthLink) SetProvider(provider Providers) {
-	p.Provider = provider
-	p.require(passwordAuthLinkFieldProvider)
-}
-
-// SetAuthType sets the AuthType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PasswordAuthLink) SetAuthType(authType AuthType) {
-	p.AuthType = authType
-	p.require(passwordAuthLinkFieldAuthType)
-}
-
-var (
-	beginLinkTokenRequestFieldLinkToken = big.NewInt(1 << 0)
-	beginLinkTokenRequestFieldProvider  = big.NewInt(1 << 1)
-)
-
-type BeginLinkTokenRequest struct {
-	LinkToken string    `json:"link_token" url:"-"`
-	Provider  Providers `json:"provider" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (b *BeginLinkTokenRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetLinkToken sets the LinkToken field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BeginLinkTokenRequest) SetLinkToken(linkToken string) {
-	b.LinkToken = linkToken
-	b.require(beginLinkTokenRequestFieldLinkToken)
-}
-
-// SetProvider sets the Provider field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BeginLinkTokenRequest) SetProvider(provider Providers) {
-	b.Provider = provider
-	b.require(beginLinkTokenRequestFieldProvider)
-}
-
 var (
 	linkTokenExchangeFieldUserId            = big.NewInt(1 << 0)
 	linkTokenExchangeFieldProvider          = big.NewInt(1 << 1)
@@ -752,7 +666,8 @@ var (
 
 type LinkTokenExchange struct {
 	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
-	UserId      string     `json:"user_id" url:"-"`
+	UserId string `json:"user_id" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
 	Provider    *Providers `json:"provider,omitempty" url:"-"`
 	RedirectUrl *string    `json:"redirect_url,omitempty" url:"-"`
 	// An allowlist of providers dictating what Vital Link Widget should show to the end user.
@@ -829,55 +744,25 @@ func (l *LinkTokenExchange) SetOnClose(onClose *string) {
 	l.require(linkTokenExchangeFieldOnClose)
 }
 
-var (
-	linkTokenStateRequestFieldVitalLinkToken = big.NewInt(1 << 0)
-)
-
-type LinkTokenStateRequest struct {
-	VitalLinkToken *string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (l *LinkTokenStateRequest) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
+func (l *LinkTokenExchange) UnmarshalJSON(data []byte) error {
+	type unmarshaler LinkTokenExchange
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
 	}
-	l.explicitFields.Or(l.explicitFields, field)
+	*l = LinkTokenExchange(body)
+	return nil
 }
 
-// SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LinkTokenStateRequest) SetVitalLinkToken(vitalLinkToken *string) {
-	l.VitalLinkToken = vitalLinkToken
-	l.require(linkTokenStateRequestFieldVitalLinkToken)
-}
-
-// ℹ️ This enum is non-exhaustive.
-type AuthType string
-
-const (
-	AuthTypePassword AuthType = "password"
-	AuthTypeOauth    AuthType = "oauth"
-	AuthTypeEmail    AuthType = "email"
-)
-
-func NewAuthTypeFromString(s string) (AuthType, error) {
-	switch s {
-	case "password":
-		return AuthTypePassword, nil
-	case "oauth":
-		return AuthTypeOauth, nil
-	case "email":
-		return AuthTypeEmail, nil
+func (l *LinkTokenExchange) MarshalJSON() ([]byte, error) {
+	type embed LinkTokenExchange
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
 	}
-	var t AuthType
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (a AuthType) Ptr() *AuthType {
-	return &a
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -1082,12 +967,13 @@ type BulkOp struct {
 	// ℹ️ This enum is non-exhaustive.
 	Type BulkOpType `json:"type" url:"type"`
 	// ℹ️ This enum is non-exhaustive.
-	Status    BulkOpStatus `json:"status" url:"status"`
-	Provider  Providers    `json:"provider" url:"provider"`
-	Pending   int          `json:"pending" url:"pending"`
-	Processed int          `json:"processed" url:"processed"`
-	StartedAt time.Time    `json:"started_at" url:"started_at"`
-	EndedAt   *time.Time   `json:"ended_at,omitempty" url:"ended_at,omitempty"`
+	Status BulkOpStatus `json:"status" url:"status"`
+	// ℹ️ This enum is non-exhaustive.
+	Provider  Providers  `json:"provider" url:"provider"`
+	Pending   int        `json:"pending" url:"pending"`
+	Processed int        `json:"processed" url:"processed"`
+	StartedAt time.Time  `json:"started_at" url:"started_at"`
+	EndedAt   *time.Time `json:"ended_at,omitempty" url:"ended_at,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1801,50 +1687,6 @@ func (l *LinkTokenExchangeResponse) String() string {
 }
 
 // ℹ️ This enum is non-exhaustive.
-type ManualProviders string
-
-const (
-	ManualProvidersBeurerBle         ManualProviders = "beurer_ble"
-	ManualProvidersOmronBle          ManualProviders = "omron_ble"
-	ManualProvidersAccuchekBle       ManualProviders = "accuchek_ble"
-	ManualProvidersContourBle        ManualProviders = "contour_ble"
-	ManualProvidersFreestyleLibreBle ManualProviders = "freestyle_libre_ble"
-	ManualProvidersOnetouchBle       ManualProviders = "onetouch_ble"
-	ManualProvidersAppleHealthKit    ManualProviders = "apple_health_kit"
-	ManualProvidersManual            ManualProviders = "manual"
-	ManualProvidersHealthConnect     ManualProviders = "health_connect"
-)
-
-func NewManualProvidersFromString(s string) (ManualProviders, error) {
-	switch s {
-	case "beurer_ble":
-		return ManualProvidersBeurerBle, nil
-	case "omron_ble":
-		return ManualProvidersOmronBle, nil
-	case "accuchek_ble":
-		return ManualProvidersAccuchekBle, nil
-	case "contour_ble":
-		return ManualProvidersContourBle, nil
-	case "freestyle_libre_ble":
-		return ManualProvidersFreestyleLibreBle, nil
-	case "onetouch_ble":
-		return ManualProvidersOnetouchBle, nil
-	case "apple_health_kit":
-		return ManualProvidersAppleHealthKit, nil
-	case "manual":
-		return ManualProvidersManual, nil
-	case "health_connect":
-		return ManualProvidersHealthConnect, nil
-	}
-	var t ManualProviders
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (m ManualProviders) Ptr() *ManualProviders {
-	return &m
-}
-
-// ℹ️ This enum is non-exhaustive.
 type OAuthProviders string
 
 const (
@@ -1924,6 +1766,7 @@ const (
 	PasswordProvidersMyFitnessPal    PasswordProviders = "my_fitness_pal"
 	PasswordProvidersKardia          PasswordProviders = "kardia"
 	PasswordProvidersAbbottLibreview PasswordProviders = "abbott_libreview"
+	PasswordProvidersTandemSource    PasswordProviders = "tandem_source"
 )
 
 func NewPasswordProvidersFromString(s string) (PasswordProviders, error) {
@@ -1950,6 +1793,8 @@ func NewPasswordProvidersFromString(s string) (PasswordProviders, error) {
 		return PasswordProvidersKardia, nil
 	case "abbott_libreview":
 		return PasswordProvidersAbbottLibreview, nil
+	case "tandem_source":
+		return PasswordProvidersTandemSource, nil
 	}
 	var t PasswordProviders
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -1981,9 +1826,10 @@ type ProviderLinkResponse struct {
 	Error *string `json:"error,omitempty" url:"error,omitempty"`
 	// The provider MFA request. This field is populated only when state is `pending_provider_mfa`.
 	ProviderMfa *ProviderMfaRequest `json:"provider_mfa,omitempty" url:"provider_mfa,omitempty"`
-	Provider    PasswordProviders   `json:"provider" url:"provider"`
-	Connected   bool                `json:"connected" url:"connected"`
-	ProviderId  *string             `json:"provider_id,omitempty" url:"provider_id,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Provider   PasswordProviders `json:"provider" url:"provider"`
+	Connected  bool              `json:"connected" url:"connected"`
+	ProviderId *string           `json:"provider_id,omitempty" url:"provider_id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2530,17 +2376,19 @@ var (
 )
 
 type Source struct {
-	Name            string          `json:"name" url:"name"`
-	Slug            string          `json:"slug" url:"slug"`
-	Description     string          `json:"description" url:"description"`
-	Logo            string          `json:"logo" url:"logo"`
-	Group           *string         `json:"group,omitempty" url:"group,omitempty"`
-	OauthUrl        *string         `json:"oauth_url,omitempty" url:"oauth_url,omitempty"`
-	AuthType        *SourceAuthType `json:"auth_type,omitempty" url:"auth_type,omitempty"`
-	SourceType      *SourceType     `json:"source_type,omitempty" url:"source_type,omitempty"`
-	IsActive        *bool           `json:"is_active,omitempty" url:"is_active,omitempty"`
-	BackfillNumDays *int            `json:"backfill_num_days,omitempty" url:"backfill_num_days,omitempty"`
-	Id              int             `json:"id" url:"id"`
+	Name        string  `json:"name" url:"name"`
+	Slug        string  `json:"slug" url:"slug"`
+	Description string  `json:"description" url:"description"`
+	Logo        string  `json:"logo" url:"logo"`
+	Group       *string `json:"group,omitempty" url:"group,omitempty"`
+	OauthUrl    *string `json:"oauth_url,omitempty" url:"oauth_url,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	AuthType *SourceAuthType `json:"auth_type,omitempty" url:"auth_type,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	SourceType      *SourceType `json:"source_type,omitempty" url:"source_type,omitempty"`
+	IsActive        *bool       `json:"is_active,omitempty" url:"is_active,omitempty"`
+	BackfillNumDays *int        `json:"backfill_num_days,omitempty" url:"backfill_num_days,omitempty"`
+	Id              int         `json:"id" url:"id"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2765,12 +2613,13 @@ var (
 )
 
 type SourceLink struct {
-	Id             int                    `json:"id" url:"id"`
-	Name           string                 `json:"name" url:"name"`
-	Slug           string                 `json:"slug" url:"slug"`
-	Description    string                 `json:"description" url:"description"`
-	Logo           string                 `json:"logo" url:"logo"`
-	OauthUrl       *string                `json:"oauth_url,omitempty" url:"oauth_url,omitempty"`
+	Id          int     `json:"id" url:"id"`
+	Name        string  `json:"name" url:"name"`
+	Slug        string  `json:"slug" url:"slug"`
+	Description string  `json:"description" url:"description"`
+	Logo        string  `json:"logo" url:"logo"`
+	OauthUrl    *string `json:"oauth_url,omitempty" url:"oauth_url,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
 	AuthType       *SourceAuthType        `json:"auth_type,omitempty" url:"auth_type,omitempty"`
 	FormComponents map[string]interface{} `json:"form_components,omitempty" url:"form_components,omitempty"`
 
@@ -3091,99 +2940,4 @@ func (v *VitalTokenCreatedResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)
-}
-
-type LinkBulkExportRequestTeamId string
-
-const (
-	LinkBulkExportRequestTeamIdInferFromContext LinkBulkExportRequestTeamId = "infer_from_context"
-)
-
-func NewLinkBulkExportRequestTeamIdFromString(s string) (LinkBulkExportRequestTeamId, error) {
-	switch s {
-	case "infer_from_context":
-		return LinkBulkExportRequestTeamIdInferFromContext, nil
-	}
-	var t LinkBulkExportRequestTeamId
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (l LinkBulkExportRequestTeamId) Ptr() *LinkBulkExportRequestTeamId {
-	return &l
-}
-
-type LinkBulkImportRequestTeamId string
-
-const (
-	LinkBulkImportRequestTeamIdInferFromContext LinkBulkImportRequestTeamId = "infer_from_context"
-)
-
-func NewLinkBulkImportRequestTeamIdFromString(s string) (LinkBulkImportRequestTeamId, error) {
-	switch s {
-	case "infer_from_context":
-		return LinkBulkImportRequestTeamIdInferFromContext, nil
-	}
-	var t LinkBulkImportRequestTeamId
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (l LinkBulkImportRequestTeamId) Ptr() *LinkBulkImportRequestTeamId {
-	return &l
-}
-
-type LinkBulkPauseRequestTeamId string
-
-const (
-	LinkBulkPauseRequestTeamIdInferFromContext LinkBulkPauseRequestTeamId = "infer_from_context"
-)
-
-func NewLinkBulkPauseRequestTeamIdFromString(s string) (LinkBulkPauseRequestTeamId, error) {
-	switch s {
-	case "infer_from_context":
-		return LinkBulkPauseRequestTeamIdInferFromContext, nil
-	}
-	var t LinkBulkPauseRequestTeamId
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (l LinkBulkPauseRequestTeamId) Ptr() *LinkBulkPauseRequestTeamId {
-	return &l
-}
-
-type LinkBulkTriggerHistoricalPullRequestTeamId string
-
-const (
-	LinkBulkTriggerHistoricalPullRequestTeamIdInferFromContext LinkBulkTriggerHistoricalPullRequestTeamId = "infer_from_context"
-)
-
-func NewLinkBulkTriggerHistoricalPullRequestTeamIdFromString(s string) (LinkBulkTriggerHistoricalPullRequestTeamId, error) {
-	switch s {
-	case "infer_from_context":
-		return LinkBulkTriggerHistoricalPullRequestTeamIdInferFromContext, nil
-	}
-	var t LinkBulkTriggerHistoricalPullRequestTeamId
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (l LinkBulkTriggerHistoricalPullRequestTeamId) Ptr() *LinkBulkTriggerHistoricalPullRequestTeamId {
-	return &l
-}
-
-type LinkListBulkOpsRequestTeamId string
-
-const (
-	LinkListBulkOpsRequestTeamIdInferFromContext LinkListBulkOpsRequestTeamId = "infer_from_context"
-)
-
-func NewLinkListBulkOpsRequestTeamIdFromString(s string) (LinkListBulkOpsRequestTeamId, error) {
-	switch s {
-	case "infer_from_context":
-		return LinkListBulkOpsRequestTeamIdInferFromContext, nil
-	}
-	var t LinkListBulkOpsRequestTeamId
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (l LinkListBulkOpsRequestTeamId) Ptr() *LinkListBulkOpsRequestTeamId {
-	return &l
 }

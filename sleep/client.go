@@ -57,7 +57,7 @@ func (c *Client) GetRaw(
 	userId string,
 	request *vitalgo.SleepGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawSleep, error) {
+) (*vitalgo.RawSleepResponse, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,
