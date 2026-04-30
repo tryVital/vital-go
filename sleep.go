@@ -103,36 +103,37 @@ func (s *SleepGetRawRequest) SetEndDate(endDate *string) {
 }
 
 var (
-	clientFacingSleepFieldId               = big.NewInt(1 << 0)
-	clientFacingSleepFieldUserId           = big.NewInt(1 << 1)
-	clientFacingSleepFieldDate             = big.NewInt(1 << 2)
-	clientFacingSleepFieldCalendarDate     = big.NewInt(1 << 3)
-	clientFacingSleepFieldBedtimeStart     = big.NewInt(1 << 4)
-	clientFacingSleepFieldBedtimeStop      = big.NewInt(1 << 5)
-	clientFacingSleepFieldType             = big.NewInt(1 << 6)
-	clientFacingSleepFieldTimezoneOffset   = big.NewInt(1 << 7)
-	clientFacingSleepFieldDuration         = big.NewInt(1 << 8)
-	clientFacingSleepFieldTotal            = big.NewInt(1 << 9)
-	clientFacingSleepFieldAwake            = big.NewInt(1 << 10)
-	clientFacingSleepFieldLight            = big.NewInt(1 << 11)
-	clientFacingSleepFieldRem              = big.NewInt(1 << 12)
-	clientFacingSleepFieldDeep             = big.NewInt(1 << 13)
-	clientFacingSleepFieldScore            = big.NewInt(1 << 14)
-	clientFacingSleepFieldHrLowest         = big.NewInt(1 << 15)
-	clientFacingSleepFieldHrAverage        = big.NewInt(1 << 16)
-	clientFacingSleepFieldHrResting        = big.NewInt(1 << 17)
-	clientFacingSleepFieldEfficiency       = big.NewInt(1 << 18)
-	clientFacingSleepFieldLatency          = big.NewInt(1 << 19)
-	clientFacingSleepFieldTemperatureDelta = big.NewInt(1 << 20)
-	clientFacingSleepFieldSkinTemperature  = big.NewInt(1 << 21)
-	clientFacingSleepFieldHrDip            = big.NewInt(1 << 22)
-	clientFacingSleepFieldState            = big.NewInt(1 << 23)
-	clientFacingSleepFieldAverageHrv       = big.NewInt(1 << 24)
-	clientFacingSleepFieldRespiratoryRate  = big.NewInt(1 << 25)
-	clientFacingSleepFieldSource           = big.NewInt(1 << 26)
-	clientFacingSleepFieldSleepStream      = big.NewInt(1 << 27)
-	clientFacingSleepFieldCreatedAt        = big.NewInt(1 << 28)
-	clientFacingSleepFieldUpdatedAt        = big.NewInt(1 << 29)
+	clientFacingSleepFieldId                     = big.NewInt(1 << 0)
+	clientFacingSleepFieldUserId                 = big.NewInt(1 << 1)
+	clientFacingSleepFieldDate                   = big.NewInt(1 << 2)
+	clientFacingSleepFieldCalendarDate           = big.NewInt(1 << 3)
+	clientFacingSleepFieldBedtimeStart           = big.NewInt(1 << 4)
+	clientFacingSleepFieldBedtimeStop            = big.NewInt(1 << 5)
+	clientFacingSleepFieldType                   = big.NewInt(1 << 6)
+	clientFacingSleepFieldTimezoneOffset         = big.NewInt(1 << 7)
+	clientFacingSleepFieldDuration               = big.NewInt(1 << 8)
+	clientFacingSleepFieldTotal                  = big.NewInt(1 << 9)
+	clientFacingSleepFieldAwake                  = big.NewInt(1 << 10)
+	clientFacingSleepFieldLight                  = big.NewInt(1 << 11)
+	clientFacingSleepFieldRem                    = big.NewInt(1 << 12)
+	clientFacingSleepFieldDeep                   = big.NewInt(1 << 13)
+	clientFacingSleepFieldScore                  = big.NewInt(1 << 14)
+	clientFacingSleepFieldRecoveryReadinessScore = big.NewInt(1 << 15)
+	clientFacingSleepFieldHrLowest               = big.NewInt(1 << 16)
+	clientFacingSleepFieldHrAverage              = big.NewInt(1 << 17)
+	clientFacingSleepFieldHrResting              = big.NewInt(1 << 18)
+	clientFacingSleepFieldEfficiency             = big.NewInt(1 << 19)
+	clientFacingSleepFieldLatency                = big.NewInt(1 << 20)
+	clientFacingSleepFieldTemperatureDelta       = big.NewInt(1 << 21)
+	clientFacingSleepFieldSkinTemperature        = big.NewInt(1 << 22)
+	clientFacingSleepFieldHrDip                  = big.NewInt(1 << 23)
+	clientFacingSleepFieldState                  = big.NewInt(1 << 24)
+	clientFacingSleepFieldAverageHrv             = big.NewInt(1 << 25)
+	clientFacingSleepFieldRespiratoryRate        = big.NewInt(1 << 26)
+	clientFacingSleepFieldSource                 = big.NewInt(1 << 27)
+	clientFacingSleepFieldSleepStream            = big.NewInt(1 << 28)
+	clientFacingSleepFieldCreatedAt              = big.NewInt(1 << 29)
+	clientFacingSleepFieldUpdatedAt              = big.NewInt(1 << 30)
 )
 
 type ClientFacingSleep struct {
@@ -151,6 +152,8 @@ type ClientFacingSleep struct {
 	// `short_sleep`: <3 hours of sleep;
 	// `acknowledged_nap`: User-acknowledged naps, typically under 3 hours of sleep;
 	// `unknown`: The sleep session recording is ongoing.
+	//
+	//	ℹ️ This enum is non-exhaustive.
 	Type SleepType `json:"type" url:"type"`
 	// Timezone offset from UTC as seconds. For example, EEST (Eastern European Summer Time, +3h) is 10800. PST (Pacific Standard Time, -8h) is -28800::seconds
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
@@ -168,6 +171,8 @@ type ClientFacingSleep struct {
 	Deep int `json:"deep" url:"deep"`
 	// A value between 1 and 100 representing how well the user slept. Currently only available for Withings, Oura, Whoop and Garmin::scalar
 	Score *int `json:"score,omitempty" url:"score,omitempty"`
+	// A value between 0 and 100 representing the provider's recovery/readiness proxy. Currently sourced from Oura readiness score, Whoop recovery score, and Ultrahuman recovery::scalar
+	RecoveryReadinessScore *int `json:"recovery_readiness_score,omitempty" url:"recovery_readiness_score,omitempty"`
 	// The lowest heart rate (5 minutes sliding average) registered during the sleep period::beats per minute
 	HrLowest *int `json:"hr_lowest,omitempty" url:"hr_lowest,omitempty"`
 	// The average heart rate registered during the sleep period::beats per minute
@@ -184,7 +189,7 @@ type ClientFacingSleep struct {
 	SkinTemperature *float64 `json:"skin_temperature,omitempty" url:"skin_temperature,omitempty"`
 	// Sleeping Heart Rate Dip is the percentage difference between your average waking heart rate and your average sleeping heart rate. In health studies, a greater "dip" is typically seen as a positive indicator of overall health. Currently only available for Garmin::perc
 	HrDip *float64 `json:"hr_dip,omitempty" url:"hr_dip,omitempty"`
-	// Some providers can provide updates to the sleep summary hours after the sleep period has ended. This field indicates the state of the sleep summary. For example, TENTATIVE means the summary is an intial prediction from the provider and can be subject to change. Currently only available for Garmin and EightSleep::str
+	// Some providers can provide updates to the sleep summary hours after the sleep period has ended. This field indicates the state of the sleep summary. For example, TENTATIVE means the summary is an intial prediction from the provider and can be subject to change. Currently only available for Garmin and EightSleep::str ℹ️ This enum is non-exhaustive.
 	State *SleepSummaryState `json:"state,omitempty" url:"state,omitempty"`
 	// The average heart rate variability registered during the sleep period::rmssd
 	AverageHrv *float64 `json:"average_hrv,omitempty" url:"average_hrv,omitempty"`
@@ -306,6 +311,13 @@ func (c *ClientFacingSleep) GetScore() *int {
 		return nil
 	}
 	return c.Score
+}
+
+func (c *ClientFacingSleep) GetRecoveryReadinessScore() *int {
+	if c == nil {
+		return nil
+	}
+	return c.RecoveryReadinessScore
 }
 
 func (c *ClientFacingSleep) GetHrLowest() *int {
@@ -527,6 +539,13 @@ func (c *ClientFacingSleep) SetDeep(deep int) {
 func (c *ClientFacingSleep) SetScore(score *int) {
 	c.Score = score
 	c.require(clientFacingSleepFieldScore)
+}
+
+// SetRecoveryReadinessScore sets the RecoveryReadinessScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingSleep) SetRecoveryReadinessScore(recoveryReadinessScore *int) {
+	c.RecoveryReadinessScore = recoveryReadinessScore
+	c.require(clientFacingSleepFieldRecoveryReadinessScore)
 }
 
 // SetHrLowest sets the HrLowest field and marks it as non-optional;
@@ -902,11 +921,33 @@ func (c *ClientSleepResponse) String() string {
 }
 
 var (
-	rawSleepFieldSleep = big.NewInt(1 << 0)
+	rawSleepFieldTimestamp      = big.NewInt(1 << 0)
+	rawSleepFieldData           = big.NewInt(1 << 1)
+	rawSleepFieldUserId         = big.NewInt(1 << 2)
+	rawSleepFieldProviderId     = big.NewInt(1 << 3)
+	rawSleepFieldSourceId       = big.NewInt(1 << 4)
+	rawSleepFieldPriorityId     = big.NewInt(1 << 5)
+	rawSleepFieldId             = big.NewInt(1 << 6)
+	rawSleepFieldSourceDeviceId = big.NewInt(1 << 7)
+	rawSleepFieldCreatedAt      = big.NewInt(1 << 8)
+	rawSleepFieldUpdatedAt      = big.NewInt(1 << 9)
+	rawSleepFieldSource         = big.NewInt(1 << 10)
+	rawSleepFieldPriority       = big.NewInt(1 << 11)
 )
 
 type RawSleep struct {
-	Sleep []*SleepV2InDb `json:"sleep" url:"sleep"`
+	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
+	Data           map[string]interface{} `json:"data" url:"data"`
+	UserId         string                 `json:"user_id" url:"user_id"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
+	SourceId       int                    `json:"source_id" url:"source_id"`
+	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
+	Id             string                 `json:"id" url:"id"`
+	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
+	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Source         *ClientFacingProvider  `json:"source" url:"source"`
+	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -915,11 +956,88 @@ type RawSleep struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RawSleep) GetSleep() []*SleepV2InDb {
+func (r *RawSleep) GetTimestamp() time.Time {
+	if r == nil {
+		return time.Time{}
+	}
+	return r.Timestamp
+}
+
+func (r *RawSleep) GetData() map[string]interface{} {
 	if r == nil {
 		return nil
 	}
-	return r.Sleep
+	return r.Data
+}
+
+func (r *RawSleep) GetUserId() string {
+	if r == nil {
+		return ""
+	}
+	return r.UserId
+}
+
+func (r *RawSleep) GetProviderId() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderId
+}
+
+func (r *RawSleep) GetSourceId() int {
+	if r == nil {
+		return 0
+	}
+	return r.SourceId
+}
+
+func (r *RawSleep) GetPriorityId() *int {
+	if r == nil {
+		return nil
+	}
+	return r.PriorityId
+}
+
+func (r *RawSleep) GetId() string {
+	if r == nil {
+		return ""
+	}
+	return r.Id
+}
+
+func (r *RawSleep) GetSourceDeviceId() *string {
+	if r == nil {
+		return nil
+	}
+	return r.SourceDeviceId
+}
+
+func (r *RawSleep) GetCreatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.CreatedAt
+}
+
+func (r *RawSleep) GetUpdatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.UpdatedAt
+}
+
+func (r *RawSleep) GetSource() *ClientFacingProvider {
+	if r == nil {
+		return nil
+	}
+	return r.Source
+}
+
+func (r *RawSleep) GetPriority() *int {
+	if r == nil {
+		return nil
+	}
+	return r.Priority
 }
 
 func (r *RawSleep) GetExtraProperties() map[string]interface{} {
@@ -933,20 +1051,107 @@ func (r *RawSleep) require(field *big.Int) {
 	r.explicitFields.Or(r.explicitFields, field)
 }
 
-// SetSleep sets the Sleep field and marks it as non-optional;
+// SetTimestamp sets the Timestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RawSleep) SetSleep(sleep []*SleepV2InDb) {
-	r.Sleep = sleep
-	r.require(rawSleepFieldSleep)
+func (r *RawSleep) SetTimestamp(timestamp time.Time) {
+	r.Timestamp = timestamp
+	r.require(rawSleepFieldTimestamp)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetData(data map[string]interface{}) {
+	r.Data = data
+	r.require(rawSleepFieldData)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetUserId(userId string) {
+	r.UserId = userId
+	r.require(rawSleepFieldUserId)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetProviderId(providerId string) {
+	r.ProviderId = providerId
+	r.require(rawSleepFieldProviderId)
+}
+
+// SetSourceId sets the SourceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetSourceId(sourceId int) {
+	r.SourceId = sourceId
+	r.require(rawSleepFieldSourceId)
+}
+
+// SetPriorityId sets the PriorityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetPriorityId(priorityId *int) {
+	r.PriorityId = priorityId
+	r.require(rawSleepFieldPriorityId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetId(id string) {
+	r.Id = id
+	r.require(rawSleepFieldId)
+}
+
+// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetSourceDeviceId(sourceDeviceId *string) {
+	r.SourceDeviceId = sourceDeviceId
+	r.require(rawSleepFieldSourceDeviceId)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetCreatedAt(createdAt *time.Time) {
+	r.CreatedAt = createdAt
+	r.require(rawSleepFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetUpdatedAt(updatedAt *time.Time) {
+	r.UpdatedAt = updatedAt
+	r.require(rawSleepFieldUpdatedAt)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetSource(source *ClientFacingProvider) {
+	r.Source = source
+	r.require(rawSleepFieldSource)
+}
+
+// SetPriority sets the Priority field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleep) SetPriority(priority *int) {
+	r.Priority = priority
+	r.require(rawSleepFieldPriority)
 }
 
 func (r *RawSleep) UnmarshalJSON(data []byte) error {
-	type unmarshaler RawSleep
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed RawSleep
+	var unmarshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*r = RawSleep(value)
+	*r = RawSleep(unmarshaler.embed)
+	r.Timestamp = unmarshaler.Timestamp.Time()
+	r.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	r.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
@@ -960,6 +1165,90 @@ func (r *RawSleep) MarshalJSON() ([]byte, error) {
 	type embed RawSleep
 	var marshaler = struct {
 		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*r),
+		Timestamp: internal.NewDateTime(r.Timestamp),
+		CreatedAt: internal.NewOptionalDateTime(r.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(r.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RawSleep) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	rawSleepResponseFieldSleep = big.NewInt(1 << 0)
+)
+
+type RawSleepResponse struct {
+	Sleep []*RawSleep `json:"sleep" url:"sleep"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RawSleepResponse) GetSleep() []*RawSleep {
+	if r == nil {
+		return nil
+	}
+	return r.Sleep
+}
+
+func (r *RawSleepResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawSleepResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetSleep sets the Sleep field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawSleepResponse) SetSleep(sleep []*RawSleep) {
+	r.Sleep = sleep
+	r.require(rawSleepResponseFieldSleep)
+}
+
+func (r *RawSleepResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawSleepResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawSleepResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawSleepResponse) MarshalJSON() ([]byte, error) {
+	type embed RawSleepResponse
+	var marshaler = struct {
+		embed
 	}{
 		embed: embed(*r),
 	}
@@ -967,7 +1256,7 @@ func (r *RawSleep) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (r *RawSleep) String() string {
+func (r *RawSleepResponse) String() string {
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -1029,274 +1318,4 @@ func NewSleepTypeFromString(s string) (SleepType, error) {
 
 func (s SleepType) Ptr() *SleepType {
 	return &s
-}
-
-var (
-	sleepV2InDbFieldTimestamp      = big.NewInt(1 << 0)
-	sleepV2InDbFieldData           = big.NewInt(1 << 1)
-	sleepV2InDbFieldProviderId     = big.NewInt(1 << 2)
-	sleepV2InDbFieldUserId         = big.NewInt(1 << 3)
-	sleepV2InDbFieldSourceId       = big.NewInt(1 << 4)
-	sleepV2InDbFieldPriorityId     = big.NewInt(1 << 5)
-	sleepV2InDbFieldId             = big.NewInt(1 << 6)
-	sleepV2InDbFieldSource         = big.NewInt(1 << 7)
-	sleepV2InDbFieldPriority       = big.NewInt(1 << 8)
-	sleepV2InDbFieldSourceDeviceId = big.NewInt(1 << 9)
-	sleepV2InDbFieldCreatedAt      = big.NewInt(1 << 10)
-	sleepV2InDbFieldUpdatedAt      = big.NewInt(1 << 11)
-)
-
-type SleepV2InDb struct {
-	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
-	Data           map[string]interface{} `json:"data" url:"data"`
-	ProviderId     string                 `json:"provider_id" url:"provider_id"`
-	UserId         string                 `json:"user_id" url:"user_id"`
-	SourceId       int                    `json:"source_id" url:"source_id"`
-	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
-	Id             string                 `json:"id" url:"id"`
-	Source         *ClientFacingProvider  `json:"source" url:"source"`
-	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
-	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
-	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
-	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SleepV2InDb) GetTimestamp() time.Time {
-	if s == nil {
-		return time.Time{}
-	}
-	return s.Timestamp
-}
-
-func (s *SleepV2InDb) GetData() map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.Data
-}
-
-func (s *SleepV2InDb) GetProviderId() string {
-	if s == nil {
-		return ""
-	}
-	return s.ProviderId
-}
-
-func (s *SleepV2InDb) GetUserId() string {
-	if s == nil {
-		return ""
-	}
-	return s.UserId
-}
-
-func (s *SleepV2InDb) GetSourceId() int {
-	if s == nil {
-		return 0
-	}
-	return s.SourceId
-}
-
-func (s *SleepV2InDb) GetPriorityId() *int {
-	if s == nil {
-		return nil
-	}
-	return s.PriorityId
-}
-
-func (s *SleepV2InDb) GetId() string {
-	if s == nil {
-		return ""
-	}
-	return s.Id
-}
-
-func (s *SleepV2InDb) GetSource() *ClientFacingProvider {
-	if s == nil {
-		return nil
-	}
-	return s.Source
-}
-
-func (s *SleepV2InDb) GetPriority() *int {
-	if s == nil {
-		return nil
-	}
-	return s.Priority
-}
-
-func (s *SleepV2InDb) GetSourceDeviceId() *string {
-	if s == nil {
-		return nil
-	}
-	return s.SourceDeviceId
-}
-
-func (s *SleepV2InDb) GetCreatedAt() *time.Time {
-	if s == nil {
-		return nil
-	}
-	return s.CreatedAt
-}
-
-func (s *SleepV2InDb) GetUpdatedAt() *time.Time {
-	if s == nil {
-		return nil
-	}
-	return s.UpdatedAt
-}
-
-func (s *SleepV2InDb) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
-}
-
-func (s *SleepV2InDb) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetTimestamp sets the Timestamp field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetTimestamp(timestamp time.Time) {
-	s.Timestamp = timestamp
-	s.require(sleepV2InDbFieldTimestamp)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetData(data map[string]interface{}) {
-	s.Data = data
-	s.require(sleepV2InDbFieldData)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetProviderId(providerId string) {
-	s.ProviderId = providerId
-	s.require(sleepV2InDbFieldProviderId)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetUserId(userId string) {
-	s.UserId = userId
-	s.require(sleepV2InDbFieldUserId)
-}
-
-// SetSourceId sets the SourceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetSourceId(sourceId int) {
-	s.SourceId = sourceId
-	s.require(sleepV2InDbFieldSourceId)
-}
-
-// SetPriorityId sets the PriorityId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetPriorityId(priorityId *int) {
-	s.PriorityId = priorityId
-	s.require(sleepV2InDbFieldPriorityId)
-}
-
-// SetId sets the Id field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetId(id string) {
-	s.Id = id
-	s.require(sleepV2InDbFieldId)
-}
-
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetSource(source *ClientFacingProvider) {
-	s.Source = source
-	s.require(sleepV2InDbFieldSource)
-}
-
-// SetPriority sets the Priority field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetPriority(priority *int) {
-	s.Priority = priority
-	s.require(sleepV2InDbFieldPriority)
-}
-
-// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetSourceDeviceId(sourceDeviceId *string) {
-	s.SourceDeviceId = sourceDeviceId
-	s.require(sleepV2InDbFieldSourceDeviceId)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetCreatedAt(createdAt *time.Time) {
-	s.CreatedAt = createdAt
-	s.require(sleepV2InDbFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SleepV2InDb) SetUpdatedAt(updatedAt *time.Time) {
-	s.UpdatedAt = updatedAt
-	s.require(sleepV2InDbFieldUpdatedAt)
-}
-
-func (s *SleepV2InDb) UnmarshalJSON(data []byte) error {
-	type embed SleepV2InDb
-	var unmarshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*s),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*s = SleepV2InDb(unmarshaler.embed)
-	s.Timestamp = unmarshaler.Timestamp.Time()
-	s.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	s.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SleepV2InDb) MarshalJSON() ([]byte, error) {
-	type embed SleepV2InDb
-	var marshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*s),
-		Timestamp: internal.NewDateTime(s.Timestamp),
-		CreatedAt: internal.NewOptionalDateTime(s.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(s.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (s *SleepV2InDb) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
 }
