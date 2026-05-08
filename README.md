@@ -3,7 +3,13 @@
 [![go shield](https://img.shields.io/badge/go-docs-blue)](https://pkg.go.dev/github.com/fern-vital/vital-go)
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
-The Vital Go library provides convenient access to the Vital API from applications written in Go.
+> [!IMPORTANT]                                                                                                                                                                                                     
+> This repository has been archived and will not receive further updates.
+>
+> The maintained SDK lives at **[junction-api/junction-go](https://github.com/junction-api/junction-go)**
+>
+> See the [migration guide](https://github.com/junction-api/junction-go/blob/main/migration-from-vital/MIGRATION.md) for upgrade instructions.
+
 
 ## Documentation
 
