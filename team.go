@@ -11,31 +11,6 @@ import (
 )
 
 var (
-	teamGetLinkConfigRequestFieldVitalLinkToken = big.NewInt(1 << 0)
-)
-
-type TeamGetLinkConfigRequest struct {
-	VitalLinkToken *string `json:"-" url:"-"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (t *TeamGetLinkConfigRequest) require(field *big.Int) {
-	if t.explicitFields == nil {
-		t.explicitFields = big.NewInt(0)
-	}
-	t.explicitFields.Or(t.explicitFields, field)
-}
-
-// SetVitalLinkToken sets the VitalLinkToken field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TeamGetLinkConfigRequest) SetVitalLinkToken(vitalLinkToken *string) {
-	t.VitalLinkToken = vitalLinkToken
-	t.require(teamGetLinkConfigRequestFieldVitalLinkToken)
-}
-
-var (
 	teamGetSourcePrioritiesRequestFieldDataType = big.NewInt(1 << 0)
 )
 
@@ -299,8 +274,9 @@ type ClientFacingTeam struct {
 	LabTestsPatientSmsCommunicationEnabled   bool                  `json:"lab_tests_patient_sms_communication_enabled" url:"lab_tests_patient_sms_communication_enabled"`
 	LabTestsPatientEmailCommunicationEnabled bool                  `json:"lab_tests_patient_email_communication_enabled" url:"lab_tests_patient_email_communication_enabled"`
 	LogoUrl                                  *string               `json:"logo_url,omitempty" url:"logo_url,omitempty"`
-	DelegatedFlow                            DelegatedFlowType     `json:"delegated_flow" url:"delegated_flow"`
-	CriticalResultNotificationEmail          *string               `json:"critical_result_notification_email,omitempty" url:"critical_result_notification_email,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	DelegatedFlow                   DelegatedFlowType `json:"delegated_flow" url:"delegated_flow"`
+	CriticalResultNotificationEmail *string           `json:"critical_result_notification_email,omitempty" url:"critical_result_notification_email,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`

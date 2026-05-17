@@ -77,6 +77,27 @@ func (u *UserCreateBody) SetIngestionEnd(ingestionEnd *string) {
 	u.require(userCreateBodyFieldIngestionEnd)
 }
 
+func (u *UserCreateBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserCreateBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserCreateBody(body)
+	return nil
+}
+
+func (u *UserCreateBody) MarshalJSON() ([]byte, error) {
+	type embed UserCreateBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createInsuranceRequestFieldPayorCode    = big.NewInt(1 << 0)
 	createInsuranceRequestFieldMemberId     = big.NewInt(1 << 1)
@@ -88,11 +109,12 @@ var (
 )
 
 type CreateInsuranceRequest struct {
-	PayorCode    string                                                  `json:"payor_code" url:"-"`
-	MemberId     string                                                  `json:"member_id" url:"-"`
-	GroupId      *string                                                 `json:"group_id,omitempty" url:"-"`
+	PayorCode string  `json:"payor_code" url:"-"`
+	MemberId  string  `json:"member_id" url:"-"`
+	GroupId   *string `json:"group_id,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
 	Relationship ResponsibleRelationship                                 `json:"relationship" url:"-"`
-	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty" url:"-"`
+	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured" url:"-"`
 	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"-"`
 	IsPrimary    *bool                                                   `json:"is_primary,omitempty" url:"-"`
 
@@ -156,6 +178,27 @@ func (c *CreateInsuranceRequest) SetIsPrimary(isPrimary *bool) {
 	c.require(createInsuranceRequestFieldIsPrimary)
 }
 
+func (c *CreateInsuranceRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateInsuranceRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateInsuranceRequest(body)
+	return nil
+}
+
+func (c *CreateInsuranceRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateInsuranceRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createUserPortalUrlBodyFieldContext = big.NewInt(1 << 0)
 	createUserPortalUrlBodyFieldOrderId = big.NewInt(1 << 1)
@@ -196,6 +239,27 @@ func (c *CreateUserPortalUrlBody) SetContext(context CreateUserPortalUrlBodyCont
 func (c *CreateUserPortalUrlBody) SetOrderId(orderId *string) {
 	c.OrderId = orderId
 	c.require(createUserPortalUrlBodyFieldOrderId)
+}
+
+func (c *CreateUserPortalUrlBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateUserPortalUrlBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateUserPortalUrlBody(body)
+	return nil
+}
+
+func (c *CreateUserPortalUrlBody) MarshalJSON() ([]byte, error) {
+	type embed CreateUserPortalUrlBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -322,6 +386,27 @@ func (u *UserPatchBody) SetIngestionEnd(ingestionEnd *string) {
 func (u *UserPatchBody) SetClientUserId(clientUserId *string) {
 	u.ClientUserId = clientUserId
 	u.require(userPatchBodyFieldClientUserId)
+}
+
+func (u *UserPatchBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserPatchBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserPatchBody(body)
+	return nil
+}
+
+func (u *UserPatchBody) MarshalJSON() ([]byte, error) {
+	type embed UserPatchBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -752,6 +837,7 @@ const (
 	ClientFacingDeviceSourceTypeCuff            ClientFacingDeviceSourceType = "cuff"
 	ClientFacingDeviceSourceTypeManualScan      ClientFacingDeviceSourceType = "manual_scan"
 	ClientFacingDeviceSourceTypeAutomatic       ClientFacingDeviceSourceType = "automatic"
+	ClientFacingDeviceSourceTypeInsulinPump     ClientFacingDeviceSourceType = "insulin_pump"
 	ClientFacingDeviceSourceTypeScale           ClientFacingDeviceSourceType = "scale"
 	ClientFacingDeviceSourceTypeChestStrap      ClientFacingDeviceSourceType = "chest_strap"
 	ClientFacingDeviceSourceTypeRing            ClientFacingDeviceSourceType = "ring"
@@ -780,6 +866,8 @@ func NewClientFacingDeviceSourceTypeFromString(s string) (ClientFacingDeviceSour
 		return ClientFacingDeviceSourceTypeManualScan, nil
 	case "automatic":
 		return ClientFacingDeviceSourceTypeAutomatic, nil
+	case "insulin_pump":
+		return ClientFacingDeviceSourceTypeInsulinPump, nil
 	case "scale":
 		return ClientFacingDeviceSourceTypeScale, nil
 	case "chest_strap":
@@ -813,8 +901,9 @@ var (
 )
 
 type ClientFacingInsurance struct {
-	MemberId     string                                                  `json:"member_id" url:"member_id"`
-	PayorCode    string                                                  `json:"payor_code" url:"payor_code"`
+	MemberId  string `json:"member_id" url:"member_id"`
+	PayorCode string `json:"payor_code" url:"payor_code"`
+	// ℹ️ This enum is non-exhaustive.
 	Relationship ResponsibleRelationship                                 `json:"relationship" url:"relationship"`
 	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured" url:"insured"`
 	Company      *CompanyDetails                                         `json:"company" url:"company"`
@@ -1189,102 +1278,6 @@ func (c *ClientFacingProviderWithStatus) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientFacingProviderWithStatus) String() string {
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	clientFacingUserKeyFieldUserId       = big.NewInt(1 << 0)
-	clientFacingUserKeyFieldClientUserId = big.NewInt(1 << 1)
-)
-
-type ClientFacingUserKey struct {
-	// User id returned by vital create user request. This id should be stored in your database against the user and used for all interactions with the vital api.
-	UserId string `json:"user_id" url:"user_id"`
-	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
-	ClientUserId string `json:"client_user_id" url:"client_user_id"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ClientFacingUserKey) GetUserId() string {
-	if c == nil {
-		return ""
-	}
-	return c.UserId
-}
-
-func (c *ClientFacingUserKey) GetClientUserId() string {
-	if c == nil {
-		return ""
-	}
-	return c.ClientUserId
-}
-
-func (c *ClientFacingUserKey) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
-}
-
-func (c *ClientFacingUserKey) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingUserKey) SetUserId(userId string) {
-	c.UserId = userId
-	c.require(clientFacingUserKeyFieldUserId)
-}
-
-// SetClientUserId sets the ClientUserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ClientFacingUserKey) SetClientUserId(clientUserId string) {
-	c.ClientUserId = clientUserId
-	c.require(clientFacingUserKeyFieldClientUserId)
-}
-
-func (c *ClientFacingUserKey) UnmarshalJSON(data []byte) error {
-	type unmarshaler ClientFacingUserKey
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ClientFacingUserKey(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ClientFacingUserKey) MarshalJSON() ([]byte, error) {
-	type embed ClientFacingUserKey
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ClientFacingUserKey) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1774,6 +1767,7 @@ var (
 )
 
 type ResourceAvailability struct {
+	// ℹ️ This enum is non-exhaustive.
 	Status            Availability             `json:"status" url:"status"`
 	ScopeRequirements *ScopeRequirementsGrants `json:"scope_requirements,omitempty" url:"scope_requirements,omitempty"`
 
@@ -2169,6 +2163,180 @@ func (t *TimeseriesMetricPoint) String() string {
 }
 
 var (
+	userAddressFieldFirstLine   = big.NewInt(1 << 0)
+	userAddressFieldSecondLine  = big.NewInt(1 << 1)
+	userAddressFieldCountry     = big.NewInt(1 << 2)
+	userAddressFieldZip         = big.NewInt(1 << 3)
+	userAddressFieldCity        = big.NewInt(1 << 4)
+	userAddressFieldState       = big.NewInt(1 << 5)
+	userAddressFieldAccessNotes = big.NewInt(1 << 6)
+)
+
+type UserAddress struct {
+	FirstLine   string  `json:"first_line" url:"first_line"`
+	SecondLine  *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	Country     string  `json:"country" url:"country"`
+	Zip         string  `json:"zip" url:"zip"`
+	City        string  `json:"city" url:"city"`
+	State       string  `json:"state" url:"state"`
+	AccessNotes *string `json:"access_notes,omitempty" url:"access_notes,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UserAddress) GetFirstLine() string {
+	if u == nil {
+		return ""
+	}
+	return u.FirstLine
+}
+
+func (u *UserAddress) GetSecondLine() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SecondLine
+}
+
+func (u *UserAddress) GetCountry() string {
+	if u == nil {
+		return ""
+	}
+	return u.Country
+}
+
+func (u *UserAddress) GetZip() string {
+	if u == nil {
+		return ""
+	}
+	return u.Zip
+}
+
+func (u *UserAddress) GetCity() string {
+	if u == nil {
+		return ""
+	}
+	return u.City
+}
+
+func (u *UserAddress) GetState() string {
+	if u == nil {
+		return ""
+	}
+	return u.State
+}
+
+func (u *UserAddress) GetAccessNotes() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AccessNotes
+}
+
+func (u *UserAddress) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UserAddress) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetFirstLine sets the FirstLine field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetFirstLine(firstLine string) {
+	u.FirstLine = firstLine
+	u.require(userAddressFieldFirstLine)
+}
+
+// SetSecondLine sets the SecondLine field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetSecondLine(secondLine *string) {
+	u.SecondLine = secondLine
+	u.require(userAddressFieldSecondLine)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetCountry(country string) {
+	u.Country = country
+	u.require(userAddressFieldCountry)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetZip(zip string) {
+	u.Zip = zip
+	u.require(userAddressFieldZip)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetCity(city string) {
+	u.City = city
+	u.require(userAddressFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetState(state string) {
+	u.State = state
+	u.require(userAddressFieldState)
+}
+
+// SetAccessNotes sets the AccessNotes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetAccessNotes(accessNotes *string) {
+	u.AccessNotes = accessNotes
+	u.require(userAddressFieldAccessNotes)
+}
+
+func (u *UserAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserAddress(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserAddress) MarshalJSON() ([]byte, error) {
+	type embed UserAddress
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UserAddress) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
 	userInfoFieldFirstName         = big.NewInt(1 << 0)
 	userInfoFieldLastName          = big.NewInt(1 << 1)
 	userInfoFieldEmail             = big.NewInt(1 << 2)
@@ -2184,18 +2352,22 @@ var (
 )
 
 type UserInfo struct {
-	FirstName         string             `json:"first_name" url:"first_name"`
-	LastName          string             `json:"last_name" url:"last_name"`
-	Email             string             `json:"email" url:"email"`
-	PhoneNumber       string             `json:"phone_number" url:"phone_number"`
-	Gender            string             `json:"gender" url:"gender"`
-	Dob               string             `json:"dob" url:"dob"`
-	Address           *Address           `json:"address" url:"address"`
-	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
-	Race              *Race              `json:"race,omitempty" url:"race,omitempty"`
-	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
+	FirstName    string            `json:"first_name" url:"first_name"`
+	LastName     string            `json:"last_name" url:"last_name"`
+	Email        string            `json:"email" url:"email"`
+	PhoneNumber  string            `json:"phone_number" url:"phone_number"`
+	Gender       string            `json:"gender" url:"gender"`
+	Dob          string            `json:"dob" url:"dob"`
+	Address      *UserAddress      `json:"address" url:"address"`
+	MedicalProxy *GuarantorDetails `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Race *Race `json:"race,omitempty" url:"race,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Ethnicity *Ethnicity `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
 	SexualOrientation *SexualOrientation `json:"sexual_orientation,omitempty" url:"sexual_orientation,omitempty"`
-	GenderIdentity    *GenderIdentity    `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	GenderIdentity *GenderIdentity `json:"gender_identity,omitempty" url:"gender_identity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2246,7 +2418,7 @@ func (u *UserInfo) GetDob() string {
 	return u.Dob
 }
 
-func (u *UserInfo) GetAddress() *Address {
+func (u *UserInfo) GetAddress() *UserAddress {
 	if u == nil {
 		return nil
 	}
@@ -2343,7 +2515,7 @@ func (u *UserInfo) SetDob(dob string) {
 
 // SetAddress sets the Address field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserInfo) SetAddress(address *Address) {
+func (u *UserInfo) SetAddress(address *UserAddress) {
 	u.Address = address
 	u.require(userInfoFieldAddress)
 }
@@ -2423,16 +2595,14 @@ func (u *UserInfo) String() string {
 }
 
 var (
-	userRefreshSuccessResponseFieldSuccess           = big.NewInt(1 << 0)
-	userRefreshSuccessResponseFieldUserId            = big.NewInt(1 << 1)
-	userRefreshSuccessResponseFieldRefreshedSources  = big.NewInt(1 << 2)
-	userRefreshSuccessResponseFieldInProgressSources = big.NewInt(1 << 3)
-	userRefreshSuccessResponseFieldFailedSources     = big.NewInt(1 << 4)
+	userRefreshSuccessResponseFieldUserId            = big.NewInt(1 << 0)
+	userRefreshSuccessResponseFieldRefreshedSources  = big.NewInt(1 << 1)
+	userRefreshSuccessResponseFieldInProgressSources = big.NewInt(1 << 2)
+	userRefreshSuccessResponseFieldFailedSources     = big.NewInt(1 << 3)
 )
 
 type UserRefreshSuccessResponse struct {
 	// Whether operation was successful or not
-	Success bool `json:"success" url:"success"`
 	// A unique ID representing the end user. Typically this will be a user ID from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	UserId            string   `json:"user_id" url:"user_id"`
 	RefreshedSources  []string `json:"refreshed_sources" url:"refreshed_sources"`
@@ -2441,16 +2611,10 @@ type UserRefreshSuccessResponse struct {
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
+	success        bool
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (u *UserRefreshSuccessResponse) GetSuccess() bool {
-	if u == nil {
-		return false
-	}
-	return u.Success
 }
 
 func (u *UserRefreshSuccessResponse) GetUserId() string {
@@ -2481,6 +2645,10 @@ func (u *UserRefreshSuccessResponse) GetFailedSources() []string {
 	return u.FailedSources
 }
 
+func (u *UserRefreshSuccessResponse) Success() bool {
+	return u.success
+}
+
 func (u *UserRefreshSuccessResponse) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
@@ -2490,13 +2658,6 @@ func (u *UserRefreshSuccessResponse) require(field *big.Int) {
 		u.explicitFields = big.NewInt(0)
 	}
 	u.explicitFields.Or(u.explicitFields, field)
-}
-
-// SetSuccess sets the Success field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserRefreshSuccessResponse) SetSuccess(success bool) {
-	u.Success = success
-	u.require(userRefreshSuccessResponseFieldSuccess)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
@@ -2528,13 +2689,22 @@ func (u *UserRefreshSuccessResponse) SetFailedSources(failedSources []string) {
 }
 
 func (u *UserRefreshSuccessResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler UserRefreshSuccessResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed UserRefreshSuccessResponse
+	var unmarshaler = struct {
+		embed
+		Success bool `json:"success"`
+	}{
+		embed: embed(*u),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*u = UserRefreshSuccessResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	*u = UserRefreshSuccessResponse(unmarshaler.embed)
+	if unmarshaler.Success != true {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, true, unmarshaler.Success)
+	}
+	u.success = unmarshaler.Success
+	extraProperties, err := internal.ExtractExtraProperties(data, *u, "success")
 	if err != nil {
 		return err
 	}
@@ -2547,8 +2717,10 @@ func (u *UserRefreshSuccessResponse) MarshalJSON() ([]byte, error) {
 	type embed UserRefreshSuccessResponse
 	var marshaler = struct {
 		embed
+		Success bool `json:"success"`
 	}{
-		embed: embed(*u),
+		embed:   embed(*u),
+		Success: true,
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -2750,8 +2922,9 @@ var (
 )
 
 type VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails struct {
-	FirstName   string   `json:"first_name" url:"first_name"`
-	LastName    string   `json:"last_name" url:"last_name"`
+	FirstName string `json:"first_name" url:"first_name"`
+	LastName  string `json:"last_name" url:"last_name"`
+	// ℹ️ This enum is non-exhaustive.
 	Gender      Gender   `json:"gender" url:"gender"`
 	Address     *Address `json:"address" url:"address"`
 	Dob         string   `json:"dob" url:"dob"`
@@ -2994,18 +3167,22 @@ var (
 )
 
 type UserInfoCreateRequest struct {
-	FirstName         string             `json:"first_name" url:"-"`
-	LastName          string             `json:"last_name" url:"-"`
-	Email             string             `json:"email" url:"-"`
-	PhoneNumber       string             `json:"phone_number" url:"-"`
-	Gender            string             `json:"gender" url:"-"`
-	Dob               string             `json:"dob" url:"-"`
-	Address           *Address           `json:"address,omitempty" url:"-"`
-	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"-"`
-	Race              *Race              `json:"race,omitempty" url:"-"`
-	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"-"`
+	FirstName    string            `json:"first_name" url:"-"`
+	LastName     string            `json:"last_name" url:"-"`
+	Email        string            `json:"email" url:"-"`
+	PhoneNumber  string            `json:"phone_number" url:"-"`
+	Gender       string            `json:"gender" url:"-"`
+	Dob          string            `json:"dob" url:"-"`
+	Address      *UserAddress      `json:"address" url:"-"`
+	MedicalProxy *GuarantorDetails `json:"medical_proxy,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Race *Race `json:"race,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Ethnicity *Ethnicity `json:"ethnicity,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
 	SexualOrientation *SexualOrientation `json:"sexual_orientation,omitempty" url:"-"`
-	GenderIdentity    *GenderIdentity    `json:"gender_identity,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	GenderIdentity *GenderIdentity `json:"gender_identity,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3062,7 +3239,7 @@ func (u *UserInfoCreateRequest) SetDob(dob string) {
 
 // SetAddress sets the Address field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserInfoCreateRequest) SetAddress(address *Address) {
+func (u *UserInfoCreateRequest) SetAddress(address *UserAddress) {
 	u.Address = address
 	u.require(userInfoCreateRequestFieldAddress)
 }
@@ -3100,4 +3277,25 @@ func (u *UserInfoCreateRequest) SetSexualOrientation(sexualOrientation *SexualOr
 func (u *UserInfoCreateRequest) SetGenderIdentity(genderIdentity *GenderIdentity) {
 	u.GenderIdentity = genderIdentity
 	u.require(userInfoCreateRequestFieldGenderIdentity)
+}
+
+func (u *UserInfoCreateRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserInfoCreateRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserInfoCreateRequest(body)
+	return nil
+}
+
+func (u *UserInfoCreateRequest) MarshalJSON() ([]byte, error) {
+	type embed UserInfoCreateRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
