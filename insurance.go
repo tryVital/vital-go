@@ -84,9 +84,10 @@ var (
 )
 
 type PayorSearchRequest struct {
-	InsuranceName *string                    `json:"insurance_name,omitempty" url:"-"`
-	Provider      *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`
-	ProviderId    *string                    `json:"provider_id,omitempty" url:"-"`
+	InsuranceName *string `json:"insurance_name,omitempty" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
+	Provider   *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`
+	ProviderId *string                    `json:"provider_id,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -118,6 +119,27 @@ func (p *PayorSearchRequest) SetProvider(provider *PayorCodeExternalProvider) {
 func (p *PayorSearchRequest) SetProviderId(providerId *string) {
 	p.ProviderId = providerId
 	p.require(payorSearchRequestFieldProviderId)
+}
+
+func (p *PayorSearchRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayorSearchRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PayorSearchRequest(body)
+	return nil
+}
+
+func (p *PayorSearchRequest) MarshalJSON() ([]byte, error) {
+	type embed PayorSearchRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -249,7 +271,7 @@ type ClientFacingPayorSearchResponse struct {
 	Aliases []string `json:"aliases" url:"aliases"`
 	// Insurance business address returned for the insurance information.
 	OrgAddress *Address `json:"org_address" url:"org_address"`
-	// The source of the payor, can be one of (platform, team).
+	// The source of the payor, can be one of (platform, team). ℹ️ This enum is non-exhaustive.
 	Source ClientFacingPayorCodeSource `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -396,7 +418,7 @@ type ClientFacingPayorSearchResponseDeprecated struct {
 	Aliases []string `json:"aliases" url:"aliases"`
 	// Insurance business address returned for the insurance information.
 	OrgAddress *Address `json:"org_address" url:"org_address"`
-	// The source of the payor, can be one of (platform, team).
+	// The source of the payor, can be one of (platform, team). ℹ️ This enum is non-exhaustive.
 	Source ClientFacingPayorCodeSource `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
