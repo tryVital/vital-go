@@ -1,0 +1,16 @@
+## v2.0.0 - 2026-03-31
+* The SDK now supports querying derived readiness metrics including recovery scores, stress scores, and strain zones through the new DerivedReadinessColumnExpr. Additional support added for awakening value macros and insulin injection timeseries data, expanding the available health metrics for analysis.
+* The `ParsingJob` struct no longer includes the `JobId` field. Code that accesses `job.JobId` or calls `job.GetJobId()` or `job.SetJobId()` will fail to compile. The `ParsingJob` struct now includes an optional `FailureReason` field for better error classification, and the `ResultMetadata` struct now includes an optional `Gender` field. Additionally, several required fields in `ResultMetadata` are now optional pointer types.
+* The SDK now supports the Sonora Quest appointment provider and adds enhanced booking capabilities including asynchronous appointment confirmation with configurable timeouts, appointment notes for booking and rescheduling, and improved address handling with access notes for delivery instructions. New optional fields have been added for clinical notes on orders and lab slug filtering for marker retrieval.
+* **Breaking Changes:**
+* Removed `TeamId` field and `SetTeamId()` method from `BulkExportConnectionsBody`, `BulkImportConnectionsBody`, `BulkPauseConnectionsBody`, `BulkTriggerHistoricalPullBody`, and `LinkListBulkOpsRequest`. Code using these fields should be updated to remove team ID references.
+* Removed `LinkBulkExportRequestTeamId`, `LinkBulkImportRequestTeamId`, `LinkBulkPauseRequestTeamId`, `LinkBulkTriggerHistoricalPullRequestTeamId`, and `LinkListBulkOpsRequestTeamId` types.
+**New Features:**
+* Added `RecoveryReadinessScore` field to `ClientFacingSleep` for accessing recovery/readiness scores from Oura, Whoop, and Ultrahuman providers.
+* Added support for Samsung Health (`ManualProvidersSamsungHealth`) and Tandem Source (`PasswordProvidersTandemSource`) providers.
+* Added `VitalIosSdkVersion`, `VitalAndroidSdkVersion`, and `GrantedPermissions` fields to `ManualConnectionData`.
+* The SDK now supports enhanced insulin injection data with delivery mode, delivery form, and bolus purpose fields for more detailed diabetes management tracking. New client modules are available for Compendium, LabAccount, and OrderTransaction operations. The SDK also adds support for form URL-encoded requests and introduces a dedicated UserAddress type for improved user data modeling.
+* New compendium types and enums available for lab test search and conversion functionality. The SDK now supports searching canonical lab tests, converting between lab providers, and managing test candidate data with types like `CanonicalCandidate`, `SearchCompendiumResponse`, and `CompendiumSearchLabs`.
+* The SDK now supports compendium data operations through the new `compendium.Client` with `Search()` and `Convert()` methods. Lab account management is available via the new `labaccount.Client` with `GetTeamLabAccounts()` method for retrieving and filtering team lab accounts.
+* New OrderTransaction client provides methods to retrieve transaction details, lab results, and PDF reports. The SDK also adds support for insulin pump as a sleep cycle source type.
+
