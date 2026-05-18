@@ -90,13 +90,6 @@ func (r *RawClient) BulkImport(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_import"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -140,13 +133,6 @@ func (r *RawClient) BulkTriggerHistoricalPull(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_trigger_historical_pull"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -190,13 +176,6 @@ func (r *RawClient) BulkExport(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_export"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -240,13 +219,6 @@ func (r *RawClient) BulkPause(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_pause"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -856,6 +828,12 @@ func (r *RawClient) ConnectManualProvider(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	if request.VitalIosSdkVersion != nil {
+		headers.Add("x-vital-ios-sdk-version", *request.VitalIosSdkVersion)
+	}
+	if request.VitalAndroidSdkVersion != nil {
+		headers.Add("x-vital-android-sdk-version", *request.VitalAndroidSdkVersion)
+	}
 	headers.Add("Content-Type", "application/json")
 	var response map[string]bool
 	raw, err := r.caller.Call(

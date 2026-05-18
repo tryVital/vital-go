@@ -89,7 +89,8 @@ type ClientFacingElectrocardiogram struct {
 	InconclusiveCause *ClientFacingElectrocardiogramInconclusiveCause `json:"inconclusive_cause,omitempty" url:"inconclusive_cause,omitempty"`
 	AlgorithmVersion  *string                                         `json:"algorithm_version,omitempty" url:"algorithm_version,omitempty"`
 	TimeZone          *string                                         `json:"time_zone,omitempty" url:"time_zone,omitempty"`
-	SourceProvider    *ClientFacingElectrocardiogramSourceProvider    `json:"source_provider" url:"source_provider"`
+	// ℹ️ This enum is non-exhaustive.
+	SourceProvider *ClientFacingElectrocardiogramSourceProvider `json:"source_provider" url:"source_provider"`
 	// ℹ️ This enum is non-exhaustive.
 	SourceType        ClientFacingElectrocardiogramSourceType `json:"source_type" url:"source_type"`
 	SourceAppId       *string                                 `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
@@ -571,6 +572,7 @@ func (c *ClientFacingElectrocardiogramResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingElectrocardiogramSourceProvider struct {
 	Providers Providers
 	Labs      Labs
@@ -646,6 +648,7 @@ const (
 	ClientFacingElectrocardiogramSourceTypeCuff            ClientFacingElectrocardiogramSourceType = "cuff"
 	ClientFacingElectrocardiogramSourceTypeManualScan      ClientFacingElectrocardiogramSourceType = "manual_scan"
 	ClientFacingElectrocardiogramSourceTypeAutomatic       ClientFacingElectrocardiogramSourceType = "automatic"
+	ClientFacingElectrocardiogramSourceTypeInsulinPump     ClientFacingElectrocardiogramSourceType = "insulin_pump"
 	ClientFacingElectrocardiogramSourceTypeScale           ClientFacingElectrocardiogramSourceType = "scale"
 	ClientFacingElectrocardiogramSourceTypeChestStrap      ClientFacingElectrocardiogramSourceType = "chest_strap"
 	ClientFacingElectrocardiogramSourceTypeRing            ClientFacingElectrocardiogramSourceType = "ring"
@@ -674,6 +677,8 @@ func NewClientFacingElectrocardiogramSourceTypeFromString(s string) (ClientFacin
 		return ClientFacingElectrocardiogramSourceTypeManualScan, nil
 	case "automatic":
 		return ClientFacingElectrocardiogramSourceTypeAutomatic, nil
+	case "insulin_pump":
+		return ClientFacingElectrocardiogramSourceTypeInsulinPump, nil
 	case "scale":
 		return ClientFacingElectrocardiogramSourceTypeScale, nil
 	case "chest_strap":
