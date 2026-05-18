@@ -90,13 +90,6 @@ func (r *RawClient) BulkImport(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_import"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -140,13 +133,6 @@ func (r *RawClient) BulkTriggerHistoricalPull(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_trigger_historical_pull"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -190,13 +176,6 @@ func (r *RawClient) BulkExport(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_export"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -240,13 +219,6 @@ func (r *RawClient) BulkPause(
 		"https://api.tryvital.io",
 	)
 	endpointURL := baseURL + "/v2/link/bulk_pause"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
@@ -321,49 +293,6 @@ func (r *RawClient) Token(
 	}, nil
 }
 
-func (r *RawClient) IsTokenValid(
-	ctx context.Context,
-	request *vitalgo.LinkTokenValidationRequest,
-	opts ...option.RequestOption,
-) (*core.Response[map[string]any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.tryvital.io",
-	)
-	endpointURL := baseURL + "/v2/link/token/isValid"
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response map[string]any
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[map[string]any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
 func (r *RawClient) CodeCreate(
 	ctx context.Context,
 	request *vitalgo.LinkCodeCreateRequest,
@@ -406,186 +335,6 @@ func (r *RawClient) CodeCreate(
 		return nil, err
 	}
 	return &core.Response[*vitalgo.VitalTokenCreatedResponse]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) StartConnect(
-	ctx context.Context,
-	request *vitalgo.BeginLinkTokenRequest,
-	opts ...option.RequestOption,
-) (*core.Response[map[string]any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.tryvital.io",
-	)
-	endpointURL := baseURL + "/v2/link/start"
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response map[string]any
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[map[string]any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) TokenState(
-	ctx context.Context,
-	request *vitalgo.LinkTokenStateRequest,
-	opts ...option.RequestOption,
-) (*core.Response[map[string]any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.tryvital.io",
-	)
-	endpointURL := baseURL + "/v2/link/state"
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	if request.VitalLinkToken != nil {
-		headers.Add("x-vital-link-token", *request.VitalLinkToken)
-	}
-
-	var response map[string]any
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[map[string]any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) EmailAuth(
-	ctx context.Context,
-	request *vitalgo.EmailAuthLink,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.tryvital.io",
-	)
-	endpointURL := baseURL + "/v2/link/auth/email"
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	if request.VitalLinkToken != nil {
-		headers.Add("x-vital-link-token", *request.VitalLinkToken)
-	}
-	headers.Add("Content-Type", "application/json")
-	var response any
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) PasswordAuth(
-	ctx context.Context,
-	request *vitalgo.PasswordAuthLink,
-	opts ...option.RequestOption,
-) (*core.Response[any], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.tryvital.io",
-	)
-	endpointURL := baseURL + "/v2/link/auth"
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	if request.VitalLinkToken != nil {
-		headers.Add("x-vital-link-token", *request.VitalLinkToken)
-	}
-	headers.Add("Content-Type", "application/json")
-	var response any
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[any]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -830,53 +579,6 @@ func (r *RawClient) GetAllProviders(
 		return nil, err
 	}
 	return &core.Response[[]*vitalgo.SourceLink]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) ConnectManualProvider(
-	ctx context.Context,
-	provider *vitalgo.ManualProviders,
-	request *vitalgo.ManualConnectionData,
-	opts ...option.RequestOption,
-) (*core.Response[map[string]bool], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api.tryvital.io",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/v2/link/provider/manual/%v",
-		provider,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	headers.Add("Content-Type", "application/json")
-	var response map[string]bool
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[map[string]bool]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

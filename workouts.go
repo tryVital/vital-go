@@ -1841,11 +1841,35 @@ func (c *ClientWorkoutResponse) String() string {
 }
 
 var (
-	rawWorkoutFieldWorkouts = big.NewInt(1 << 0)
+	rawWorkoutFieldTimestamp      = big.NewInt(1 << 0)
+	rawWorkoutFieldData           = big.NewInt(1 << 1)
+	rawWorkoutFieldUserId         = big.NewInt(1 << 2)
+	rawWorkoutFieldProviderId     = big.NewInt(1 << 3)
+	rawWorkoutFieldSourceId       = big.NewInt(1 << 4)
+	rawWorkoutFieldPriorityId     = big.NewInt(1 << 5)
+	rawWorkoutFieldId             = big.NewInt(1 << 6)
+	rawWorkoutFieldSportId        = big.NewInt(1 << 7)
+	rawWorkoutFieldSport          = big.NewInt(1 << 8)
+	rawWorkoutFieldSourceDeviceId = big.NewInt(1 << 9)
+	rawWorkoutFieldCreatedAt      = big.NewInt(1 << 10)
+	rawWorkoutFieldUpdatedAt      = big.NewInt(1 << 11)
+	rawWorkoutFieldSource         = big.NewInt(1 << 12)
 )
 
 type RawWorkout struct {
-	Workouts []*WorkoutV2InDb `json:"workouts" url:"workouts"`
+	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
+	Data           map[string]interface{} `json:"data" url:"data"`
+	UserId         string                 `json:"user_id" url:"user_id"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
+	SourceId       int                    `json:"source_id" url:"source_id"`
+	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
+	Id             string                 `json:"id" url:"id"`
+	SportId        int                    `json:"sport_id" url:"sport_id"`
+	Sport          *ClientFacingSport     `json:"sport" url:"sport"`
+	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
+	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Source         *ClientFacingProvider  `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1854,11 +1878,95 @@ type RawWorkout struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RawWorkout) GetWorkouts() []*WorkoutV2InDb {
+func (r *RawWorkout) GetTimestamp() time.Time {
+	if r == nil {
+		return time.Time{}
+	}
+	return r.Timestamp
+}
+
+func (r *RawWorkout) GetData() map[string]interface{} {
 	if r == nil {
 		return nil
 	}
-	return r.Workouts
+	return r.Data
+}
+
+func (r *RawWorkout) GetUserId() string {
+	if r == nil {
+		return ""
+	}
+	return r.UserId
+}
+
+func (r *RawWorkout) GetProviderId() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderId
+}
+
+func (r *RawWorkout) GetSourceId() int {
+	if r == nil {
+		return 0
+	}
+	return r.SourceId
+}
+
+func (r *RawWorkout) GetPriorityId() *int {
+	if r == nil {
+		return nil
+	}
+	return r.PriorityId
+}
+
+func (r *RawWorkout) GetId() string {
+	if r == nil {
+		return ""
+	}
+	return r.Id
+}
+
+func (r *RawWorkout) GetSportId() int {
+	if r == nil {
+		return 0
+	}
+	return r.SportId
+}
+
+func (r *RawWorkout) GetSport() *ClientFacingSport {
+	if r == nil {
+		return nil
+	}
+	return r.Sport
+}
+
+func (r *RawWorkout) GetSourceDeviceId() *string {
+	if r == nil {
+		return nil
+	}
+	return r.SourceDeviceId
+}
+
+func (r *RawWorkout) GetCreatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.CreatedAt
+}
+
+func (r *RawWorkout) GetUpdatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.UpdatedAt
+}
+
+func (r *RawWorkout) GetSource() *ClientFacingProvider {
+	if r == nil {
+		return nil
+	}
+	return r.Source
 }
 
 func (r *RawWorkout) GetExtraProperties() map[string]interface{} {
@@ -1872,20 +1980,114 @@ func (r *RawWorkout) require(field *big.Int) {
 	r.explicitFields.Or(r.explicitFields, field)
 }
 
-// SetWorkouts sets the Workouts field and marks it as non-optional;
+// SetTimestamp sets the Timestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RawWorkout) SetWorkouts(workouts []*WorkoutV2InDb) {
-	r.Workouts = workouts
-	r.require(rawWorkoutFieldWorkouts)
+func (r *RawWorkout) SetTimestamp(timestamp time.Time) {
+	r.Timestamp = timestamp
+	r.require(rawWorkoutFieldTimestamp)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetData(data map[string]interface{}) {
+	r.Data = data
+	r.require(rawWorkoutFieldData)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetUserId(userId string) {
+	r.UserId = userId
+	r.require(rawWorkoutFieldUserId)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetProviderId(providerId string) {
+	r.ProviderId = providerId
+	r.require(rawWorkoutFieldProviderId)
+}
+
+// SetSourceId sets the SourceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetSourceId(sourceId int) {
+	r.SourceId = sourceId
+	r.require(rawWorkoutFieldSourceId)
+}
+
+// SetPriorityId sets the PriorityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetPriorityId(priorityId *int) {
+	r.PriorityId = priorityId
+	r.require(rawWorkoutFieldPriorityId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetId(id string) {
+	r.Id = id
+	r.require(rawWorkoutFieldId)
+}
+
+// SetSportId sets the SportId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetSportId(sportId int) {
+	r.SportId = sportId
+	r.require(rawWorkoutFieldSportId)
+}
+
+// SetSport sets the Sport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetSport(sport *ClientFacingSport) {
+	r.Sport = sport
+	r.require(rawWorkoutFieldSport)
+}
+
+// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetSourceDeviceId(sourceDeviceId *string) {
+	r.SourceDeviceId = sourceDeviceId
+	r.require(rawWorkoutFieldSourceDeviceId)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetCreatedAt(createdAt *time.Time) {
+	r.CreatedAt = createdAt
+	r.require(rawWorkoutFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetUpdatedAt(updatedAt *time.Time) {
+	r.UpdatedAt = updatedAt
+	r.require(rawWorkoutFieldUpdatedAt)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawWorkout) SetSource(source *ClientFacingProvider) {
+	r.Source = source
+	r.require(rawWorkoutFieldSource)
 }
 
 func (r *RawWorkout) UnmarshalJSON(data []byte) error {
-	type unmarshaler RawWorkout
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed RawWorkout
+	var unmarshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*r = RawWorkout(value)
+	*r = RawWorkout(unmarshaler.embed)
+	r.Timestamp = unmarshaler.Timestamp.Time()
+	r.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	r.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
@@ -1899,8 +2101,14 @@ func (r *RawWorkout) MarshalJSON() ([]byte, error) {
 	type embed RawWorkout
 	var marshaler = struct {
 		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
 	}{
-		embed: embed(*r),
+		embed:     embed(*r),
+		Timestamp: internal.NewDateTime(r.Timestamp),
+		CreatedAt: internal.NewOptionalDateTime(r.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(r.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1919,35 +2127,11 @@ func (r *RawWorkout) String() string {
 }
 
 var (
-	workoutV2InDbFieldTimestamp      = big.NewInt(1 << 0)
-	workoutV2InDbFieldData           = big.NewInt(1 << 1)
-	workoutV2InDbFieldProviderId     = big.NewInt(1 << 2)
-	workoutV2InDbFieldUserId         = big.NewInt(1 << 3)
-	workoutV2InDbFieldSourceId       = big.NewInt(1 << 4)
-	workoutV2InDbFieldPriorityId     = big.NewInt(1 << 5)
-	workoutV2InDbFieldId             = big.NewInt(1 << 6)
-	workoutV2InDbFieldSportId        = big.NewInt(1 << 7)
-	workoutV2InDbFieldSource         = big.NewInt(1 << 8)
-	workoutV2InDbFieldSport          = big.NewInt(1 << 9)
-	workoutV2InDbFieldSourceDeviceId = big.NewInt(1 << 10)
-	workoutV2InDbFieldCreatedAt      = big.NewInt(1 << 11)
-	workoutV2InDbFieldUpdatedAt      = big.NewInt(1 << 12)
+	rawWorkoutResponseFieldWorkouts = big.NewInt(1 << 0)
 )
 
-type WorkoutV2InDb struct {
-	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
-	Data           map[string]interface{} `json:"data" url:"data"`
-	ProviderId     string                 `json:"provider_id" url:"provider_id"`
-	UserId         string                 `json:"user_id" url:"user_id"`
-	SourceId       int                    `json:"source_id" url:"source_id"`
-	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
-	Id             string                 `json:"id" url:"id"`
-	SportId        int                    `json:"sport_id" url:"sport_id"`
-	Source         *ClientFacingProvider  `json:"source" url:"source"`
-	Sport          *ClientFacingSport     `json:"sport" url:"sport"`
-	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
-	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
-	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+type RawWorkoutResponse struct {
+	Workouts []*RawWorkout `json:"workouts" url:"workouts"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1956,250 +2140,66 @@ type WorkoutV2InDb struct {
 	rawJSON         json.RawMessage
 }
 
-func (w *WorkoutV2InDb) GetTimestamp() time.Time {
-	if w == nil {
-		return time.Time{}
-	}
-	return w.Timestamp
-}
-
-func (w *WorkoutV2InDb) GetData() map[string]interface{} {
-	if w == nil {
+func (r *RawWorkoutResponse) GetWorkouts() []*RawWorkout {
+	if r == nil {
 		return nil
 	}
-	return w.Data
+	return r.Workouts
 }
 
-func (w *WorkoutV2InDb) GetProviderId() string {
-	if w == nil {
-		return ""
+func (r *RawWorkoutResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawWorkoutResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
 	}
-	return w.ProviderId
+	r.explicitFields.Or(r.explicitFields, field)
 }
 
-func (w *WorkoutV2InDb) GetUserId() string {
-	if w == nil {
-		return ""
-	}
-	return w.UserId
-}
-
-func (w *WorkoutV2InDb) GetSourceId() int {
-	if w == nil {
-		return 0
-	}
-	return w.SourceId
-}
-
-func (w *WorkoutV2InDb) GetPriorityId() *int {
-	if w == nil {
-		return nil
-	}
-	return w.PriorityId
-}
-
-func (w *WorkoutV2InDb) GetId() string {
-	if w == nil {
-		return ""
-	}
-	return w.Id
-}
-
-func (w *WorkoutV2InDb) GetSportId() int {
-	if w == nil {
-		return 0
-	}
-	return w.SportId
-}
-
-func (w *WorkoutV2InDb) GetSource() *ClientFacingProvider {
-	if w == nil {
-		return nil
-	}
-	return w.Source
-}
-
-func (w *WorkoutV2InDb) GetSport() *ClientFacingSport {
-	if w == nil {
-		return nil
-	}
-	return w.Sport
-}
-
-func (w *WorkoutV2InDb) GetSourceDeviceId() *string {
-	if w == nil {
-		return nil
-	}
-	return w.SourceDeviceId
-}
-
-func (w *WorkoutV2InDb) GetCreatedAt() *time.Time {
-	if w == nil {
-		return nil
-	}
-	return w.CreatedAt
-}
-
-func (w *WorkoutV2InDb) GetUpdatedAt() *time.Time {
-	if w == nil {
-		return nil
-	}
-	return w.UpdatedAt
-}
-
-func (w *WorkoutV2InDb) GetExtraProperties() map[string]interface{} {
-	return w.extraProperties
-}
-
-func (w *WorkoutV2InDb) require(field *big.Int) {
-	if w.explicitFields == nil {
-		w.explicitFields = big.NewInt(0)
-	}
-	w.explicitFields.Or(w.explicitFields, field)
-}
-
-// SetTimestamp sets the Timestamp field and marks it as non-optional;
+// SetWorkouts sets the Workouts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetTimestamp(timestamp time.Time) {
-	w.Timestamp = timestamp
-	w.require(workoutV2InDbFieldTimestamp)
+func (r *RawWorkoutResponse) SetWorkouts(workouts []*RawWorkout) {
+	r.Workouts = workouts
+	r.require(rawWorkoutResponseFieldWorkouts)
 }
 
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetData(data map[string]interface{}) {
-	w.Data = data
-	w.require(workoutV2InDbFieldData)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetProviderId(providerId string) {
-	w.ProviderId = providerId
-	w.require(workoutV2InDbFieldProviderId)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetUserId(userId string) {
-	w.UserId = userId
-	w.require(workoutV2InDbFieldUserId)
-}
-
-// SetSourceId sets the SourceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetSourceId(sourceId int) {
-	w.SourceId = sourceId
-	w.require(workoutV2InDbFieldSourceId)
-}
-
-// SetPriorityId sets the PriorityId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetPriorityId(priorityId *int) {
-	w.PriorityId = priorityId
-	w.require(workoutV2InDbFieldPriorityId)
-}
-
-// SetId sets the Id field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetId(id string) {
-	w.Id = id
-	w.require(workoutV2InDbFieldId)
-}
-
-// SetSportId sets the SportId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetSportId(sportId int) {
-	w.SportId = sportId
-	w.require(workoutV2InDbFieldSportId)
-}
-
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetSource(source *ClientFacingProvider) {
-	w.Source = source
-	w.require(workoutV2InDbFieldSource)
-}
-
-// SetSport sets the Sport field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetSport(sport *ClientFacingSport) {
-	w.Sport = sport
-	w.require(workoutV2InDbFieldSport)
-}
-
-// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetSourceDeviceId(sourceDeviceId *string) {
-	w.SourceDeviceId = sourceDeviceId
-	w.require(workoutV2InDbFieldSourceDeviceId)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetCreatedAt(createdAt *time.Time) {
-	w.CreatedAt = createdAt
-	w.require(workoutV2InDbFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (w *WorkoutV2InDb) SetUpdatedAt(updatedAt *time.Time) {
-	w.UpdatedAt = updatedAt
-	w.require(workoutV2InDbFieldUpdatedAt)
-}
-
-func (w *WorkoutV2InDb) UnmarshalJSON(data []byte) error {
-	type embed WorkoutV2InDb
-	var unmarshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*w),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+func (r *RawWorkoutResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawWorkoutResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*w = WorkoutV2InDb(unmarshaler.embed)
-	w.Timestamp = unmarshaler.Timestamp.Time()
-	w.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	w.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	*r = RawWorkoutResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
 	}
-	w.extraProperties = extraProperties
-	w.rawJSON = json.RawMessage(data)
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (w *WorkoutV2InDb) MarshalJSON() ([]byte, error) {
-	type embed WorkoutV2InDb
+func (r *RawWorkoutResponse) MarshalJSON() ([]byte, error) {
+	type embed RawWorkoutResponse
 	var marshaler = struct {
 		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
 	}{
-		embed:     embed(*w),
-		Timestamp: internal.NewDateTime(w.Timestamp),
-		CreatedAt: internal.NewOptionalDateTime(w.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(w.UpdatedAt),
+		embed: embed(*r),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (w *WorkoutV2InDb) String() string {
-	if len(w.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+func (r *RawWorkoutResponse) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
 		}
 	}
-	if value, err := internal.StringifyJSON(w); err == nil {
+	if value, err := internal.StringifyJSON(r); err == nil {
 		return value
 	}
-	return fmt.Sprintf("%#v", w)
+	return fmt.Sprintf("%#v", r)
 }

@@ -302,22 +302,23 @@ var (
 )
 
 type ClientFacingMenstrualCycle struct {
-	Id                     string                                    `json:"id" url:"id"`
-	PeriodStart            string                                    `json:"period_start" url:"period_start"`
-	PeriodEnd              *string                                   `json:"period_end,omitempty" url:"period_end,omitempty"`
-	CycleEnd               *string                                   `json:"cycle_end,omitempty" url:"cycle_end,omitempty"`
-	IsPredicted            *bool                                     `json:"is_predicted,omitempty" url:"is_predicted,omitempty"`
-	MenstrualFlow          []*MenstrualFlowEntry                     `json:"menstrual_flow,omitempty" url:"menstrual_flow,omitempty"`
-	CervicalMucus          []*CervicalMucusEntry                     `json:"cervical_mucus,omitempty" url:"cervical_mucus,omitempty"`
-	IntermenstrualBleeding []*IntermenstrualBleedingEntry            `json:"intermenstrual_bleeding,omitempty" url:"intermenstrual_bleeding,omitempty"`
-	Contraceptive          []*ContraceptiveEntry                     `json:"contraceptive,omitempty" url:"contraceptive,omitempty"`
-	DetectedDeviations     []*DetectedDeviationEntry                 `json:"detected_deviations,omitempty" url:"detected_deviations,omitempty"`
-	OvulationTest          []*OvulationTestEntry                     `json:"ovulation_test,omitempty" url:"ovulation_test,omitempty"`
-	HomePregnancyTest      []*HomePregnancyTestEntry                 `json:"home_pregnancy_test,omitempty" url:"home_pregnancy_test,omitempty"`
-	HomeProgesteroneTest   []*HomeProgesteroneTestEntry              `json:"home_progesterone_test,omitempty" url:"home_progesterone_test,omitempty"`
-	SexualActivity         []*SexualActivityEntry                    `json:"sexual_activity,omitempty" url:"sexual_activity,omitempty"`
-	BasalBodyTemperature   []*BasalBodyTemperatureEntry              `json:"basal_body_temperature,omitempty" url:"basal_body_temperature,omitempty"`
-	SourceProvider         *ClientFacingMenstrualCycleSourceProvider `json:"source_provider" url:"source_provider"`
+	Id                     string                         `json:"id" url:"id"`
+	PeriodStart            string                         `json:"period_start" url:"period_start"`
+	PeriodEnd              *string                        `json:"period_end,omitempty" url:"period_end,omitempty"`
+	CycleEnd               *string                        `json:"cycle_end,omitempty" url:"cycle_end,omitempty"`
+	IsPredicted            *bool                          `json:"is_predicted,omitempty" url:"is_predicted,omitempty"`
+	MenstrualFlow          []*MenstrualFlowEntry          `json:"menstrual_flow,omitempty" url:"menstrual_flow,omitempty"`
+	CervicalMucus          []*CervicalMucusEntry          `json:"cervical_mucus,omitempty" url:"cervical_mucus,omitempty"`
+	IntermenstrualBleeding []*IntermenstrualBleedingEntry `json:"intermenstrual_bleeding,omitempty" url:"intermenstrual_bleeding,omitempty"`
+	Contraceptive          []*ContraceptiveEntry          `json:"contraceptive,omitempty" url:"contraceptive,omitempty"`
+	DetectedDeviations     []*DetectedDeviationEntry      `json:"detected_deviations,omitempty" url:"detected_deviations,omitempty"`
+	OvulationTest          []*OvulationTestEntry          `json:"ovulation_test,omitempty" url:"ovulation_test,omitempty"`
+	HomePregnancyTest      []*HomePregnancyTestEntry      `json:"home_pregnancy_test,omitempty" url:"home_pregnancy_test,omitempty"`
+	HomeProgesteroneTest   []*HomeProgesteroneTestEntry   `json:"home_progesterone_test,omitempty" url:"home_progesterone_test,omitempty"`
+	SexualActivity         []*SexualActivityEntry         `json:"sexual_activity,omitempty" url:"sexual_activity,omitempty"`
+	BasalBodyTemperature   []*BasalBodyTemperatureEntry   `json:"basal_body_temperature,omitempty" url:"basal_body_temperature,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	SourceProvider *ClientFacingMenstrualCycleSourceProvider `json:"source_provider" url:"source_provider"`
 	// ℹ️ This enum is non-exhaustive.
 	SourceType     ClientFacingMenstrualCycleSourceType `json:"source_type" url:"source_type"`
 	SourceAppId    *string                              `json:"source_app_id,omitempty" url:"source_app_id,omitempty"`
@@ -718,6 +719,7 @@ func (c *ClientFacingMenstrualCycle) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type ClientFacingMenstrualCycleSourceProvider struct {
 	Providers Providers
 	Labs      Labs
@@ -793,6 +795,7 @@ const (
 	ClientFacingMenstrualCycleSourceTypeCuff            ClientFacingMenstrualCycleSourceType = "cuff"
 	ClientFacingMenstrualCycleSourceTypeManualScan      ClientFacingMenstrualCycleSourceType = "manual_scan"
 	ClientFacingMenstrualCycleSourceTypeAutomatic       ClientFacingMenstrualCycleSourceType = "automatic"
+	ClientFacingMenstrualCycleSourceTypeInsulinPump     ClientFacingMenstrualCycleSourceType = "insulin_pump"
 	ClientFacingMenstrualCycleSourceTypeScale           ClientFacingMenstrualCycleSourceType = "scale"
 	ClientFacingMenstrualCycleSourceTypeChestStrap      ClientFacingMenstrualCycleSourceType = "chest_strap"
 	ClientFacingMenstrualCycleSourceTypeRing            ClientFacingMenstrualCycleSourceType = "ring"
@@ -821,6 +824,8 @@ func NewClientFacingMenstrualCycleSourceTypeFromString(s string) (ClientFacingMe
 		return ClientFacingMenstrualCycleSourceTypeManualScan, nil
 	case "automatic":
 		return ClientFacingMenstrualCycleSourceTypeAutomatic, nil
+	case "insulin_pump":
+		return ClientFacingMenstrualCycleSourceTypeInsulinPump, nil
 	case "scale":
 		return ClientFacingMenstrualCycleSourceTypeScale, nil
 	case "chest_strap":

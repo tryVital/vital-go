@@ -10,20 +10,20 @@ import (
 	big "math/big"
 )
 
-type BodyCreateLabReportParserJob struct {
-	File             io.Reader `json:"-" url:"-"`
-	UserId           string    `json:"user_id" url:"-"`
-	NeedsHumanReview *bool     `json:"needs_human_review,omitempty" url:"-"`
+type CreateLabReportParserJobBody struct {
+	File             []io.Reader `json:"-" url:"-"`
+	UserId           string      `json:"user_id" url:"-"`
+	NeedsHumanReview *bool       `json:"needs_human_review,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (b *BodyCreateLabReportParserJob) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
+func (c *CreateLabReportParserJobBody) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
 	}
-	b.explicitFields.Or(b.explicitFields, field)
+	c.explicitFields.Or(c.explicitFields, field)
 }
 
 var (
@@ -41,17 +41,19 @@ var (
 )
 
 type LabReportResult struct {
-	TestName          string               `json:"test_name" url:"test_name"`
-	Value             string               `json:"value" url:"value"`
+	TestName string `json:"test_name" url:"test_name"`
+	Value    string `json:"value" url:"value"`
+	// ℹ️ This enum is non-exhaustive.
 	Type              *LabReportResultType `json:"type,omitempty" url:"type,omitempty"`
 	Units             *string              `json:"units,omitempty" url:"units,omitempty"`
 	MaxReferenceRange *float64             `json:"max_reference_range,omitempty" url:"max_reference_range,omitempty"`
 	MinReferenceRange *float64             `json:"min_reference_range,omitempty" url:"min_reference_range,omitempty"`
 	SourcePanelName   *string              `json:"source_panel_name,omitempty" url:"source_panel_name,omitempty"`
 	LoincMatches      []*LoincMatch        `json:"loinc_matches,omitempty" url:"loinc_matches,omitempty"`
-	Interpretation    *Interpretation      `json:"interpretation,omitempty" url:"interpretation,omitempty"`
-	IsAboveMaxRange   *bool                `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
-	IsBelowMinRange   *bool                `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Interpretation  *Interpretation `json:"interpretation,omitempty" url:"interpretation,omitempty"`
+	IsAboveMaxRange *bool           `json:"is_above_max_range,omitempty" url:"is_above_max_range,omitempty"`
+	IsBelowMinRange *bool           `json:"is_below_min_range,omitempty" url:"is_below_min_range,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -540,20 +542,22 @@ func (p *ParsedLabReportData) String() string {
 
 var (
 	parsingJobFieldId               = big.NewInt(1 << 0)
-	parsingJobFieldJobId            = big.NewInt(1 << 1)
-	parsingJobFieldStatus           = big.NewInt(1 << 2)
+	parsingJobFieldStatus           = big.NewInt(1 << 1)
+	parsingJobFieldFailureReason    = big.NewInt(1 << 2)
 	parsingJobFieldData             = big.NewInt(1 << 3)
 	parsingJobFieldNeedsHumanReview = big.NewInt(1 << 4)
 	parsingJobFieldIsReviewed       = big.NewInt(1 << 5)
 )
 
 type ParsingJob struct {
-	Id               string               `json:"id" url:"id"`
-	JobId            string               `json:"job_id" url:"job_id"`
-	Status           ParsingJobStatus     `json:"status" url:"status"`
-	Data             *ParsedLabReportData `json:"data,omitempty" url:"data,omitempty"`
-	NeedsHumanReview bool                 `json:"needs_human_review" url:"needs_human_review"`
-	IsReviewed       bool                 `json:"is_reviewed" url:"is_reviewed"`
+	Id string `json:"id" url:"id"`
+	// ℹ️ This enum is non-exhaustive.
+	Status ParsingJobStatus `json:"status" url:"status"`
+	// ℹ️ This enum is non-exhaustive.
+	FailureReason    *ParsingJobFailureReason `json:"failure_reason,omitempty" url:"failure_reason,omitempty"`
+	Data             *ParsedLabReportData     `json:"data,omitempty" url:"data,omitempty"`
+	NeedsHumanReview bool                     `json:"needs_human_review" url:"needs_human_review"`
+	IsReviewed       bool                     `json:"is_reviewed" url:"is_reviewed"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -569,18 +573,18 @@ func (p *ParsingJob) GetId() string {
 	return p.Id
 }
 
-func (p *ParsingJob) GetJobId() string {
-	if p == nil {
-		return ""
-	}
-	return p.JobId
-}
-
 func (p *ParsingJob) GetStatus() ParsingJobStatus {
 	if p == nil {
 		return ""
 	}
 	return p.Status
+}
+
+func (p *ParsingJob) GetFailureReason() *ParsingJobFailureReason {
+	if p == nil {
+		return nil
+	}
+	return p.FailureReason
 }
 
 func (p *ParsingJob) GetData() *ParsedLabReportData {
@@ -622,18 +626,18 @@ func (p *ParsingJob) SetId(id string) {
 	p.require(parsingJobFieldId)
 }
 
-// SetJobId sets the JobId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *ParsingJob) SetJobId(jobId string) {
-	p.JobId = jobId
-	p.require(parsingJobFieldJobId)
-}
-
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (p *ParsingJob) SetStatus(status ParsingJobStatus) {
 	p.Status = status
 	p.require(parsingJobFieldStatus)
+}
+
+// SetFailureReason sets the FailureReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ParsingJob) SetFailureReason(failureReason *ParsingJobFailureReason) {
+	p.FailureReason = failureReason
+	p.require(parsingJobFieldFailureReason)
 }
 
 // SetData sets the Data field and marks it as non-optional;
@@ -696,6 +700,32 @@ func (p *ParsingJob) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// Machine-readable failure reasons for parsing jobs. ℹ️ This enum is non-exhaustive.
+type ParsingJobFailureReason string
+
+const (
+	ParsingJobFailureReasonInvalidInput ParsingJobFailureReason = "invalid_input"
+	ParsingJobFailureReasonLowQuality   ParsingJobFailureReason = "low_quality"
+	ParsingJobFailureReasonNotEnglish   ParsingJobFailureReason = "not_english"
+)
+
+func NewParsingJobFailureReasonFromString(s string) (ParsingJobFailureReason, error) {
+	switch s {
+	case "invalid_input":
+		return ParsingJobFailureReasonInvalidInput, nil
+	case "low_quality":
+		return ParsingJobFailureReasonLowQuality, nil
+	case "not_english":
+		return ParsingJobFailureReasonNotEnglish, nil
+	}
+	var t ParsingJobFailureReason
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p ParsingJobFailureReason) Ptr() *ParsingJobFailureReason {
+	return &p
+}
+
 // ℹ️ This enum is non-exhaustive.
 type ParsingJobStatus string
 
@@ -729,20 +759,23 @@ var (
 	resultMetadataFieldPatientFirstName = big.NewInt(1 << 0)
 	resultMetadataFieldPatientLastName  = big.NewInt(1 << 1)
 	resultMetadataFieldDob              = big.NewInt(1 << 2)
-	resultMetadataFieldLabName          = big.NewInt(1 << 3)
-	resultMetadataFieldDateReported     = big.NewInt(1 << 4)
-	resultMetadataFieldDateCollected    = big.NewInt(1 << 5)
-	resultMetadataFieldSpecimenNumber   = big.NewInt(1 << 6)
+	resultMetadataFieldGender           = big.NewInt(1 << 3)
+	resultMetadataFieldLabName          = big.NewInt(1 << 4)
+	resultMetadataFieldDateReported     = big.NewInt(1 << 5)
+	resultMetadataFieldDateCollected    = big.NewInt(1 << 6)
+	resultMetadataFieldSpecimenNumber   = big.NewInt(1 << 7)
 )
 
 type ResultMetadata struct {
-	PatientFirstName string  `json:"patient_first_name" url:"patient_first_name"`
-	PatientLastName  string  `json:"patient_last_name" url:"patient_last_name"`
-	Dob              string  `json:"dob" url:"dob"`
-	LabName          string  `json:"lab_name" url:"lab_name"`
-	DateReported     *string `json:"date_reported,omitempty" url:"date_reported,omitempty"`
-	DateCollected    *string `json:"date_collected,omitempty" url:"date_collected,omitempty"`
-	SpecimenNumber   *string `json:"specimen_number,omitempty" url:"specimen_number,omitempty"`
+	PatientFirstName *string `json:"patient_first_name,omitempty" url:"patient_first_name,omitempty"`
+	PatientLastName  *string `json:"patient_last_name,omitempty" url:"patient_last_name,omitempty"`
+	Dob              *string `json:"dob,omitempty" url:"dob,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Gender         *ResultMetadataGender `json:"gender,omitempty" url:"gender,omitempty"`
+	LabName        *string               `json:"lab_name,omitempty" url:"lab_name,omitempty"`
+	DateReported   *string               `json:"date_reported,omitempty" url:"date_reported,omitempty"`
+	DateCollected  *string               `json:"date_collected,omitempty" url:"date_collected,omitempty"`
+	SpecimenNumber *string               `json:"specimen_number,omitempty" url:"specimen_number,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -751,30 +784,37 @@ type ResultMetadata struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *ResultMetadata) GetPatientFirstName() string {
+func (r *ResultMetadata) GetPatientFirstName() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.PatientFirstName
 }
 
-func (r *ResultMetadata) GetPatientLastName() string {
+func (r *ResultMetadata) GetPatientLastName() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.PatientLastName
 }
 
-func (r *ResultMetadata) GetDob() string {
+func (r *ResultMetadata) GetDob() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.Dob
 }
 
-func (r *ResultMetadata) GetLabName() string {
+func (r *ResultMetadata) GetGender() *ResultMetadataGender {
 	if r == nil {
-		return ""
+		return nil
+	}
+	return r.Gender
+}
+
+func (r *ResultMetadata) GetLabName() *string {
+	if r == nil {
+		return nil
 	}
 	return r.LabName
 }
@@ -813,28 +853,35 @@ func (r *ResultMetadata) require(field *big.Int) {
 
 // SetPatientFirstName sets the PatientFirstName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetPatientFirstName(patientFirstName string) {
+func (r *ResultMetadata) SetPatientFirstName(patientFirstName *string) {
 	r.PatientFirstName = patientFirstName
 	r.require(resultMetadataFieldPatientFirstName)
 }
 
 // SetPatientLastName sets the PatientLastName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetPatientLastName(patientLastName string) {
+func (r *ResultMetadata) SetPatientLastName(patientLastName *string) {
 	r.PatientLastName = patientLastName
 	r.require(resultMetadataFieldPatientLastName)
 }
 
 // SetDob sets the Dob field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetDob(dob string) {
+func (r *ResultMetadata) SetDob(dob *string) {
 	r.Dob = dob
 	r.require(resultMetadataFieldDob)
 }
 
+// SetGender sets the Gender field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResultMetadata) SetGender(gender *ResultMetadataGender) {
+	r.Gender = gender
+	r.require(resultMetadataFieldGender)
+}
+
 // SetLabName sets the LabName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResultMetadata) SetLabName(labName string) {
+func (r *ResultMetadata) SetLabName(labName *string) {
 	r.LabName = labName
 	r.require(resultMetadataFieldLabName)
 }
@@ -897,4 +944,30 @@ func (r *ResultMetadata) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", r)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type ResultMetadataGender string
+
+const (
+	ResultMetadataGenderMale   ResultMetadataGender = "male"
+	ResultMetadataGenderFemale ResultMetadataGender = "female"
+	ResultMetadataGenderOther  ResultMetadataGender = "other"
+)
+
+func NewResultMetadataGenderFromString(s string) (ResultMetadataGender, error) {
+	switch s {
+	case "male":
+		return ResultMetadataGenderMale, nil
+	case "female":
+		return ResultMetadataGenderFemale, nil
+	case "other":
+		return ResultMetadataGenderOther, nil
+	}
+	var t ResultMetadataGender
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r ResultMetadataGender) Ptr() *ResultMetadataGender {
+	return &r
 }

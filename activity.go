@@ -103,260 +103,6 @@ func (a *ActivityGetRawRequest) SetEndDate(endDate *string) {
 }
 
 var (
-	activityV2InDbFieldTimestamp      = big.NewInt(1 << 0)
-	activityV2InDbFieldData           = big.NewInt(1 << 1)
-	activityV2InDbFieldProviderId     = big.NewInt(1 << 2)
-	activityV2InDbFieldUserId         = big.NewInt(1 << 3)
-	activityV2InDbFieldSourceId       = big.NewInt(1 << 4)
-	activityV2InDbFieldPriorityId     = big.NewInt(1 << 5)
-	activityV2InDbFieldId             = big.NewInt(1 << 6)
-	activityV2InDbFieldSource         = big.NewInt(1 << 7)
-	activityV2InDbFieldSourceDeviceId = big.NewInt(1 << 8)
-	activityV2InDbFieldCreatedAt      = big.NewInt(1 << 9)
-	activityV2InDbFieldUpdatedAt      = big.NewInt(1 << 10)
-)
-
-type ActivityV2InDb struct {
-	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
-	Data           map[string]interface{} `json:"data" url:"data"`
-	ProviderId     string                 `json:"provider_id" url:"provider_id"`
-	UserId         string                 `json:"user_id" url:"user_id"`
-	SourceId       int                    `json:"source_id" url:"source_id"`
-	PriorityId     int                    `json:"priority_id" url:"priority_id"`
-	Id             string                 `json:"id" url:"id"`
-	Source         *ClientFacingProvider  `json:"source" url:"source"`
-	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
-	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
-	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ActivityV2InDb) GetTimestamp() time.Time {
-	if a == nil {
-		return time.Time{}
-	}
-	return a.Timestamp
-}
-
-func (a *ActivityV2InDb) GetData() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.Data
-}
-
-func (a *ActivityV2InDb) GetProviderId() string {
-	if a == nil {
-		return ""
-	}
-	return a.ProviderId
-}
-
-func (a *ActivityV2InDb) GetUserId() string {
-	if a == nil {
-		return ""
-	}
-	return a.UserId
-}
-
-func (a *ActivityV2InDb) GetSourceId() int {
-	if a == nil {
-		return 0
-	}
-	return a.SourceId
-}
-
-func (a *ActivityV2InDb) GetPriorityId() int {
-	if a == nil {
-		return 0
-	}
-	return a.PriorityId
-}
-
-func (a *ActivityV2InDb) GetId() string {
-	if a == nil {
-		return ""
-	}
-	return a.Id
-}
-
-func (a *ActivityV2InDb) GetSource() *ClientFacingProvider {
-	if a == nil {
-		return nil
-	}
-	return a.Source
-}
-
-func (a *ActivityV2InDb) GetSourceDeviceId() *string {
-	if a == nil {
-		return nil
-	}
-	return a.SourceDeviceId
-}
-
-func (a *ActivityV2InDb) GetCreatedAt() *time.Time {
-	if a == nil {
-		return nil
-	}
-	return a.CreatedAt
-}
-
-func (a *ActivityV2InDb) GetUpdatedAt() *time.Time {
-	if a == nil {
-		return nil
-	}
-	return a.UpdatedAt
-}
-
-func (a *ActivityV2InDb) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *ActivityV2InDb) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetTimestamp sets the Timestamp field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetTimestamp(timestamp time.Time) {
-	a.Timestamp = timestamp
-	a.require(activityV2InDbFieldTimestamp)
-}
-
-// SetData sets the Data field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetData(data map[string]interface{}) {
-	a.Data = data
-	a.require(activityV2InDbFieldData)
-}
-
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetProviderId(providerId string) {
-	a.ProviderId = providerId
-	a.require(activityV2InDbFieldProviderId)
-}
-
-// SetUserId sets the UserId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetUserId(userId string) {
-	a.UserId = userId
-	a.require(activityV2InDbFieldUserId)
-}
-
-// SetSourceId sets the SourceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetSourceId(sourceId int) {
-	a.SourceId = sourceId
-	a.require(activityV2InDbFieldSourceId)
-}
-
-// SetPriorityId sets the PriorityId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetPriorityId(priorityId int) {
-	a.PriorityId = priorityId
-	a.require(activityV2InDbFieldPriorityId)
-}
-
-// SetId sets the Id field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetId(id string) {
-	a.Id = id
-	a.require(activityV2InDbFieldId)
-}
-
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetSource(source *ClientFacingProvider) {
-	a.Source = source
-	a.require(activityV2InDbFieldSource)
-}
-
-// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetSourceDeviceId(sourceDeviceId *string) {
-	a.SourceDeviceId = sourceDeviceId
-	a.require(activityV2InDbFieldSourceDeviceId)
-}
-
-// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetCreatedAt(createdAt *time.Time) {
-	a.CreatedAt = createdAt
-	a.require(activityV2InDbFieldCreatedAt)
-}
-
-// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ActivityV2InDb) SetUpdatedAt(updatedAt *time.Time) {
-	a.UpdatedAt = updatedAt
-	a.require(activityV2InDbFieldUpdatedAt)
-}
-
-func (a *ActivityV2InDb) UnmarshalJSON(data []byte) error {
-	type embed ActivityV2InDb
-	var unmarshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed: embed(*a),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*a = ActivityV2InDb(unmarshaler.embed)
-	a.Timestamp = unmarshaler.Timestamp.Time()
-	a.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	a.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ActivityV2InDb) MarshalJSON() ([]byte, error) {
-	type embed ActivityV2InDb
-	var marshaler = struct {
-		embed
-		Timestamp *internal.DateTime `json:"timestamp"`
-		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
-		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
-	}{
-		embed:     embed(*a),
-		Timestamp: internal.NewDateTime(a.Timestamp),
-		CreatedAt: internal.NewOptionalDateTime(a.CreatedAt),
-		UpdatedAt: internal.NewOptionalDateTime(a.UpdatedAt),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ActivityV2InDb) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
 	clientActivityResponseFieldActivity = big.NewInt(1 << 0)
 )
 
@@ -621,13 +367,6 @@ func (c *ClientFacingActivity) GetHeartRate() *ClientFacingHeartRate {
 		return nil
 	}
 	return c.HeartRate
-}
-
-func (c *ClientFacingActivity) GetWheelchairUse() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.WheelchairUse
 }
 
 func (c *ClientFacingActivity) GetWheelchairPush() *int {
@@ -1011,11 +750,31 @@ func (c *ClientFacingHeartRate) String() string {
 }
 
 var (
-	rawActivityFieldActivity = big.NewInt(1 << 0)
+	rawActivityFieldTimestamp      = big.NewInt(1 << 0)
+	rawActivityFieldData           = big.NewInt(1 << 1)
+	rawActivityFieldUserId         = big.NewInt(1 << 2)
+	rawActivityFieldProviderId     = big.NewInt(1 << 3)
+	rawActivityFieldSourceId       = big.NewInt(1 << 4)
+	rawActivityFieldPriorityId     = big.NewInt(1 << 5)
+	rawActivityFieldId             = big.NewInt(1 << 6)
+	rawActivityFieldSourceDeviceId = big.NewInt(1 << 7)
+	rawActivityFieldCreatedAt      = big.NewInt(1 << 8)
+	rawActivityFieldUpdatedAt      = big.NewInt(1 << 9)
+	rawActivityFieldSource         = big.NewInt(1 << 10)
 )
 
 type RawActivity struct {
-	Activity []*ActivityV2InDb `json:"activity" url:"activity"`
+	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
+	Data           map[string]interface{} `json:"data" url:"data"`
+	UserId         string                 `json:"user_id" url:"user_id"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
+	SourceId       int                    `json:"source_id" url:"source_id"`
+	PriorityId     int                    `json:"priority_id" url:"priority_id"`
+	Id             string                 `json:"id" url:"id"`
+	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
+	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
+	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Source         *ClientFacingProvider  `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1024,11 +783,81 @@ type RawActivity struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RawActivity) GetActivity() []*ActivityV2InDb {
+func (r *RawActivity) GetTimestamp() time.Time {
+	if r == nil {
+		return time.Time{}
+	}
+	return r.Timestamp
+}
+
+func (r *RawActivity) GetData() map[string]interface{} {
 	if r == nil {
 		return nil
 	}
-	return r.Activity
+	return r.Data
+}
+
+func (r *RawActivity) GetUserId() string {
+	if r == nil {
+		return ""
+	}
+	return r.UserId
+}
+
+func (r *RawActivity) GetProviderId() string {
+	if r == nil {
+		return ""
+	}
+	return r.ProviderId
+}
+
+func (r *RawActivity) GetSourceId() int {
+	if r == nil {
+		return 0
+	}
+	return r.SourceId
+}
+
+func (r *RawActivity) GetPriorityId() int {
+	if r == nil {
+		return 0
+	}
+	return r.PriorityId
+}
+
+func (r *RawActivity) GetId() string {
+	if r == nil {
+		return ""
+	}
+	return r.Id
+}
+
+func (r *RawActivity) GetSourceDeviceId() *string {
+	if r == nil {
+		return nil
+	}
+	return r.SourceDeviceId
+}
+
+func (r *RawActivity) GetCreatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.CreatedAt
+}
+
+func (r *RawActivity) GetUpdatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.UpdatedAt
+}
+
+func (r *RawActivity) GetSource() *ClientFacingProvider {
+	if r == nil {
+		return nil
+	}
+	return r.Source
 }
 
 func (r *RawActivity) GetExtraProperties() map[string]interface{} {
@@ -1042,20 +871,100 @@ func (r *RawActivity) require(field *big.Int) {
 	r.explicitFields.Or(r.explicitFields, field)
 }
 
-// SetActivity sets the Activity field and marks it as non-optional;
+// SetTimestamp sets the Timestamp field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RawActivity) SetActivity(activity []*ActivityV2InDb) {
-	r.Activity = activity
-	r.require(rawActivityFieldActivity)
+func (r *RawActivity) SetTimestamp(timestamp time.Time) {
+	r.Timestamp = timestamp
+	r.require(rawActivityFieldTimestamp)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetData(data map[string]interface{}) {
+	r.Data = data
+	r.require(rawActivityFieldData)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetUserId(userId string) {
+	r.UserId = userId
+	r.require(rawActivityFieldUserId)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetProviderId(providerId string) {
+	r.ProviderId = providerId
+	r.require(rawActivityFieldProviderId)
+}
+
+// SetSourceId sets the SourceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetSourceId(sourceId int) {
+	r.SourceId = sourceId
+	r.require(rawActivityFieldSourceId)
+}
+
+// SetPriorityId sets the PriorityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetPriorityId(priorityId int) {
+	r.PriorityId = priorityId
+	r.require(rawActivityFieldPriorityId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetId(id string) {
+	r.Id = id
+	r.require(rawActivityFieldId)
+}
+
+// SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetSourceDeviceId(sourceDeviceId *string) {
+	r.SourceDeviceId = sourceDeviceId
+	r.require(rawActivityFieldSourceDeviceId)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetCreatedAt(createdAt *time.Time) {
+	r.CreatedAt = createdAt
+	r.require(rawActivityFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetUpdatedAt(updatedAt *time.Time) {
+	r.UpdatedAt = updatedAt
+	r.require(rawActivityFieldUpdatedAt)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivity) SetSource(source *ClientFacingProvider) {
+	r.Source = source
+	r.require(rawActivityFieldSource)
 }
 
 func (r *RawActivity) UnmarshalJSON(data []byte) error {
-	type unmarshaler RawActivity
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed RawActivity
+	var unmarshaler = struct {
+		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*r = RawActivity(value)
+	*r = RawActivity(unmarshaler.embed)
+	r.Timestamp = unmarshaler.Timestamp.Time()
+	r.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	r.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
@@ -1069,6 +978,90 @@ func (r *RawActivity) MarshalJSON() ([]byte, error) {
 	type embed RawActivity
 	var marshaler = struct {
 		embed
+		Timestamp *internal.DateTime `json:"timestamp"`
+		CreatedAt *internal.DateTime `json:"created_at,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updated_at,omitempty"`
+	}{
+		embed:     embed(*r),
+		Timestamp: internal.NewDateTime(r.Timestamp),
+		CreatedAt: internal.NewOptionalDateTime(r.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(r.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RawActivity) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	rawActivityResponseFieldActivity = big.NewInt(1 << 0)
+)
+
+type RawActivityResponse struct {
+	Activity []*RawActivity `json:"activity" url:"activity"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RawActivityResponse) GetActivity() []*RawActivity {
+	if r == nil {
+		return nil
+	}
+	return r.Activity
+}
+
+func (r *RawActivityResponse) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RawActivityResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetActivity sets the Activity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RawActivityResponse) SetActivity(activity []*RawActivity) {
+	r.Activity = activity
+	r.require(rawActivityResponseFieldActivity)
+}
+
+func (r *RawActivityResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RawActivityResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RawActivityResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RawActivityResponse) MarshalJSON() ([]byte, error) {
+	type embed RawActivityResponse
+	var marshaler = struct {
+		embed
 	}{
 		embed: embed(*r),
 	}
@@ -1076,7 +1069,7 @@ func (r *RawActivity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (r *RawActivity) String() string {
+func (r *RawActivityResponse) String() string {
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
