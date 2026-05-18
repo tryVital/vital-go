@@ -51,7 +51,8 @@ type ClientFacingProviderDetailed struct {
 	// Description of source of information
 	Description string `json:"description" url:"description"`
 	// URL for source logo
-	Logo               *string                `json:"logo,omitempty" url:"logo,omitempty"`
+	Logo *string `json:"logo,omitempty" url:"logo,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
 	AuthType           *SourceAuthType        `json:"auth_type,omitempty" url:"auth_type,omitempty"`
 	SupportedResources []ClientFacingResource `json:"supported_resources,omitempty" url:"supported_resources,omitempty"`
 
