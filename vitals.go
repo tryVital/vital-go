@@ -9648,6 +9648,9 @@ var (
 	clientFacingInsulinInjectionSampleFieldStart          = big.NewInt(1 << 4)
 	clientFacingInsulinInjectionSampleFieldEnd            = big.NewInt(1 << 5)
 	clientFacingInsulinInjectionSampleFieldValue          = big.NewInt(1 << 6)
+	clientFacingInsulinInjectionSampleFieldDeliveryMode   = big.NewInt(1 << 7)
+	clientFacingInsulinInjectionSampleFieldDeliveryForm   = big.NewInt(1 << 8)
+	clientFacingInsulinInjectionSampleFieldBolusPurpose   = big.NewInt(1 << 9)
 )
 
 type ClientFacingInsulinInjectionSample struct {
@@ -9655,7 +9658,7 @@ type ClientFacingInsulinInjectionSample struct {
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
 	// Time zone UTC offset in seconds. Positive offset indicates east of UTC; negative offset indicates west of UTC; and null indicates the time zone information is unavailable at source.
 	TimezoneOffset *int `json:"timezone_offset,omitempty" url:"timezone_offset,omitempty"`
-	// The type of insulin injection. ℹ️ This enum is non-exhaustive.
+	// The insulin formulation type. ℹ️ This enum is non-exhaustive.
 	Type ClientFacingInsulinInjectionSampleType `json:"type" url:"type"`
 	// Depracated. The start time (inclusive) of the interval.
 	Timestamp time.Time `json:"timestamp" url:"timestamp"`
@@ -9665,6 +9668,12 @@ type ClientFacingInsulinInjectionSample struct {
 	End time.Time `json:"end" url:"end"`
 	// The recorded value for the interval.
 	Value float64 `json:"value" url:"value"`
+	// How the insulin was delivered. ℹ️ This enum is non-exhaustive.
+	DeliveryMode *ClientFacingInsulinInjectionSampleDeliveryMode `json:"delivery_mode,omitempty" url:"delivery_mode,omitempty"`
+	// For bolus deliveries, whether the dose was standard or extended. ℹ️ This enum is non-exhaustive.
+	DeliveryForm *ClientFacingInsulinInjectionSampleDeliveryForm `json:"delivery_form,omitempty" url:"delivery_form,omitempty"`
+	// For bolus deliveries, what the bolus was intended for. ℹ️ This enum is non-exhaustive.
+	BolusPurpose *ClientFacingInsulinInjectionSampleBolusPurpose `json:"bolus_purpose,omitempty" url:"bolus_purpose,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9721,6 +9730,27 @@ func (c *ClientFacingInsulinInjectionSample) GetValue() float64 {
 		return 0
 	}
 	return c.Value
+}
+
+func (c *ClientFacingInsulinInjectionSample) GetDeliveryMode() *ClientFacingInsulinInjectionSampleDeliveryMode {
+	if c == nil {
+		return nil
+	}
+	return c.DeliveryMode
+}
+
+func (c *ClientFacingInsulinInjectionSample) GetDeliveryForm() *ClientFacingInsulinInjectionSampleDeliveryForm {
+	if c == nil {
+		return nil
+	}
+	return c.DeliveryForm
+}
+
+func (c *ClientFacingInsulinInjectionSample) GetBolusPurpose() *ClientFacingInsulinInjectionSampleBolusPurpose {
+	if c == nil {
+		return nil
+	}
+	return c.BolusPurpose
 }
 
 func (c *ClientFacingInsulinInjectionSample) Unit() string {
@@ -9787,6 +9817,27 @@ func (c *ClientFacingInsulinInjectionSample) SetValue(value float64) {
 	c.require(clientFacingInsulinInjectionSampleFieldValue)
 }
 
+// SetDeliveryMode sets the DeliveryMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingInsulinInjectionSample) SetDeliveryMode(deliveryMode *ClientFacingInsulinInjectionSampleDeliveryMode) {
+	c.DeliveryMode = deliveryMode
+	c.require(clientFacingInsulinInjectionSampleFieldDeliveryMode)
+}
+
+// SetDeliveryForm sets the DeliveryForm field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingInsulinInjectionSample) SetDeliveryForm(deliveryForm *ClientFacingInsulinInjectionSampleDeliveryForm) {
+	c.DeliveryForm = deliveryForm
+	c.require(clientFacingInsulinInjectionSampleFieldDeliveryForm)
+}
+
+// SetBolusPurpose sets the BolusPurpose field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ClientFacingInsulinInjectionSample) SetBolusPurpose(bolusPurpose *ClientFacingInsulinInjectionSampleBolusPurpose) {
+	c.BolusPurpose = bolusPurpose
+	c.require(clientFacingInsulinInjectionSampleFieldBolusPurpose)
+}
+
 func (c *ClientFacingInsulinInjectionSample) UnmarshalJSON(data []byte) error {
 	type embed ClientFacingInsulinInjectionSample
 	var unmarshaler = struct {
@@ -9849,7 +9900,79 @@ func (c *ClientFacingInsulinInjectionSample) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// The type of insulin injection. ℹ️ This enum is non-exhaustive.
+type ClientFacingInsulinInjectionSampleBolusPurpose string
+
+const (
+	ClientFacingInsulinInjectionSampleBolusPurposeMeal       ClientFacingInsulinInjectionSampleBolusPurpose = "meal"
+	ClientFacingInsulinInjectionSampleBolusPurposeCorrection ClientFacingInsulinInjectionSampleBolusPurpose = "correction"
+	ClientFacingInsulinInjectionSampleBolusPurposeMixed      ClientFacingInsulinInjectionSampleBolusPurpose = "mixed"
+	ClientFacingInsulinInjectionSampleBolusPurposeUnknown    ClientFacingInsulinInjectionSampleBolusPurpose = "unknown"
+)
+
+func NewClientFacingInsulinInjectionSampleBolusPurposeFromString(s string) (ClientFacingInsulinInjectionSampleBolusPurpose, error) {
+	switch s {
+	case "meal":
+		return ClientFacingInsulinInjectionSampleBolusPurposeMeal, nil
+	case "correction":
+		return ClientFacingInsulinInjectionSampleBolusPurposeCorrection, nil
+	case "mixed":
+		return ClientFacingInsulinInjectionSampleBolusPurposeMixed, nil
+	case "unknown":
+		return ClientFacingInsulinInjectionSampleBolusPurposeUnknown, nil
+	}
+	var t ClientFacingInsulinInjectionSampleBolusPurpose
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingInsulinInjectionSampleBolusPurpose) Ptr() *ClientFacingInsulinInjectionSampleBolusPurpose {
+	return &c
+}
+
+type ClientFacingInsulinInjectionSampleDeliveryForm string
+
+const (
+	ClientFacingInsulinInjectionSampleDeliveryFormStandard ClientFacingInsulinInjectionSampleDeliveryForm = "standard"
+	ClientFacingInsulinInjectionSampleDeliveryFormExtended ClientFacingInsulinInjectionSampleDeliveryForm = "extended"
+)
+
+func NewClientFacingInsulinInjectionSampleDeliveryFormFromString(s string) (ClientFacingInsulinInjectionSampleDeliveryForm, error) {
+	switch s {
+	case "standard":
+		return ClientFacingInsulinInjectionSampleDeliveryFormStandard, nil
+	case "extended":
+		return ClientFacingInsulinInjectionSampleDeliveryFormExtended, nil
+	}
+	var t ClientFacingInsulinInjectionSampleDeliveryForm
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingInsulinInjectionSampleDeliveryForm) Ptr() *ClientFacingInsulinInjectionSampleDeliveryForm {
+	return &c
+}
+
+type ClientFacingInsulinInjectionSampleDeliveryMode string
+
+const (
+	ClientFacingInsulinInjectionSampleDeliveryModeBasal ClientFacingInsulinInjectionSampleDeliveryMode = "basal"
+	ClientFacingInsulinInjectionSampleDeliveryModeBolus ClientFacingInsulinInjectionSampleDeliveryMode = "bolus"
+)
+
+func NewClientFacingInsulinInjectionSampleDeliveryModeFromString(s string) (ClientFacingInsulinInjectionSampleDeliveryMode, error) {
+	switch s {
+	case "basal":
+		return ClientFacingInsulinInjectionSampleDeliveryModeBasal, nil
+	case "bolus":
+		return ClientFacingInsulinInjectionSampleDeliveryModeBolus, nil
+	}
+	var t ClientFacingInsulinInjectionSampleDeliveryMode
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ClientFacingInsulinInjectionSampleDeliveryMode) Ptr() *ClientFacingInsulinInjectionSampleDeliveryMode {
+	return &c
+}
+
+// The insulin formulation type. ℹ️ This enum is non-exhaustive.
 type ClientFacingInsulinInjectionSampleType string
 
 const (

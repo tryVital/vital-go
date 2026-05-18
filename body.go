@@ -105,31 +105,31 @@ func (b *BodyGetRawRequest) SetEndDate(endDate *string) {
 var (
 	bodyV2InDbFieldTimestamp      = big.NewInt(1 << 0)
 	bodyV2InDbFieldData           = big.NewInt(1 << 1)
-	bodyV2InDbFieldProviderId     = big.NewInt(1 << 2)
-	bodyV2InDbFieldUserId         = big.NewInt(1 << 3)
+	bodyV2InDbFieldUserId         = big.NewInt(1 << 2)
+	bodyV2InDbFieldProviderId     = big.NewInt(1 << 3)
 	bodyV2InDbFieldSourceId       = big.NewInt(1 << 4)
 	bodyV2InDbFieldPriorityId     = big.NewInt(1 << 5)
 	bodyV2InDbFieldId             = big.NewInt(1 << 6)
-	bodyV2InDbFieldSource         = big.NewInt(1 << 7)
-	bodyV2InDbFieldPriority       = big.NewInt(1 << 8)
-	bodyV2InDbFieldSourceDeviceId = big.NewInt(1 << 9)
-	bodyV2InDbFieldCreatedAt      = big.NewInt(1 << 10)
-	bodyV2InDbFieldUpdatedAt      = big.NewInt(1 << 11)
+	bodyV2InDbFieldSourceDeviceId = big.NewInt(1 << 7)
+	bodyV2InDbFieldCreatedAt      = big.NewInt(1 << 8)
+	bodyV2InDbFieldUpdatedAt      = big.NewInt(1 << 9)
+	bodyV2InDbFieldPriority       = big.NewInt(1 << 10)
+	bodyV2InDbFieldSource         = big.NewInt(1 << 11)
 )
 
 type BodyV2InDb struct {
 	Timestamp      time.Time              `json:"timestamp" url:"timestamp"`
 	Data           map[string]interface{} `json:"data" url:"data"`
-	ProviderId     string                 `json:"provider_id" url:"provider_id"`
 	UserId         string                 `json:"user_id" url:"user_id"`
+	ProviderId     string                 `json:"provider_id" url:"provider_id"`
 	SourceId       int                    `json:"source_id" url:"source_id"`
 	PriorityId     *int                   `json:"priority_id,omitempty" url:"priority_id,omitempty"`
 	Id             string                 `json:"id" url:"id"`
-	Source         *ClientFacingProvider  `json:"source,omitempty" url:"source,omitempty"`
-	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
 	SourceDeviceId *string                `json:"source_device_id,omitempty" url:"source_device_id,omitempty"`
 	CreatedAt      *time.Time             `json:"created_at,omitempty" url:"created_at,omitempty"`
 	UpdatedAt      *time.Time             `json:"updated_at,omitempty" url:"updated_at,omitempty"`
+	Priority       *int                   `json:"priority,omitempty" url:"priority,omitempty"`
+	Source         *ClientFacingProvider  `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -152,18 +152,18 @@ func (b *BodyV2InDb) GetData() map[string]interface{} {
 	return b.Data
 }
 
-func (b *BodyV2InDb) GetProviderId() string {
-	if b == nil {
-		return ""
-	}
-	return b.ProviderId
-}
-
 func (b *BodyV2InDb) GetUserId() string {
 	if b == nil {
 		return ""
 	}
 	return b.UserId
+}
+
+func (b *BodyV2InDb) GetProviderId() string {
+	if b == nil {
+		return ""
+	}
+	return b.ProviderId
 }
 
 func (b *BodyV2InDb) GetSourceId() int {
@@ -187,20 +187,6 @@ func (b *BodyV2InDb) GetId() string {
 	return b.Id
 }
 
-func (b *BodyV2InDb) GetSource() *ClientFacingProvider {
-	if b == nil {
-		return nil
-	}
-	return b.Source
-}
-
-func (b *BodyV2InDb) GetPriority() *int {
-	if b == nil {
-		return nil
-	}
-	return b.Priority
-}
-
 func (b *BodyV2InDb) GetSourceDeviceId() *string {
 	if b == nil {
 		return nil
@@ -220,6 +206,20 @@ func (b *BodyV2InDb) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return b.UpdatedAt
+}
+
+func (b *BodyV2InDb) GetPriority() *int {
+	if b == nil {
+		return nil
+	}
+	return b.Priority
+}
+
+func (b *BodyV2InDb) GetSource() *ClientFacingProvider {
+	if b == nil {
+		return nil
+	}
+	return b.Source
 }
 
 func (b *BodyV2InDb) GetExtraProperties() map[string]interface{} {
@@ -247,18 +247,18 @@ func (b *BodyV2InDb) SetData(data map[string]interface{}) {
 	b.require(bodyV2InDbFieldData)
 }
 
-// SetProviderId sets the ProviderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetProviderId(providerId string) {
-	b.ProviderId = providerId
-	b.require(bodyV2InDbFieldProviderId)
-}
-
 // SetUserId sets the UserId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (b *BodyV2InDb) SetUserId(userId string) {
 	b.UserId = userId
 	b.require(bodyV2InDbFieldUserId)
+}
+
+// SetProviderId sets the ProviderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BodyV2InDb) SetProviderId(providerId string) {
+	b.ProviderId = providerId
+	b.require(bodyV2InDbFieldProviderId)
 }
 
 // SetSourceId sets the SourceId field and marks it as non-optional;
@@ -282,20 +282,6 @@ func (b *BodyV2InDb) SetId(id string) {
 	b.require(bodyV2InDbFieldId)
 }
 
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetSource(source *ClientFacingProvider) {
-	b.Source = source
-	b.require(bodyV2InDbFieldSource)
-}
-
-// SetPriority sets the Priority field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BodyV2InDb) SetPriority(priority *int) {
-	b.Priority = priority
-	b.require(bodyV2InDbFieldPriority)
-}
-
 // SetSourceDeviceId sets the SourceDeviceId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (b *BodyV2InDb) SetSourceDeviceId(sourceDeviceId *string) {
@@ -315,6 +301,20 @@ func (b *BodyV2InDb) SetCreatedAt(createdAt *time.Time) {
 func (b *BodyV2InDb) SetUpdatedAt(updatedAt *time.Time) {
 	b.UpdatedAt = updatedAt
 	b.require(bodyV2InDbFieldUpdatedAt)
+}
+
+// SetPriority sets the Priority field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BodyV2InDb) SetPriority(priority *int) {
+	b.Priority = priority
+	b.require(bodyV2InDbFieldPriority)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BodyV2InDb) SetSource(source *ClientFacingProvider) {
+	b.Source = source
+	b.require(bodyV2InDbFieldSource)
 }
 
 func (b *BodyV2InDb) UnmarshalJSON(data []byte) error {
