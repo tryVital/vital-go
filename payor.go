@@ -17,8 +17,9 @@ var (
 )
 
 type CreatePayorBody struct {
-	Name            string                     `json:"name" url:"-"`
-	Address         *Address                   `json:"address,omitempty" url:"-"`
+	Name    string   `json:"name" url:"-"`
+	Address *Address `json:"address" url:"-"`
+	// ℹ️ This enum is non-exhaustive.
 	Provider        *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`
 	ProviderPayorId *string                    `json:"provider_payor_id,omitempty" url:"-"`
 
@@ -61,6 +62,27 @@ func (c *CreatePayorBody) SetProviderPayorId(providerPayorId *string) {
 	c.require(createPayorBodyFieldProviderPayorId)
 }
 
+func (c *CreatePayorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePayorBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreatePayorBody(body)
+	return nil
+}
+
+func (c *CreatePayorBody) MarshalJSON() ([]byte, error) {
+	type embed CreatePayorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	clientFacingPayorFieldPayorCode  = big.NewInt(1 << 0)
 	clientFacingPayorFieldName       = big.NewInt(1 << 1)
@@ -78,7 +100,7 @@ type ClientFacingPayor struct {
 	Aliases []string `json:"aliases" url:"aliases"`
 	// Insurance business address returned for the insurance information.
 	OrgAddress *Address `json:"org_address" url:"org_address"`
-	// The source of the payor, can be one of (platform, team).
+	// The source of the payor, can be one of (platform, team). ℹ️ This enum is non-exhaustive.
 	Source ClientFacingPayorCodeSource `json:"source" url:"source"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
