@@ -793,6 +793,7 @@ const (
 	ClientFacingMenstrualCycleSourceTypeCuff            ClientFacingMenstrualCycleSourceType = "cuff"
 	ClientFacingMenstrualCycleSourceTypeManualScan      ClientFacingMenstrualCycleSourceType = "manual_scan"
 	ClientFacingMenstrualCycleSourceTypeAutomatic       ClientFacingMenstrualCycleSourceType = "automatic"
+	ClientFacingMenstrualCycleSourceTypeInsulinPump     ClientFacingMenstrualCycleSourceType = "insulin_pump"
 	ClientFacingMenstrualCycleSourceTypeScale           ClientFacingMenstrualCycleSourceType = "scale"
 	ClientFacingMenstrualCycleSourceTypeChestStrap      ClientFacingMenstrualCycleSourceType = "chest_strap"
 	ClientFacingMenstrualCycleSourceTypeRing            ClientFacingMenstrualCycleSourceType = "ring"
@@ -821,6 +822,8 @@ func NewClientFacingMenstrualCycleSourceTypeFromString(s string) (ClientFacingMe
 		return ClientFacingMenstrualCycleSourceTypeManualScan, nil
 	case "automatic":
 		return ClientFacingMenstrualCycleSourceTypeAutomatic, nil
+	case "insulin_pump":
+		return ClientFacingMenstrualCycleSourceTypeInsulinPump, nil
 	case "scale":
 		return ClientFacingMenstrualCycleSourceTypeScale, nil
 	case "chest_strap":
