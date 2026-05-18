@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/tryVital/vital-go/internal"
+	internal "github.com/tryVital/vital-go/v2/internal"
 	big "math/big"
 )
 
@@ -20,7 +20,7 @@ var (
 type CreateRegistrableTestkitOrderRequest struct {
 	UserId          string                         `json:"user_id" url:"-"`
 	LabTestId       string                         `json:"lab_test_id" url:"-"`
-	ShippingDetails *ShippingAddressWithValidation `json:"shipping_details,omitempty" url:"-"`
+	ShippingDetails *ShippingAddressWithValidation `json:"shipping_details" url:"-"`
 	Passthrough     *string                        `json:"passthrough,omitempty" url:"-"`
 	LabAccountId    *string                        `json:"lab_account_id,omitempty" url:"-"`
 
@@ -70,6 +70,27 @@ func (c *CreateRegistrableTestkitOrderRequest) SetLabAccountId(labAccountId *str
 	c.require(createRegistrableTestkitOrderRequestFieldLabAccountId)
 }
 
+func (c *CreateRegistrableTestkitOrderRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateRegistrableTestkitOrderRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateRegistrableTestkitOrderRequest(body)
+	return nil
+}
+
+func (c *CreateRegistrableTestkitOrderRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateRegistrableTestkitOrderRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	registerTestkitRequestFieldUserId          = big.NewInt(1 << 0)
 	registerTestkitRequestFieldSampleId        = big.NewInt(1 << 1)
@@ -84,8 +105,8 @@ type RegisterTestkitRequest struct {
 	// The user ID of the patient.
 	UserId          *string                       `json:"user_id,omitempty" url:"-"`
 	SampleId        string                        `json:"sample_id" url:"-"`
-	PatientDetails  *PatientDetailsWithValidation `json:"patient_details,omitempty" url:"-"`
-	PatientAddress  *PatientAddressWithValidation `json:"patient_address,omitempty" url:"-"`
+	PatientDetails  *PatientDetailsWithValidation `json:"patient_details" url:"-"`
+	PatientAddress  *PatientAddressWithValidation `json:"patient_address" url:"-"`
 	Physician       *PhysicianCreateRequestBase   `json:"physician,omitempty" url:"-"`
 	HealthInsurance *HealthInsuranceCreateRequest `json:"health_insurance,omitempty" url:"-"`
 	Consents        []*Consent                    `json:"consents,omitempty" url:"-"`
@@ -148,6 +169,27 @@ func (r *RegisterTestkitRequest) SetHealthInsurance(healthInsurance *HealthInsur
 func (r *RegisterTestkitRequest) SetConsents(consents []*Consent) {
 	r.Consents = consents
 	r.require(registerTestkitRequestFieldConsents)
+}
+
+func (r *RegisterTestkitRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler RegisterTestkitRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RegisterTestkitRequest(body)
+	return nil
+}
+
+func (r *RegisterTestkitRequest) MarshalJSON() ([]byte, error) {
+	type embed RegisterTestkitRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
