@@ -378,8 +378,9 @@ var (
 )
 
 type LastAttempt struct {
-	Timestamp time.Time     `json:"timestamp" url:"timestamp"`
-	Status    AttemptStatus `json:"status" url:"status"`
+	Timestamp time.Time `json:"timestamp" url:"timestamp"`
+	// ℹ️ This enum is non-exhaustive.
+	Status AttemptStatus `json:"status" url:"status"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -486,13 +487,15 @@ var (
 )
 
 type SingleHistoricalPullStatistics struct {
-	Status       HistoricalPullStatus                        `json:"status" url:"status"`
-	RangeStart   *time.Time                                  `json:"range_start,omitempty" url:"range_start,omitempty"`
-	RangeEnd     *time.Time                                  `json:"range_end,omitempty" url:"range_end,omitempty"`
-	Timeline     *HistoricalPullTimeline                     `json:"timeline" url:"timeline"`
-	DaysWithData *int                                        `json:"days_with_data,omitempty" url:"days_with_data,omitempty"`
-	Release      string                                      `json:"release" url:"release"`
-	TraceId      *string                                     `json:"trace_id,omitempty" url:"trace_id,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
+	Status       HistoricalPullStatus    `json:"status" url:"status"`
+	RangeStart   *time.Time              `json:"range_start,omitempty" url:"range_start,omitempty"`
+	RangeEnd     *time.Time              `json:"range_end,omitempty" url:"range_end,omitempty"`
+	Timeline     *HistoricalPullTimeline `json:"timeline" url:"timeline"`
+	DaysWithData *int                    `json:"days_with_data,omitempty" url:"days_with_data,omitempty"`
+	Release      string                  `json:"release" url:"release"`
+	TraceId      *string                 `json:"trace_id,omitempty" url:"trace_id,omitempty"`
+	// ℹ️ This enum is non-exhaustive.
 	ErrorDetails *SingleHistoricalPullStatisticsErrorDetails `json:"error_details,omitempty" url:"error_details,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -676,6 +679,7 @@ func (s *SingleHistoricalPullStatistics) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// ℹ️ This enum is non-exhaustive.
 type SingleHistoricalPullStatisticsErrorDetails struct {
 	HistoricalPullRetriableErrorDetails    HistoricalPullRetriableErrorDetails
 	HistoricalPullNonRetriableErrorDetails HistoricalPullNonRetriableErrorDetails
