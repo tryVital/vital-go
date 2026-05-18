@@ -82,7 +82,7 @@ func (r *RawClient) Create(
 	ctx context.Context,
 	request *vitalgo.UserCreateBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingUserKey], error) {
+) (*core.Response[*vitalgo.ClientFacingUser], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingUserKey
+	var response *vitalgo.ClientFacingUser
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,7 +114,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingUserKey]{
+	return &core.Response[*vitalgo.ClientFacingUser]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

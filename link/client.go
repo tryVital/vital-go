@@ -134,22 +134,6 @@ func (c *Client) Token(
 	return response.Body, nil
 }
 
-func (c *Client) IsTokenValid(
-	ctx context.Context,
-	request *vitalgo.LinkTokenValidationRequest,
-	opts ...option.RequestOption,
-) (map[string]any, error) {
-	response, err := c.WithRawResponse.IsTokenValid(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Generate a token to invite a user of Vital mobile app to your team
 func (c *Client) CodeCreate(
 	ctx context.Context,
@@ -157,76 +141,6 @@ func (c *Client) CodeCreate(
 	opts ...option.RequestOption,
 ) (*vitalgo.VitalTokenCreatedResponse, error) {
 	response, err := c.WithRawResponse.CodeCreate(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// REQUEST_SOURCE: VITAL-LINK
-// Start link token process
-func (c *Client) StartConnect(
-	ctx context.Context,
-	request *vitalgo.BeginLinkTokenRequest,
-	opts ...option.RequestOption,
-) (map[string]any, error) {
-	response, err := c.WithRawResponse.StartConnect(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// REQUEST_SOURCE: VITAL-LINK
-// Check link token state - can be hit continuously used as heartbeat
-func (c *Client) TokenState(
-	ctx context.Context,
-	request *vitalgo.LinkTokenStateRequest,
-	opts ...option.RequestOption,
-) (map[string]any, error) {
-	response, err := c.WithRawResponse.TokenState(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Deprecated. Use `POST /v2/link/provider/email/{provider}` instead.
-func (c *Client) EmailAuth(
-	ctx context.Context,
-	request *vitalgo.EmailAuthLink,
-	opts ...option.RequestOption,
-) (any, error) {
-	response, err := c.WithRawResponse.EmailAuth(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Deprecated. Use `POST /v2/link/provider/password/{provider}` instead.
-func (c *Client) PasswordAuth(
-	ctx context.Context,
-	request *vitalgo.PasswordAuthLink,
-	opts ...option.RequestOption,
-) (any, error) {
-	response, err := c.WithRawResponse.PasswordAuth(
 		ctx,
 		request,
 		opts...,
@@ -321,24 +235,6 @@ func (c *Client) GetAllProviders(
 ) ([]*vitalgo.SourceLink, error) {
 	response, err := c.WithRawResponse.GetAllProviders(
 		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-func (c *Client) ConnectManualProvider(
-	ctx context.Context,
-	provider *vitalgo.ManualProviders,
-	request *vitalgo.ManualConnectionData,
-	opts ...option.RequestOption,
-) (map[string]bool, error) {
-	response, err := c.WithRawResponse.ConnectManualProvider(
-		ctx,
-		provider,
 		request,
 		opts...,
 	)

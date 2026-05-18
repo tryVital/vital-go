@@ -32,23 +32,6 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Post teams.
-func (c *Client) GetLinkConfig(
-	ctx context.Context,
-	request *vitalgo.TeamGetLinkConfigRequest,
-	opts ...option.RequestOption,
-) (map[string]any, error) {
-	response, err := c.WithRawResponse.GetLinkConfig(
-		ctx,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Get team.
 func (c *Client) Get(
 	ctx context.Context,
