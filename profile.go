@@ -123,13 +123,6 @@ func (c *ClientFacingProfile) GetBirthDate() *string {
 	return c.BirthDate
 }
 
-func (c *ClientFacingProfile) GetWheelchairUse() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.WheelchairUse
-}
-
 func (c *ClientFacingProfile) GetGender() *Gender {
 	if c == nil {
 		return nil

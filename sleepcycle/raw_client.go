@@ -4,7 +4,7 @@ package sleepcycle
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.SleepCycleGetRequest,
+	request *v505.SleepCycleGetRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientSleepCycleResponse], error) {
+) (*core.Response[*v505.ClientSleepCycleResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,7 +57,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientSleepCycleResponse
+	var response *v505.ClientSleepCycleResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -69,13 +69,13 @@ func (r *RawClient) Get(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientSleepCycleResponse]{
+	return &core.Response[*v505.ClientSleepCycleResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
