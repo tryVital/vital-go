@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/tryVital/vital-go/core"
+	"github.com/tryVital/vital-go/v2/core"
 )
 
 func TestErrorDecoder(t *testing.T) {
