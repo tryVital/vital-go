@@ -4,10 +4,10 @@ package payor
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 )
 
 type Client struct {
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) CreatePayor(
 	ctx context.Context,
-	request *vitalgo.CreatePayorBody,
+	request *v505.CreatePayorBody,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingPayor, error) {
+) (*v505.ClientFacingPayor, error) {
 	response, err := c.WithRawResponse.CreatePayor(
 		ctx,
 		request,
