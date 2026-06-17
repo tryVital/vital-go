@@ -4,10 +4,10 @@ package body
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	vitalgo "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
