@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "github.com/tryVital/vital-go/internal"
+	internal "github.com/tryVital/vital-go/v2/internal"
 	big "math/big"
 )
 

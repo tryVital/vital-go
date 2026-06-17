@@ -3,7 +3,7 @@
 package option
 
 import (
-	core "github.com/tryVital/vital-go/core"
+	core "github.com/tryVital/vital-go/v2/core"
 	http "net/http"
 	url "net/url"
 )
