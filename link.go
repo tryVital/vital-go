@@ -62,6 +62,27 @@ func (b *BulkExportConnectionsBody) SetNextToken(nextToken *string) {
 	b.require(bulkExportConnectionsBodyFieldNextToken)
 }
 
+func (b *BulkExportConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkExportConnectionsBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkExportConnectionsBody(body)
+	return nil
+}
+
+func (b *BulkExportConnectionsBody) MarshalJSON() ([]byte, error) {
+	type embed BulkExportConnectionsBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	bulkImportConnectionsBodyFieldTeamId            = big.NewInt(1 << 0)
 	bulkImportConnectionsBodyFieldProvider          = big.NewInt(1 << 1)
@@ -72,7 +93,7 @@ var (
 type BulkImportConnectionsBody struct {
 	TeamId      *LinkBulkImportRequestTeamId `json:"-" url:"team_id,omitempty"`
 	Provider    OAuthProviders               `json:"provider" url:"-"`
-	Connections []*ConnectionRecipe          `json:"connections,omitempty" url:"-"`
+	Connections []*ConnectionRecipe          `json:"connections" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
 	//
 	// When `wait_for_completion` is enabled, the endpoint may respond 200 OK if the Bulk Op takes less than 20 seconds to complete.
@@ -120,6 +141,27 @@ func (b *BulkImportConnectionsBody) SetWaitForCompletion(waitForCompletion *bool
 	b.require(bulkImportConnectionsBodyFieldWaitForCompletion)
 }
 
+func (b *BulkImportConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkImportConnectionsBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkImportConnectionsBody(body)
+	return nil
+}
+
+func (b *BulkImportConnectionsBody) MarshalJSON() ([]byte, error) {
+	type embed BulkImportConnectionsBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	bulkPauseConnectionsBodyFieldTeamId   = big.NewInt(1 << 0)
 	bulkPauseConnectionsBodyFieldUserIds  = big.NewInt(1 << 1)
@@ -128,7 +170,7 @@ var (
 
 type BulkPauseConnectionsBody struct {
 	TeamId   *LinkBulkPauseRequestTeamId `json:"-" url:"team_id,omitempty"`
-	UserIds  []string                    `json:"user_ids,omitempty" url:"-"`
+	UserIds  []string                    `json:"user_ids" url:"-"`
 	Provider OAuthProviders              `json:"provider" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -163,6 +205,27 @@ func (b *BulkPauseConnectionsBody) SetProvider(provider OAuthProviders) {
 	b.require(bulkPauseConnectionsBodyFieldProvider)
 }
 
+func (b *BulkPauseConnectionsBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkPauseConnectionsBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkPauseConnectionsBody(body)
+	return nil
+}
+
+func (b *BulkPauseConnectionsBody) MarshalJSON() ([]byte, error) {
+	type embed BulkPauseConnectionsBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	bulkTriggerHistoricalPullBodyFieldTeamId            = big.NewInt(1 << 0)
 	bulkTriggerHistoricalPullBodyFieldUserIds           = big.NewInt(1 << 1)
@@ -172,7 +235,7 @@ var (
 
 type BulkTriggerHistoricalPullBody struct {
 	TeamId   *LinkBulkTriggerHistoricalPullRequestTeamId `json:"-" url:"team_id,omitempty"`
-	UserIds  []string                                    `json:"user_ids,omitempty" url:"-"`
+	UserIds  []string                                    `json:"user_ids" url:"-"`
 	Provider OAuthProviders                              `json:"provider" url:"-"`
 	// Whether or not the endpoint should wait for the Bulk Op to complete before responding.
 	//
@@ -219,6 +282,27 @@ func (b *BulkTriggerHistoricalPullBody) SetProvider(provider OAuthProviders) {
 func (b *BulkTriggerHistoricalPullBody) SetWaitForCompletion(waitForCompletion *bool) {
 	b.WaitForCompletion = waitForCompletion
 	b.require(bulkTriggerHistoricalPullBodyFieldWaitForCompletion)
+}
+
+func (b *BulkTriggerHistoricalPullBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler BulkTriggerHistoricalPullBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BulkTriggerHistoricalPullBody(body)
+	return nil
+}
+
+func (b *BulkTriggerHistoricalPullBody) MarshalJSON() ([]byte, error) {
+	type embed BulkTriggerHistoricalPullBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -290,6 +374,27 @@ func (c *CompletePasswordProviderMfaBody) SetMfaCode(mfaCode string) {
 	c.require(completePasswordProviderMfaBodyFieldMfaCode)
 }
 
+func (c *CompletePasswordProviderMfaBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CompletePasswordProviderMfaBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CompletePasswordProviderMfaBody(body)
+	return nil
+}
+
+func (c *CompletePasswordProviderMfaBody) MarshalJSON() ([]byte, error) {
+	type embed CompletePasswordProviderMfaBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	demoConnectionCreationPayloadFieldUserId   = big.NewInt(1 << 0)
 	demoConnectionCreationPayloadFieldProvider = big.NewInt(1 << 1)
@@ -324,6 +429,27 @@ func (d *DemoConnectionCreationPayload) SetUserId(userId string) {
 func (d *DemoConnectionCreationPayload) SetProvider(provider DemoProviders) {
 	d.Provider = provider
 	d.require(demoConnectionCreationPayloadFieldProvider)
+}
+
+func (d *DemoConnectionCreationPayload) UnmarshalJSON(data []byte) error {
+	type unmarshaler DemoConnectionCreationPayload
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*d = DemoConnectionCreationPayload(body)
+	return nil
+}
+
+func (d *DemoConnectionCreationPayload) MarshalJSON() ([]byte, error) {
+	type embed DemoConnectionCreationPayload
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -378,14 +504,41 @@ func (e *EmailProviderAuthLink) SetRegion(region *Region) {
 	e.require(emailProviderAuthLinkFieldRegion)
 }
 
+func (e *EmailProviderAuthLink) UnmarshalJSON(data []byte) error {
+	type unmarshaler EmailProviderAuthLink
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*e = EmailProviderAuthLink(body)
+	return nil
+}
+
+func (e *EmailProviderAuthLink) MarshalJSON() ([]byte, error) {
+	type embed EmailProviderAuthLink
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
-	manualConnectionDataFieldUserId     = big.NewInt(1 << 0)
-	manualConnectionDataFieldProviderId = big.NewInt(1 << 1)
+	manualConnectionDataFieldVitalIosSdkVersion     = big.NewInt(1 << 0)
+	manualConnectionDataFieldVitalAndroidSdkVersion = big.NewInt(1 << 1)
+	manualConnectionDataFieldUserId                 = big.NewInt(1 << 2)
+	manualConnectionDataFieldProviderId             = big.NewInt(1 << 3)
+	manualConnectionDataFieldGrantedPermissions     = big.NewInt(1 << 4)
 )
 
 type ManualConnectionData struct {
-	UserId     string  `json:"user_id" url:"-"`
-	ProviderId *string `json:"provider_id,omitempty" url:"-"`
+	VitalIosSdkVersion     *string  `json:"-" url:"-"`
+	VitalAndroidSdkVersion *string  `json:"-" url:"-"`
+	UserId                 string   `json:"user_id" url:"-"`
+	ProviderId             *string  `json:"provider_id,omitempty" url:"-"`
+	GrantedPermissions     []string `json:"granted_permissions,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -396,6 +549,20 @@ func (m *ManualConnectionData) require(field *big.Int) {
 		m.explicitFields = big.NewInt(0)
 	}
 	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetVitalIosSdkVersion sets the VitalIosSdkVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ManualConnectionData) SetVitalIosSdkVersion(vitalIosSdkVersion *string) {
+	m.VitalIosSdkVersion = vitalIosSdkVersion
+	m.require(manualConnectionDataFieldVitalIosSdkVersion)
+}
+
+// SetVitalAndroidSdkVersion sets the VitalAndroidSdkVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ManualConnectionData) SetVitalAndroidSdkVersion(vitalAndroidSdkVersion *string) {
+	m.VitalAndroidSdkVersion = vitalAndroidSdkVersion
+	m.require(manualConnectionDataFieldVitalAndroidSdkVersion)
 }
 
 // SetUserId sets the UserId field and marks it as non-optional;
@@ -410,6 +577,34 @@ func (m *ManualConnectionData) SetUserId(userId string) {
 func (m *ManualConnectionData) SetProviderId(providerId *string) {
 	m.ProviderId = providerId
 	m.require(manualConnectionDataFieldProviderId)
+}
+
+// SetGrantedPermissions sets the GrantedPermissions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ManualConnectionData) SetGrantedPermissions(grantedPermissions []string) {
+	m.GrantedPermissions = grantedPermissions
+	m.require(manualConnectionDataFieldGrantedPermissions)
+}
+
+func (m *ManualConnectionData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ManualConnectionData
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*m = ManualConnectionData(body)
+	return nil
+}
+
+func (m *ManualConnectionData) MarshalJSON() ([]byte, error) {
+	type embed ManualConnectionData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -465,6 +660,27 @@ func (i *IndividualProviderData) SetPassword(password string) {
 func (i *IndividualProviderData) SetRegion(region *Region) {
 	i.Region = region
 	i.require(individualProviderDataFieldRegion)
+}
+
+func (i *IndividualProviderData) UnmarshalJSON(data []byte) error {
+	type unmarshaler IndividualProviderData
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*i = IndividualProviderData(body)
+	return nil
+}
+
+func (i *IndividualProviderData) MarshalJSON() ([]byte, error) {
+	type embed IndividualProviderData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -526,6 +742,27 @@ func (e *EmailAuthLink) SetAuthType(authType AuthType) {
 func (e *EmailAuthLink) SetRegion(region *Region) {
 	e.Region = region
 	e.require(emailAuthLinkFieldRegion)
+}
+
+func (e *EmailAuthLink) UnmarshalJSON(data []byte) error {
+	type unmarshaler EmailAuthLink
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*e = EmailAuthLink(body)
+	return nil
+}
+
+func (e *EmailAuthLink) MarshalJSON() ([]byte, error) {
+	type embed EmailAuthLink
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -601,6 +838,27 @@ func (l *LinkTokenValidationRequest) require(field *big.Int) {
 func (l *LinkTokenValidationRequest) SetToken(token string) {
 	l.Token = token
 	l.require(linkTokenValidationRequestFieldToken)
+}
+
+func (l *LinkTokenValidationRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler LinkTokenValidationRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*l = LinkTokenValidationRequest(body)
+	return nil
+}
+
+func (l *LinkTokenValidationRequest) MarshalJSON() ([]byte, error) {
+	type embed LinkTokenValidationRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -707,6 +965,27 @@ func (p *PasswordAuthLink) SetAuthType(authType AuthType) {
 	p.require(passwordAuthLinkFieldAuthType)
 }
 
+func (p *PasswordAuthLink) UnmarshalJSON(data []byte) error {
+	type unmarshaler PasswordAuthLink
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PasswordAuthLink(body)
+	return nil
+}
+
+func (p *PasswordAuthLink) MarshalJSON() ([]byte, error) {
+	type embed PasswordAuthLink
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	beginLinkTokenRequestFieldLinkToken = big.NewInt(1 << 0)
 	beginLinkTokenRequestFieldProvider  = big.NewInt(1 << 1)
@@ -739,6 +1018,27 @@ func (b *BeginLinkTokenRequest) SetLinkToken(linkToken string) {
 func (b *BeginLinkTokenRequest) SetProvider(provider Providers) {
 	b.Provider = provider
 	b.require(beginLinkTokenRequestFieldProvider)
+}
+
+func (b *BeginLinkTokenRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler BeginLinkTokenRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*b = BeginLinkTokenRequest(body)
+	return nil
+}
+
+func (b *BeginLinkTokenRequest) MarshalJSON() ([]byte, error) {
+	type embed BeginLinkTokenRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -827,6 +1127,27 @@ func (l *LinkTokenExchange) SetOnError(onError *string) {
 func (l *LinkTokenExchange) SetOnClose(onClose *string) {
 	l.OnClose = onClose
 	l.require(linkTokenExchangeFieldOnClose)
+}
+
+func (l *LinkTokenExchange) UnmarshalJSON(data []byte) error {
+	type unmarshaler LinkTokenExchange
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*l = LinkTokenExchange(body)
+	return nil
+}
+
+func (l *LinkTokenExchange) MarshalJSON() ([]byte, error) {
+	type embed LinkTokenExchange
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -1813,6 +2134,7 @@ const (
 	ManualProvidersAppleHealthKit    ManualProviders = "apple_health_kit"
 	ManualProvidersManual            ManualProviders = "manual"
 	ManualProvidersHealthConnect     ManualProviders = "health_connect"
+	ManualProvidersSamsungHealth     ManualProviders = "samsung_health"
 )
 
 func NewManualProvidersFromString(s string) (ManualProviders, error) {
@@ -1835,6 +2157,8 @@ func NewManualProvidersFromString(s string) (ManualProviders, error) {
 		return ManualProvidersManual, nil
 	case "health_connect":
 		return ManualProvidersHealthConnect, nil
+	case "samsung_health":
+		return ManualProvidersSamsungHealth, nil
 	}
 	var t ManualProviders
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

@@ -4,7 +4,7 @@ package introspect
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) GetUserResources(
 	ctx context.Context,
-	request *vitalgo.IntrospectGetUserResourcesRequest,
+	request *v505.IntrospectGetUserResourcesRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.UserResourcesResponse, error) {
+) (*v505.UserResourcesResponse, error) {
 	response, err := c.WithRawResponse.GetUserResources(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) GetUserResources(
 
 func (c *Client) GetUserHistoricalPulls(
 	ctx context.Context,
-	request *vitalgo.IntrospectGetUserHistoricalPullsRequest,
+	request *v505.IntrospectGetUserHistoricalPullsRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.UserHistoricalPullsResponse, error) {
+) (*v505.UserHistoricalPullsResponse, error) {
 	response, err := c.WithRawResponse.GetUserHistoricalPulls(
 		ctx,
 		request,

@@ -4,7 +4,7 @@ package body
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -36,9 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.BodyGetRequest,
+	request *v505.BodyGetRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientBodyResponse, error) {
+) (*v505.ClientBodyResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		userId,
@@ -55,9 +55,9 @@ func (c *Client) Get(
 func (c *Client) GetRaw(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.BodyGetRawRequest,
+	request *v505.BodyGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawBody, error) {
+) (*v505.RawBody, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,

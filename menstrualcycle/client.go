@@ -4,7 +4,7 @@ package menstrualcycle
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.MenstrualCycleGetRequest,
+	request *v505.MenstrualCycleGetRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.MenstrualCycleResponse, error) {
+) (*v505.MenstrualCycleResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		userId,
