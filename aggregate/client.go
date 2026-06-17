@@ -4,7 +4,7 @@ package aggregate
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) QueryOne(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.QueryBatch,
+	request *v505.QueryBatch,
 	opts ...option.RequestOption,
-) (*vitalgo.AggregationResponse, error) {
+) (*v505.AggregationResponse, error) {
 	response, err := c.WithRawResponse.QueryOne(
 		ctx,
 		userId,
@@ -55,7 +55,7 @@ func (c *Client) GetResultTableForContinuousQuery(
 	userId string,
 	queryIdOrSlug string,
 	opts ...option.RequestOption,
-) (*vitalgo.AggregationResult, error) {
+) (*v505.AggregationResult, error) {
 	response, err := c.WithRawResponse.GetResultTableForContinuousQuery(
 		ctx,
 		userId,
@@ -72,9 +72,9 @@ func (c *Client) GetTaskHistoryForContinuousQuery(
 	ctx context.Context,
 	userId string,
 	queryIdOrSlug string,
-	request *vitalgo.AggregateGetTaskHistoryForContinuousQueryRequest,
+	request *v505.AggregateGetTaskHistoryForContinuousQueryRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ContinuousQueryTaskHistoryResponse, error) {
+) (*v505.ContinuousQueryTaskHistoryResponse, error) {
 	response, err := c.WithRawResponse.GetTaskHistoryForContinuousQuery(
 		ctx,
 		userId,

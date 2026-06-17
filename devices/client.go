@@ -4,7 +4,7 @@ package devices
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -36,9 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetRaw(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.DevicesGetRawRequest,
+	request *v505.DevicesGetRawRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.RawDevices, error) {
+) (*v505.RawDevices, error) {
 	response, err := c.WithRawResponse.GetRaw(
 		ctx,
 		userId,

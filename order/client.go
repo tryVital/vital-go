@@ -4,7 +4,7 @@ package order
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Replay a webhook for a given set of orders
 func (c *Client) ResendEvents(
 	ctx context.Context,
-	request *vitalgo.ResendWebhookBody,
+	request *v505.ResendWebhookBody,
 	opts ...option.RequestOption,
-) (*vitalgo.ResendWebhookResponse, error) {
+) (*v505.ResendWebhookResponse, error) {
 	response, err := c.WithRawResponse.ResendEvents(
 		ctx,
 		request,

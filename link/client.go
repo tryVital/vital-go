@@ -4,7 +4,7 @@ package link
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) ListBulkOps(
 	ctx context.Context,
-	request *vitalgo.LinkListBulkOpsRequest,
+	request *v505.LinkListBulkOpsRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.BulkOpsResponse, error) {
+) (*v505.BulkOpsResponse, error) {
 	response, err := c.WithRawResponse.ListBulkOps(
 		ctx,
 		request,
@@ -50,9 +50,9 @@ func (c *Client) ListBulkOps(
 
 func (c *Client) BulkImport(
 	ctx context.Context,
-	request *vitalgo.BulkImportConnectionsBody,
+	request *v505.BulkImportConnectionsBody,
 	opts ...option.RequestOption,
-) (*vitalgo.BulkImportConnectionsResponse, error) {
+) (*v505.BulkImportConnectionsResponse, error) {
 	response, err := c.WithRawResponse.BulkImport(
 		ctx,
 		request,
@@ -66,7 +66,7 @@ func (c *Client) BulkImport(
 
 func (c *Client) BulkTriggerHistoricalPull(
 	ctx context.Context,
-	request *vitalgo.BulkTriggerHistoricalPullBody,
+	request *v505.BulkTriggerHistoricalPullBody,
 	opts ...option.RequestOption,
 ) (any, error) {
 	response, err := c.WithRawResponse.BulkTriggerHistoricalPull(
@@ -82,9 +82,9 @@ func (c *Client) BulkTriggerHistoricalPull(
 
 func (c *Client) BulkExport(
 	ctx context.Context,
-	request *vitalgo.BulkExportConnectionsBody,
+	request *v505.BulkExportConnectionsBody,
 	opts ...option.RequestOption,
-) (*vitalgo.BulkExportConnectionsResponse, error) {
+) (*v505.BulkExportConnectionsResponse, error) {
 	response, err := c.WithRawResponse.BulkExport(
 		ctx,
 		request,
@@ -98,7 +98,7 @@ func (c *Client) BulkExport(
 
 func (c *Client) BulkPause(
 	ctx context.Context,
-	request *vitalgo.BulkPauseConnectionsBody,
+	request *v505.BulkPauseConnectionsBody,
 	opts ...option.RequestOption,
 ) (any, error) {
 	response, err := c.WithRawResponse.BulkPause(
@@ -120,9 +120,9 @@ func (c *Client) BulkPause(
 // pass in your own custom redirect_url parameter.
 func (c *Client) Token(
 	ctx context.Context,
-	request *vitalgo.LinkTokenExchange,
+	request *v505.LinkTokenExchange,
 	opts ...option.RequestOption,
-) (*vitalgo.LinkTokenExchangeResponse, error) {
+) (*v505.LinkTokenExchangeResponse, error) {
 	response, err := c.WithRawResponse.Token(
 		ctx,
 		request,
@@ -136,7 +136,7 @@ func (c *Client) Token(
 
 func (c *Client) IsTokenValid(
 	ctx context.Context,
-	request *vitalgo.LinkTokenValidationRequest,
+	request *v505.LinkTokenValidationRequest,
 	opts ...option.RequestOption,
 ) (map[string]any, error) {
 	response, err := c.WithRawResponse.IsTokenValid(
@@ -153,9 +153,9 @@ func (c *Client) IsTokenValid(
 // Generate a token to invite a user of Vital mobile app to your team
 func (c *Client) CodeCreate(
 	ctx context.Context,
-	request *vitalgo.LinkCodeCreateRequest,
+	request *v505.LinkCodeCreateRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.VitalTokenCreatedResponse, error) {
+) (*v505.VitalTokenCreatedResponse, error) {
 	response, err := c.WithRawResponse.CodeCreate(
 		ctx,
 		request,
@@ -171,7 +171,7 @@ func (c *Client) CodeCreate(
 // Start link token process
 func (c *Client) StartConnect(
 	ctx context.Context,
-	request *vitalgo.BeginLinkTokenRequest,
+	request *v505.BeginLinkTokenRequest,
 	opts ...option.RequestOption,
 ) (map[string]any, error) {
 	response, err := c.WithRawResponse.StartConnect(
@@ -189,7 +189,7 @@ func (c *Client) StartConnect(
 // Check link token state - can be hit continuously used as heartbeat
 func (c *Client) TokenState(
 	ctx context.Context,
-	request *vitalgo.LinkTokenStateRequest,
+	request *v505.LinkTokenStateRequest,
 	opts ...option.RequestOption,
 ) (map[string]any, error) {
 	response, err := c.WithRawResponse.TokenState(
@@ -206,7 +206,7 @@ func (c *Client) TokenState(
 // Deprecated. Use `POST /v2/link/provider/email/{provider}` instead.
 func (c *Client) EmailAuth(
 	ctx context.Context,
-	request *vitalgo.EmailAuthLink,
+	request *v505.EmailAuthLink,
 	opts ...option.RequestOption,
 ) (any, error) {
 	response, err := c.WithRawResponse.EmailAuth(
@@ -223,7 +223,7 @@ func (c *Client) EmailAuth(
 // Deprecated. Use `POST /v2/link/provider/password/{provider}` instead.
 func (c *Client) PasswordAuth(
 	ctx context.Context,
-	request *vitalgo.PasswordAuthLink,
+	request *v505.PasswordAuthLink,
 	opts ...option.RequestOption,
 ) (any, error) {
 	response, err := c.WithRawResponse.PasswordAuth(
@@ -240,10 +240,10 @@ func (c *Client) PasswordAuth(
 // This endpoint generates an OAuth link for oauth provider
 func (c *Client) GenerateOauthLink(
 	ctx context.Context,
-	oauthProvider *vitalgo.OAuthProviders,
-	request *vitalgo.LinkGenerateOauthLinkRequest,
+	oauthProvider *v505.OAuthProviders,
+	request *v505.LinkGenerateOauthLinkRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.Source, error) {
+) (*v505.Source, error) {
 	response, err := c.WithRawResponse.GenerateOauthLink(
 		ctx,
 		oauthProvider,
@@ -259,10 +259,10 @@ func (c *Client) GenerateOauthLink(
 // This connects auth providers that are password based.
 func (c *Client) ConnectPasswordProvider(
 	ctx context.Context,
-	provider *vitalgo.PasswordProviders,
-	request *vitalgo.IndividualProviderData,
+	provider *v505.PasswordProviders,
+	request *v505.IndividualProviderData,
 	opts ...option.RequestOption,
-) (*vitalgo.ProviderLinkResponse, error) {
+) (*v505.ProviderLinkResponse, error) {
 	response, err := c.WithRawResponse.ConnectPasswordProvider(
 		ctx,
 		provider,
@@ -278,10 +278,10 @@ func (c *Client) ConnectPasswordProvider(
 // This connects auth providers that are password based.
 func (c *Client) CompletePasswordProviderMfa(
 	ctx context.Context,
-	provider *vitalgo.PasswordProviders,
-	request *vitalgo.CompletePasswordProviderMfaBody,
+	provider *v505.PasswordProviders,
+	request *v505.CompletePasswordProviderMfaBody,
 	opts ...option.RequestOption,
-) (*vitalgo.ProviderLinkResponse, error) {
+) (*v505.ProviderLinkResponse, error) {
 	response, err := c.WithRawResponse.CompletePasswordProviderMfa(
 		ctx,
 		provider,
@@ -297,8 +297,8 @@ func (c *Client) CompletePasswordProviderMfa(
 // This connects auth providers that are email based.
 func (c *Client) ConnectEmailAuthProvider(
 	ctx context.Context,
-	provider vitalgo.EmailProviders,
-	request *vitalgo.EmailProviderAuthLink,
+	provider v505.EmailProviders,
+	request *v505.EmailProviderAuthLink,
 	opts ...option.RequestOption,
 ) (any, error) {
 	response, err := c.WithRawResponse.ConnectEmailAuthProvider(
@@ -316,9 +316,9 @@ func (c *Client) ConnectEmailAuthProvider(
 // GET List of all available providers given the generated link token.
 func (c *Client) GetAllProviders(
 	ctx context.Context,
-	request *vitalgo.LinkGetAllProvidersRequest,
+	request *v505.LinkGetAllProvidersRequest,
 	opts ...option.RequestOption,
-) ([]*vitalgo.SourceLink, error) {
+) ([]*v505.SourceLink, error) {
 	response, err := c.WithRawResponse.GetAllProviders(
 		ctx,
 		request,
@@ -332,8 +332,8 @@ func (c *Client) GetAllProviders(
 
 func (c *Client) ConnectManualProvider(
 	ctx context.Context,
-	provider *vitalgo.ManualProviders,
-	request *vitalgo.ManualConnectionData,
+	provider *v505.ManualProviders,
+	request *v505.ManualConnectionData,
 	opts ...option.RequestOption,
 ) (map[string]bool, error) {
 	response, err := c.WithRawResponse.ConnectManualProvider(
@@ -351,9 +351,9 @@ func (c *Client) ConnectManualProvider(
 // POST Connect the given Vital user to a demo provider.
 func (c *Client) ConnectDemoProvider(
 	ctx context.Context,
-	request *vitalgo.DemoConnectionCreationPayload,
+	request *v505.DemoConnectionCreationPayload,
 	opts ...option.RequestOption,
-) (*vitalgo.DemoConnectionStatus, error) {
+) (*v505.DemoConnectionStatus, error) {
 	response, err := c.WithRawResponse.ConnectDemoProvider(
 		ctx,
 		request,

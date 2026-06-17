@@ -4,7 +4,7 @@ package insurance
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) SearchGetPayorInfo(
 	ctx context.Context,
-	request *vitalgo.InsuranceSearchGetPayorInfoRequest,
+	request *v505.InsuranceSearchGetPayorInfoRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingPayorSearchResponse], error) {
+) (*core.Response[[]*v505.ClientFacingPayorSearchResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) SearchGetPayorInfo(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingPayorSearchResponse
+	var response []*v505.ClientFacingPayorSearchResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) SearchGetPayorInfo(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingPayorSearchResponse]{
+	return &core.Response[[]*v505.ClientFacingPayorSearchResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) SearchGetPayorInfo(
 
 func (r *RawClient) SearchPayorInfo(
 	ctx context.Context,
-	request *vitalgo.PayorSearchRequest,
+	request *v505.PayorSearchRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingPayorSearchResponseDeprecated], error) {
+) (*core.Response[[]*v505.ClientFacingPayorSearchResponseDeprecated], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) SearchPayorInfo(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response []*vitalgo.ClientFacingPayorSearchResponseDeprecated
+	var response []*v505.ClientFacingPayorSearchResponseDeprecated
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) SearchPayorInfo(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingPayorSearchResponseDeprecated]{
+	return &core.Response[[]*v505.ClientFacingPayorSearchResponseDeprecated]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -123,9 +123,9 @@ func (r *RawClient) SearchPayorInfo(
 
 func (r *RawClient) SearchDiagnosis(
 	ctx context.Context,
-	request *vitalgo.InsuranceSearchDiagnosisRequest,
+	request *v505.InsuranceSearchDiagnosisRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingDiagnosisInformation], error) {
+) (*core.Response[[]*v505.ClientFacingDiagnosisInformation], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -144,7 +144,7 @@ func (r *RawClient) SearchDiagnosis(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingDiagnosisInformation
+	var response []*v505.ClientFacingDiagnosisInformation
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -156,13 +156,13 @@ func (r *RawClient) SearchDiagnosis(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingDiagnosisInformation]{
+	return &core.Response[[]*v505.ClientFacingDiagnosisInformation]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

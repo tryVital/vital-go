@@ -4,7 +4,7 @@ package meal
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
+	v505 "github.com/tryVital/vital-go"
 	core "github.com/tryVital/vital-go/core"
 	internal "github.com/tryVital/vital-go/internal"
 	option "github.com/tryVital/vital-go/option"
@@ -36,9 +36,9 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) Get(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.MealGetRequest,
+	request *v505.MealGetRequest,
 	opts ...option.RequestOption,
-) (*vitalgo.ClientFacingMealResponse, error) {
+) (*v505.ClientFacingMealResponse, error) {
 	response, err := c.WithRawResponse.Get(
 		ctx,
 		userId,
