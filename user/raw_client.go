@@ -4,10 +4,10 @@ package user
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetAll(
 	ctx context.Context,
-	request *vitalgo.UserGetAllRequest,
+	request *v505.UserGetAllRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.PaginatedUsersResponse], error) {
+) (*core.Response[*v505.PaginatedUsersResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) GetAll(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.PaginatedUsersResponse
+	var response *v505.PaginatedUsersResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) GetAll(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.PaginatedUsersResponse]{
+	return &core.Response[*v505.PaginatedUsersResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) GetAll(
 
 func (r *RawClient) Create(
 	ctx context.Context,
-	request *vitalgo.UserCreateBody,
+	request *v505.UserCreateBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingUserKey], error) {
+) (*core.Response[*v505.ClientFacingUserKey], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingUserKey
+	var response *v505.ClientFacingUserKey
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,13 +108,13 @@ func (r *RawClient) Create(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingUserKey]{
+	return &core.Response[*v505.ClientFacingUserKey]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -124,7 +124,7 @@ func (r *RawClient) Create(
 func (r *RawClient) GetTeamMetrics(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.MetricsResult], error) {
+) (*core.Response[*v505.MetricsResult], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -136,7 +136,7 @@ func (r *RawClient) GetTeamMetrics(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.MetricsResult
+	var response *v505.MetricsResult
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -153,7 +153,7 @@ func (r *RawClient) GetTeamMetrics(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.MetricsResult]{
+	return &core.Response[*v505.MetricsResult]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -164,7 +164,7 @@ func (r *RawClient) GetConnectedProviders(
 	ctx context.Context,
 	userId string,
 	opts ...option.RequestOption,
-) (*core.Response[map[string][]*vitalgo.ClientFacingProviderWithStatus], error) {
+) (*core.Response[map[string][]*v505.ClientFacingProviderWithStatus], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -179,7 +179,7 @@ func (r *RawClient) GetConnectedProviders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response map[string][]*vitalgo.ClientFacingProviderWithStatus
+	var response map[string][]*v505.ClientFacingProviderWithStatus
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -191,13 +191,13 @@ func (r *RawClient) GetConnectedProviders(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[map[string][]*vitalgo.ClientFacingProviderWithStatus]{
+	return &core.Response[map[string][]*v505.ClientFacingProviderWithStatus]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -208,7 +208,7 @@ func (r *RawClient) GetLatestUserInfo(
 	ctx context.Context,
 	userId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserInfo], error) {
+) (*core.Response[*v505.UserInfo], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -223,7 +223,7 @@ func (r *RawClient) GetLatestUserInfo(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserInfo
+	var response *v505.UserInfo
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -235,13 +235,13 @@ func (r *RawClient) GetLatestUserInfo(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserInfo]{
+	return &core.Response[*v505.UserInfo]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -251,9 +251,9 @@ func (r *RawClient) GetLatestUserInfo(
 func (r *RawClient) CreateInsurance(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.CreateInsuranceRequest,
+	request *v505.CreateInsuranceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingInsurance], error) {
+) (*core.Response[*v505.ClientFacingInsurance], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -269,7 +269,7 @@ func (r *RawClient) CreateInsurance(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.ClientFacingInsurance
+	var response *v505.ClientFacingInsurance
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -282,13 +282,13 @@ func (r *RawClient) CreateInsurance(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingInsurance]{
+	return &core.Response[*v505.ClientFacingInsurance]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -298,9 +298,9 @@ func (r *RawClient) CreateInsurance(
 func (r *RawClient) GetLatestInsurance(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.UserGetLatestInsuranceRequest,
+	request *v505.UserGetLatestInsuranceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingInsurance], error) {
+) (*core.Response[*v505.ClientFacingInsurance], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -322,7 +322,7 @@ func (r *RawClient) GetLatestInsurance(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingInsurance
+	var response *v505.ClientFacingInsurance
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -334,13 +334,13 @@ func (r *RawClient) GetLatestInsurance(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingInsurance]{
+	return &core.Response[*v505.ClientFacingInsurance]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -350,9 +350,9 @@ func (r *RawClient) GetLatestInsurance(
 func (r *RawClient) UpsertUserInfo(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.UserInfoCreateRequest,
+	request *v505.UserInfoCreateRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserInfo], error) {
+) (*core.Response[*v505.UserInfo], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -368,7 +368,7 @@ func (r *RawClient) UpsertUserInfo(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.UserInfo
+	var response *v505.UserInfo
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -381,13 +381,13 @@ func (r *RawClient) UpsertUserInfo(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserInfo]{
+	return &core.Response[*v505.UserInfo]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -399,7 +399,7 @@ func (r *RawClient) GetByClientUserId(
 	// A unique ID representing the end user. Typically this will be a user ID number from your application. Personally identifiable information, such as an email address or phone number, should not be used in the client_user_id.
 	clientUserId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingUser], error) {
+) (*core.Response[*v505.ClientFacingUser], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -414,7 +414,7 @@ func (r *RawClient) GetByClientUserId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingUser
+	var response *v505.ClientFacingUser
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -426,13 +426,13 @@ func (r *RawClient) GetByClientUserId(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingUser]{
+	return &core.Response[*v505.ClientFacingUser]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -443,9 +443,9 @@ func (r *RawClient) DeregisterProvider(
 	ctx context.Context,
 	userId string,
 	// Provider slug. e.g., `oura`, `fitbit`, `garmin`.
-	provider *vitalgo.Providers,
+	provider *v505.Providers,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserSuccessResponse], error) {
+) (*core.Response[*v505.UserSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -461,7 +461,7 @@ func (r *RawClient) DeregisterProvider(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserSuccessResponse
+	var response *v505.UserSuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -473,13 +473,13 @@ func (r *RawClient) DeregisterProvider(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserSuccessResponse]{
+	return &core.Response[*v505.UserSuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -490,7 +490,7 @@ func (r *RawClient) Get(
 	ctx context.Context,
 	userId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingUser], error) {
+) (*core.Response[*v505.ClientFacingUser], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -505,7 +505,7 @@ func (r *RawClient) Get(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingUser
+	var response *v505.ClientFacingUser
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -517,13 +517,13 @@ func (r *RawClient) Get(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingUser]{
+	return &core.Response[*v505.ClientFacingUser]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -534,7 +534,7 @@ func (r *RawClient) Delete(
 	ctx context.Context,
 	userId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserSuccessResponse], error) {
+) (*core.Response[*v505.UserSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -549,7 +549,7 @@ func (r *RawClient) Delete(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserSuccessResponse
+	var response *v505.UserSuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -561,13 +561,13 @@ func (r *RawClient) Delete(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserSuccessResponse]{
+	return &core.Response[*v505.UserSuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -577,7 +577,7 @@ func (r *RawClient) Delete(
 func (r *RawClient) Patch(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.UserPatchBody,
+	request *v505.UserPatchBody,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -606,7 +606,7 @@ func (r *RawClient) Patch(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Request:         request,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
@@ -621,9 +621,9 @@ func (r *RawClient) Patch(
 
 func (r *RawClient) UndoDelete(
 	ctx context.Context,
-	request *vitalgo.UserUndoDeleteRequest,
+	request *v505.UserUndoDeleteRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserSuccessResponse], error) {
+) (*core.Response[*v505.UserSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -642,7 +642,7 @@ func (r *RawClient) UndoDelete(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserSuccessResponse
+	var response *v505.UserSuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -654,13 +654,13 @@ func (r *RawClient) UndoDelete(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserSuccessResponse]{
+	return &core.Response[*v505.UserSuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -670,9 +670,9 @@ func (r *RawClient) UndoDelete(
 func (r *RawClient) Refresh(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.UserRefreshRequest,
+	request *v505.UserRefreshRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserRefreshSuccessResponse], error) {
+) (*core.Response[*v505.UserRefreshSuccessResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -694,7 +694,7 @@ func (r *RawClient) Refresh(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserRefreshSuccessResponse
+	var response *v505.UserRefreshSuccessResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -706,13 +706,13 @@ func (r *RawClient) Refresh(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserRefreshSuccessResponse]{
+	return &core.Response[*v505.UserRefreshSuccessResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -723,7 +723,7 @@ func (r *RawClient) GetDevices(
 	ctx context.Context,
 	userId string,
 	opts ...option.RequestOption,
-) (*core.Response[[]*vitalgo.ClientFacingDevice], error) {
+) (*core.Response[[]*v505.ClientFacingDevice], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -738,7 +738,7 @@ func (r *RawClient) GetDevices(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*vitalgo.ClientFacingDevice
+	var response []*v505.ClientFacingDevice
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -750,13 +750,13 @@ func (r *RawClient) GetDevices(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*vitalgo.ClientFacingDevice]{
+	return &core.Response[[]*v505.ClientFacingDevice]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -768,7 +768,7 @@ func (r *RawClient) GetDevice(
 	userId string,
 	deviceId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.ClientFacingDevice], error) {
+) (*core.Response[*v505.ClientFacingDevice], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -784,7 +784,7 @@ func (r *RawClient) GetDevice(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.ClientFacingDevice
+	var response *v505.ClientFacingDevice
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -796,13 +796,13 @@ func (r *RawClient) GetDevice(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.ClientFacingDevice]{
+	return &core.Response[*v505.ClientFacingDevice]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -813,7 +813,7 @@ func (r *RawClient) GetUserSignInToken(
 	ctx context.Context,
 	userId string,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserSignInTokenResponse], error) {
+) (*core.Response[*v505.UserSignInTokenResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -828,7 +828,7 @@ func (r *RawClient) GetUserSignInToken(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserSignInTokenResponse
+	var response *v505.UserSignInTokenResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -840,13 +840,13 @@ func (r *RawClient) GetUserSignInToken(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserSignInTokenResponse]{
+	return &core.Response[*v505.UserSignInTokenResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -856,9 +856,9 @@ func (r *RawClient) GetUserSignInToken(
 func (r *RawClient) CreatePortalUrl(
 	ctx context.Context,
 	userId string,
-	request *vitalgo.CreateUserPortalUrlBody,
+	request *v505.CreateUserPortalUrlBody,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.CreateUserPortalUrlResponse], error) {
+) (*core.Response[*v505.CreateUserPortalUrlResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -874,7 +874,7 @@ func (r *RawClient) CreatePortalUrl(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *vitalgo.CreateUserPortalUrlResponse
+	var response *v505.CreateUserPortalUrlResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -887,13 +887,13 @@ func (r *RawClient) CreatePortalUrl(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.CreateUserPortalUrlResponse]{
+	return &core.Response[*v505.CreateUserPortalUrlResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
