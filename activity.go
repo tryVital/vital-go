@@ -623,13 +623,6 @@ func (c *ClientFacingActivity) GetHeartRate() *ClientFacingHeartRate {
 	return c.HeartRate
 }
 
-func (c *ClientFacingActivity) GetWheelchairUse() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.WheelchairUse
-}
-
 func (c *ClientFacingActivity) GetWheelchairPush() *int {
 	if c == nil {
 		return nil
