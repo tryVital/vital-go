@@ -51,8 +51,8 @@ var (
 )
 
 type QueryBatch struct {
-	Timeframe *QueryBatchTimeframe `json:"timeframe,omitempty" url:"-"`
-	Queries   []*Query             `json:"queries,omitempty" url:"-"`
+	Timeframe *QueryBatchTimeframe `json:"timeframe" url:"-"`
+	Queries   []*Query             `json:"queries" url:"-"`
 	Config    *QueryConfig         `json:"config,omitempty" url:"-"`
 	accept    string
 
@@ -381,6 +381,7 @@ func (a *AggregateExpr) String() string {
 
 type AggregateExprArg struct {
 	SleepColumnExpr               *SleepColumnExpr
+	DerivedReadinessColumnExpr    *DerivedReadinessColumnExpr
 	ActivityColumnExpr            *ActivityColumnExpr
 	WorkoutColumnExpr             *WorkoutColumnExpr
 	BodyColumnExpr                *BodyColumnExpr
@@ -407,6 +408,13 @@ func (a *AggregateExprArg) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return a.SleepColumnExpr
+}
+
+func (a *AggregateExprArg) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if a == nil {
+		return nil
+	}
+	return a.DerivedReadinessColumnExpr
 }
 
 func (a *AggregateExprArg) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -535,6 +543,12 @@ func (a *AggregateExprArg) UnmarshalJSON(data []byte) error {
 		a.SleepColumnExpr = valueSleepColumnExpr
 		return nil
 	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		a.typ = "DerivedReadinessColumnExpr"
+		a.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
+		return nil
+	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
 	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
 		a.typ = "ActivityColumnExpr"
@@ -644,6 +658,9 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 	if a.typ == "SleepColumnExpr" || a.SleepColumnExpr != nil {
 		return json.Marshal(a.SleepColumnExpr)
 	}
+	if a.typ == "DerivedReadinessColumnExpr" || a.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(a.DerivedReadinessColumnExpr)
+	}
 	if a.typ == "ActivityColumnExpr" || a.ActivityColumnExpr != nil {
 		return json.Marshal(a.ActivityColumnExpr)
 	}
@@ -700,6 +717,7 @@ func (a AggregateExprArg) MarshalJSON() ([]byte, error) {
 
 type AggregateExprArgVisitor interface {
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
@@ -722,6 +740,9 @@ type AggregateExprArgVisitor interface {
 func (a *AggregateExprArg) Accept(visitor AggregateExprArgVisitor) error {
 	if a.typ == "SleepColumnExpr" || a.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(a.SleepColumnExpr)
+	}
+	if a.typ == "DerivedReadinessColumnExpr" || a.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(a.DerivedReadinessColumnExpr)
 	}
 	if a.typ == "ActivityColumnExpr" || a.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(a.ActivityColumnExpr)
@@ -2190,6 +2211,126 @@ func (d *DateTruncExprArg) Accept(visitor DateTruncExprArgVisitor) error {
 }
 
 var (
+	derivedReadinessColumnExprFieldDerivedReadiness = big.NewInt(1 << 0)
+)
+
+type DerivedReadinessColumnExpr struct {
+	// ℹ️ This enum is non-exhaustive.
+	DerivedReadiness DerivedReadinessColumnExprDerivedReadiness `json:"derived_readiness" url:"derived_readiness"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DerivedReadinessColumnExpr) GetDerivedReadiness() DerivedReadinessColumnExprDerivedReadiness {
+	if d == nil {
+		return ""
+	}
+	return d.DerivedReadiness
+}
+
+func (d *DerivedReadinessColumnExpr) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DerivedReadinessColumnExpr) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetDerivedReadiness sets the DerivedReadiness field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DerivedReadinessColumnExpr) SetDerivedReadiness(derivedReadiness DerivedReadinessColumnExprDerivedReadiness) {
+	d.DerivedReadiness = derivedReadiness
+	d.require(derivedReadinessColumnExprFieldDerivedReadiness)
+}
+
+func (d *DerivedReadinessColumnExpr) UnmarshalJSON(data []byte) error {
+	type unmarshaler DerivedReadinessColumnExpr
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DerivedReadinessColumnExpr(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DerivedReadinessColumnExpr) MarshalJSON() ([]byte, error) {
+	type embed DerivedReadinessColumnExpr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DerivedReadinessColumnExpr) String() string {
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+// ℹ️ This enum is non-exhaustive.
+type DerivedReadinessColumnExprDerivedReadiness string
+
+const (
+	DerivedReadinessColumnExprDerivedReadinessDate          DerivedReadinessColumnExprDerivedReadiness = "date"
+	DerivedReadinessColumnExprDerivedReadinessChronotype    DerivedReadinessColumnExprDerivedReadiness = "chronotype"
+	DerivedReadinessColumnExprDerivedReadinessSleepScore    DerivedReadinessColumnExprDerivedReadiness = "sleep_score"
+	DerivedReadinessColumnExprDerivedReadinessRecoveryScore DerivedReadinessColumnExprDerivedReadiness = "recovery_score"
+	DerivedReadinessColumnExprDerivedReadinessRecoveryZone  DerivedReadinessColumnExprDerivedReadiness = "recovery_zone"
+	DerivedReadinessColumnExprDerivedReadinessStressScore   DerivedReadinessColumnExprDerivedReadiness = "stress_score"
+	DerivedReadinessColumnExprDerivedReadinessStrainScore   DerivedReadinessColumnExprDerivedReadiness = "strain_score"
+	DerivedReadinessColumnExprDerivedReadinessStrainZone    DerivedReadinessColumnExprDerivedReadiness = "strain_zone"
+)
+
+func NewDerivedReadinessColumnExprDerivedReadinessFromString(s string) (DerivedReadinessColumnExprDerivedReadiness, error) {
+	switch s {
+	case "date":
+		return DerivedReadinessColumnExprDerivedReadinessDate, nil
+	case "chronotype":
+		return DerivedReadinessColumnExprDerivedReadinessChronotype, nil
+	case "sleep_score":
+		return DerivedReadinessColumnExprDerivedReadinessSleepScore, nil
+	case "recovery_score":
+		return DerivedReadinessColumnExprDerivedReadinessRecoveryScore, nil
+	case "recovery_zone":
+		return DerivedReadinessColumnExprDerivedReadinessRecoveryZone, nil
+	case "stress_score":
+		return DerivedReadinessColumnExprDerivedReadinessStressScore, nil
+	case "strain_score":
+		return DerivedReadinessColumnExprDerivedReadinessStrainScore, nil
+	case "strain_zone":
+		return DerivedReadinessColumnExprDerivedReadinessStrainZone, nil
+	}
+	var t DerivedReadinessColumnExprDerivedReadiness
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DerivedReadinessColumnExprDerivedReadiness) Ptr() *DerivedReadinessColumnExprDerivedReadiness {
+	return &d
+}
+
+var (
 	discreteTimeseriesExprFieldTimeseries = big.NewInt(1 << 0)
 	discreteTimeseriesExprFieldField      = big.NewInt(1 << 1)
 )
@@ -2602,19 +2743,22 @@ func (i *IndexColumnExpr) String() string {
 type IndexColumnExprIndex string
 
 const (
-	IndexColumnExprIndexSleep      IndexColumnExprIndex = "sleep"
-	IndexColumnExprIndexActivity   IndexColumnExprIndex = "activity"
-	IndexColumnExprIndexWorkout    IndexColumnExprIndex = "workout"
-	IndexColumnExprIndexBody       IndexColumnExprIndex = "body"
-	IndexColumnExprIndexMeal       IndexColumnExprIndex = "meal"
-	IndexColumnExprIndexProfile    IndexColumnExprIndex = "profile"
-	IndexColumnExprIndexTimeseries IndexColumnExprIndex = "timeseries"
+	IndexColumnExprIndexSleep            IndexColumnExprIndex = "sleep"
+	IndexColumnExprIndexDerivedReadiness IndexColumnExprIndex = "derived_readiness"
+	IndexColumnExprIndexActivity         IndexColumnExprIndex = "activity"
+	IndexColumnExprIndexWorkout          IndexColumnExprIndex = "workout"
+	IndexColumnExprIndexBody             IndexColumnExprIndex = "body"
+	IndexColumnExprIndexMeal             IndexColumnExprIndex = "meal"
+	IndexColumnExprIndexProfile          IndexColumnExprIndex = "profile"
+	IndexColumnExprIndexTimeseries       IndexColumnExprIndex = "timeseries"
 )
 
 func NewIndexColumnExprIndexFromString(s string) (IndexColumnExprIndex, error) {
 	switch s {
 	case "sleep":
 		return IndexColumnExprIndexSleep, nil
+	case "derived_readiness":
+		return IndexColumnExprIndexDerivedReadiness, nil
 	case "activity":
 		return IndexColumnExprIndexActivity, nil
 	case "workout":
@@ -3867,6 +4011,7 @@ type QueryGroupByItem struct {
 	DateTruncExpr                 *DateTruncExpr
 	DatePartExpr                  *DatePartExpr
 	SleepColumnExpr               *SleepColumnExpr
+	DerivedReadinessColumnExpr    *DerivedReadinessColumnExpr
 	ActivityColumnExpr            *ActivityColumnExpr
 	WorkoutColumnExpr             *WorkoutColumnExpr
 	BodyColumnExpr                *BodyColumnExpr
@@ -3907,6 +4052,13 @@ func (q *QueryGroupByItem) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return q.SleepColumnExpr
+}
+
+func (q *QueryGroupByItem) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.DerivedReadinessColumnExpr
 }
 
 func (q *QueryGroupByItem) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -4047,6 +4199,12 @@ func (q *QueryGroupByItem) UnmarshalJSON(data []byte) error {
 		q.SleepColumnExpr = valueSleepColumnExpr
 		return nil
 	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		q.typ = "DerivedReadinessColumnExpr"
+		q.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
+		return nil
+	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
 	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
 		q.typ = "ActivityColumnExpr"
@@ -4162,6 +4320,9 @@ func (q QueryGroupByItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return json.Marshal(q.ActivityColumnExpr)
 	}
@@ -4220,6 +4381,7 @@ type QueryGroupByItemVisitor interface {
 	VisitDateTruncExpr(*DateTruncExpr) error
 	VisitDatePartExpr(*DatePartExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
@@ -4248,6 +4410,9 @@ func (q *QueryGroupByItem) Accept(visitor QueryGroupByItemVisitor) error {
 	}
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
+	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(q.DerivedReadinessColumnExpr)
 	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
@@ -4307,6 +4472,7 @@ type QuerySelectItem struct {
 	AggregateExpr                 *AggregateExpr
 	GroupKeyColumnExpr            *GroupKeyColumnExpr
 	SleepColumnExpr               *SleepColumnExpr
+	DerivedReadinessColumnExpr    *DerivedReadinessColumnExpr
 	ActivityColumnExpr            *ActivityColumnExpr
 	WorkoutColumnExpr             *WorkoutColumnExpr
 	BodyColumnExpr                *BodyColumnExpr
@@ -4348,6 +4514,13 @@ func (q *QuerySelectItem) GetSleepColumnExpr() *SleepColumnExpr {
 		return nil
 	}
 	return q.SleepColumnExpr
+}
+
+func (q *QuerySelectItem) GetDerivedReadinessColumnExpr() *DerivedReadinessColumnExpr {
+	if q == nil {
+		return nil
+	}
+	return q.DerivedReadinessColumnExpr
 }
 
 func (q *QuerySelectItem) GetActivityColumnExpr() *ActivityColumnExpr {
@@ -4495,6 +4668,12 @@ func (q *QuerySelectItem) UnmarshalJSON(data []byte) error {
 		q.SleepColumnExpr = valueSleepColumnExpr
 		return nil
 	}
+	valueDerivedReadinessColumnExpr := new(DerivedReadinessColumnExpr)
+	if err := json.Unmarshal(data, &valueDerivedReadinessColumnExpr); err == nil {
+		q.typ = "DerivedReadinessColumnExpr"
+		q.DerivedReadinessColumnExpr = valueDerivedReadinessColumnExpr
+		return nil
+	}
 	valueActivityColumnExpr := new(ActivityColumnExpr)
 	if err := json.Unmarshal(data, &valueActivityColumnExpr); err == nil {
 		q.typ = "ActivityColumnExpr"
@@ -4616,6 +4795,9 @@ func (q QuerySelectItem) MarshalJSON() ([]byte, error) {
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return json.Marshal(q.SleepColumnExpr)
 	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return json.Marshal(q.DerivedReadinessColumnExpr)
+	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return json.Marshal(q.ActivityColumnExpr)
 	}
@@ -4677,6 +4859,7 @@ type QuerySelectItemVisitor interface {
 	VisitAggregateExpr(*AggregateExpr) error
 	VisitGroupKeyColumnExpr(*GroupKeyColumnExpr) error
 	VisitSleepColumnExpr(*SleepColumnExpr) error
+	VisitDerivedReadinessColumnExpr(*DerivedReadinessColumnExpr) error
 	VisitActivityColumnExpr(*ActivityColumnExpr) error
 	VisitWorkoutColumnExpr(*WorkoutColumnExpr) error
 	VisitBodyColumnExpr(*BodyColumnExpr) error
@@ -4706,6 +4889,9 @@ func (q *QuerySelectItem) Accept(visitor QuerySelectItemVisitor) error {
 	}
 	if q.typ == "SleepColumnExpr" || q.SleepColumnExpr != nil {
 		return visitor.VisitSleepColumnExpr(q.SleepColumnExpr)
+	}
+	if q.typ == "DerivedReadinessColumnExpr" || q.DerivedReadinessColumnExpr != nil {
+		return visitor.VisitDerivedReadinessColumnExpr(q.DerivedReadinessColumnExpr)
 	}
 	if q.typ == "ActivityColumnExpr" || q.ActivityColumnExpr != nil {
 		return visitor.VisitActivityColumnExpr(q.ActivityColumnExpr)
