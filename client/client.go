@@ -6,12 +6,14 @@ import (
 	activity "github.com/tryVital/vital-go/activity"
 	aggregate "github.com/tryVital/vital-go/aggregate"
 	body "github.com/tryVital/vital-go/body"
+	compendium "github.com/tryVital/vital-go/compendium"
 	core "github.com/tryVital/vital-go/core"
 	devices "github.com/tryVital/vital-go/devices"
 	electrocardiogram "github.com/tryVital/vital-go/electrocardiogram"
 	insurance "github.com/tryVital/vital-go/insurance"
 	internal "github.com/tryVital/vital-go/internal"
 	introspect "github.com/tryVital/vital-go/introspect"
+	labaccount "github.com/tryVital/vital-go/labaccount"
 	labreport "github.com/tryVital/vital-go/labreport"
 	labtests "github.com/tryVital/vital-go/labtests"
 	link "github.com/tryVital/vital-go/link"
@@ -19,6 +21,7 @@ import (
 	menstrualcycle "github.com/tryVital/vital-go/menstrualcycle"
 	option "github.com/tryVital/vital-go/option"
 	order "github.com/tryVital/vital-go/order"
+	ordertransaction "github.com/tryVital/vital-go/ordertransaction"
 	payor "github.com/tryVital/vital-go/payor"
 	profile "github.com/tryVital/vital-go/profile"
 	providers "github.com/tryVital/vital-go/providers"
@@ -49,6 +52,9 @@ type Client struct {
 	Providers         *providers.Client
 	Introspect        *introspect.Client
 	LabTests          *labtests.Client
+	Compendium        *compendium.Client
+	LabAccount        *labaccount.Client
+	OrderTransaction  *ordertransaction.Client
 	Testkit           *testkit.Client
 	Order             *order.Client
 	Insurance         *insurance.Client
@@ -81,6 +87,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Providers:         providers.NewClient(options),
 		Introspect:        introspect.NewClient(options),
 		LabTests:          labtests.NewClient(options),
+		Compendium:        compendium.NewClient(options),
+		LabAccount:        labaccount.NewClient(options),
+		OrderTransaction:  ordertransaction.NewClient(options),
 		Testkit:           testkit.NewClient(options),
 		Order:             order.NewClient(options),
 		Insurance:         insurance.NewClient(options),
