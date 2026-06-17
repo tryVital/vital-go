@@ -18,7 +18,7 @@ var (
 
 type CreatePayorBody struct {
 	Name            string                     `json:"name" url:"-"`
-	Address         *Address                   `json:"address,omitempty" url:"-"`
+	Address         *Address                   `json:"address" url:"-"`
 	Provider        *PayorCodeExternalProvider `json:"provider,omitempty" url:"-"`
 	ProviderPayorId *string                    `json:"provider_payor_id,omitempty" url:"-"`
 
@@ -59,6 +59,27 @@ func (c *CreatePayorBody) SetProvider(provider *PayorCodeExternalProvider) {
 func (c *CreatePayorBody) SetProviderPayorId(providerPayorId *string) {
 	c.ProviderPayorId = providerPayorId
 	c.require(createPayorBodyFieldProviderPayorId)
+}
+
+func (c *CreatePayorBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreatePayorBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreatePayorBody(body)
+	return nil
+}
+
+func (c *CreatePayorBody) MarshalJSON() ([]byte, error) {
+	type embed CreatePayorBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (

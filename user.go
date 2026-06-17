@@ -77,6 +77,27 @@ func (u *UserCreateBody) SetIngestionEnd(ingestionEnd *string) {
 	u.require(userCreateBodyFieldIngestionEnd)
 }
 
+func (u *UserCreateBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserCreateBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserCreateBody(body)
+	return nil
+}
+
+func (u *UserCreateBody) MarshalJSON() ([]byte, error) {
+	type embed UserCreateBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createInsuranceRequestFieldPayorCode    = big.NewInt(1 << 0)
 	createInsuranceRequestFieldMemberId     = big.NewInt(1 << 1)
@@ -92,7 +113,7 @@ type CreateInsuranceRequest struct {
 	MemberId     string                                                  `json:"member_id" url:"-"`
 	GroupId      *string                                                 `json:"group_id,omitempty" url:"-"`
 	Relationship ResponsibleRelationship                                 `json:"relationship" url:"-"`
-	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured,omitempty" url:"-"`
+	Insured      *VitalCoreSchemasDbSchemasLabTestInsurancePersonDetails `json:"insured" url:"-"`
 	Guarantor    *GuarantorDetails                                       `json:"guarantor,omitempty" url:"-"`
 	IsPrimary    *bool                                                   `json:"is_primary,omitempty" url:"-"`
 
@@ -156,6 +177,27 @@ func (c *CreateInsuranceRequest) SetIsPrimary(isPrimary *bool) {
 	c.require(createInsuranceRequestFieldIsPrimary)
 }
 
+func (c *CreateInsuranceRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateInsuranceRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateInsuranceRequest(body)
+	return nil
+}
+
+func (c *CreateInsuranceRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateInsuranceRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	createUserPortalUrlBodyFieldContext = big.NewInt(1 << 0)
 	createUserPortalUrlBodyFieldOrderId = big.NewInt(1 << 1)
@@ -196,6 +238,27 @@ func (c *CreateUserPortalUrlBody) SetContext(context CreateUserPortalUrlBodyCont
 func (c *CreateUserPortalUrlBody) SetOrderId(orderId *string) {
 	c.OrderId = orderId
 	c.require(createUserPortalUrlBodyFieldOrderId)
+}
+
+func (c *CreateUserPortalUrlBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateUserPortalUrlBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateUserPortalUrlBody(body)
+	return nil
+}
+
+func (c *CreateUserPortalUrlBody) MarshalJSON() ([]byte, error) {
+	type embed CreateUserPortalUrlBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -322,6 +385,27 @@ func (u *UserPatchBody) SetIngestionEnd(ingestionEnd *string) {
 func (u *UserPatchBody) SetClientUserId(clientUserId *string) {
 	u.ClientUserId = clientUserId
 	u.require(userPatchBodyFieldClientUserId)
+}
+
+func (u *UserPatchBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserPatchBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserPatchBody(body)
+	return nil
+}
+
+func (u *UserPatchBody) MarshalJSON() ([]byte, error) {
+	type embed UserPatchBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -2169,6 +2253,180 @@ func (t *TimeseriesMetricPoint) String() string {
 }
 
 var (
+	userAddressFieldFirstLine   = big.NewInt(1 << 0)
+	userAddressFieldSecondLine  = big.NewInt(1 << 1)
+	userAddressFieldCountry     = big.NewInt(1 << 2)
+	userAddressFieldZip         = big.NewInt(1 << 3)
+	userAddressFieldCity        = big.NewInt(1 << 4)
+	userAddressFieldState       = big.NewInt(1 << 5)
+	userAddressFieldAccessNotes = big.NewInt(1 << 6)
+)
+
+type UserAddress struct {
+	FirstLine   string  `json:"first_line" url:"first_line"`
+	SecondLine  *string `json:"second_line,omitempty" url:"second_line,omitempty"`
+	Country     string  `json:"country" url:"country"`
+	Zip         string  `json:"zip" url:"zip"`
+	City        string  `json:"city" url:"city"`
+	State       string  `json:"state" url:"state"`
+	AccessNotes *string `json:"access_notes,omitempty" url:"access_notes,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UserAddress) GetFirstLine() string {
+	if u == nil {
+		return ""
+	}
+	return u.FirstLine
+}
+
+func (u *UserAddress) GetSecondLine() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SecondLine
+}
+
+func (u *UserAddress) GetCountry() string {
+	if u == nil {
+		return ""
+	}
+	return u.Country
+}
+
+func (u *UserAddress) GetZip() string {
+	if u == nil {
+		return ""
+	}
+	return u.Zip
+}
+
+func (u *UserAddress) GetCity() string {
+	if u == nil {
+		return ""
+	}
+	return u.City
+}
+
+func (u *UserAddress) GetState() string {
+	if u == nil {
+		return ""
+	}
+	return u.State
+}
+
+func (u *UserAddress) GetAccessNotes() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AccessNotes
+}
+
+func (u *UserAddress) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UserAddress) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetFirstLine sets the FirstLine field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetFirstLine(firstLine string) {
+	u.FirstLine = firstLine
+	u.require(userAddressFieldFirstLine)
+}
+
+// SetSecondLine sets the SecondLine field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetSecondLine(secondLine *string) {
+	u.SecondLine = secondLine
+	u.require(userAddressFieldSecondLine)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetCountry(country string) {
+	u.Country = country
+	u.require(userAddressFieldCountry)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetZip(zip string) {
+	u.Zip = zip
+	u.require(userAddressFieldZip)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetCity(city string) {
+	u.City = city
+	u.require(userAddressFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetState(state string) {
+	u.State = state
+	u.require(userAddressFieldState)
+}
+
+// SetAccessNotes sets the AccessNotes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAddress) SetAccessNotes(accessNotes *string) {
+	u.AccessNotes = accessNotes
+	u.require(userAddressFieldAccessNotes)
+}
+
+func (u *UserAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserAddress(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserAddress) MarshalJSON() ([]byte, error) {
+	type embed UserAddress
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (u *UserAddress) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+var (
 	userInfoFieldFirstName         = big.NewInt(1 << 0)
 	userInfoFieldLastName          = big.NewInt(1 << 1)
 	userInfoFieldEmail             = big.NewInt(1 << 2)
@@ -2190,7 +2448,7 @@ type UserInfo struct {
 	PhoneNumber       string             `json:"phone_number" url:"phone_number"`
 	Gender            string             `json:"gender" url:"gender"`
 	Dob               string             `json:"dob" url:"dob"`
-	Address           *Address           `json:"address" url:"address"`
+	Address           *UserAddress       `json:"address" url:"address"`
 	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"medical_proxy,omitempty"`
 	Race              *Race              `json:"race,omitempty" url:"race,omitempty"`
 	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"ethnicity,omitempty"`
@@ -2246,7 +2504,7 @@ func (u *UserInfo) GetDob() string {
 	return u.Dob
 }
 
-func (u *UserInfo) GetAddress() *Address {
+func (u *UserInfo) GetAddress() *UserAddress {
 	if u == nil {
 		return nil
 	}
@@ -2343,7 +2601,7 @@ func (u *UserInfo) SetDob(dob string) {
 
 // SetAddress sets the Address field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserInfo) SetAddress(address *Address) {
+func (u *UserInfo) SetAddress(address *UserAddress) {
 	u.Address = address
 	u.require(userInfoFieldAddress)
 }
@@ -3000,7 +3258,7 @@ type UserInfoCreateRequest struct {
 	PhoneNumber       string             `json:"phone_number" url:"-"`
 	Gender            string             `json:"gender" url:"-"`
 	Dob               string             `json:"dob" url:"-"`
-	Address           *Address           `json:"address,omitempty" url:"-"`
+	Address           *UserAddress       `json:"address" url:"-"`
 	MedicalProxy      *GuarantorDetails  `json:"medical_proxy,omitempty" url:"-"`
 	Race              *Race              `json:"race,omitempty" url:"-"`
 	Ethnicity         *Ethnicity         `json:"ethnicity,omitempty" url:"-"`
@@ -3062,7 +3320,7 @@ func (u *UserInfoCreateRequest) SetDob(dob string) {
 
 // SetAddress sets the Address field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserInfoCreateRequest) SetAddress(address *Address) {
+func (u *UserInfoCreateRequest) SetAddress(address *UserAddress) {
 	u.Address = address
 	u.require(userInfoCreateRequestFieldAddress)
 }
@@ -3100,4 +3358,25 @@ func (u *UserInfoCreateRequest) SetSexualOrientation(sexualOrientation *SexualOr
 func (u *UserInfoCreateRequest) SetGenderIdentity(genderIdentity *GenderIdentity) {
 	u.GenderIdentity = genderIdentity
 	u.require(userInfoCreateRequestFieldGenderIdentity)
+}
+
+func (u *UserInfoCreateRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserInfoCreateRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserInfoCreateRequest(body)
+	return nil
+}
+
+func (u *UserInfoCreateRequest) MarshalJSON() ([]byte, error) {
+	type embed UserInfoCreateRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
