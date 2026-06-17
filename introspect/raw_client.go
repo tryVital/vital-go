@@ -4,10 +4,10 @@ package introspect
 
 import (
 	context "context"
-	vitalgo "github.com/tryVital/vital-go"
-	core "github.com/tryVital/vital-go/core"
-	internal "github.com/tryVital/vital-go/internal"
-	option "github.com/tryVital/vital-go/option"
+	v505 "github.com/tryVital/vital-go/v2"
+	core "github.com/tryVital/vital-go/v2/core"
+	internal "github.com/tryVital/vital-go/v2/internal"
+	option "github.com/tryVital/vital-go/v2/option"
 	http "net/http"
 )
 
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) GetUserResources(
 	ctx context.Context,
-	request *vitalgo.IntrospectGetUserResourcesRequest,
+	request *v505.IntrospectGetUserResourcesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserResourcesResponse], error) {
+) (*core.Response[*v505.UserResourcesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,7 +53,7 @@ func (r *RawClient) GetUserResources(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserResourcesResponse
+	var response *v505.UserResourcesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,13 +65,13 @@ func (r *RawClient) GetUserResources(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserResourcesResponse]{
+	return &core.Response[*v505.UserResourcesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -80,9 +80,9 @@ func (r *RawClient) GetUserResources(
 
 func (r *RawClient) GetUserHistoricalPulls(
 	ctx context.Context,
-	request *vitalgo.IntrospectGetUserHistoricalPullsRequest,
+	request *v505.IntrospectGetUserHistoricalPullsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*vitalgo.UserHistoricalPullsResponse], error) {
+) (*core.Response[*v505.UserHistoricalPullsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -101,7 +101,7 @@ func (r *RawClient) GetUserHistoricalPulls(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *vitalgo.UserHistoricalPullsResponse
+	var response *v505.UserHistoricalPullsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -113,13 +113,13 @@ func (r *RawClient) GetUserHistoricalPulls(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(vitalgo.ErrorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(v505.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*vitalgo.UserHistoricalPullsResponse]{
+	return &core.Response[*v505.UserHistoricalPullsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
