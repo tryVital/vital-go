@@ -646,6 +646,7 @@ const (
 	ClientFacingElectrocardiogramSourceTypeCuff            ClientFacingElectrocardiogramSourceType = "cuff"
 	ClientFacingElectrocardiogramSourceTypeManualScan      ClientFacingElectrocardiogramSourceType = "manual_scan"
 	ClientFacingElectrocardiogramSourceTypeAutomatic       ClientFacingElectrocardiogramSourceType = "automatic"
+	ClientFacingElectrocardiogramSourceTypeInsulinPump     ClientFacingElectrocardiogramSourceType = "insulin_pump"
 	ClientFacingElectrocardiogramSourceTypeScale           ClientFacingElectrocardiogramSourceType = "scale"
 	ClientFacingElectrocardiogramSourceTypeChestStrap      ClientFacingElectrocardiogramSourceType = "chest_strap"
 	ClientFacingElectrocardiogramSourceTypeRing            ClientFacingElectrocardiogramSourceType = "ring"
@@ -674,6 +675,8 @@ func NewClientFacingElectrocardiogramSourceTypeFromString(s string) (ClientFacin
 		return ClientFacingElectrocardiogramSourceTypeManualScan, nil
 	case "automatic":
 		return ClientFacingElectrocardiogramSourceTypeAutomatic, nil
+	case "insulin_pump":
+		return ClientFacingElectrocardiogramSourceTypeInsulinPump, nil
 	case "scale":
 		return ClientFacingElectrocardiogramSourceTypeScale, nil
 	case "chest_strap":
